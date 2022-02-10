@@ -1,0 +1,369 @@
+<?php
+
+define('TIME_SPENT_TIMER', 30); //seconds. the time between one ajax call and other
+define('TIME_SPENT_LIMIT', 30); //minutes. once this limit is reached we'll stop the monitoring
+
+function time_spent_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+    case "admin/help#time_spent":
+      $output = '<p>' . t("Monitors the time spent by a user on page.") . '</p>';
+      break;
+  }
+  return $output;
+}
+
+function time_spent_permission() {
+  return array(
+    'view time spent stats' => array(
+      'title' => t('View the statistics of time spent.'),
+    ),
+    'administer time spent configuration.' => array(
+      'title' => t('Configure the time spent module'),
+    )
+  );
+}
+
+function time_spent_js() {
+  return array(
+    'ajax' => array(
+      'callback' => 'time_spent_ajax',
+    ),
+  );
+}
+
+function time_spent_menu() {
+  $items = array();
+  $items['admin/config/people/time_spent'] = array(
+    'title' => 'Time Spent settings',
+    'description' => 'Settings for module Time Spent.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('time_spent_admin_settings'),
+    'access arguments' => array('administer time spent configuration.'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/reports/time_spent'] = array(
+    'title' => "Time Spent",
+    'description' => 'Reporting time spent by a user on page',
+    'page callback' => 'time_spent_report',
+    'access arguments' => array('view time spent stats'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['js/time_spent/ajax/%/%'] = array(
+    'page callback' => 'time_spent_ajax',
+    'page arguments' => array(3),
+    'access callback' => 'time_spent_ajax_check',
+    'access arguments' => array(4),
+  );
+  $items['admin/reports/time_spent/timespent-list-users'] = array(
+    'title' => t('Time Spent Listing'),
+    'description' => t('Time Spent Record'),
+    'page callback' => 'time_spent_record',
+    'access callback' => TRUE,
+    'access arguments' => array('Time Spent Record'),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['admin/reports/time_spent/timespent-list-users/%user'] = array(
+    'title' => t('Time spent per user on each node'),
+    'page callback' => 'time_spent_detail',
+    'page arguments' => array(4),
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK,
+    );
+  return $items;
+}
+
+function time_spent_ajax_check($sectoken) {
+  return drupal_valid_token($sectoken);
+}
+
+function time_spent_init() {
+  //if user has a role who is going to be tracked, add javascript code
+  if (time_spent_user_has_role()) {
+    $timer = variable_get('time_spent_timer', TIME_SPENT_TIMER);
+    $limit = variable_get('time_spent_limit', TIME_SPENT_LIMIT);
+    $mynide = -1; //false value
+    //checks if this is a node page. taxonomy or views pages won't be counted.
+    //confirm if this node type and user role will be tracked
+    $nodetypes = variable_get('time_spent_node_types', 'all');
+    if ($node = menu_get_object()) {
+      if (($nodetypes == 'all' || $nodetypes[$node->type] === $node->type )) {
+        $mynide = $node->nid;
+      }
+    }
+    drupal_add_js(drupal_get_path('module', 'time_spent') . '/time_spent.js');
+    drupal_add_js(array('time_spent' => array('timer' => check_plain($timer), 'limit' => check_plain($limit), 'nid' => $mynide, 'sectoken' => drupal_get_token())), 'setting');
+  }
+}
+
+function time_spent_admin_settings() {
+  $form['who_counts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Specify what and who this module will track'),
+    '#description' => t('Set the node types and roles you want to have statistics. All them are tracked by default.'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE
+  );
+  $types = array();
+  foreach (node_type_get_types() as $type) {
+    $types[$type->type] = t($type->name);
+  }
+  $form['who_counts']['time_spent_node_types'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Node types'),
+    '#default_value' => variable_get('time_spent_node_types', array()),
+    '#options' => $types
+  );
+  $form['who_counts']['time_spent_roles'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Roles'),
+    '#default_value' => variable_get('time_spent_roles', array()),
+    '#description' => t('If you want to track anonymous users, use Google Analytics.'),
+    '#options' => user_roles(true)
+  );
+  $form['who_counts']['time_spent_timer'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Seconds interval'),
+    '#default_value' => variable_get('time_spent_timer', TIME_SPENT_TIMER),
+  '#description' => t('We need to check by ajax if the user is on page yet. Define here the amount of time between one call and another.'),
+  );
+  $form['who_counts']['time_spent_limit'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Define in minutes how long these ajax call should be tracked'),
+    '#default_value' => variable_get('time_spent_limit', TIME_SPENT_LIMIT),
+  '#description' => t('As we are using ajax call, session will never expire. So we need to avoid continuos tracking if the user left the chair with the page open.'),
+  );
+  return system_settings_form($form);
+}
+
+function time_spent_report() {
+  $header = array(t('Post'), t('User'), t('Time Spent'));
+  $rows = array();
+  $output = "";
+  $pager = 25;
+
+  $query = db_select('time_spent_page', 'time_spent_page')
+    ->fields('time_spent_page', array('timespent'))
+    ->fields('users', array('uid'))
+    ->fields('node', array('nid', 'title'));
+  $query->join('node', 'node', 'node.nid = time_spent_page.nid');
+  $query->join('users', 'users', 'users.uid = time_spent_page.uid');
+  $result = $query->extend('PagerDefault')
+    ->limit($pager)
+    ->addTag('node_access');
+
+  $nodes = $result->execute()->fetchAllAssoc('nid');
+
+  foreach ($nodes as $row) {
+  $user = user_load($row->uid);
+  $rows[] = array(
+        l($row->title, 'node/' . $row->nid),
+        theme('username', array('account' => $user)),
+        time_spent_sec2hms($row->timespent)
+      );
+  }
+  $output .= "<br />";
+  $output .= t("<h3>Time spent on each node page by users</h3>");
+  $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('style' => 'width:600px')));
+  $output .= theme('pager');
+
+
+  $header = array(t('User'), t('Time Spent'));
+  $rows = array();
+  $query = db_select('time_spent_site', 'time_spent_site')
+    ->fields('time_spent_site', array('timespent'))
+    ->fields('users', array('uid', 'name'));
+  $query->join('users', 'users', 'users.uid = time_spent_site.uid');
+  $result = $query->extend('PagerDefault')
+    ->limit($pager)
+    ->addTag('node_access');
+
+  $nodes = $result->execute()->fetchAllAssoc('name');
+  foreach ($nodes as $row) {
+  $user = user_load($row->uid);
+  $rows[] = array(
+        theme('username', array('account' => $user)),
+        time_spent_sec2hms($row->timespent)
+      );
+  }
+  $output .= "<br />";
+  $output .= t("<h3>Time spent on the entire site by each user</h3>");
+  $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('style' => 'width:600px')));
+  $output .= theme('pager', array('element' => 1));
+
+  return $output;
+}
+
+function time_spent_ajax($nid) {
+  global $user;
+  $timer = (int) variable_get('time_spent_timer', TIME_SPENT_TIMER);
+  //monitors the time user spent on the site
+  $sql = "SELECT timespent FROM {time_spent_site} WHERE uid =" . $user->uid;
+  $timespent = db_query($sql)->fetchField();
+  if ($timespent) {
+    //update the record, increments each time
+    $result = db_query("UPDATE {time_spent_site} SET timespent = :timespent  WHERE uid = :uid",
+        array(':timespent' => ($timespent + $timer), ':uid' => $user->uid));
+  }
+  else {
+    //record the first time for this user
+    $data = new stdClass();
+    $data->uid = (int)$user->uid;
+    $data->timespent = $timer;
+    drupal_write_record('time_spent_site', $data);
+  }
+  unset($timespent);
+  unset($result);
+  //monitors time spent by page
+  if (is_numeric($nid) && $nid > 0) {
+    //firstly detect if this node already has a record for this user
+    $sql = "SELECT timespent FROM {time_spent_page} WHERE nid = :nid AND uid = :uid";
+    $timespent = db_query($sql, array(':nid' => $nid, ':uid' => $user->uid))->fetchField();
+    if ($timespent) {
+      //update the record, increments each time
+      $result = db_query("UPDATE {time_spent_page} SET timespent= :timespent WHERE nid = :nid AND uid = :uid",
+        array(':timespent' => ($timespent + $timer), ':nid' => $nid, ':uid' => $user->uid));
+    }
+    else {
+      //record the first time for this user at this node page
+      $data = new stdClass();
+      $data->nid = (int)$nid;
+      $data->uid = (int)$user->uid;
+      $data->timespent = $timer;
+      drupal_write_record('time_spent_page', $data);
+    }
+  }
+}
+
+function time_spent_sec2hms($sec, $padHours = FALSE) {
+    $hms = "";
+    $hours = intval(intval($sec) / 3600);
+    $hms .= ($padHours)
+          ? str_pad($hours, 2, "0", STR_PAD_LEFT) . ":"
+          : $hours . ":";
+    $minutes = intval(($sec / 60) % 60);
+    $hms .= str_pad($minutes, 2, "0", STR_PAD_LEFT) . ":";
+    $seconds = intval($sec % 60);
+    $hms .= str_pad($seconds, 2, "0", STR_PAD_LEFT);
+    return $hms;
+}
+
+function time_spent_user_has_role() {
+  global $user;
+  if ($user->uid <=  0) {
+    return FALSE;
+  }
+  $roles = variable_get('time_spent_roles', 'all');
+  //if all roles were uncheck at settings, no role will be tracked
+  if ($roles == 'all') {
+  return TRUE;
+  }
+  foreach ($roles as $role) {
+    if (is_array($user->roles) && in_array($role, array_keys($user->roles))) {
+    return TRUE;
+    }
+  }
+
+  /*return $value;*/
+}
+
+function time_spent_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+function time_spent_record(){
+  $output = "";
+  $a = drupal_get_form('time_spent_form');
+  $output = render($a);
+  $pager = 25;
+  $header = array(t('User'), t('Time Spent'));
+  $rows = array();
+  $query = db_select('time_spent_site', 'time_spent_site')
+    ->fields('time_spent_site', array('timespent'))
+    ->fields('users', array('uid', 'name'));
+  $query->join('users', 'users', 'users.uid = time_spent_site.uid');
+  $result = $query->extend('PagerDefault')
+    ->limit($pager)
+    ->addTag('node_access');
+
+  $nodes = $result->execute()->fetchAllAssoc('name');
+  /*echo "<pre>";print_r (count($nodes));exit;*/
+  $number = count($nodes);
+  foreach ($nodes as $row) {
+  $user = user_load($row->uid);
+  $rows[] = array(
+    l($user->name,'admin/reports/time_spent/timespent-list-users/'.$user->uid),
+    time_spent_sec2hms($row->timespent)
+      );
+  }
+  $output .= "<br />";
+  $output .= "<h3>".t("Time spent on the entire site by each user")."</h3>";
+  $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('style' => 'width:600px')));
+  if($number > 25)
+  $output .= theme('pager', array('element' => 1));
+  return $output;
+}
+function time_spent_form() {
+  $form = array();
+
+  $form['username'] = array(
+    '#title' => t('username'),
+    '#type' => 'textfield',
+    '#autocomplete_path' => 'user/autocomplete',
+   );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('See Report'),
+    );
+  $form['#submit'][] = 'time_spent_form_submit';
+  return $form;
+}
+function time_spent_form_submit($form,&$form_state) {
+  global $base_url;
+  $user_name = $form_state['values']['username'];
+  $query = db_select('users','u');
+  $query->fields('u',array('uid'))
+        ->condition('u.name',$user_name)
+        ->range(0,1);
+  $result = $query->execute()->fetchObject();
+  drupal_goto($base_url.'/admin/reports/time_spent/timespent-list-users/'.$result->uid);
+}
+function time_spent_detail($account) {
+  $userid=$account->uid;
+  $header = array(t('Post'), t('User'), t('Time Spent'));
+  $rows = array();
+  $output = "";
+  $pager = 25;
+
+  $query = db_select('time_spent_page', 'time_spent_page')
+    ->fields('time_spent_page', array('timespent'))
+    ->fields('users', array('uid'))
+    ->fields('node', array('nid', 'title'))
+    ->condition('users.uid',$userid,'=');
+  $query->join('node', 'node', 'node.nid = time_spent_page.nid');
+  $query->join('users', 'users', 'users.uid = time_spent_page.uid');
+  $result = $query->extend('PagerDefault')
+    ->limit($pager)
+    ->addTag('node_access');
+
+  $nodes = $result->execute()->fetchAllAssoc('nid');
+  $number = count($nodes);
+  foreach ($nodes as $row) {
+  $user = user_load($row->uid);
+  $rows[] = array(
+    l($row->title, 'node/' . $row->nid),
+    theme('username', array('account' => $user)),
+    time_spent_sec2hms($row->timespent)
+    );
+  }
+
+  $output .= "<br />";
+  $output .= "<h3>".t("Time spent on each node page by user")."</h3>";
+  $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('style' => 'width:600px')));
+  if($number > 25)
+  $output .= theme('pager');
+   return $output;
+}

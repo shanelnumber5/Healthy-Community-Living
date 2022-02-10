@@ -1,0 +1,222 @@
+<?php
+/**
+ * @file
+ * Functions to find and register Ubercart invoice template files.
+ *
+ * It finds all template files in the current default theme matching
+ * the perl regular expression /uc-order--.*\.tpl\.php/, registers
+ * these as themes using hook_theme(), and registers them as
+ * options using hook_uc_register_invoice().  This allows them
+ * to be selected when editing an "Email an order invoice" action.
+ *
+ * In other words, it lets you more easily change the e-mail that
+ * is sent to the customers when they place an order.
+ */
+
+/**
+ * Implements hook_help().
+ *
+ * Provides detailed instructions and reports on a couple of
+ * conditions of the current installation.
+ */
+function uc_register_invoice_help($path, $arg) {
+  switch ($path) {
+    case "admin/help#uc_register_invoice":
+      $output = '';
+
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>'  . t('The Ubercart Invoice Templates module automates and simplifies the process for registering Ubercart customer order invoice template files with the Ubercart module.  This allows store administrators to customize the appearances of customer order invoices whenever they are presented.  Most importantly, this allows store administrators to customize the e-mail sent to the customer when the customer completes an order.  This module allows administrators to do this without modifying the contents of the Ubercart module.') . '</p>';
+
+      $output .= '<h3>' . t('Usage') . '</h3>';
+      $output .= '<p>'  . t('Modifying your order e-mail response is the most common reason to modify the customer order invoice, so this help message documents that procedure.  The steps are as follows:') . '</p>';
+      $output .= '<ol>';
+      $output .= '<li>' . t('Establish a custom default theme.') . '</li>';
+      $output .= '<li>' . t('Copy the standard customer order invoice template file.') . '</li>';
+      $output .= '<li>' . t('Customize the new customer order invoice template file.') . '</li>';
+      $output .= '<li>' . t('Clear the cache.') . '</li>';
+      $output .= '<li>' . t('Configure the reaction rule.') . '</li>';
+      $output .= '</ol>';
+
+      $output .= '<h4>' . t('Establish a custom default theme') . '</h4>';
+      $output .= '<p>'  . t('Your custom template file goes in your current default theme directory.  The full details of establishing a theme are out of the scope of this help, but custom themes are generally downloaded from http://drupal.org/project/themes, installed in the sites/all/themes directory, and enabled from the admin/appearance menu.  To make updating the theme easiest, it may be best to establish a custom subtheme.  Putting the file into a regular theme or into a core theme (like Bartik or Garland) means that you have to keep track of the template file when you update the Drupal core or the theme.  So, for best results, establish a custom theme if the Web site does not already have one.') . '</p>';
+
+      $output .= '<p>' . t('Your default theme directory is currently ');
+      $output .= drupal_get_path('theme', variable_get('theme_default', NULL));
+      $output .= '.</p>';
+
+      $output .= '<h4>' . t('Copy the standard customer order template file') . '</h4>';
+      $output .= '<p>' . t('Copy the customer order template file to a new name in your current default theme directory.  The customer template file is probably at sites/all/modules/ubercart/uc_order/templates/uc-order--customer.tpl.php.  The new name should be distinctive.  For instance, if your Web site is for Joe\'s Batteries, name the new template file something like uc-order--joesbatteries.tpl.php.  It should be all lower-case.  The template file name must start with "uc-order--" and must end with ".tpl.php".  It can go on the main directory or any subdirectory of your theme.') . '</p>';
+
+      $output .= '</p>' . t('Order invoice template files currently in your default theme directory:');
+      $templatefiles = uc_register_invoice_find_invoice_templates();
+      if (empty($templatefiles)) {
+        $output .= t('  None.') . '</p>';
+      }
+      else {
+        $output .= '</p><ul>';
+        foreach ($templatefiles as $templatefile) {
+          $output .= '<li>' . $templatefile . '</li>';
+        }
+        $output .= '</ul>';
+      }
+
+      $output .= '<h4>' . t('Customize the new customer order template file') . '</h4>';
+      $output .= '<p>' . t('The template file is a combination of HTML and PHP that generates HTML to be mailed or displayed to your customer.  The PHP can access numerous variables containing data about the order, the user, the store, the products, and so forth.  Read the comments of the template file for details, then modify it as you see fit.  Note that for the e-mail sent to the customer, $op will be "checkout-mail".') . '</p>';
+
+      $output .= '<h4>' . t('Clear the caches') . '</h4>';
+      $output .= '<p>' . t('The new template file must be loaded into the theme registry. ') . l(t('Clear the cache'), 'admin/config/development/performance') . t(' to accomplish this.') . '</p>';
+
+      $output .= '<h4>' . t('Configure the reaction rule') . '</h4>';
+      $output .= '<p>' . t('Ubercart mails the invoice via a reaction rule.  The reaction rule must be configured to use your new template.  To do this:') . '</p>';
+      $output .= '<ol>';
+      $output .= '<li>' . t('Edit the rule ') . l(t('E-mail customer checkout notification'), 'admin/config/workflow/rules/reaction/manage/uc_checkout_customer_notification') . ' ' . t('in') . ' admin/config/workflow/rules.' . ' </li>';
+      $output .= '<li>' . t('Edit the action "Email an order invoice".')  . '</li>';
+      $output .= '<li>' . t('For "Invoice Template", select your custom template.')  . '</li>';
+      $output .= '<li>' . t('Click Save.')  . '</li>';
+      $output .= '</ol>';
+
+      $output .= '<p>' . t('E-mail order invoices will now be formatted using your new template.  Be sure to place some test orders to make sure they show up like you want.  Note that is is possible to create new custom reaction rules to send invoices under other circumstances.  You can register as many custom templates as you like.');
+
+      $output .= '<h4>' . t('On-site invoice template') . '</h4>';
+      $output .= '<p>' . t('Once you have placed a custom order invoice template file in your default theme directory, you can use it for invoices the customer sees while browsing your site.  To set this up:') . '</p>';
+      $output .= '<ol>';
+      $output .= '<li>' . t('Browse to the ') . l(t('Orders configuration page'), 'admin/store/settings/orders') . t('.') . '</li>';
+      $output .= '<li>' . t('Select your custom template from the drop-down list.') . '</li>';
+      $output .= '<li>' . t('Click "Save configuration".') . '</li>';
+      $output .= '</ol>';
+
+      $output .= '<h3>' . t('Limitations') . '</h3>';
+      $output .= '<p>' . t('This module does not search through the subtheme / base theme chain to find template files.  Also, it does not attempt to register admin invoice template files (just the customer templates).  If you need either of these features, please file a feature request issue.');
+
+      return $output;
+      break;
+  }
+}
+
+
+/**
+ * Implements hook_uc_register_invoice().
+ *
+ * Finds the list of invoice template files in the current default theme
+ * directory and its subdirectories,
+ * then register them as options for the "Email and order invoice" action.
+ */
+function uc_register_invoice_uc_invoice_templates() {
+  $templates = uc_register_invoice_find_invoice_templates();
+
+  foreach ($templates as $key => $template) {
+    // Get the file name without the path or the .tpl.php
+    $template = basename($template, '.tpl.php');
+    // Cut off the "uc-order--"
+    $template = substr($template, 10);
+    $templates[$key] = $template;
+  }
+
+  return $templates;
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * Finds the list of invoice template files in the current default theme
+ * directory and its subdirectories, then registers the templates in
+ * the theme registry.
+ */
+function uc_register_invoice_theme($existing, $type, $theme, $path) {
+
+  $templatefiles = uc_register_invoice_find_invoice_templates();
+
+  $templates = array();
+  foreach ($templatefiles as $templatefile) {
+    // Get the file name without the path or the .tpl.php
+    $templatename = basename($templatefile, '.tpl.php');
+    // Cut off the uc-order--
+    $templatename = substr($templatename, 10);
+    $path = dirname($templatefile);
+
+    $templates['uc_order__' . $templatename] = array(
+      'template' => 'uc-order--' . $templatename,
+      'path' => $path,
+      'variables' => array(
+        'order' => NULL,
+        'op' => 'view',
+        'template' => 'customer',
+        'thank_you_message' => FALSE,
+        'help_text' => FALSE,
+        'email_text' => FALSE,
+        'store_footer' => FALSE,
+        'business_header' => FALSE,
+        'shipping_method' => FALSE,
+      ),
+    );
+  }
+
+  return $templates;
+}
+
+/**
+ * Find uc-order--*.tpl.php files.
+ *
+ * Find all uc-order--*.tpl.php files in the current default
+ * theme directory, and return them as a list.
+ *
+ * @return array
+ *   Array of strings listing all the template file names in the
+ *   current default theme directory.
+ *
+ * @todo Possibly save the return value in a static variable.
+ */
+function uc_register_invoice_find_invoice_templates() {
+  $theme_path = drupal_get_path('theme', variable_get('theme_default', NULL));
+
+  return uc_register_invoice_find_pattern_files($theme_path, '/^uc-order--.*\.tpl\.php$/');
+}
+
+/**
+ * Recursively find all files in a directory tree matching a pattern.
+ *
+ * @param string $directory
+ *   The base directory to search from. The directory may be
+ *   fully-qualified or relative.
+ * @param string $pattern
+ *   The perl-style regular expression pattern to search for.  It must
+ *   be compatible with preg_grep(), which means it must begin and end with
+ *   delimiters, usually /.
+ * @param bool $reset
+ *   (optional) Used for internal recursion. This should be TRUE (default)
+ *   if calling from an external function. It should be FALSE when calling
+ *   itself. This parameter should usually just be left blank.
+ *
+ * @return array
+ *   An array of the paths to the matched files. $directory is pre-pended to
+ *   the paths.
+ */
+function uc_register_invoice_find_pattern_files($directory, $pattern, $reset=TRUE) {
+  static $filelist;
+
+  if ($reset) {
+    $filelist = array();
+  }
+
+  $listing = scandir($directory);
+
+  // Collect all files matching the pattern in the current directory.
+  $matchedfiles = preg_grep($pattern, $listing);
+  foreach ($matchedfiles as $file) {
+    $filelist[] = $directory . '/' . $file;
+  }
+
+  // Recursively find matching files in all subdirectories.
+  foreach ($listing as $file) {
+    $path = $directory . '/' . $file;
+    if (is_dir($path) && !is_link($path) && $file != '.' && $file != '..') {
+      uc_register_invoice_find_pattern_files($path, $pattern, FALSE);
+    }
+  }
+
+  // Return value is only needed for non-recursive calls.  Otherwise,
+  // results are just stashed in the static $filelist variable.
+  if ($reset) {
+    return $filelist;
+  }
+}

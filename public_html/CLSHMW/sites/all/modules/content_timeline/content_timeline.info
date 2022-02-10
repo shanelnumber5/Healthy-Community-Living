@@ -1,0 +1,16 @@
+name = Content Timeline
+description = Powerful Content Display
+core = 7.x
+version = 7.x-1.2
+
+dependencies[] = views
+dependencies[] = jquery_update
+
+package = Views
+
+files[] = views/content_timeline.views.inc
+files[] = views/views_plugin_style_content_timeline.inc
+files[] = views/views_plugin_row_content_timeline.inc
+
+project = content_timeline
+project status url = http://www.shindiristudio.com/drupal/timeline/release-history

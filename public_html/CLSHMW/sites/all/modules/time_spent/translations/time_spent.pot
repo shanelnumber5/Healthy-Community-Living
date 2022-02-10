@@ -1,0 +1,122 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  time_spent.module: n/a
+#  time_spent.install: n/a
+#  time_spent.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-10-06 11:13-0300\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: time_spent.module:10 time_spent.install:19
+msgid "Monitors the time spent by a user on page."
+msgstr ""
+
+#: time_spent.module:83
+msgid "Specify what and who this module will track"
+msgstr ""
+
+#: time_spent.module:84
+msgid "Set the node types and roles you want to have statistics. All them are tracked by default."
+msgstr ""
+
+#: time_spent.module:90
+msgid "Node types"
+msgstr ""
+
+#: time_spent.module:96
+msgid "Roles"
+msgstr ""
+
+#: time_spent.module:98
+msgid "If you want to track anonymous users, use Google Analytics."
+msgstr ""
+
+#: time_spent.module:103
+msgid "Seconds interval"
+msgstr ""
+
+#: time_spent.module:105
+msgid "We need to check by ajax if the user is on page yet. Define here the amount of time between one call and another."
+msgstr ""
+
+#: time_spent.module:109
+msgid "Define in minutes how long these ajax call should be tracked"
+msgstr ""
+
+#: time_spent.module:111
+msgid "As we are using ajax call, session will never expire. So we need to avoid continuos tracking if the user left the chair with the page open."
+msgstr ""
+
+#: time_spent.module:117
+msgid "Post"
+msgstr ""
+
+#: time_spent.module:117;135
+msgid "User"
+msgstr ""
+
+#: time_spent.module:117;135;39 time_spent.info:0
+msgid "Time Spent"
+msgstr ""
+
+#: time_spent.module:17
+msgid "view time spent stats"
+msgstr ""
+
+#: time_spent.module:17
+msgid "administer time spent configuration."
+msgstr ""
+
+#: time_spent.module:31
+msgid "Time Spent settings"
+msgstr ""
+
+#: time_spent.module:32
+msgid "Settings for module Time Spent."
+msgstr ""
+
+#: time_spent.module:40
+msgid "Reporting time spent by a user on page"
+msgstr ""
+
+#: time_spent.install:22;54
+msgid "Unique id"
+msgstr ""
+
+#: time_spent.install:27
+msgid "Node id"
+msgstr ""
+
+#: time_spent.install:33;59
+msgid "User id."
+msgstr ""
+
+#: time_spent.install:39;65
+msgid "The time spent on the page by this user."
+msgstr ""
+
+#: time_spent.install:51
+msgid "Monitors the time spent by a user on the entire site."
+msgstr ""
+
+#: time_spent.info:0
+msgid "Monitors the time that users spent on your site and pages."
+msgstr ""
+
+#: time_spent.info:0
+msgid "Statistics"
+msgstr ""
+

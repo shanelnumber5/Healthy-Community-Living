@@ -1,0 +1,44 @@
+<?php
+/**
+ * @file
+ * Main functions and hooks of the module.
+ */
+
+/**
+* Implements hook_filter_info().
+*/
+function script_filter_filter_info() {
+  $filters = array();
+  $filters['script_filter'] = array(
+    'title' => t('Script filter'),
+    'description' => t('Replaces [script] patterns with inline script html tags.'),
+    'prepare callback' => 'script_filter_filter_prepare',
+    'process callback' => 'script_filter_filter_process',
+  );
+
+  return $filters;
+}
+
+/**
+ * Prepares the filter's text.
+ *
+ * Add a space character before the end of the script tag, because the regular
+ * expression won't handle the multiple embeds if the the script tag is empty.
+ */
+function script_filter_filter_prepare($text, $filter, $format, $langcode, $cache, $cache_id) {
+  return preg_replace('|\[/script\]|', ' [/script]', $text);
+}
+
+/**
+ * Replaces the the script pattern with the html code.
+ */
+function script_filter_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
+  return preg_replace('|\[script([^\]]*)\](.+?)\[/script\]|sm', '<script$1>$2</script>', $text);
+}
+
+/**
+ * Registers a directory containing Wysiwyg plugins.
+ */
+function script_filter_wysiwyg_include_directory($type) {
+  return $type;
+}

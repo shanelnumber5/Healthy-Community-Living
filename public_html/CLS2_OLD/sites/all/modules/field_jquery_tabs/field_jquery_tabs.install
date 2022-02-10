@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * @file
+ * jQuery Tabs Field install file.
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function field_jquery_tabs_field_schema($field) {
+  if ($field['type'] == 'field_jquery_tabs') {
+    for ($i = 1; $i <= 7; $i++) {
+      $schema['columns']['tab_title_' . $i] = array(
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => FALSE,
+        'default' => '',
+      );
+      $schema['columns']['tab_body_' . $i] = array(
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      );
+      $schema['columns']['tab_format_' . $i] = array(
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      );
+    }
+
+    return $schema;
+  }
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function field_jquery_tabs_update_7300(&$sandbox) {
+  $fields = field_info_fields();
+  foreach ($fields as $field_name => $field) {
+    if ($field['type'] == 'field_jquery_tabs' && $field['storage']['type'] == 'field_sql_storage') {
+      foreach ($field['storage']['details']['sql'] as $type => $table_info) {
+        foreach ($table_info as $table_name => $columns) {
+          for ($i = 1; $i <= 7; $i++) {
+            $column_name = _field_sql_storage_columnname($field_name, 'tab_format_' . $i);
+            $schema['columns']['tab_format_' . $i] = array(
+              'type' => 'varchar',
+              'length' => '255',
+              'not null' => FALSE,
+            );
+            db_add_field($table_name, $column_name, $schema['columns']['tab_format_' . $i]);
+          }
+        }
+      }
+    }
+  }
+  field_cache_clear();
+}

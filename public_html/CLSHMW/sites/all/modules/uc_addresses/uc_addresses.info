@@ -1,0 +1,63 @@
+name = Ubercart Addresses
+description = "Allows users to manage a set of addresses that can be referenced when placing an order."
+dependencies[] = uc_store
+dependencies[] = ctools
+dependencies[] = token
+dependencies[] = entity
+package = "Ubercart - extra"
+configure = admin/store/settings/addresses
+core = 7.x
+php = 5.2
+
+test_dependencies[] = feeds:feeds (>=7.x-2.0-alpha8)
+
+; Classes
+files[] = class/Exceptions.inc
+files[] = class/uc_addresses.entity.inc
+files[] = class/UcAddressesAddress.class.php
+files[] = class/UcAddressesAddressBook.class.php
+files[] = class/UcAddressesPermissions.class.php
+files[] = class/UcAddressesSchemaAddress.class.php
+
+; Field handlers
+files[] = handlers/UcAddressesFieldHandler.class.php
+files[] = handlers/ubercart.handlers.inc
+files[] = handlers/uc_addresses.handlers.inc
+
+; Views handlers
+files[] = views/uc_addresses_handler_field_uc_addresses_link.inc
+files[] = views/uc_addresses_handler_field_uc_addresses_link_edit.inc
+files[] = views/uc_addresses_handler_field_uc_addresses_link_delete.inc
+files[] = views/uc_addresses_handler_filter_access.inc
+files[] = views/uc_addresses_views_access.inc
+files[] = views/uc_addresses_views_plugin_argument_address_access.inc
+files[] = views/uc_addresses_views_plugin_argument_user_address_access.inc
+files[] = views/uc_addresses_views_plugin_row_address_view.inc
+
+; Feeds plugins
+files[] = feeds/FeedsUcAddressesProcessor.inc
+
+; Test cases
+files[] = tests/UcAddressesTestCase.test
+files[] = tests/uc_addresses.addressbook.test
+files[] = tests/uc_addresses.api.test
+files[] = tests/uc_addresses.checkout.test
+files[] = tests/uc_addresses.entity.test
+files[] = tests/uc_addresses.feeds.test
+files[] = tests/uc_addresses.order.test
+files[] = tests/uc_addresses.register.test
+files[] = tests/uc_addresses.tokens.test
+files[] = tests/uc_addresses.upgrade.test
+files[] = tests/uc_addresses.views.test
+
+; Additional files with hook implementations
+files[] = uc_addresses.ubercart.inc
+files[] = uc_addresses.tokens.inc
+files[] = uc_addresses.pages.inc
+
+; Information added by Drupal.org packaging script on 2016-12-21
+version = "7.x-1.0-beta1+17-dev"
+core = "7.x"
+project = "uc_addresses"
+datestamp = "1482342186"
+
