@@ -1,0 +1,363 @@
+<?php
+
+/**
+ * @file
+ * Install file for Ubercart Addresses.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function uc_addresses_schema() {
+  $schema['uc_addresses'] = array(
+    'description' => 'Ubercart customer addresses',
+    'fields' => array(
+      'aid' => array(
+        'description' => 'The address ID',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The ID of the user who owns this address',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'first_name' => array(
+        'description' => 'The addressee\'s first name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'last_name' => array(
+        'description' => 'The addressee\'s last name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'phone' => array(
+        'description' => 'The addressee\'s phone number',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'company' => array(
+        'description' => 'The addressee\'s company name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'street1' => array(
+        'description' => 'The addressee\'s residence number and street',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'street2' => array(
+        'description' => 'The addressee\'s residence number and street (continued)',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'city' => array(
+        'description' => 'The addressee\'s city of residence',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'zone' => array(
+        'description' => 'The addressee\'s zone of residence',
+        'type' => 'int',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'postal_code' => array(
+        'description' => 'The addressee\'s postal code',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'country' => array(
+        'description' => 'The addressee\'s country of residence',
+        'type' => 'int',
+        'size' => 'medium',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'address_name' => array(
+        'description' => 'The name used to access this address',
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => FALSE,
+      ),
+      'default_shipping' => array(
+        'description' => 'If the address is the default shipping address',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+      'default_billing' => array(
+        'description' => 'If the address is the default billing address',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+      'created' => array(
+        'description' => 'The date this address was created',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'modified' => array(
+        'description' => 'The date this address was last modified',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'aid_uid_idx' => array('aid', 'uid'),
+    ),
+    'primary key' => array('aid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function uc_addresses_install() {
+  $t = get_t();
+  // Setup default permissions. Authenticated users will automatically
+  // be granted with permissions to manage their own addresses.
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
+      'view own addresses',
+      'add/edit own addresses',
+      'delete own addresses',
+    )
+  );
+
+  // Increase the weight of uc_addresses relative
+  // to uc_quote by an addition of 1 so that
+  // uc_addresses module can undo some of the actions
+  // done by uc_quote's form alter, which causes the
+  // delivery address form to disapear on checkout.
+  //
+  // See also http://drupal.org/node/1421720.
+  $weight = db_select('system', 's')
+    ->fields('s', array('weight'))
+    ->condition('name', 'uc_quote', '=')
+    ->execute()
+    ->fetchField();
+  db_update('system')
+    ->fields(array('weight' => $weight + 1))
+    ->condition('name', 'uc_addresses', '=')
+    ->execute();
+
+  drupal_set_message($t("Ubercart Addresses is installed. The authenticated user automatically was granted the permissions %view_own, %edit_own and %delete_own.", array('%view_own' => $t('view own addresses'), '%edit_own' => $t('add/edit own addresses'), '%delete_own' => $t('delete own addresses'))), 'status');
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Deletes variables used by uc_addresses.
+ */
+function uc_addresses_uninstall() {
+  db_delete('variable')
+  ->condition('name', 'uc_addresses%', 'LIKE')
+  ->execute();
+}
+
+/**
+ * Update a string containing Ubercart Addresses 6.x-2.x tokens
+ * to Ubercart Addresses 7.x-1.x tokens.
+ *
+ * @param $text
+ *   A string containing tokens.
+ * @param $updates
+ *   An optional array of Drupal 7 tokens keyed by their Drupal 6 token name.
+ *   The default tokens will be merged into this array. Note neither the old
+ *   or new token names should include the surrounding bracket ([ and ])
+ *   characters.
+ * @return
+ *   A string with the tokens upgraded.
+ *
+ * @see _token_upgrade_token_list()
+ * @see _token_upgrade_token_date_list()
+ * @see token_update_token_text()
+ */
+function uc_addresses_update_token_text($text, $updates = array(), $leading = '[', $trailing = ']') {
+  // Get a list of old tokens.
+  module_load_include('install', 'token');
+  $updates += _token_upgrade_token_date_list('uc_addresses_created-', 'uc_addresses:created');
+  $updates += _token_upgrade_token_date_list('uc_addresses_modified-', 'uc_addresses:modified');
+  $updates += _token_upgrade_token_list();
+
+  // Because of a bug in token_update_token_text() (v7.x-1.0-rc1) a copy
+  // of the code there is directly executed here.
+  // The bug is that the regex contains one closing bracket too much.
+  // The following updates Ubercart Addresses tokens for 'created' and 'modified'
+  // + it updates other tokens not defined by Ubercart Addresses.
+  $regex = '/' . preg_quote($leading, '/') . '([^\s]*)' . preg_quote($trailing, '/') . '/';
+  preg_match_all($regex, $text, $matches);
+  foreach ($matches[1] as $index => $old_token) {
+    if (isset($updates[$old_token])) {
+      $new_token = $updates[$old_token];
+      $text = str_replace("{$leading}{$old_token}{$trailing}", "[$new_token]", $text);
+      // Also replace any tokens that have a -raw suffix.
+      $text = str_replace("{$leading}{$old_token}-raw{$trailing}", "[$new_token]", $text);
+    }
+  }
+
+  // Convert other Ubercart Addresses tokens.
+  $match = array('[uc_addresses_country_', '[uc_addresses_zone_', 'created-', 'modified-', '[uc_addresses_');
+  $replace = array('[uc_addresses:country:country_', '[uc_addresses:zone:zone_', 'created:', 'modified:', '[uc_addresses:');
+  $replaced = str_replace($match, $replace, $text);
+  // Remove "-raw" parts.
+  $match = array('/\[uc\_addresses:([^\s]*)\-raw\]/');
+  $replace = array('[uc_addresses:${1}]');
+  $replaced = preg_replace($match, $replace, $replaced);
+  return $replaced;
+}
+
+/**
+ * Upgrade from 6.x-1.x.
+ *
+ * The uc_addresses_defaults table will be removed. Two columns
+ * will be added to the uc_addresses table:<br />
+ * - default_shipping<br />
+ * - default_billing
+ */
+function uc_addresses_update_6200() {
+  // Add 'default_shipping' and 'default_billing' fields.
+  db_add_field('uc_addresses', 'default_shipping', array(
+      'description' => t('If the address is the default shipping address'),
+      'type' => 'int',
+      'size' => 'tiny',
+      'not null' => TRUE,
+      'default' => 0,
+    )
+  );
+  db_add_field('uc_addresses', 'default_billing', array(
+      'description' => t('If the address is the default billing address'),
+      'type' => 'int',
+      'size' => 'tiny',
+      'not null' => TRUE,
+      'default' => 0,
+    )
+  );
+
+  // Get address defaults.
+  $default_aids = array();
+  $result = db_select('uc_addresses_defaults')
+    ->fields('uc_addresses_defaults', array('aid'))
+    ->execute();
+  foreach ($result as $default) {
+    $default_aids[] = $default->aid;
+  }
+
+  // Update defaults.
+  if (count($default_aids) > 0) {
+    $query = db_update('uc_addresses')
+      ->fields(
+        array(
+          'default_shipping' => 1,
+          'default_billing' => 1,
+        )
+      )
+      ->condition('aid', $default_aids)
+      ->execute();
+  }
+
+  // Drop table uc_addresses_defaults.
+  db_drop_table('uc_addresses_defaults');
+
+  // Setup default permissions. Authenticated users will automatically
+  // be granted with permissions to manage their own addresses.
+  // Note: the function user_role_grant_permissions() can't be used here
+  // since it is not able to install permissions for disabled modules.
+  // See also http://drupal.org/node/737816
+  $permissions = array(
+    'view own addresses',
+    'add/edit own addresses',
+    'delete own addresses',
+  );
+  foreach ($permissions as $name) {
+    db_merge('role_permission')->key(array(
+      'rid' => DRUPAL_AUTHENTICATED_RID,
+      'permission' => $name,
+    ))->fields(array(
+      'module' => 'uc_addresses',
+    ))->execute();
+  }
+
+  return t("Ubercart Addresses has new permissions. The authenticated user automatically was granted the permissions %view_own, %edit_own and %delete_own.", array('%view_own' => t('view own addresses'), '%edit_own' => t('add/edit own addresses'), '%delete_own' => t('delete own addresses')));
+}
+
+/**
+ * Upgrade from Ubercart Addresses 6.x-2.x.
+ *
+ * WARNING! Be sure to have the Drupal 7 version of the token module
+ * in place first before upgrading as this update function calls a function
+ * from there.
+ *
+ * Updates all Ubercart Addresses address formats to the 7.x-1.x style.
+ * These address formats contains tokens that need to be updated to the
+ * Drupal 7 token style.
+ */
+function uc_addresses_update_7100() {
+  // Test if the install file of the token module exists.
+  if (!module_load_include('install', 'token')) {
+    throw new Exception(t('The contrib token module is needed to perform the upgrade.'));
+  }
+
+  $count = 0;
+  $result = db_select('uc_countries')
+    ->condition('version', 0, '>')
+    ->fields('uc_countries', array('country_id'))
+    ->execute();
+  foreach ($result as $country) {
+    $format = variable_get('uc_addresses_address_format_' . $country->country_id, NULL);
+    if ($format) {
+      // Update this format.
+      $format = uc_addresses_update_token_text($format);
+      variable_set('uc_addresses_address_format_' . $country->country_id, $format);
+      $count++;
+    }
+  }
+  return t('!number address formats have been updated to the Drupal 7 token style.', array('!number' => $count));
+}
+
+/**
+ * Increase the weight of uc_addresses relative
+ * to uc_quote by an addition of 1 so that
+ * uc_addresses module can undo some of the actions
+ * done by uc_quote's form alter, which causes the
+ * delivery address form to disapear on checkout.
+ *
+ * See also http://drupal.org/node/1421720.
+ */
+function uc_addresses_update_7101() {
+  $weight = db_select('system', 's')
+    ->fields('s', array('weight'))
+    ->condition('name', 'uc_quote', '=')
+    ->execute()
+    ->fetchField();
+  db_update('system')
+    ->fields(array('weight' => $weight + 1))
+    ->condition('name', 'uc_addresses', '=')
+    ->execute();
+  return t('The weight of the uc_addresses module has been set to !weight.', array('!weight' => $weight + 1));
+}

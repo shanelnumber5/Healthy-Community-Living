@@ -1,0 +1,143 @@
+<?php
+
+/**
+ * @file
+ * Test cases for the token replacement.
+ */
+
+/**
+ * Test cases for the api component.
+ */
+class UcAddressesTokenTestCase extends UcAddressesTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Ubercart Addresses token tests',
+      'description' => 'Test the Ubercart Addresses tokens.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  /**
+   * Test if tokens defined by Ubercart Addresses work.
+   */
+  public function testAddressTokens() {
+    // Add two addresses, one default shipping, the other default billing.
+    $addressBook = UcAddressesAddressBook::get($this->adminUser->uid);
+    $shippingAddress = $addressBook->addAddress();
+    $values = self::getEditAddressValues();
+    $shippingAddress->setMultipleFields($values['values'], TRUE);
+    $addressBook->setAddressAsDefault($shippingAddress, 'shipping');
+    $billingAddress = $addressBook->addAddress();
+    $values = self::getEditAddressValues();
+    $billingAddress->setMultipleFields($values['values'], TRUE);
+    $addressBook->setAddressAsDefault($billingAddress, 'billing');
+    $addressBook->save();
+
+    // Setup all available tokens.
+    $tokens = array(
+      'first_name',
+      'last_name',
+      'phone',
+      'company',
+      'street1',
+      'street2',
+      'city',
+      'country:country_name',
+      'country:country_code2',
+      'country:country_code3',
+      'country:country_name_if',
+      'country:country_code2_if',
+      'country:country_code3_if',
+      'country',
+      'zone:zone_code',
+      'zone:zone_name',
+      'zone',
+      'postal_code',
+      'address_name',
+      'default_shipping',
+      'default_billing',
+      'aid',
+      'uid',
+      'created',
+      'modified',
+    );
+
+    // Test if address tokens get replaced properly.
+    $data['uc_addresses'] = $billingAddress;
+    $this->doAddressTokenTests($tokens, $data, $billingAddress);
+
+    // Test if address tokens in user context get replaced properly.
+    $data['user'] = $this->adminUser;
+    $this->doAddressTokenTests($tokens, $data, $billingAddress, 'user:default-billing-address:');
+    $this->doAddressTokenTests($tokens, $data, $shippingAddress, 'user:default-shipping-address:');
+
+    // Test if address tokens for the current user get replaced properly.
+    global $user;
+    $user = $this->adminUser;
+    $data = array();
+    $this->doAddressTokenTests($tokens, $data, $billingAddress, 'current-user:default-billing-address:');
+    $this->doAddressTokenTests($tokens, $data, $shippingAddress, 'current-user:default-shipping-address:');
+
+    // Test if all tokens in user context get replaced when used in combination.
+    $text = '';
+    $data['user'] = $this->adminUser;
+    $prefixes = array(
+      'user:default-billing-address:',
+      'user:default-shipping-address:',
+      'current-user:default-shipping-address:',
+      'current-user:default-billing-address:',
+    );
+    foreach ($tokens as $token) {
+      foreach ($prefixes as $prefix) {
+        $text .= '[' . $prefix . $token . ']' . "\n";
+      }
+    }
+    $replaced = token_replace($text, $data);
+    foreach ($tokens as $token) {
+      foreach ($prefixes as $prefix) {
+        $full_token = '[' . $prefix . $token . ']';
+        // The token itself should not be visible in the replaced text.
+        $this->assertFalse(strpos($replaced, $full_token), t('The token @token got replaced correctly when used in combination with other tokens.', array('@token' => $full_token)));
+      }
+    }
+    // Output the total replaced text.
+    $this->verbose('<pre>' . $replaced . '</pre>');
+  }
+
+  /**
+   * Helper function for testAddressTokens().
+   *
+   * @param array $tokens
+   *   The address tokens to test for replacement.
+   * @param array $data
+   *   The data to pass to token_replace().
+   * @param UcAddressesAddress $address
+   *   The address object to test the values for.
+   * @param string $prefix
+   *   (optional) The prefix to add before each token.
+   *   Defaults to "uc_addresses:".
+   *
+   * @access protected
+   * @return void
+   */
+  protected function doAddressTokenTests($tokens, $data, UcAddressesAddress $address, $prefix = 'uc_addresses:') {
+    foreach ($tokens as $token) {
+      $fieldName = $token;
+      $format = '';
+      if (strpos($fieldName, ':')) {
+        $token_pieces = explode(':', $fieldName);
+        $fieldName = $token_pieces[0];
+        $format = $token_pieces[1];
+      }
+      $text = '[' . $prefix . $token . ']';
+      $replaced = token_replace($text, $data);
+      $this->assertEqual($replaced, $address->getFieldValue($fieldName, $format, 'token'), t('The token @token got replaced correctly. Value: @value', array('@token' => $text, '@value' => $replaced)));
+    }
+  }
+}

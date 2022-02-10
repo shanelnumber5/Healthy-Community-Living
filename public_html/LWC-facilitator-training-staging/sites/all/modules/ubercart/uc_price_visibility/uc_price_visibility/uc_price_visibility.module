@@ -1,0 +1,135 @@
+<?php
+
+/**
+ * Implements hook_form_FORM_ID_alter() for uc_product_settings_form().
+ */
+function uc_price_visibility_form_uc_product_settings_form_alter(&$form, &$form_state) {
+  $form['uc_price_visibility'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Price visibility settings',
+    '#group' => 'product-settings',
+  );
+  $form['uc_price_visibility']['uc_price_visibility_roles'] = array(
+    '#type' => 'checkboxes',
+    '#options' => user_roles(),
+    '#title' => t("Allow the following roles to view this product's price and add it to the cart (default values)"),
+    '#default_value' => variable_get('uc_price_visibility_roles', array()),
+  );
+  $form['uc_price_visibility']['uc_price_visibility_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message to be shown when price is hidden'),
+    '#default_value' => variable_get('uc_price_visibility_message', ''),
+  );
+  $form['uc_price_visibility']['uc_price_visibility_message_field'] = array(
+    '#type' => 'select',
+    '#title' => t('Field displaying the "hidden price" message'),
+    '#options' => array(
+      'display_price' => t('Display price'),
+      'sell_price' => t('Sell price'),
+      'add_to_cart' => t('Add to card button'),
+    ),
+    '#default_value' => variable_get('uc_price_visibility_message_field', 'sell_price'),
+  );
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function uc_price_visibility_form_alter(&$form, &$form_state, $form_id) {
+  // Editing a product node.
+  if (uc_product_is_product_form($form)) {
+    $form['base']['uc_price_visibility_roles'] = array(
+      '#type' => 'checkboxes',
+      '#options' => user_roles(),
+      '#title' => t("Allow the following roles to view this product's price and add it to the cart"),
+      '#description' => t('If none are selected, the product will be hidden from all users. If a user has any of the roles checked, the product will be visible to that user.'),
+      '#default_value' => isset($form['#node']->uc_price_visibility)
+        ? $form['#node']->uc_price_visibility
+        : variable_get('uc_price_visibility_roles', array()),
+    );
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function uc_price_visibility_node_insert($node) {
+  uc_price_visibility_node_update($node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function uc_price_visibility_node_update($node) {
+  if (uc_product_is_product($node)) {
+    $roles = implode(',', array_filter($node->uc_price_visibility_roles));
+    db_merge('uc_price_visibility')
+      ->key(array('nid' => $node->nid))
+      ->fields(array('roles' => $roles))
+      ->execute();
+  }
+}
+
+/**
+ * Implements hook_node_load().
+ */
+function uc_price_visibility_node_load($nodes, $types) {
+  foreach ($nodes as $node) {
+    if (uc_product_is_product($node)) {
+      $result = db_query("SELECT * FROM {uc_price_visibility} WHERE nid = :nid", array(
+        ':nid' => $node->nid,
+      ))->fetchAssoc();
+      // This node's visibility has been set.
+      if (!empty($result)) {
+        foreach (explode(',', $result['roles']) as $rid) {
+          $nodes[$node->nid]->uc_price_visibility[$rid] = $rid;
+        }
+      }
+      // None (use default).
+      else {
+        $nodes[$node->nid]->uc_price_visibility = variable_get('uc_price_visibility_roles', array());
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function uc_price_visibility_node_view($node, $view_mode, $langcode) {
+  global $user;
+  if (uc_product_is_product($node)) {
+    $visible = FALSE;
+    foreach (array_keys($node->uc_price_visibility) as $rid) {
+      if (isset($user->roles[$rid])) {
+        $visible = TRUE;
+        break;
+      }
+    }
+    if (!$visible) {
+      $message_field = variable_get('uc_price_visibility_message_field', 'sell_price');
+      foreach (array('display_price', 'sell_price', 'add_to_cart') as $field) {
+        if ($field == $message_field) {
+          $node->content[$field] = array(
+            '#type' => 'markup',
+            '#markup' => variable_get('uc_price_visibility_message', ''),
+          );
+        }
+        else {
+          $node->content[$field]['#access'] = FALSE;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function uc_price_visibility_node_delete($node) {
+  if (uc_product_is_product($node)) {
+    db_query("DELETE FROM {uc_price_visibility} WHERE nid = :nid", array(
+      ':nid' => $node->nid,
+    ));
+  }
+}

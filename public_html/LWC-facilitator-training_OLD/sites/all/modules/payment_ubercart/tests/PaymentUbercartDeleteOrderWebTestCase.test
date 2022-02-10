@@ -1,0 +1,44 @@
+<?php
+
+class PaymentUbercartDeleteOrderWebTestCase extends PaymentWebTestCase {
+
+  static function getInfo() {
+    return array(
+      'description' => '',
+      'name' => 'Payment deletion upon order deletion',
+      'group' => 'Payment for Ubercart',
+      'dependencies' => array('payment_ubercart'),
+    );
+  }
+
+  function setUp(array $modules = array()) {
+    parent::setUp($modules + array('paymentmethodbasic', 'payment_ubercart'));
+  }
+
+  function testDeleteOrder() {
+    // Delete an order, but keep its payments.
+    $payment_method = $this->paymentMethodCreate(0, payment_method_controller_load('PaymentMethodBasicController'));
+    entity_save('payment_method', $payment_method);
+    $uc_order = uc_order_new();
+    $uc_order->payment_method = 'payment_ubercart_' . $payment_method->pmid.
+    entity_save('uc_order', $uc_order);
+    debug(entity_load_unchanged('uc_order', $uc_order->order_id));
+    $payment = new Payment(array(
+      'method' => $payment_method,
+      'payment_ubercart_uc_order_id' => $uc_order->order_id,
+    ));
+    entity_save('payment', $payment);
+    payment_ubercart_order_id_save($payment);
+    uc_order_delete($uc_order->order_id);
+    $this->assertTrue((bool) entity_load('payment', array($payment->pid), array(), TRUE), 'When deleting an Ubercart order, its payments remain if they are configured to do so.');
+
+    // Delete an order and its payments.
+    variable_set('payment_ubercart_uc_order_delete', TRUE);
+    $uc_order = uc_order_new();
+    entity_save('uc_order', $uc_order);
+    $payment->payment_ubercart_uc_order_id = $uc_order->order_id;
+    payment_ubercart_order_id_save($payment);
+    uc_order_delete($uc_order->order_id);
+    $this->assertFalse((bool) entity_load('payment', array($payment->pid), array(), TRUE), 'When deleting an Ubercart order, its payments are deleted as well if they are configured to do so.');
+  }
+}

@@ -1,0 +1,12 @@
+name = Accordions
+description = Make content collapse/expand in an accordion-like fashion.
+core = 7.x
+package = User interface
+configure = admin/config/user-interface/accordions
+
+; Information added by drupal.org packaging script on 2013-04-23
+version = "7.x-1.0-alpha4"
+core = "7.x"
+project = "accordions"
+datestamp = "1366729859"
+

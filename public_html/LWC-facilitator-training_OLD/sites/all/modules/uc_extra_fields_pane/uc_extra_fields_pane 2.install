@@ -1,0 +1,160 @@
+<?php
+/**
+ * @file
+ * Module: uc_extra_fields_pane.module
+ *
+ * This module extends Ubercart panes by allowing you to set values
+ * by a variety of methods to variables that will show up in the order.
+ *
+ * co-authored by:
+ * blackice78 - Maurizio Ganovelli - drupal@ganovelli.it
+ * and
+ * panthar - Bobby Kramer - panthar1@gmail.com
+ * and
+ * MegaChriz - megachriz@hotmail.com
+ *
+ * Sponsored by CHG Digital Solutions - http://chgnet.com
+ *
+ */
+
+/**
+ * Implements hook_schema().
+ *
+ * @return array
+ */
+function uc_extra_fields_pane_schema() {
+  $schema['uc_extra_fields_values'] = array(
+    'description' => 'Stored values belonging to orders or addresses.',
+    'fields' => array(
+      'element_id' => array(
+        'description' => 'Order id or address id',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'element_type' => array(
+        'description' => 'Type of element: order or address',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+      'field_id' => array(
+        'description' => 'ID of the field used in the uc_extra_fields table',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'value' => array(
+        'description' => 'The value filled in by the user',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('element_id', 'element_type', 'field_id'),
+  );
+
+  $schema['uc_extra_fields'] = array(
+    'description' => 'Custom address fields are stored in this table.',
+    'fields' => array(
+      'field_id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'label' => array(
+        'type' => 'varchar',
+        'length' => '100',
+        'not null' => TRUE,
+      ),
+      'description' => array(
+        'type' => 'text',
+      ),
+      'db_name' => array(
+        'type' => 'varchar',
+        'length' => '32',
+        'not null' => TRUE,
+      ),
+      'pane_type' => array(
+        'description' => 'The defined pane type for this field to appear in. If you want more panes, one of the things you will have to do is add another pane type inside uc_extra_fields_pane.module.',
+        'type' => 'varchar',
+        'length' => '36',
+        'not null' => FALSE,
+      ),
+      'weight' => array(
+        'description' => 'The list position of this field on the pane selected for this field. For address fields, this value is superseded by the uc_address_fields_weight variable.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'value_type' => array(
+        'description' => 'The type of input to the field_value database field.',
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => FALSE,
+      ),
+      'value' => array(
+        'description' => 'A blob that can be used to store anything from php code, to constant values, to select values',
+        'type' => 'blob',
+        'not null' => FALSE,
+      ),
+      'enabled' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'display_settings' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+      ),
+      'required' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('field_id'),
+    'unique keys' => array(
+      'db_name' => array('db_name'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ *
+ * @return void
+ */
+function uc_extra_fields_pane_install() {
+  // Increase the weight of this module, making it 10 heavier than uc_addresses.
+  $weight = db_select('system', 's')
+    ->fields('s', array('weight'))
+    ->condition('name', 'uc_addresses', '=')
+    ->execute()
+    ->fetchField();
+  db_update('system')
+    ->fields(array('weight' => $weight + 10))
+    ->condition('name', 'uc_extra_fields_pane', '=')
+    ->execute();
+}
+
+/**
+ * Upgrade from uc_extra_fields_pane 6.x-2.x.
+ *
+ * Ensure Extra Fields Pane code is executed after
+ * Ubercart Addresses code.
+ */
+function uc_extra_fields_pane_update_7100() {
+  $weight = db_select('system', 's')
+    ->fields('s', array('weight'))
+    ->condition('name', 'uc_addresses', '=')
+    ->execute()
+    ->fetchField();
+  db_update('system')
+    ->fields(array('weight' => $weight + 10))
+    ->condition('name', 'uc_extra_fields_pane', '=')
+    ->execute();
+}

@@ -1,0 +1,416 @@
+<?php
+//
+//Note about the include/exclude hooks.  As an example, this module includes /cart* which essentially secures ALL cart pages with SSL.  But it also implements an exclude which is called /cart Which you would think would negate the include but it DOES NOT.  Even though Excludes take presedence over includes, it still allows /cart/1 for example, to be secured.  Why? Because the exclude is not a wildcard match!  Thus the exclude would NOT match /cart/1 because it's defined as /cart.  Thus while /cart IS excluded (not secured with SSL),/cart/1 is STILL secured.
+
+//Implementation of hook_include_ssl_paths()
+//NOTE: Exclude takes presedence over Includes!!!  So if the same path is in both hooks, then the path will be EXCLUDED from secured pages.
+
+//Since base_url has a design flaw in D4/D5/D6/D7 that seemingly will never be fixed, we fix it here.
+function uc_ssl_boot()
+{
+   global $conf;
+   
+   //the $conf['https'] option MUST be enabled if mixed ssl mode is enabled.  We make sure its enabled here.  If it's not enabled then user
+   //sessions will not persist across the secure and non-secure domain names resulting in the user being prompted to log in whenever they are
+   //sent to a secure page.
+   if (uc_ssl_switch_to_non_ssl() && !isset($conf['https']) || (isset($conf['https']) && !$conf['https']))
+   {
+      $conf['https'] = TRUE;
+   }
+
+   if ($GLOBALS['base_url'])
+   {
+      //If base_url exists and is set to a non-secure protocol while the page being called is secure, allow base_url to be changed to
+      //the secure version of the website.  Drupal for some reason doesnt have this logic anywhere for $base_url.
+      if (uc_ssl_page_is_in_https_mode() && stristr($GLOBALS['base_url'], 'http://'))
+      {
+         $GLOBALS['base_url'] = str_ireplace('http://', 'https://', $GLOBALS['base_url']);
+      }
+   }
+}
+
+function uc_ssl_permission()
+{
+   $perms = array(
+    'administer uc_ssl' => array(
+      'title' => t('Administer Ubercart SSL settings'),
+    ),
+  );
+   return $perms;
+}
+
+function uc_ssl_page_is_in_https_mode()
+{
+   if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']))
+   {
+      return TRUE;
+   }
+
+   return FALSE;
+}
+
+function uc_ssl_disable_overlay_module()
+{
+   $modules = module_list();
+   $base_path = base_path();
+   if (variable_get('uc_ssl_switch_to_non_ssl', '') && in_array('overlay', $modules))
+   {
+      //Overlay is on, lets disable it.
+      module_disable(array(0 => 'overlay'));
+   }
+}
+
+function uc_ssl_init()
+{
+   //Drupals Overlay panel is not secure!  Fix that here by disable it all together.  We cannot allow this.  Drupal 7 is insecure by default, such a sad thing :/
+   uc_ssl_disable_overlay_module();
+
+   //menu_rebuild();
+   //First and foremost, make sure Clean URLs are on.
+   if (uc_ssl_clean_urls_enabled() && !drupal_is_cli())
+   {
+      //Setup a hook for ssl checking
+      uc_ssl_check();
+
+      //Run ssl check on every page load.
+      uc_ssl_run();
+  }
+}
+
+function uc_ssl_include_ssl_paths()
+{
+   global $user;
+   $paths = array(
+    'All Ubercart Cart pages' => '/cart*', //Secure ALL cart pages.
+    
+    //NOTE:  If you remove the /user definition here, you CAN NOT use Mixed SSL Mode with D7.  It HAS to exist because D7 http sessions are missing
+    //data that https sessions require.  But http sessions work with the https session variables.  Thus, you MUST login with https or your sessions
+    //will not carry between the http and https versions of your wesite.  This is a D7 bug only,  I believe its more of a feature than a bug.
+    'All User pages' => '/user*', //Secure ALL user pages.
+    
+    //Added support for Drupal commerce which is based upon Ubercart.
+    'All Drupal Commerce Checkout pages' => '/checkout*', //Secure ALL cart pages.  NOTE:  SEE EXCLUDES to see why the cart listing itself isnt secured!
+    
+    //This supports both UC and Commerce admins
+    'All Ubercart Cart Admin pages' => '/admin/store*', //Secure ALL UC admin pages.
+    #'example 1' => '/cart',  //Only secure the /cart and /cart/ page.
+    #'example 2' => 'cart',  //Only secure the /cart and /cart/ page.
+    #'example 3' => 'cart/',  //Only secure the /cart and /cart/ page.
+    #'example 4' => '/cart*/something',  //matches /cartThis/something and /cart/something but NOT thiscart/something etc.
+    #'example 5' => '/cart/*/something', //Matches /cart/123/something and cart/this/something, but NOT /cart/something
+    #'example 6' => '/cart/something',  //Only secure the /cart/something and /cart/something/ page.
+   );
+   return $paths;
+}
+
+//Implementation of hook_exclude_ssl_paths()
+function uc_ssl_exclude_ssl_paths()
+{
+   $paths = array(
+    //These excludes no longer seem to be required for the D7 version and thus they have been removed until issues come up again.
+    //'Exclude the cart page itself' => '/cart', //We dont need to secure the cart contents so we exclude that here
+    //'Exclude Autocomplete' => '*autocomplete*',
+    //'Exclude Ajax' => '*ajax*',
+    #'example 1' => '/cart',  //Only exclude the /cart and /cart/ page.
+    #'example 2' => 'cart',  //Only exclude the /cart and /cart/ page.
+    #'example 3' => 'cart/',  //Only secure the /cart and /cart/ page.
+    #'example 4' => '/cart*/something',  //matches /cartThis/something and /cart/something but NOT thiscart/something etc.
+    #'example 5' => '/cart/*/something', //Matches /cart/123/something and cart/this/something, but NOT /cart/something
+    #'example 6' => '/cart/something',  //Only exclude the /cart/something and /cart/something/ page.
+   );
+   return $paths;
+}
+
+//Implementation of hook_exclude_ssl_paths()
+//This function is so you can completely ignore ANY switching at all no matter what.
+function uc_ssl_exclude_ssl_switch_paths()
+{
+   $paths = array(
+    #'example 1' => '/*ajax*',  //Dont touch ajax paths whatsoever,  this is just an example.
+   );
+   return $paths;
+}
+
+function uc_ssl_menu()
+{
+   $items = array();
+   $items['admin/config/system/uc_ssl'] = array(
+   'title' => 'Ubercart SSL',
+   // 'title' => 'Ubercart SSL module settings',
+    'description' => 'Ubercart SSL module settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('uc_ssl_admin'),
+    'access arguments' => array('administer uc_ssl'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'uc_ssl.admin.inc',
+   );
+   return $items;
+}
+
+function uc_ssl_enabled()
+{
+   return variable_get('uc_ssl_status', '');
+}
+
+function uc_ssl_is_configured()
+{
+   $query = "SELECT count(name) AS count from {variable} WHERE name = 'uc_ssl_status'";
+   $results = db_query($query);
+   $rows = $results->fetchAll();
+   $rows = $rows[0];
+
+   //If uc_ssl is not configured, warn the user and show a link to config it.
+   if (!$rows->count)
+   {
+      $admin_link = 'http://'.$_SERVER['HTTP_HOST'].url().'admin/config/system/uc_ssl';
+      drupal_set_message("Please configure Ubercart SSL for SSL enabled cart checkouts to work:  <a href = '$admin_link'>$admin_link</a>", 'warning');
+   }
+   return $rows->count;
+}
+
+function uc_ssl_switch_to_non_ssl()
+{
+   return variable_get('uc_ssl_switch_to_non_ssl', '');
+}
+
+function uc_ssl_path_match($path, $pages)
+{
+   $result = FALSE;  //This is here just to get rid of retarded php 'notice' messages.  I hate php notices.
+   if (!empty($pages))
+   {
+      //Trim off trailing / and then re-add it to avoid double /'s.  This allows cart and cart/ to match as the same thing or cart/1 and cart/1/ to be the same.
+      $path = trim($path, '/').'/';
+      $regexp = '/^(';
+      foreach ($pages AS $key => $regexp_path)
+      {
+         if ($regexp_path)
+         {
+            $regexp_path = trim($regexp_path, '/').'/';
+            $regexp_path1 = str_replace('/', '\/', $regexp_path); //replace / with a \/ 
+            $regexp_path2 = str_replace('*', '.*', $regexp_path1);//replace * with a .*
+            $regexp .= $regexp_path2.'|'; //Append a | to signify end of this expression
+         }
+      }
+      $regexp = trim($regexp, '|');
+      $regexp .= ')$/';
+      if (variable_get('uc_ssl_case_insensitive', 1))
+      {
+         $regexp .= 'i';
+      }
+      $result = preg_match($regexp, $path);
+   }
+   return $result;
+}
+
+function is_clean_url($path)
+{
+   //Skip ANY ?q= urls since these do NOT come from a web browser when clean URLs is on.  Doing this allows us to skip
+   //ajax and autocomplete type URLs that come from within drupal itself.  This is a major problem with Secure_Pages module
+   //and we dont want the same problems so we restrict people to using ONLY clean URLs.
+   if (!stristr($path, '?q='))
+   {
+      return TRUE;
+   }
+   return FALSE;
+}
+
+function uc_ssl_http_request($url)
+{
+   //Handle JS type urls in the background as they are likely to be ajax type posts.
+   if (arg(0) == 'js')
+   {
+      $js_response = drupal_http_request($url);
+      return;
+   }
+
+   //Handle post type URLs.  This should handle ajax POST urls such as the tax calculation/progress bars.
+   if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST['uc_ssl_post']))
+   {
+      $_POST['uc_ssl_post'] = 1;
+      $options['headers'] = array('Content-Type' => 'application/x-www-form-urlencoded');
+      $options['method'] = 'POST';
+      $options['data'] = http_build_query($_POST, '', '&');
+
+      //Drupal 7 decided to completely recode drupal_http_request so I dont know if this will cause issues or not.  Report any bugs please.
+      //$response = drupal_http_request($url, $headers, 'POST', http_build_query($_POST, '', '&'));
+      $response = drupal_http_request($url, $options);
+      return;
+   }
+
+   //All other types of urls are handled normally.
+   // Reset destination variables or we'll get sent there instead of to $url
+   unset($_REQUEST['destination'], $_GET['destination']);
+   drupal_goto($url);
+   return;
+}
+
+function uc_ssl_run()
+{
+   //Set the current path without url() since it will mess up regex checks.  Using url() also supports languages, base_path does not.
+   //$current_path = trim($_SERVER['REQUEST_URI'], url());
+   $root = url();
+   $current_path = substr(trim($_SERVER['REQUEST_URI']),strlen($root)); 
+   $ssl_domain = variable_get('uc_ssl_ssl_domain', '');
+   $nonssl_domain = variable_get('uc_ssl_non_ssl_domain', '');
+
+   //If uc_ssl is configured, run it.
+   if (uc_ssl_is_configured() && is_clean_url($current_path))
+   {
+      if (uc_ssl_enabled())
+      {
+         //Get a list of all the URL links that should be included and excluded from SSL pages from other modules.
+         $items = array();
+         $exclude_secured_urls = array();
+         $exclude_secured_urls = module_invoke('uc_ssl', 'exclude_ssl_paths', $exclude_secured_urls);
+
+         foreach (module_implements('exclude_ssl_paths') as $module) 
+         {
+            $new = module_invoke($module, 'exclude_ssl_paths', $exclude_secured_urls);
+            if ($module != 'uc_ssl') //Skip uc_ssl since we already processed it above.  Allow external modules to change uc_ssl defaults.
+            {
+               if (is_array($new))
+               {
+                  $exclude_secured_urls = array_merge($exclude_secured_urls, $new);
+               }
+            }
+         }
+
+         $include_secured_urls = array();
+         $include_secured_urls = module_invoke('uc_ssl', 'include_ssl_paths', $include_secured_urls);
+
+         foreach (module_implements('include_ssl_paths') as $module) 
+         {
+            $new = module_invoke($module, 'include_ssl_paths', $include_secured_urls);
+            if ($module != 'uc_ssl') //Skip uc_ssl since we already processed it above.  Allow external modules to change uc_ssl defaults.
+            {
+               if (is_array($new))
+               {
+                  $include_secured_urls = array_merge($include_secured_urls, $new);
+               }
+            }
+         }
+         
+         // Get a list of all the URL links that should not switch between HTTP/HTTPS at all.
+         $exclude_switch_urls = array();
+         $exclude_switch_urls = module_invoke('uc_ssl', 'exclude_ssl_switch_paths', $exclude_switch_urls);
+         foreach (module_implements('exclude_ssl_switch_paths') as $module)
+         {
+           $new = module_invoke($module, 'exclude_ssl_switch_paths', $exclude_switch_urls);
+           if ($module != 'uc_ssl') //Skip uc_ssl since we already processed it above.  Allow external modules to change uc_ssl defaults.
+           {
+              if (is_array($new))
+              {
+                 $exclude_switch_urls = array_merge($exclude_switch_urls, $new);
+              }
+           }
+         }
+
+         // make sure we return an array
+         if (! is_array($include_secured_urls)) { $include_secured_urls = array(); }
+         if (! is_array($exclude_secured_urls)) { $exclude_secured_urls = array(); }
+         if (! is_array($exclude_switch_urls))  { $exclude_switch_urls  = array(); }
+         
+         //If the path is in the exclude switch hook, dont do ANYTHING at all.
+         if (uc_ssl_path_match($current_path, $exclude_switch_urls)) 
+         {
+              return;
+         }
+         
+         //Switch to SSL no matter what the link is if Switch isnt on.
+         if (!uc_ssl_switch_to_non_ssl())
+         {
+            if (!uc_ssl_page_is_in_https_mode() && !uc_ssl_path_match($current_path, $exclude_secured_urls))
+            {
+               uc_ssl_http_request($ssl_domain . $_SERVER['REQUEST_URI']);
+            }
+         }
+         else
+         {
+            //If uc_ssl_switch_to_non_ssl() is enabled then we switch back to non-ssl link for non-cart links.
+            if (uc_ssl_page_is_in_https_mode())
+            {
+               //The only exceptions are the links listed in the exclude list by other modules.
+               if (uc_ssl_path_match($current_path, $exclude_secured_urls))
+               {
+                  uc_ssl_http_request($nonssl_domain . $_SERVER['REQUEST_URI']);
+               }
+
+               if (!uc_ssl_path_match($current_path, $include_secured_urls) && uc_ssl_switch_to_non_ssl())
+               {
+                  uc_ssl_http_request($nonssl_domain . $_SERVER['REQUEST_URI']);
+               }
+            }
+         }
+
+         //If on a cart url, use HTTPS and re-post/re-direct to the SSL version of the url.
+         if (!uc_ssl_page_is_in_https_mode() && uc_ssl_path_match($current_path, $include_secured_urls) && !uc_ssl_path_match($current_path, $exclude_secured_urls))
+         {
+            uc_ssl_http_request($ssl_domain . $_SERVER['REQUEST_URI']);
+         }
+      }
+   }
+}
+
+function uc_ssl_clean_urls_enabled()
+{
+   $check = variable_get('clean_url', 0);
+   if ($check == 1)
+   {
+      return TRUE;
+   }
+   drupal_set_message('Ubercart SSL (uc_ssl):  The uc_ssl module REQUIRES that Clean URLs be enabled in order to work properly.  This allows the module to distinguish between an Ajax call and a Web browser call as the two are handled differently so we need a way to distinguish them and this is the quickest easiest way to do so.  This will also make your website URLs search engine friendly as well which is a good thing.  Please enable clean urls here: <a href="?q=admin/settings/clean-urls">Clean URLs</a>', 'warn');
+   return FALSE;
+}
+
+//This is a quickie hook to see if SSL works or not.  It's not fool proof but it works for me.
+function uc_ssl_check($site = '')
+{
+   error_reporting(E_ALL);
+   if (!$site)
+   {
+      if (isset($_GET['uc_ssl_check']) && $_GET['uc_ssl_check'])
+      {
+         if (uc_ssl_page_is_in_https_mode())
+         {
+            echo TRUE;
+         }
+         else
+         {
+            echo FALSE;
+         }
+         exit;
+      }
+   }
+   else
+   {
+      $check = drupal_http_request($site."?uc_ssl_check=1");
+      if (isset($check->data) && $check->data == '1')
+      {
+         return TRUE;
+      }
+
+      //IF we are here, then the request failed for some reason, so we try to use a different method.
+      if (ini_get('allow_url_fopen'))
+      {
+         if (file_get_contents($site."?uc_ssl_check=1") == '1')
+         {
+            return TRUE;
+         }
+      }
+
+      //If we are here, something went wrong.  Give the user some ideas on what they need to fix.
+      drupal_set_message("Ubercart SSL (uc_ssl):  The uc_ssl_check() function is returning FALSE because it was unable to contact the SSL (https) version of your website that you defined in the settings.  This can be caused by 3 things.  1. Your website is not setup properly for SSL,  2.  The OpenSSL extension is not enabled on in your PHP installation,  3.  allow_url_fopen is not enabled in php.ini.  If #2 fails, uc_ssl will try to use file_get_contents() which requires allow_url_fopen to be set to TRUE in php.ini.  Hopefully these hints will help you fix this issue so that you can use uc_ssl.  You can try to debug this by going to $site?uc_ssl_check=1", "error");
+
+   }
+   return FALSE;
+}
+
+if (!function_exists('printr'))
+{
+   function printr($arr)
+   {
+      echo "<pre>";
+      print_r($arr);
+      echo "</pre>";
+   }
+}

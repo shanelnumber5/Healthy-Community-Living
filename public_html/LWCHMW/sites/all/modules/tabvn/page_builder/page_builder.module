@@ -1,0 +1,470 @@
+<?php
+
+/*
+ * Copyright by http://envato.tabvn.com, Do not copy or use without our permission!
+ */
+
+/*
+ * Implements of hook_permission()
+ */
+function page_builder_permission() {
+  return array(
+    'page builder management' =>  array(
+      'title' => t('Administer page builder'),
+      'description' => t('page builder management'),
+    ),
+  );
+}
+/*
+ * Implements of hook_menu()
+ */
+
+function page_builder_menu() {
+
+  $items['admin/page-builder'] = array(
+      'title' => 'Page builder',
+      'page callback' => 'page_builder_admin_index',
+      'file' => 'page_builder_admin.inc',
+      'access arguments' => array('page builder management'),
+      'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/page-builder/import'] = array(
+      'title' => 'Import',
+      'page callback' => 'page_builder_admin_import',
+      'file' => 'page_builder_admin.inc',
+      'access arguments' => array('page builder management'),
+      'type' => MENU_LOCAL_ACTION,
+  );
+  $items['admin/page-builder/add'] = array(
+      'title' => 'Add new page',
+      'page callback' => 'page_builder_admin_add',
+      'file' => 'page_builder_admin.inc',
+      'access arguments' => array('page builder management'),
+      'type' => MENU_LOCAL_ACTION,
+  );
+  $items['admin/page-builder/edit/%page_builder'] = array(
+      'title' => 'Edit',
+      'page callback' => 'page_builder_admin_edit',
+      'page arguments' => array(3),
+      'access arguments' => array('page builder management'),
+      'file' => 'page_builder_admin.inc',
+      'context' => MENU_CONTEXT_INLINE,
+  );
+  $items['admin/page-builder/delete/%page_builder'] = array(
+      'title' => 'Delete',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('page_builder_admin_delete_confirm', 3),
+      'access arguments' => array('page builder management'),
+      'weight' => 1,
+      'type' => MENU_LOCAL_TASK,
+      'file' => 'page_builder_admin.inc',
+  );
+  $items['admin/page-builder/export/%page_builder'] = array(
+      'title' => 'Export',
+      'page callback' => 'page_builder_admin_export',
+      'page arguments' => array(3),
+      'access arguments' => array('page builder management'),
+      'file' => 'page_builder_admin.inc',
+      'context' => MENU_CONTEXT_INLINE,
+  );
+
+  $items['page-builder/node-autocomplete'] = array(
+      'title' => 'Node autocomplete',
+      'page callback' => 'page_builder_admin_node_autocomplete',
+      'access arguments' => array('page builder management'),
+      'type' => MENU_CALLBACK,
+      'file' => 'page_builder_admin.inc',
+  );
+
+  $items['page/%page_builder'] = array(
+      'title callback' => 'page_builder_page_title',
+      'title arguments' => array(1),
+      'page callback' => 'page_builder_page_view',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'),
+  );
+  $items['page/%page_builder/view'] = array(
+      'title' => 'View',
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+      'weight' => -10,
+  );
+
+  return $items;
+}
+
+function page_builder_page_title($page) {
+
+  return $page->page_title;
+}
+
+function page_builder_load($page_id = NULL) {
+  $page = db_query('SELECT * FROM {pagebuilder} p WHERE p.id = :page_id', array(':page_id' => $page_id))->fetchObject();
+
+
+  return $page;
+}
+
+function _page_builder_get_all() {
+  $pages = array();
+  $fields = array(
+      'page_title',
+      'id',
+      'show_title',
+      'path_alias',
+      'active',
+      'data',
+  );
+  $result = db_select('pagebuilder')->fields('p', $fields)->condition('active', 1)->execute();
+  if (!empty($result)) {
+    foreach ($result as $p) {
+      $pages[$p['path_alias']] = $p['page_title'];
+    }
+  }
+
+  return $pages;
+}
+
+function page_builder_page_view($page) {
+  module_invoke_all('page_builer_view', $page); // use for hook_page_builder_view
+
+  _page_builder_add_css();
+  _page_builder_add_js($page);
+
+  if (!$page->active) {
+    drupal_not_found();
+    drupal_exit();
+  }
+  return theme('page_builder_page', array('page' => $page));
+}
+
+function _page_builder_add_js($page) {
+
+  $module_path = drupal_get_path('module', 'page_builder');
+
+  $parallax_sections = array();
+  $parallax_videos = array();
+  $page_builder_slider = array();
+  // add parallax js
+  if (!empty($page->data)) {
+    $data = unserialize($page->data);
+    _page_builder_add_inline_css($data);
+    _page_builder_add_inline_js($data);
+    if (!empty($data['rows'])) {
+      $rows = $data['rows'];
+      foreach ($rows as $row_id => $row_value) {
+
+        if (isset($row_value['row_settings']['use_parallax']) && $row_value['row_settings']['use_parallax']) {
+          $parallax_sections['page-builder-row-section-' . $row_id] = array(
+              'position' => $row_value['row_settings']['parallax']['p_position'],
+              'speed' => $row_value['row_settings']['parallax']['p_speed'],
+          );
+        }
+
+        if (isset($row_value['row_settings']['use_video']) && $row_value['row_settings']['use_video']) {
+          $parallax_videos[$row_id] = $row_value['row_settings']['video'];
+        }
+        if (isset($row_value['row_settings']['use_slider']) && $row_value['row_settings']['use_slider']) {
+          $slider_settings = $row_value['row_settings']['slider'];
+
+          $itemsDesktop = _page_builder_slider_format($slider_settings['itemsDesktop']);
+          $itemsDesktopSmall = _page_builder_slider_format($slider_settings['itemsDesktopSmall']);
+          $itemsMobile = _page_builder_slider_format($slider_settings['itemsMobile']); //itemsMobile
+          $itemsTablet = _page_builder_slider_format($slider_settings['itemsTablet']); //itemsTablet
+          if ($itemsDesktop) {
+            $slider_settings['itemsDesktop'] = $itemsDesktop;
+          }
+          if ($itemsDesktopSmall) {
+            $slider_settings['itemsDesktopSmall'] = $itemsDesktopSmall;
+          }
+          if ($itemsMobile) {
+            $slider_settings['itemsMobile'] = $itemsMobile;
+          }
+          if ($itemsTablet) {
+            $slider_settings['itemsTablet'] = $itemsTablet;
+          }
+          $slider_settings['autoPlay'] = $slider_settings['autoPlay'] ? TRUE : FALSE;
+          $slider_settings['mouseDrag'] = $slider_settings['mouseDrag'] ? TRUE : FALSE;
+          $slider_settings['navigation'] = $slider_settings['navigation'] ? TRUE : FALSE;
+          $slider_settings['pagination'] = $slider_settings['pagination'] ? TRUE : FALSE;
+          $slider_settings['touchDrag'] = $slider_settings['touchDrag'] ? TRUE : FALSE;
+          $slider_settings['navigationText'] = $slider_settings['navigationText'] ? array('prev', 'next') : FALSE;
+          $page_builder_slider['page-builder-row-section-' . $row_id] = $slider_settings;
+        }
+      }
+    }
+  }
+
+  drupal_add_js(array(
+      'page_builder' => array(
+          'parallax' => $parallax_sections,
+          'sliders' => $page_builder_slider,
+      ),
+          ), 'setting');
+
+  if (!empty($parallax_videos)) {
+    drupal_add_js($module_path . '/js/video/jquery.mb.YTPlayer.js');
+    $video_js = "(function ($) { $(document).ready(function(){ $('.page-builder-video-section').mb_YTPlayer(); }); })(jQuery);";
+    drupal_add_js($video_js, array('type' => 'inline'));
+  }
+  drupal_add_js($module_path . '/js/page_builder.js');
+}
+
+function _page_builder_slider_format($string) {
+  $returnValue = FALSE;
+  if (!empty($string)) {
+    $itemsDesktop = explode(',', $string);
+    if (!empty($itemsDesktop)) {
+      foreach ($itemsDesktop as $key => $v) {
+        $itemsDesktop[$key] = (int) $v;
+      }
+      $returnValue = $itemsDesktop;
+    }
+  }
+
+  return $returnValue;
+}
+
+function _page_builder_add_inline_js($data) {
+  $js = '';
+  if (!empty($data['global_js'])) {
+    $js .= '(function ($) { $(document).ready(function(){';
+    $js .= $data['global_js'];
+    $js .= ' }); })(jQuery);';
+  }
+  if (!empty($js)) {
+    drupal_add_js($js, array('type' => 'inline'));
+  }
+}
+
+function _page_builder_add_inline_css($data) {
+  $css = '';
+
+  if (!empty($data['rows'])) {
+    $rows = $data['rows'];
+    foreach ($rows as $row_id => $value) {
+      if (isset($value['row_settings']['background_image']) && $value['row_settings']['background_image']) {
+        $fid = $value['row_settings']['background_image'];
+        $file = file_load($fid);
+        if (!empty($file->uri)) {
+          $file_url = file_create_url($file->uri);
+          $css .= ".page-builder-row-section.page-builder-row-section-$row_id {background:url('$file_url') 50% 0 no-repeat fixed; background-size: cover;}";
+        }
+      }
+      if (!empty($value['row_settings']['css_custom'])) {
+        $custom_css = $value['row_settings']['css_custom'];
+        $css .= '.page-builder-row-section.page-builder-row-section-' . $row_id . '{' . $custom_css . '}';
+      }
+    }
+  }
+
+  if (!empty($data['global_css'])) {
+    $css .= $data['global_css'];
+  }
+  if (!empty($css)) {
+    drupal_add_css($css, array('type' => 'inline'));
+  }
+}
+
+function _page_builder_add_css() {
+  $path = drupal_get_path('module', 'page_builder');
+  drupal_add_css($path . '/css/page_builder.css');
+
+
+  drupal_add_js($path . '/js/parallax/jquery.parallax.js');
+  drupal_add_js($path . '/js/parallax/jquery.scrollTo.js');
+  if (!module_exists('views_bs')) {
+    drupal_add_css($path . '/lib/owl_carousel/owl.carousel.css');
+    drupal_add_css($path . '/lib/owl_carousel/owl.theme.css');
+    drupal_add_js($path . '/lib/owl_carousel/owl.carousel.min.js');
+  }
+  drupal_add_js($path . '/lib/owl_carousel/page_builder_slider.js');
+}
+
+function page_builder_preprocess_page(&$variables) {
+
+
+  $router_item = menu_get_item();
+  if (!empty($router_item) && ($router_item['page_callback'] == 'page_builder_page_view')) {
+
+    $page_id = arg(1);
+    if (is_numeric($page_id)) {
+      $page = page_builder_load($page_id);
+
+      if ($page->show_title) {
+        $variables['show_title'] = TRUE;
+      } else {
+        $variables['show_title'] = FALSE;
+        $variables['title'] = FALSE;
+        $variables['breadcrumb'] = FALSE;
+      }
+      $variables['theme_hook_suggestions'][] = 'page__page_builder';
+    }
+  }
+}
+
+function page_builder_block_view_system_main_alter(&$data, $block) {
+  $router_item = menu_get_item();
+
+  if (!empty($router_item) && ($router_item['page_callback'] == 'page_builder_page_view')) {
+    if (user_access('access contextual links')) {
+      $page_id = arg(1);
+      $data['content']['#contextual_links']['page_builder'] = array(
+          'admin/page-builder/edit',
+          array($page_id),
+      );
+    }
+  }
+}
+
+/**
+ * Implements of hook_theme()
+ *  
+ */
+function page_builder_theme($existing, $type, $theme, $path) {
+  $module_path = drupal_get_path('module', 'page_builder') . '/templates';
+  return array(
+      'page_builder_page' => array(
+          'variables' => array(),
+          'template' => 'page_builder_page',
+          'path' => $module_path,
+      ),
+      'page_builder_render_block' => array(
+          'variables' => array('settings' => NULL),
+      ),
+      'page_builder_render_node' => array(
+          'variables' => array('settings' => NULL),
+      ),
+      'page_builder_render_global_text_area' => array(
+          'variables' => array('settings' => NULL),
+      ),
+  );
+}
+
+function _page_builder_block_render($module, $delta) {
+
+  $html = '';
+  $block = block_load($module, $delta);
+  if (isset($block->module) && isset($block->delta)) {
+    $check = page_builder_check_block_per_role($block);
+    if ($check) {
+      $block_content = _block_render_blocks(array($block));
+      if (!empty($block_content)) {
+        foreach ($block_content as $key => $object) {
+          $block_content[$key]->subject = '';
+        }
+        $build = _block_get_renderable_array($block_content);
+
+        $block_rendered = drupal_render($build);
+        $html .= $block_rendered;
+      }
+    }
+  }
+
+
+  return $html;
+}
+
+function page_builder_check_block_per_role($block) {
+  global $user;
+  $check = FALSE;
+  $role_id = db_query('SELECT r.rid FROM {block_role} r WHERE r.module = :module AND r.delta = :delta', array(':module' => $block->module, ':delta' => $block->delta))->fetchCol();
+  if (!empty($role_id)) {
+    foreach ($role_id as $key => $rid) {
+      if (isset($user->roles[$rid])) {
+        $check = TRUE;
+        return $check;
+      }
+    }
+  } else {
+    $check = TRUE;
+  }
+
+  return $check;
+}
+
+function theme_page_builder_render_block($variables) {
+
+  $output = '';
+
+  $settings = unserialize($variables['settings']['settings']);
+
+  /* $block = module_invoke($settings['module'], 'block_view', $settings['delta']);
+    if (isset($block['content']) && $block['content']) {
+    if (is_string($block['content'])) {
+    $block['content'] = array('#markup' => $block['content']);
+    }
+    }
+    if (!empty($block['content'])) {
+    $output = drupal_render($block['content']);
+    } */
+  if (!empty($settings['module']) && !empty($settings['delta'])) {
+    $output .= _page_builder_block_render($settings['module'], $settings['delta']);
+  }
+
+  return $output;
+}
+
+function theme_page_builder_render_node($variables) {
+  $output = '';
+  $settings = unserialize($variables['settings']['settings']);
+  $nid = $settings['nid'];
+  $view_mode = !empty($settings['view_mode']) ? $settings['view_mode'] : 'full';
+  $node = node_load($nid);
+  if (!empty($node)) {
+    $build = node_view($node, $view_mode);
+
+    $output = drupal_render($build);
+  }
+  return $output;
+}
+
+function theme_page_builder_render_global_text_area($variables) {
+  $settings = unserialize($variables['settings']['settings']);
+  $output = '';
+  $build = array();
+  if (isset($settings['content']) && ($settings['content'] !== '')) {
+    $content = $settings['content'];
+    $build['global_text']['#markup'] = $content;
+
+    $output = drupal_render($build);
+  }
+
+  return $output;
+}
+
+function _page_builder_get_data($row_id, $col_id, $elements_arr) {
+  $output = array();
+  if (!empty($elements_arr[$row_id][$col_id])) {
+    $elements = $elements_arr[$row_id][$col_id];
+    uasort($elements, 'drupal_sort_weight');
+    foreach ($elements as $e_id => $e_val) {
+
+      switch ($e_val['type']) {
+        case 'block':
+          $value = theme('page_builder_render_block', array('settings' => $e_val));
+          if (isset($value) && $value !== '') {
+            $output[$e_id] = $value;
+          }
+          break;
+
+        case 'node':
+          $value = theme('page_builder_render_node', array('settings' => $e_val));
+          if (isset($value) && $value !== '') {
+            $output[$e_id] = $value;
+          }
+          break;
+
+        case 'global_text_area':
+          $value = theme('page_builder_render_global_text_area', array('settings' => $e_val));
+          if (isset($value) && $value !== '') {
+            $output[$e_id] = $value;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  return $output;
+}

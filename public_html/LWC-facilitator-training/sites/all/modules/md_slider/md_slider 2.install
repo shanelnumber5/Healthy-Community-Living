@@ -1,0 +1,245 @@
+<?php
+/**
+ * @file - Install file
+ */
+
+/**
+ * Implement hook_schema()
+ */
+function md_slider_schema() {
+  $schema = array();
+
+  $schema['md_sliders'] = array(
+      'description' => 'Slideshows table',
+      'fields' =>  array(
+          'slid' => array(
+              'description' =>  'Primary key for identify a slideshow.',
+              'type' => 'serial',
+              'unsigned' => TRUE,
+              'not null' => TRUE,
+          ),
+          'title' => array(
+              'description' => 'The name of slideshow.',
+              'type' => 'text',
+              'size' => 'big',
+              'not null' => TRUE,
+          ),
+          'description' => array(
+              'description' => 'The description about slideshow is created.',
+              'type' => 'varchar',
+              'length' => 1000,
+          ),
+          'machine_name' => array(
+              'description' => 'The machine name of slideshow. The uniquied values.',
+              'type' => 'varchar',
+              'length' => 255,
+              'not null' => TRUE,
+          ),
+          'settings' => array(
+              'description' => 'The common settings for slideshow.',
+              'type' => 'text',
+              'size' => 'big',
+              'not null' => TRUE,
+          ),
+      ),
+      'primary key' => array('slid'),
+  );
+
+  $schema['md_slides'] = array(
+      'description' => 'Slides table',
+      'fields' => array(
+          'sid' => array(
+              'type' => 'serial',
+              'unsigned' => TRUE,
+              'not null' => TRUE,
+              'description' => 'Primary key for identify a slide.',
+          ),
+          'slid' => array(
+              'type' => 'int',
+              'unsigned' => TRUE,
+              'not null' => TRUE,
+              'description' => "Slideshow id contain this slide.",
+          ),
+          'position' => array(
+              'type' => 'int',
+              'unsigned' => TRUE,
+              'not null' => TRUE,
+              'description' => 'Order of slide in slideshow.',
+          ),
+          'settings' => array(
+              'type' => 'text',
+              'not null' => TRUE,
+              'size' => 'big',
+              'description' => "Settings for tab",
+          ),
+          'layers' => array(
+              'type' => 'text',
+              'not null' => TRUE,
+              'size' => 'big',
+              'description' => "Items in this slide",
+          ),
+      ),
+      'foreign keys' => array(
+          'md_sliders' => array(
+              'table' => 'md_sliders',
+              'columns' => array('slid' => 'slid'),
+          ),
+      ),
+      'primary key' => array('sid'),
+  );
+
+  return $schema;
+}
+
+/**
+ * implements hook_field_schema()
+ */
+function md_slider_field_schema($field) {
+  return array(
+    "columns" => array(
+      "md_slider_id" => array(
+        "type" => "varchar",
+        "length" => 255,
+        "not null" => TRUE,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_update_N()
+ */
+function md_slider_update_7200() {
+  $sliders = MDSlider::get_all();
+
+  foreach ($sliders as $slider) {
+    $slider->machine_name = str_replace('_', '-', $slider->machine_name);
+    $slider->save();
+  }
+}
+
+/**
+ * implements update new effect for slides
+ */
+function md_slider_update_7230() {
+  $sliders = MDSlider::get_all();
+
+  foreach ($sliders as $slider) {
+    $slides = MDSlide::get_by_slider_id($slider->slid);
+
+    $transition = "fade";
+    switch ($slider->settings["animation"]) {
+      case "scrollHorz":
+      case "scrollLeft":
+        $transition = "slide-in-left";
+        break;
+
+      case "scrollVert":
+      case "scrollRight":
+        $transition = "slide-in-right";
+        break;
+
+      case "scrollUp":
+        $transition = "slide-in-up";
+        break;
+
+      case "scrollDown":
+        $transition = "slide-in-down";
+        break;
+    }
+    foreach ($slides as $slide) {
+      $slide->settings["transitions"] = array($transition);
+      $slide->save();
+    }
+
+    // Remove slider effect setting
+    unset($slider->settings["animation"]);
+    $slider->save();
+  }
+}
+
+/**
+ * implements hook_update_n
+ */
+function md_slider_update_7231() {
+  $fields = md_slider_get_md_slider_fields();
+  foreach ($fields as $field) {
+    $table_prefixes = array(
+      _field_sql_storage_tablename($field),
+      _field_sql_storage_revision_tablename($field)
+    );
+
+    foreach ($table_prefixes as $table) {
+      $field_name = $field["field_name"];
+
+      $column = "{$field_name}_md_slider_id";
+      $spec = array(
+        "type" => "varchar",
+        "length" => 255,
+        "not null" => TRUE
+      );
+      db_change_field($table, $column, $column, $spec);
+    }
+  }
+
+  return t("Change field md_slider_id to varchar");
+}
+
+/**
+ * implements hook_update_N
+ */
+function md_slider_update_7232() {
+  // Load all slides in database
+  $slides = MDSlide::get_all();
+
+  foreach ($slides as $slide) {
+    // Set background color
+    if (!isset($slide->settings["background_color"]))
+      $slide->settings["background_color"] = "";
+
+    if ($slide->settings["background_image"] == -1)
+      $slide->settings["background_color"] = "#32a0b7";
+
+    // Modify item color
+    foreach ($slide->layers as &$layer) {
+      if (isset($layer["backgroundcolor"]) && $layer["backgroundcolor"] != "" && strpos($layer["backgroundcolor"], "#") === FALSE)
+        $layer["backgroundcolor"] = "#{$layer["backgroundcolor"]}";
+
+      if (isset($layer["color"]) && $layer["color"] != "" && strpos($layer["color"], "#") === FALSE)
+        $layer["color"] = "#{$layer["color"]}";
+
+      if (isset($layer["bordercolor"]) && $layer["bordercolor"] != "" && strpos($layer["bordercolor"], "#") === FALSE)
+        $layer["bordercolor"] = "#{$layer["bordercolor"]}";
+
+      if (isset($layer["link"])) {
+        if (isset($layer["link"]["color"]) && $layer["link"]["color"] != "" && strpos($layer["link"]["color"], "#") === FALSE)
+          $layer["link"]["color"] = "#{$layer["link"]["color"]}";
+
+        if (isset($layer["link"]["background"]) && $layer["link"]["background"] != "" && strpos($layer["link"]["background"], "#") === FALSE)
+          $layer["link"]["background"] = "#{$layer["link"]["background"]}";
+
+        if (isset($layer["link"]["border"]) && $layer["link"]["border"] != "" && strpos($layer["link"]["border"], "#") === FALSE)
+          $layer["link"]["border"] = "#{$layer["link"]["border"]}";
+      }
+    }
+
+    // Save slide to update new data
+    $slide->save();
+  }
+
+  return "Update item color properties";
+}
+
+/**
+ * Implement hook_update_N()
+ * Update weight module md_slider
+ */
+function md_slider_update_7300() {
+  $success = db_update('system')
+              ->fields(array('weight' => 999))
+              ->condition('name', 'md_slider', '=')
+              ->execute();
+  if ($success) {
+    return "Update weight module md_slider successful";
+  }
+}

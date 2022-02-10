@@ -1,0 +1,599 @@
+<?php
+
+/**
+ * @file
+ * Test cases address entity.
+ */
+
+/**
+ * Tests for Entity API integration.
+ */
+class UcAddressesEntityCase extends UcAddressesTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Ubercart Addresses entity tests',
+      'description' => 'Test the Ubercart Addresses entity integration.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store', 'uc_order', 'entity'),
+    );
+  }
+
+  /**
+   * Setup.
+   */
+  public function setUp() {
+    parent::setUp();
+    // Enable Entity API module.
+    module_enable(array('entity', 'uc_addresses_test', 'uc_order'));
+  }
+
+  /**
+   * Test Ubercart Addresses Entity CRUD.
+   */
+  public function testEntityCrud() {
+    $this->drupalLogin($this->adminUser);
+
+    // CREATE TESTS.
+    $values = self::getEditAddressValues();
+    $address_values = $values['values'];
+    $address_values['uid'] = $this->adminUser->uid;
+    $entity = entity_create('uc_addresses', $address_values);
+    $address = $this->getEntityAddress($entity);
+    // Ensure that the address inside the entity contains all set values.
+    if ($address instanceof UcAddressesAddress) {
+      foreach ($address_values as $field => $value) {
+        $this->assertEqual($address->getField($field), $address_values[$field], t('The field %field was set correctly with entity_create().', array('%field' => $field)));
+      }
+    }
+    // Save the entity and ensure it is saved to the database.
+    $old_id = $entity->identifier();
+    entity_save('uc_addresses', $entity);
+    $this->assertEntityHookInvoked('entity_presave', $old_id);
+    $this->assertEntityHookInvoked('entity_insert', $entity->identifier());
+    $this->assertTrue(self::checkAddressValuesInDatabase($address_values), 'The address was correctly saved using entity_save().');
+    if ($address instanceof UcAddressesAddress) {
+      // Do tests with other entity API functions.
+      $this->doOtherEntityTests($entity, $address);
+    }
+    // Test the Entity Wrapper.
+    $this->doEntityWrapperTests($entity, $address_values);
+
+    // LOAD TESTS.
+    $aid = $this->createAddress($this->customer);
+    // Load this address through the address book.
+    $address = UcAddressesAddressBook::get($this->customer->uid)->getAddressById($aid);
+    // Now load through Entity API.
+    $entity = entity_load_single('uc_addresses', $aid);
+    $this->assertEntityHookInvoked('entity_load', $aid);
+    // Ensure these two are equal.
+    $this->assertTrue($address === $this->getEntityAddress($entity), 'Address loaded via Address Book API is equal to address loaded via Entity API.');
+    // Do tests with other entity API functions.
+    $this->doOtherEntityTests($entity, $address);
+    // Test the Entity Wrapper.
+    $this->doEntityWrapperTests($entity, $address->getRawFieldData());
+
+    // VIEW TESTS.
+    // Load addresses and entities first.
+    $addressBook = UcAddressesAddressBook::get($this->customer);
+    $addresses = $addressBook->getAddresses();
+    $addressBook->reset();
+    $aids = array();
+    foreach ($addresses as $address) {
+      $aids[] = $address->getId();
+    }
+    $entities = entity_load('uc_addresses', $aids);
+    // View and render the entities.
+    $content = entity_view('uc_addresses', $entities);
+    $output = drupal_render($content);
+    $this->verbose($output);
+    // Test if all addresses are displayed.
+    foreach ($addresses as $address) {
+      $this->doAddressValuesDisplayedTests($address->getRawFieldData(), 'address_view', $output);
+    }
+
+    // UPDATE TESTS.
+    // Set some fields directly.
+    $values = self::getEditAddressValues();
+    $address_update_values = $values['values'];
+    foreach ($address_update_values as $field => $value) {
+      $entity->$field = $value;
+    }
+    $address = $this->getEntityAddress($entity);
+    if ($address instanceof UcAddressesAddress) {
+      foreach ($address_update_values as $field => $value) {
+        $this->assertEqual($address->getField($field), $address_update_values[$field], t('The field %field was set correctly when setting it directly with $entity->$field.', array('%field' => $field)));
+      }
+      // Use the 'aid' from the address to ensure later that the address
+      // got updated instead of inserted.
+      $address_update_values['aid'] = $address->getId();
+    }
+    // Save the entity and ensure it is updated in the database.
+    entity_save('uc_addresses', $entity);
+    $this->assertEntityHookInvoked('entity_presave', $entity->identifier());
+    $this->assertEntityHookInvoked('entity_update', $entity->identifier());
+    $this->assertTrue(self::checkAddressValuesInDatabase($address_update_values), 'The address was correctly updated using entity_save().');
+    if ($address instanceof UcAddressesAddress) {
+      // Do tests with other entity API functions.
+      $this->doOtherEntityTests($entity, $address);
+    }
+    // Test the Entity Wrapper.
+    $this->doEntityWrapperTests($entity, $address_update_values);
+
+    // DELETE TESTS.
+    $aid = $this->createAddress($this->customer);
+    entity_delete('uc_addresses', $aid);
+    $this->assertEntityHookInvoked('entity_delete', $aid);
+    // Ensure the address is removed from the database.
+    $result = (int) db_select('uc_addresses')
+      ->fields('uc_addresses', array('aid'))
+      ->condition('aid', $aid)
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    $this->assertTrue($result === 0, 'The address was deleted using entity_delete().');
+    // Ensure the address has been removed from the address book too.
+    $deleted_address = UcAddressesAddressBook::get($this->customer->uid)->getAddressById($aid);
+    $this->assertFalse($deleted_address, 'The address was deleted from the address book entity_delete().');
+  }
+
+  /**
+   * Test if entity_access() behaves as expected.
+   *
+   * @todo UcAddressesPermissions have to be adjusted in
+   * order to let entity_access() behave as expected.
+   */
+  public function testEntityAccess() {
+    // Create some users.
+    $users = array();
+    $customerBasic = $this->drupalCreateUser();
+    $customerView = $this->drupalCreateUser(array('view own addresses'));
+    $customerEdit = $this->drupalCreateUser(array('add/edit own addresses'));
+    $customerDelete = $this->drupalCreateUser(array('add/edit own addresses', 'delete own addresses'));
+    $adminView = $this->drupalCreateUser(array('view all addresses'));
+    $adminEdit = $this->drupalCreateUser(array('add/edit all addresses'));
+    $adminAll = $this->adminUser;
+
+    // Test access for each user.
+    // Basic customer: no permissions at all.
+    $this->doOwnAddressTestsUsingEntityAccess($customerBasic, FALSE, FALSE, FALSE, 'customerBasic');
+    $this->doOtherUsersAddressTestsUsingEntityAccess($customerBasic, FALSE, FALSE, FALSE, 'customerBasic');
+    // customerView: may only view addresses it owns.
+    $this->doOwnAddressTestsUsingEntityAccess($customerView, TRUE, FALSE, FALSE, 'customerView');
+    $this->doOtherUsersAddressTestsUsingEntityAccess($customerView, FALSE, FALSE, FALSE, 'customerView');
+    // customerEdit: may only view and edit addresses it owns.
+    $this->doOwnAddressTestsUsingEntityAccess($customerEdit, TRUE, TRUE, FALSE, 'customerEdit');
+    $this->doOtherUsersAddressTestsUsingEntityAccess($customerEdit, FALSE, FALSE, FALSE, 'customerEdit');
+    // customerDelete: may only view, edit and delete addresses it owns.
+    $this->doOwnAddressTestsUsingEntityAccess($customerDelete, TRUE, TRUE, TRUE, 'customerDelete');
+    $this->doOtherUsersAddressTestsUsingEntityAccess($customerDelete, FALSE, FALSE, FALSE, 'customerDelete');
+    // adminView: may view addresses from all users.
+    $this->doOwnAddressTestsUsingEntityAccess($adminView, TRUE, FALSE, FALSE, 'adminView');
+    $this->doOtherUsersAddressTestsUsingEntityAccess($adminView, TRUE, FALSE, FALSE, 'adminView');
+    // adminEdit: may view and edit addresses from all users.
+    $this->doOwnAddressTestsUsingEntityAccess($adminEdit, TRUE, TRUE, FALSE, 'adminEdit');
+    $this->doOtherUsersAddressTestsUsingEntityAccess($adminEdit, TRUE, TRUE, FALSE, 'adminEdit');
+    // adminAll: may view, edit and delete addresses from all users.
+    $this->doOwnAddressTestsUsingEntityAccess($adminAll, TRUE, TRUE, TRUE, 'adminAll');
+    $this->doOtherUsersAddressTestsUsingEntityAccess($adminAll, TRUE, TRUE, TRUE, 'adminAll');
+  }
+
+  /**
+   * Test if entity hooks are invoked when using the address book API.
+   */
+  public function testHooks() {
+    // Get the address book of the admin user.
+    $addressBook = UcAddressesAddressBook::get($this->adminUser->uid);
+
+    // Test presave and insert hook.
+    $address = $addressBook->addAddress();
+    $address->setField('last_name', self::randomName());
+    $old_id = $address->getId();
+    $address->save();
+    $aid = $address->getId();
+    $this->assertEntityHookInvoked('entity_presave', $old_id);
+    $this->assertEntityHookInvoked('entity_insert', $aid);
+
+    // Ensure the load is NOT invoked, because the address
+    // should be cached in memory.
+    $addressBook->getAddressById($aid);
+    $this->assertEntityHookNotInvoked('entity_load', $aid);
+
+    // Reset the address book.
+    $addressBook->reset();
+
+    // Test load hook.
+    $address = $addressBook->getAddressById($aid);
+    $this->assertEntityHookInvoked('entity_load', $aid);
+
+    // Ensure the update is NOT invoked, because the address
+    // didn't change.
+    $address->save();
+    $this->assertEntityHookNotInvoked('entity_update', $aid);
+    // Now, change something on the address and save again.
+    // This time the update hook should be invoked.
+    $address->setField('first_name', self::randomName());
+    $address->save();
+    $this->assertEntityHookInvoked('entity_update', $aid);
+
+    // Test if the delete hook is invoked.
+    // This address is not marked as a default address, so deleting
+    // should go fine.
+    $address->delete();
+    $this->assertEntityHookInvoked('entity_delete', $aid);
+  }
+
+  /**
+   * Tests getting uc_addresses property on an address.
+   *
+   * @covers uc_addresses_field_get()
+   */
+  public function testUcAddressesPropertyGet() {
+    $city = self::randomName();
+
+    // Create a new address.
+    $address = UcAddressesAddressBook::newAddress();
+    $address->setField('city', $city);
+
+    // Assert that properties can be get using the Entity API's metadata wrapper.
+    $address_wrapper = entity_metadata_wrapper('uc_addresses', $address);
+    $this->assertEqual($city, $address_wrapper->city->raw());
+  }
+
+  /**
+   * Tests setting uc_addresses property on an address.
+   *
+   * @covers uc_addresses_field_set()
+   */
+  public function testUcAddressesPropertySet() {
+    $city = self::randomName();
+
+    // Create a new address.
+    $address = UcAddressesAddressBook::newAddress();
+
+    // Set a property using the Entity API's metadata wrapper.
+    $address_wrapper = entity_metadata_wrapper('uc_addresses', $address);
+    $address_wrapper->city->set($city);
+
+    // Assert that the property was set.
+    $this->assertEqual($city, $address->getField('city'));
+  }
+
+  /**
+   * Tests getting uc_addresses properties on an user.
+   *
+   * @covers uc_addresses_user_address_property_get()
+   */
+  public function testUserPropertyGet() {
+    $shipping_city = self::randomName();
+    $billing_city = self::randomName();
+
+    $account = $this->drupalCreateUser();
+
+    // Create default addresses for this user.
+    $addressBook = $this->UcAddressesGetAddressBook($account->uid);
+
+    // Create default shipping address.
+    $shipping_address = $addressBook->addAddress();
+    $shipping_address->setField('city', $shipping_city);
+    $addressBook->setAddressAsDefault($shipping_address, 'shipping');
+    $shipping_address->save();
+
+    // Create default billing address.
+    $billing_address = $addressBook->addAddress();
+    $billing_address->setField('city', $billing_city);
+    $addressBook->setAddressAsDefault($billing_address, 'billing');
+    $billing_address->save();
+
+    // Reset the address book so no addresses are loaded in memory.
+    $addressBook->reset();
+
+    // Assert that properties can be get using the Entity API's metadata wrapper.
+    $user_wrapper = entity_metadata_wrapper('user', $account);
+    $this->assertEqual($shipping_city, $user_wrapper->uc_addresses_default_shipping_address->city->raw());
+    $this->assertEqual($billing_city, $user_wrapper->uc_addresses_default_billing_address->city->raw());
+    $this->assertTrue($user_wrapper->uc_addresses_default_shipping_address->raw() instanceof UcAddressesAddress);
+    $this->assertTrue($user_wrapper->uc_addresses_default_billing_address->raw() instanceof UcAddressesAddress);
+  }
+
+  /**
+   * Tests getting uc_addreses properties on a new uc_order.
+   *
+   * @covers uc_addresses_uc_order_address_property_get()
+   */
+  public function testNewUcOrderPropertyGet() {
+    $delivery_city = self::randomName();
+    $billing_city = self::randomName();
+
+    // Create a new order without saving.
+    $order = new UcOrder();
+    $order->delivery_city = $delivery_city;
+    $order->billing_city = $billing_city;
+
+    // Assert that properties can be get using the Entity API's metadata wrapper.
+    $order_wrapper = entity_metadata_wrapper('uc_order', $order);
+    $this->assertEqual($delivery_city, $order_wrapper->uc_addresses_delivery_address->city->raw());
+    $this->assertEqual($billing_city, $order_wrapper->uc_addresses_billing_address->city->raw());
+    $this->assertTrue($order_wrapper->uc_addresses_delivery_address->raw() instanceof UcAddressesAddress);
+    $this->assertTrue($order_wrapper->uc_addresses_billing_address->raw() instanceof UcAddressesAddress);
+  }
+
+  /**
+   * Tests getting uc_addreses properties on an existing uc_order.
+   *
+   * @covers uc_addresses_uc_order_address_property_get()
+   */
+  public function testExistingUcOrderPropertyGet() {
+    $delivery_city = self::randomName();
+    $billing_city = self::randomName();
+
+    // Create a new order manually and save into the database.
+    $order_new = new UcOrder();
+    $order_new->delivery_city = $delivery_city;
+    $order_new->billing_city = $billing_city;
+    drupal_write_record('uc_orders', $order_new);
+
+    // Load this order.
+    $order = uc_order_load($order_new->order_id);
+
+    // Assert that properties can be get using the Entity API's metadata wrapper.
+    $order_wrapper = entity_metadata_wrapper('uc_order', $order);
+    $this->assertEqual($delivery_city, $order_wrapper->uc_addresses_delivery_address->city->raw());
+    $this->assertEqual($billing_city, $order_wrapper->uc_addresses_billing_address->city->raw());
+    $this->assertTrue($order_wrapper->uc_addresses_delivery_address->raw() instanceof UcAddressesAddress);
+    $this->assertTrue($order_wrapper->uc_addresses_billing_address->raw() instanceof UcAddressesAddress);
+  }
+
+  /**
+   * Does basic tests for viewing, editing and deleting own addresses.
+   *
+   * @param object $account
+   *   The user to do tests for.
+   * @param boolean $may_view_own_default
+   *   If the user may view it's own default addresses.
+   * @param boolean $may_view_own
+   *   If the user may view it's own addresses.
+   * @param boolean $may_edit_own
+   *   If the user may edit it's own addresses.
+   * @param boolean $may_delete_own
+   *   If the user may delete it's own addresses.
+   * @param string $usertype
+   *   Indicates in short which permissions this user should have.
+   *
+   * @return void
+   */
+  protected function doOwnAddressTestsUsingEntityAccess($account, $may_view_own, $may_edit_own, $may_delete_own, $usertype) {
+    // Create an address for this user.
+    $values = self::getEditAddressValues();
+    $address_values = $values['values'];
+    $address_values['uid'] = $account->uid;
+    $entity = entity_create('uc_addresses', $address_values);
+    entity_save('uc_addresses', $entity);
+
+    $msgvars = array(
+      '@user' => check_plain($usertype),
+    );
+
+    // Test access.
+    if ($may_view_own) {
+      $this->assertTrue(entity_access('view', 'uc_addresses', $entity, $account), strtr('User @user may view own addresses.', $msgvars));
+    }
+    else {
+      $this->assertFalse(entity_access('view', 'uc_addresses', $entity, $account), strtr('User @user may NOT view own addresses.', $msgvars));
+    }
+    if ($may_edit_own) {
+      $this->assertTrue(entity_access('update', 'uc_addresses', $entity, $account), strtr('User @user may edit own addresses.', $msgvars));
+    }
+    else {
+      $this->assertFalse(entity_access('update', 'uc_addresses', $entity, $account), strtr('User @user may NOT edit own addresses.', $msgvars));
+    }
+    if ($may_delete_own) {
+      $this->assertTrue(entity_access('delete', 'uc_addresses', $entity, $account), strtr('User @user may delete own addresses.', $msgvars));
+    }
+    else {
+      $this->assertFalse(entity_access('delete', 'uc_addresses', $entity, $account), strtr('User @user may NOT delete own addresses.', $msgvars));
+    }
+  }
+
+  /**
+   * Does basic tests for viewing, editing and deleting other ones addresses.
+   *
+   * @param object $account
+   *   The user to do tests for.
+   * @param boolean $may_view_all
+   *   If the user may view all addresses.
+   * @param boolean $may_edit_all
+   *   If the user may edit all addresses.
+   * @param boolean $may_delete_all
+   *   If the user may delete all addresses.
+   * @param string $usertype
+   *   Indicates in short which permissions this user should have.
+   *
+   * @return void
+   */
+  protected function doOtherUsersAddressTestsUsingEntityAccess($account, $may_view_all, $may_edit_all, $may_delete_all, $usertype) {
+    static $entity;
+    if (!isset($entity)) {
+      // Create an address for an other user.
+      $values = self::getEditAddressValues();
+      $address_values = $values['values'];
+      $address_values['uid'] = 1;
+      $entity = entity_create('uc_addresses', $address_values);
+      entity_save('uc_addresses', $entity);
+    }
+
+    $msgvars = array(
+      '@user' => check_plain($usertype),
+    );
+
+    // Test access.
+    if ($may_view_all) {
+      $this->assertTrue(entity_access('view', 'uc_addresses', $entity, $account), strtr('User @user may view all addresses.', $msgvars));
+    }
+    else {
+      $this->assertFalse(entity_access('view', 'uc_addresses', $entity, $account), strtr('User @user may NOT view all addresses.', $msgvars));
+    }
+    if ($may_edit_all) {
+      $this->assertTrue(entity_access('update', 'uc_addresses', $entity, $account), strtr('User @user may edit all addresses.', $msgvars));
+    }
+    else {
+      $this->assertFalse(entity_access('update', 'uc_addresses', $entity, $account), strtr('User @user may NOT edit all addresses.', $msgvars));
+    }
+    if ($may_delete_all) {
+      $this->assertTrue(entity_access('delete', 'uc_addresses', $entity, $account), strtr('User @user may delete all addresses.', $msgvars));
+    }
+    else {
+      $this->assertFalse(entity_access('delete', 'uc_addresses', $entity, $account), strtr('User @user may NOT delete all addresses.', $msgvars));
+    }
+  }
+
+  /**
+   * This a helper function for getting an UcAddressesAddress instance
+   * from an address entity.
+   *
+   * Should the method for getting an address entity's UcAddressesAddress
+   * instance ever change, then this would be only place to change it in
+   * the automated tests.
+   *
+   * @param object $entity
+   *   The address entity.
+   *
+   * @return UcAddressesAddress
+   *   An instance of UcAddressesAddress, if it exists.
+   *   Something unexpected otherwise!
+   */
+  public function getEntityAddress($entity) {
+    $address = $entity;
+    // Ensure an address is attached.
+    $this->assertTrue($address instanceof UcAddressesAddress, 'The address entity correctly contains an UcAddressesAddress instance.');
+    return $address;
+  }
+
+  /**
+   * Test if non-crud entity API functions behave as expected.
+   *
+   * @param object $entity
+   *   The entity to pass to entity API functions.
+   * @param UcAddressesAddress $address
+   *   An instance of UcAddressesAddress.
+   *   This will be used to perform known address book API
+   *   methods on.
+   *
+   * @return void
+   */
+  protected function doOtherEntityTests($entity, UcAddressesAddress $address) {
+    // Ensure the address ID can be get via entity_id().
+    $this->assertEqual(entity_id('uc_addresses', $entity), $address->getId(), 'The address ID can be get via entity_id().');
+
+    // Test if entity_label() returns the name of the address (if the address has one).
+    if ($name = $address->getName()) {
+      $this->assertEqual(entity_label('uc_addresses', $entity), $name, 'entity_label() correctly returns the address name.');
+    }
+
+    // Test for correct uri.
+    $uri['path'] = 'user/' . $address->getUserId() . '/addresses/' . $address->getId();
+    $entity_uri = entity_uri('uc_addresses', $entity);
+    $msgvars = array(
+      '@uri' => check_plain($uri['path']),
+      '@entity_uri' => check_plain($entity_uri['path']),
+    );
+    $this->assertEqual($entity_uri['path'], $uri['path'], strtr('entity_uri() returns the expected uri: @uri (actual: @entity_uri).', $msgvars));
+  }
+
+  /**
+   * Test if Entity API Wrapper behaves as expected on address entity's.
+   *
+   * @param object $entity
+   *   The entity to pass to entity API functions.
+   * @param array $values
+   *   The expected values for each field.
+   *
+   * @return void
+   */
+  protected function doEntityWrapperTests($entity, $values) {
+    $wrapper = entity_metadata_wrapper('uc_addresses', $entity);
+
+    foreach ($values as $field => $value) {
+      switch ($field) {
+        case 'uid':
+          // The entity property for the 'uid' field is called 'user'.
+          $property = 'user';
+          break;
+
+        default:
+          // All other entity property names are equal to the field name.
+          $property = $field;
+          break;
+      }
+
+      $msgvars = array(
+        '@field' => check_plain($field),
+      );
+      $this->assertEqual($wrapper->$property->raw(), $value, strtr('Entity wrapper returns expected value for @field.', $msgvars));
+    }
+  }
+
+  /**
+   * Asserts if a certain hook is invoked.
+   *
+   * @param string $hook
+   *   The hook that was invoked.
+   * @param object $entity
+   *   The entity that was passed with the hook.
+   *
+   * @return void
+   */
+  protected function assertEntityHookInvoked($hook, $entity_id, $message = NULL) {
+    if (is_null($message)) {
+      $message = t('The hook %hook was invoked upon an uc_addresses entity with id %id', array('%hook' => $hook . '()', '%id' => $entity_id));
+    }
+    // We can not use variable_get() here, because that returns the
+    // on runtime cached variables.
+    $serialized_value = db_select('variable')
+      ->fields('variable', array('value'))
+      ->condition('name', 'uc_addresses_' . $hook)
+      ->execute()
+      ->fetchField();
+    if (!$serialized_value) {
+      $this->fail($message);
+      return;
+    }
+    $value = unserialize($serialized_value);
+    $this->verbose($value);
+    $this->assertEqual($value, $entity_id, $message);
+  }
+
+  /**
+   * Asserts if a certain hook is NOT invoked.
+   *
+   * @param string $hook
+   *   The hook that was invoked.
+   * @param object $entity
+   *   The entity that was passed with the hook.
+   *
+   * @return void
+   */
+  protected function assertEntityHookNotInvoked($hook, $entity_id, $message = NULL) {
+    if (is_null($message)) {
+      $message = t('The hook %hook was not invoked upon an uc_addresses entity with id %id', array('%hook' => $hook . '()', '%id' => $entity_id));
+    }
+    // We can not use variable_get() here, because that returns the
+    // on runtime cached variables.
+    $serialized_value = db_select('variable')
+      ->fields('variable', array('value'))
+      ->condition('name', 'uc_addresses_' . $hook)
+      ->execute()
+      ->fetchField();
+    if (!$serialized_value) {
+      $this->pass($message);
+      return;
+    }
+    $value = unserialize($serialized_value);
+    $this->verbose($value);
+    $this->assertNotEqual($value, $entity_id, $message);
+  }
+}

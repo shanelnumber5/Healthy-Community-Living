@@ -1,0 +1,354 @@
+<?php
+
+/**
+ * @file
+ * Tracks file downloads for files stored in the drupal files table using the private files setting or custom private filefield.
+ */
+
+// Load all field module hooks.
+module_load_include('inc', 'download_count', 'includes/download_count.field');
+
+/**
+ * Implements hook_help().
+ */
+function download_count_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#download_count':
+      return '<p>' . t('Counts file downloads for private core file fields and logs a message to the watchdog table.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function download_count_permission() {
+  $perms = array(
+    'view download counts' => array(
+      'title' => t('view download counts'),
+    ),
+    'skip download counts' => array(
+      'title' => t('skip download counts'),
+      'description' => t('Don\'t count downloads for users with this role.'),
+    ),
+    'reset download counts' => array(
+      'title' => t('reset download counts'),
+    ),
+    'export download counts' => array(
+      'title' => t('export download counts'),
+    ),
+  );
+  return $perms;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function download_count_menu() {
+  $items = array();
+
+  $items['admin/config/media/download-count'] = array(
+    'title' => 'Download count',
+    'description' => 'Tracks file downloads for files stored in private core file fields.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('download_count_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'includes/download_count.settings.inc',
+  );
+  $items['admin/config/media/download-count/clear'] = array(
+    'title' => 'Clear Cache',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('download_count_clear_confirm'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/download_count.settings.inc',
+  );
+  $items['admin/config/media/download-count/settings'] = array(
+    'title' => 'Settings',
+    'weight' => 1,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['admin/reports/download-count'] = array(
+    'title' => 'Download Counts',
+    'description' => 'Download history of files attached to private core file fields.',
+    'page callback' => 'download_count_view_page',
+    'page arguments' => array('download_count'),
+    'access arguments' => array('view download counts'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/download_count.pages.inc',
+  );
+  $items['admin/reports/download-count/%download_count_entry/details'] = array(
+    'title' => 'Download Count Details',
+    'page callback' => 'download_count_view_details',
+    'page arguments' => array(3),
+    'access arguments' => array('view download counts'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/download_count.pages.inc',
+  );
+  $items['admin/reports/download-count/%download_count_entry/reset'] = array(
+    'title' => 'Download Count Reset',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('download_count_reset_form', 3),
+    'access arguments' => array('reset download counts'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/download_count.pages.inc',
+  );
+  $items['admin/reports/download-count/%download_count_entry/export'] = array(
+    'title' => 'Download Count Export CSV',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('download_count_export_form', 3),
+    'access arguments' => array('export download counts'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/download_count.export.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function download_count_views_api() {
+  return array(
+    'api' => 3.0,
+    'path' => drupal_get_path('module', 'download_count') . '/includes',
+  );
+}
+
+/**
+ * Menu wildcard loader.
+ */
+function download_count_entry_load($dcid) {
+  return $dcid == 'all' ? $dcid : db_query('SELECT dc.dcid, dc.fid, dc.uid, dc.type, dc.id, dc.ip_address, dc.referrer, dc.timestamp, f.filename, f.uri, f.filemime, f.filesize FROM {download_count} dc JOIN {file_managed} f ON dc.fid = f.fid WHERE dcid = :dcid', array(':dcid' => $dcid))->fetchObject();
+}
+
+/**
+ * Implements hook_library().
+ */
+function download_count_library() {
+  if (module_exists('libraries')) {
+    $path = libraries_get_path('jquery.sparkline', FALSE) . '/jquery.sparkline.min.js';
+  }
+  else {
+    $path = drupal_get_path('module', 'download_count') . '/jquery.sparkline.min.js';
+  }
+
+  $libraries['jquery.sparkline'] = array(
+    'title' => 'jquery sparkline',
+    'website' => 'http://www.omnipotent.net/jquery.sparkline/',
+    'version' => '1.6',
+    'js' => array(
+      $path => array(),
+    ),
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_file_download_access_alter().
+ */
+function download_count_file_download_access_alter(&$grants, $file, $entity_type, $entity) {
+  $time =  REQUEST_TIME;
+
+  //if role should be skipped, return.
+  if (user_access('skip download counts')) {
+    return;
+  }
+
+  //if no access, simply return.
+  if (!in_array(TRUE, $grants)) {
+    return;
+  }
+
+  //check flood control
+  $flood_limit = variable_get('download_count_flood_limit', 0);
+  if ($flood_limit > 0) {
+    $flood_window = variable_get('download_count_flood_window', 5);
+    if (!flood_is_allowed('download_count-fid_' . $file['fid'], $flood_limit, $flood_window)) {
+      return;
+    }
+  }
+
+  //validate file has extension that should be counted, if not return.
+  $extensions = explode(' ', drupal_strtolower(trim(variable_get('download_count_excluded_file_extensions', 'jpg jpeg gif png'))));
+  if (count($extensions)) {
+    $extension = drupal_strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
+    if (in_array($extension, $extensions)) {
+      return;
+    }
+  }
+
+  // Count the download.
+  global $user;
+  $entity_info = entity_get_info($entity_type);
+  $ip = ip_address();
+  $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
+
+  $id = db_insert('download_count')
+  ->fields(array(
+    'fid' => $file['fid'],
+    'uid' => $user->uid,
+    'type' => $entity_type,
+    'id' => $entity->$entity_info['entity keys']['id'],
+    'ip_address' => $ip,
+    'referrer' => $referrer,
+    'timestamp' => $time,
+  ))
+  ->execute();
+  flood_register_event('download_count-fid_' . $file['fid'], 3600);
+  watchdog('download_count', '%file was downloaded by user #%uid from %ip', array('%file' => $file['filename'], '%uid' => $user->uid, '%ip' => $ip), WATCHDOG_NOTICE);
+
+  if (module_exists('rules')) {
+    rules_invoke_event('download_count_file_download', (object) $file, $user, $entity);
+  }
+}
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function download_count_cron_queue_info() {
+  $queues['download_count'] = array(
+    'worker callback' => 'download_count_cache_processor',
+    'time' => 60,
+  );
+  return $queues;
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Daily file download counts are cached for convenience.
+ */
+function download_count_cron() {
+  $time = REQUEST_TIME;
+  $status = 0;
+  $count = 0;
+  $last_cron = variable_get('download_count_last_cron', 0);
+
+  $result = db_query('SELECT fid, type, id, UNIX_TIMESTAMP(DATE(FROM_UNIXTIME(timestamp))) as date, COUNT(dcid) as count FROM {download_count} WHERE timestamp > :last_cron GROUP BY type, id, fid, DATE(FROM_UNIXTIME(timestamp))', array(':last_cron' => $last_cron));
+  $queue = DrupalQueue::get('download_count');
+  foreach ($result as $record) {
+    $queue->createItem($record);
+    $count++;
+  }
+  if ($count > 0) {
+    watchdog('download_count', 'Download count queued %count new entries for caching.',  array('%count' => $count), WATCHDOG_NOTICE);
+  }
+  variable_set('download_count_last_cron', $time);
+}
+
+/**
+ * Adds download count data to the daily cache table.
+ *
+ * @param $record
+ *   An object containing the download to cache.
+ */
+function download_count_cache_processor($record) {
+  db_merge('download_count_cache')
+    ->key(array('type' => $record->type, 'id' => $record->id, 'fid' => $record->fid, 'date' => $record->date))
+    ->fields(array(
+        'count' => $record->count,
+      ))
+    ->expression('count', 'count + :inc', array(':inc' => $record->count))
+    ->execute();
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function download_count_block_info() {
+  $blocks['top_files']['info'] = t('Top Downloaded Files');
+  $blocks['recent_files']['info'] = t('Recently Downloaded Files');
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function download_count_block_configure($delta) {
+  $form['download_count_' . $delta . '_block_limit'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of items to display'),
+    '#size' => 5,
+    '#default_value' => variable_get('download_count_' . $delta . '_block_limit', 10),
+  );
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function download_count_block_save($delta, $edit) {
+  variable_set('download_count_' . $delta . '_block_limit', $edit['download_count_' . $delta . '_block_limit']);
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function download_count_block_view($delta) {
+  switch ($delta) {
+    case 'top_files':
+      $blocks['subject'] = t('Top Downloaded Files');
+      $blocks['content'] = _download_count_block_contents('top_files');
+      break;
+
+    case 'recent_files':
+      $blocks['subject'] = t('Recently Downloaded Files');
+      $blocks['content'] = _download_count_block_contents('recent_files');
+      break;
+  }
+
+  return $blocks;
+}
+
+/**
+ * Generate block contents based on delta.
+ */
+function _download_count_block_contents($block) {
+  $limit = (int) variable_get('download_count_' . $block . '_block_limit', 10);
+  $rows = array();
+  if ($block == 'top_files') {
+    $sql = 'SELECT dcc.fid, dcc.count, f.filename, f.filesize FROM {download_count_cache} dcc JOIN {file_managed} f ON dcc.fid = f.fid ORDER BY dcc.count DESC';
+  }
+  else {
+    $sql = 'SELECT dc.fid, MAX(dc.timestamp) as date, f.filename, f.filesize FROM {download_count} dc JOIN {file_managed} f ON dc.fid = f.fid GROUP BY dc.fid ORDER BY date DESC';
+  }
+
+  $header[] = array(
+    'data' => t('Name'),
+    'class' => 'filename',
+  );
+  $header[] = array(
+    'data' => t('Size'),
+    'class' => 'size',
+  );
+  $header[] = array(
+    'data' => $block == 'top_files' ? t('Count') : t('Last Downloaded'),
+    'class' => $block == 'top_files' ? 'count' : 'last',
+  );
+
+  $result = db_query_range($sql, 0, $limit);
+  foreach ($result as $file) {
+    $row = array();
+    $row[] = check_plain($file->filename);
+    $row[] = format_size($file->filesize);
+    $row[] = $block == 'top_files' ? $file->count : t('%time ago', array('%time' => format_interval(REQUEST_TIME - $file->date)));
+    $rows[] = $row;
+  }
+
+  if (count($rows)) {
+    return theme('table', array('header' => $header, 'rows' => $rows, 'sticky' => FALSE));
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function download_count_theme() {
+  $theme= array(
+    'download_count_file_field_formatter' => array(
+    'variables' => array('file' => NULL),
+    'file' => 'includes/download_count.field.inc',
+    ),
+  );
+  return $theme;
+}

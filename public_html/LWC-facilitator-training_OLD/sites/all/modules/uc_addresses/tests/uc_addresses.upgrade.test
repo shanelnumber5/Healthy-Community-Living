@@ -1,0 +1,125 @@
+<?php
+
+/**
+ * @file
+ * Test cases for upgrades from previous versions.
+ */
+
+/**
+ * Upgrade tests.
+ */
+class UcAddressesUpgradeTestCase extends UpgradePathTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Ubercart Addresses upgrade path',
+      'description' => 'Tests upgrading Ubercart Addresses from 6.x-1.x.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  /**
+   * Installs filled Drupal 6 database.
+   */
+  public function setUp() {
+    // Path to the database dump files.
+    $this->databaseDumpFiles = array(
+      drupal_get_path('module', 'simpletest') . '/tests/upgrade/drupal-6.bare.database.php',
+      drupal_get_path('module', 'uc_addresses') . '/tests/upgrade/uc_store.database.php',
+      drupal_get_path('module', 'uc_addresses') . '/tests/upgrade/uc_addresses-6x1x.database.php',
+    );
+    parent::setUp();
+
+    $this->uninstallModulesExcept(array('uc_store', 'uc_addresses'));
+
+    // UC Store set variables.
+    $this->variable_set('date_format_uc_store', 'm/d/Y');
+    $this->variable_set(
+      'uc_address_format_840',
+      "!company\n" .
+      "!first_name !last_name\n" .
+      "!street1\n" .
+      "!street2\n" .
+      "!city, !zone_code !postal_code\n" .
+      "!country_name_if"
+    );
+    $this->variable_set(
+      'uc_address_format_124',
+      "!company\n" .
+      "!first_name !last_name\n" .
+      "!street1\n" .
+      "!street2\n" .
+      "!city, !postal_code\n" .
+      "!zone_name, !country_name"
+    );
+  }
+
+  /**
+   * Test if an upgrade from 6.x-1.x can be performed.
+   */
+  public function testUpgrade6x1x() {
+    // Set an address format using the 6.x-2.x style.
+    $this->variable_set(
+      'uc_addresses_address_format_840',
+      "[uc_addresses_company]\n" .
+      "[uc_addresses_first_name] [uc_addresses_last_name]\n" .
+      "[uc_addresses_street1]\n" .
+      "[uc_addresses_street2]\n" .
+      "[uc_addresses_city], [uc_addresses_zone_code] [uc_addresses_postal_code]\n" .
+      "[uc_addresses_country_name_if]"
+    );
+
+    // Perform the upgrade.
+    $this->assertTrue($this->performUpgrade(), 'The upgrade was completed successfully.');
+
+    // Restore autoload functions.
+    spl_autoload_register('drupal_autoload_class');
+    spl_autoload_register('drupal_autoload_interface');
+
+    // Test if the records in the uc_addresses table are updated
+    // as expected.
+    $addresses7 = db_select('uc_addresses')
+      ->fields('uc_addresses')
+      ->execute()
+      ->fetchAll();
+    foreach ($addresses7 as $address) {
+      switch ($address->aid) {
+        case 1:
+          // Address 1 should not have been marked as default.
+          $this->assertEqual($address->default_billing, 0, 'Address 1 is not marked as default billing.');
+          $this->assertEqual($address->default_shipping, 0, 'Address 1 is not marked as default shipping.');
+          break;
+        case 2:
+          // Address 1 should not have been marked as default.
+          $this->assertEqual($address->default_billing, 1, 'Address 2 is marked as default billing.');
+          $this->assertEqual($address->default_shipping, 1, 'Address 2 is marked as default shipping.');
+          break;
+      }
+    }
+
+    // Enable the module now.
+    module_enable(array('uc_addresses'));
+
+    // Test if the default permissions were assigned.
+    $account = $this->drupalCreateUser();
+    $this->assertTrue(user_access('view own addresses', $account), 'User may view own addresses.');
+    $this->assertTrue(user_access('add/edit own addresses', $account), 'User may edit own addresses.');
+    $this->assertTrue(user_access('delete own addresses', $account), 'User may delete own addresses.');
+
+    // Test if address formats are updated properly.
+    $expected = "[uc_addresses:company]\n" .
+    "[uc_addresses:first_name] [uc_addresses:last_name]\n" .
+    "[uc_addresses:street1]\n" .
+    "[uc_addresses:street2]\n" .
+    "[uc_addresses:city], [uc_addresses:zone:zone_code] [uc_addresses:postal_code]\n" .
+    "[uc_addresses:country:country_name_if]";
+    $this->verbose(variable_get('uc_addresses_address_format_840'));
+    $this->verbose($expected);
+    $this->assertEqual(variable_get('uc_addresses_address_format_840'), $expected, 'The address format is updated to the 7.x-1.x style.');
+  }
+}
