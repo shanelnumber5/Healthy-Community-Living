@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * @file
+ * Install/uninstall tasks for the Salesforce module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function salesforce_uninstall() {
+  variable_del('salesforce_consumer_key');
+  variable_del('salesforce_consumer_secret');
+  variable_del('salesforce_endpoint');
+  variable_del('salesforce_identity');
+  variable_del('salesforce_instance_url');
+  variable_del('salesforce_refresh_token');
+}
+
+
+/**
+ * Implements hook_requirements().
+ */
+function salesforce_requirements($phase) {
+  $requirements = array();
+
+  $t = get_t();
+
+  if ($phase == 'runtime') {
+    $requirements['salesforce'] = array(
+      'title' => $t('Salesforce'),
+    );
+    // Check if SSL is enabled. Do not proceed if it is disabled.
+    if ($_SERVER['HTTPS'] !== 'on') {
+      $requirements['salesforce']['value'] = $t('SSL is not enabled for this site. You must enable SSL to authorize your site with Salesforce.');
+      $requirements['salesforce']['severity'] = REQUIREMENT_ERROR;
+      return $requirements;
+    }
+    // Check if the site is authorized with Salesforce.
+    $sfapi = new Salesforce(variable_get('salesforce_consumer_key', NULL), variable_get('salesforce_consumer_key', NULL));
+    if ($sfapi->isAuthorized()) {
+      try {
+        $resources = $sfapi->listResources();
+        if (is_array($resources) && !empty($resources)) {
+          $requirements['salesforce']['value'] = $t('Your website is authorized and connected to Salesforce. !resources.', array('!resources' => l($t('View available resources'), 'admin/config/services/salesforce')));
+          $requirements['salesforce']['severity'] = REQUIREMENT_OK;
+        }
+      } catch (Exception $e) {
+        $requirements['salesforce']['value'] = $e->getMessage();
+        $requirements['salesforce']['severity'] = REQUIREMENT_ERROR;
+      }
+    }
+    else {
+      $requirements['salesforce']['value'] = $t('Your website is not authorized to connect with Salesforce. Please visit !config to authorize your site.', array('!config' => l($t('the Salesforce configuration page'), 'admin/config/services/salesforce')));
+      $requirements['salesforce']['severity'] = REQUIREMENT_ERROR;
+    }
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_schema().
+ */
+function salesforce_schema() {
+  $schema = array();
+  $schema['cache_salesforce_object'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_salesforce_object']['description'] = 'Cache table for detailed information about specific Salesforce objects.';
+  return $schema;
+}
+
+/**
+ * Create the cache bin for Salesforce objects.
+ */
+function salesforce_update_7300() {
+  if (!db_table_exists('cache_salesforce_object')) {
+    $schema_name = 'cache_salesforce_object';
+    $schema[$schema_name] = drupal_get_schema_unprocessed('system', 'cache');
+    $schema[$schema_name]['description'] = 'Cache table for detailed information about specific Salesforce objects.';
+    db_create_table($schema_name, $schema[$schema_name]);
+  }
+}
+
+/**
+ * Update API version to 29.0 for getUpdated() support.
+ */
+function salesforce_update_7301() {
+  $version = variable_get('salesforce_api_version', array());
+  if (empty($version) || version_compare($version['version'], "29.0") < 0) {
+    variable_set('salesforce_api_version', array(
+      "label" => "Winter '14",
+      "url" => "/services/data/v29.0/",
+      "version" => "29.0",
+    ));
+  }
+}
+

@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Adds the aria-required attribute to Webforms.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function webform_aria_form_alter(&$form, &$form_state, $form_id) {
+  // Check that this is a webform.
+  if (substr($form_id, 0, 20) == 'webform_client_form_') {
+    $submitted = $form['submitted'];
+
+    // Loop through the items.
+    foreach (element_children($submitted) as $item) {
+      // Check that the field is required.
+      if ($form['submitted'][$item]['#required']) {
+        // If so, add aria-required=true arribute to the component.
+        $form['submitted'][$item]['#attributes']['aria-required'] = 'true';
+      }
+    }
+  }
+}
+
