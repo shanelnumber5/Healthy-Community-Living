@@ -1,0 +1,152 @@
+<?php
+/**
+ * @file
+ * Install file for uc_custom_payment.
+ */
+/**
+ * Implements hook_schema().
+ */
+function uc_custom_payment_schema() {
+  $schema['uc_custom_payment'] = array(
+    'description' => t('Ubercart custom payment methods.'),
+    'export' => array(
+      'key' => 'name',
+      'identifier' => 'method',
+      'default hook' => 'default_uc_custom_payment_method',
+      'api' => array(
+        'owner' => 'uc_custom_payment',
+        'api' => 'default_uc_custom_payment_method',
+        'minimum_version' => 1,
+        'current_version' => 1,
+      ),
+    ),
+    'fields' => array(
+      'name' => array(
+        'type' => 'varchar',
+        'length' => '128',
+        'description' => 'Machine readable name.',
+      ),
+      'mid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary key.',
+        'no export' => TRUE,
+      ),
+      'admin_title' => array(
+        'type' => 'varchar',
+        'length' => '255',
+        'description' => 'Administrative title.',
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => '255',
+        'description' => 'Title as presented to the customer.',
+      ),
+      'instructions' => array(
+        'type' => 'text',
+        'description' => 'Additional instructions to display when this method is chosen.',
+        'serialize' => TRUE,
+      ),
+      'data' => array(
+        'type' => 'text',
+        'description' => 'Additional data for this payment type.',
+        'serialize' => TRUE,
+      ),
+      /*
+      'description' => array(
+        'type' => 'text',
+        'description' => 'The description of this method that will appear on checkout review and on invoices.',
+        'serialize' => TRUE,
+      ),
+      'fields' => array(
+        'type' => 'text',
+        'description' => 'Serialized array of input fields which will be presented to the user at checkout.',
+        'serialize' => TRUE,
+      ),
+      */
+    ),
+    'primary key' => array('mid'),
+    'unique keys' => array(
+      'name' => array('name'),
+    ),
+  );
+  
+  $schema['uc_custom_payment_data'] = array(
+    'description' => 'Base payment data table for custom payment methods.',
+    'fields' => array(
+      'cpdid' => array(
+        'description' => 'Primary key: unique id for each set of data',
+        'type' => 'serial',
+      ),
+      'order_id' => array(
+        'description' => 'The {uc_orders}.order_id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'receipt_id' => array(
+        'description' => 'The {uc_payment_receipts}.receipt_id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'method' => array(
+        'description' => 'The machine name of the payment method.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('cpdid'),
+    'indexes' => array(
+      'order_id' => array('order_id'),
+      'receipt_id' => array('receipt_id'),
+    ),
+    'foreign keys' => array(
+      'order_id' => array('uc_orders' => 'order_id'),
+      'receipt_id' => array('uc_payment_receipts' => 'receipt_id')
+    ),
+  );
+  
+  return $schema;
+}
+
+/**
+ * Add a serialized 'data' field for payment methods.
+ */
+function uc_custom_payment_update_7001() {
+  if (!db_field_exists('uc_custom_payment', 'data')) {
+    db_add_field('uc_custom_payment', 'data', array(
+      'type' => 'text',
+      'description' => 'Additional data for this payment type.',
+      'serialize' => TRUE,
+    ));
+  }
+}
+
+/**
+ * Add a primary key and receipt_id reference to uc_custom_payment_data.
+ */
+function uc_custom_payment_update_7002() {
+  if (!db_field_exists('uc_custom_payment_data', 'cpdid')) {
+    db_drop_primary_key('uc_custom_payment_data');
+    db_add_field('uc_custom_payment_data', 'cpdid', array(
+      'description' => 'Primary key: unique id for each set of data',
+      'type' => 'serial',
+    ), array('primary key' => array('cpdid')));
+  }
+  if (!db_field_exists('uc_custom_payment_data', 'receipt_id')) {
+    db_add_field('uc_custom_payment_data', 'receipt_id', array(
+      'description' => 'The {uc_payment_receipts}.receipt_id.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ));
+    db_add_index('uc_custom_payment_data', 'receipt_id', array('receipt_id'));
+  }
+}

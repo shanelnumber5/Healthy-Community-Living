@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @file ckeditor_custom.module
+ *
+ * Includes tweaks to ckeditor that can't be performed through config.
+ */
+
+/**
+ * Implements hook_wysiwyg_editor_settings_alter()
+ */
+function ckeditor_custom_wysiwyg_editor_settings_alter(&$settings, $context) {
+
+  // The $context variable contains information about the wysiwyg profile we're using
+  // In this case we just need to check that the editor being used is ckeditor
+  if ($context['profile']->editor == 'ckeditor') {
+
+    // Specify the custom config file that defines our font styles
+    $settings['customConfig'] = base_path() . drupal_get_path('module', 'ckeditor_custom') .
+                                '/ckeditor_custom_config.js';
+
+    // We are also going to specify a custom body id and class
+    $settings['bodyId'] = 'ckeditor_custom_id';
+    $settings['bodyClass'] = 'ckeditor_custom_class';
+
+    // Make sure the toolbar is there
+    if (!empty($settings['toolbar'])) {
+
+      // These are our desired groupings. Buttons that aren't listed here will be
+      // Grouped in one big group at the end
+      $preferred_groupings[] = array('Source');
+      $preferred_groupings[] = array('Bold', 'Italic', 'Underline', 'Strike');
+      $preferred_groupings[] = array('JustifyLeft', 'JustifyCenter',
+                                     'JustifyRight', 'JustifyBlock');
+      $preferred_groupings[] = array('BulletedList', 'NumberedList', 'Outdent', 'Indent');
+      $preferred_groupings[] = array('Undo', 'Redo');
+      $preferred_groupings[] = array('Image', 'Link', 'Unlink', 'Anchor', '-');
+      $preferred_groupings[] = array('TextColor', 'BGColor');
+      $preferred_groupings[] = array('Superscript', 'Subscript', 'Blockquote');
+      $preferred_groupings[] = array('HorizontalRule', 'break');
+      $preferred_groupings[] = array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord');
+      $preferred_groupings[] = array('ShowBlocks', 'RemoveFormat', 'SpecialChar', '/');
+      $preferred_groupings[] = array('Format', 'Font', 'FontSize', 'Styles', 'Table');
+      $preferred_groupings[] = array('SelectAll', 'Find', 'Replace');
+      $preferred_groupings[] = array('Flash', 'Smiley');
+      $preferred_groupings[] = array('CreateDiv', 'Maximize', 'SpellChecker', 'Scayt');
+
+      // An array to hold our newly grouped buttons
+      $new_grouped_toolbar = array();
+
+      // Compare each desired groupings to the configured buttons in the toolbar
+      // and add them if they are there
+      foreach($preferred_groupings as $button_group){
+
+        // array_intersect() compares two arrays and returns an array of values
+        // That are present in both arrays.
+        $matching_buttons = array_intersect($button_group, $settings['toolbar'][0]);
+
+        if (!empty($matching_buttons)) {
+          // If there are matching buttons, we add it as an array to our
+          // $new_grouped_toolbar. We run $matching_buttons through array_values()
+          // to reset the array keys back to starting from 0.
+          $new_grouped_toolbar[] = array_values($matching_buttons);
+        }
+
+      }
+
+      // For extra safety, we're going to find any remaining buttons that we
+      // missed. To do this we need to flatten our grouped buttons and compare
+      // that against the original toolbar to see if we missed anything
+      $new_flattened_toolbar = array();
+
+      // Flatten our grouped buttons
+      foreach ($new_grouped_toolbar as $key => $group) {
+        $new_flattened_toolbar = array_merge($new_flattened_toolbar, $group);
+      }
+
+      // Array diff returns the keys that are present in the first argument, but
+      // not not present in the second
+      $remaining_buttons = array_diff($settings['toolbar'][0], $new_flattened_toolbar);
+
+      if (!empty($remaining_buttons)) {
+        // reset the array keys and add it to the $new_grouped_toolbar
+        $new_grouped_toolbar[] = array_values($remaining_buttons);
+      }
+
+      // Replace the toolbar with our new, grouped toolbar.
+      $settings['toolbar'] = $new_grouped_toolbar;
+
+    }
+  }
+}

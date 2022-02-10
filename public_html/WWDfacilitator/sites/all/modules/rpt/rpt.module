@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ */
+function rpt_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_admin_settings') {
+
+    // Add checkbox with setting of password automatic generation.
+    $form['registration_cancellation']['rpt_password_generate'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Generate password automatically'),
+      '#description' => t('Hide password fields on user register form.'),
+      '#default_value' => variable_get('rpt_password_generate', 0),
+      '#weight' => 0,
+    );
+
+    $form['registration_cancellation']['rpt_password_length'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Password length'),
+      '#description' => t('Length for generated password.'),
+      '#default_value' => variable_get('rpt_password_length', 10),
+      '#weight' => 1,
+    );
+  }
+  elseif ($form_id == 'user_register_form') {
+    // Hide password field and generate password for user.
+    $generate_password = variable_get('rpt_password_generate', 0);
+    if ($generate_password) {
+      $form['account']['pass']['#type']  = 'value';
+
+      $password_length = variable_get('rpt_password_length', 10);
+      $form['account']['pass']['#value'] = user_password($password_length);
+    }
+  }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function rpt_token_info() {
+  $info['tokens']['user']['password'] = array(
+    'name' => t('User password'),
+    'description' => t('Provides user password. May be used only during registration.'),
+  );
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function rpt_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $replacements = array();
+  if (isset($data['user']) && isset($data['user']->password)) {
+    $replacements['[user:password]'] = $data['user']->password;
+  }
+  elseif (isset($data['user']) && !isset($data['user']->password)) {
+    $replacements['[user:password]'] = t('Your password');
+  }
+  return $replacements;
+}
