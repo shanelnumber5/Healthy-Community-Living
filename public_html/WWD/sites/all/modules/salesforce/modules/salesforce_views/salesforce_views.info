@@ -1,0 +1,17 @@
+name = Salesforce Views
+description = Salesforce Views integration
+package = Salesforce
+core = 7.x
+
+dependencies[] = salesforce
+dependencies[] = salesforce_mapping
+dependencies[] = views
+
+; Views: Salesforce Mapping Object
+files[] = includes/salesforce_views.views.inc
+
+; Information added by Drupal.org packaging script on 2020-01-07
+version = "7.x-3.3"
+core = "7.x"
+project = "salesforce"
+datestamp = "1578431288"

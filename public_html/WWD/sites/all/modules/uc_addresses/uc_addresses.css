@@ -1,0 +1,118 @@
+/**
+ * @file
+ * Ubercart Addresses stylesheet
+ *
+ * This stylesheet styles:
+ * - The address book (user/%uid/addresses)
+ * - A single address
+ * - The address form
+ */
+
+/* @group Address book */
+.address-book ol {
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.address-book h3 {
+  margin-top: 0px;
+  padding: 0px;
+}
+
+.address-book li.address-item {
+  margin: 0 0 10px;
+}
+
+.address-book .default-addresses {
+  float: left;
+  width: 48.5%;
+}
+
+.view-uc-addresses-address-book td.address-item {
+  vertical-align: top;
+}
+
+.address-book .default-addresses li.address-item .list-address-wrapper,
+.view-uc-addresses-address-book td.address-item .list-address-wrapper {
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  padding: 10px 13px;
+}
+
+.address-book .additional-addresses {
+  float: right;
+  width: 48.5%;
+}
+
+.address-book .additional-addresses li.address-item {
+  background: transparent none repeat scroll 0 0;
+  border: 0 none;
+  padding: 0;
+}
+
+.address-book .address-links,
+.list-address .address-links td {
+  clear: both;
+  padding-top: 1em;
+}
+/* @end */
+
+/* @group Single address */
+.list-address {
+  width: 20em;
+  border: 0px;
+}
+
+.list-address td {
+  border: 0px;
+}
+
+.list-address .title-col {
+  vertical-align: top;
+}
+.list-address .data-row td {
+  vertical-align: top;
+}
+/* @end */
+
+/* @group Address form */
+.address-pane-table .field-field .form-item label {
+  display: none;
+}
+
+.address-pane-table tbody {
+  border-top: 0px;
+}
+
+.address-pane-table table td {
+  padding: 2px;
+}
+
+.address-pane-table .field-label {
+  text-align: right;
+  font-weight: bold;
+}
+
+.address-pane-table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.address-pane-table .form-item {
+  display: inline;
+}
+/* @end */
+
+/* @group Order admin */
+form input.uc-addresses-button {
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: normal;
+  margin-bottom: 1em;
+  padding: 2px;
+  text-align: center;
+}
+/* @end */

@@ -1,0 +1,7 @@
+user_name;first_name;last_name;phone;company;street1;street2;city;zone;postal_code;country;address_name;guid
+john.lefagity;John;Lefagity;012-12345;;123 Mainstreet;;Somecity;Oregon;97005;United States;Home;john.lefagity:Home
+john.lefagity;John;Lefagity;514 514 5414;Abbey;9 Sideway;Room 45;Othercity;Quebec;G3S 1Q2;Canada;Work;john.lefagity:work
+Paulie;Paul;Sigouist;334-9888;;10 Lonesome Street;;Sweethome;Alabama;35439;United States;;Paulie:1
+Paulie;Paul;Sigouist;;;1965 Penny Lane;;Liverpool;Merseyside;L99 685;United Kingdom;;Paulie:2
+GeorgeWex;George;Wexanion;411-2119;;56 Highway;;Rainbow;Florida;32999;United States;;GeorgeWex:1
+XeBukist;Ringo;Xebukist;485-1940;;1234 Everblue Street;;LA for one day;California;90011;United States;;XeBukist:1

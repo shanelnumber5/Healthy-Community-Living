@@ -1,0 +1,185 @@
+<?php
+
+/**
+ * @file
+ * Test for Feeds integration.
+ */
+
+/**
+ * Test aggregating a feed as address records.
+ */
+class UcAddressesFeedsTest extends UcAddressesTestCase {
+  /**
+   * Describes this test.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Ubercart Addresses Feeds integration',
+      'description' => 'Tests importing addresses from a CSV file using the Feeds module.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store', 'feeds', 'feeds_ui'),
+    );
+  }
+
+  /**
+   * Setup.
+   */
+  public function setUp() {
+    parent::setUp();
+    module_enable(array('feeds', 'feeds_ui'));
+
+    // Reset/rebuild all data structures after enabling the modules.
+    $this->resetAll();
+
+    // Create an admin user and log in.
+    $permissions = array(
+      'access content',
+      'add/edit all addresses',
+      'delete all addresses',
+      'administer users',
+      'administer feeds',
+    );
+    $adminUser = $this->drupalCreateUser($permissions);
+    $this->drupalLogin($adminUser);
+  }
+
+  /**
+   * Test address creation.
+   */
+  public function test() {
+    // In this test we use the default importer, which is called 'uc_addresses'.
+    $this->drupalGet('admin/structure/feeds/');
+    // Ensure the importer is available.
+    $this->assertText(t('Ubercart Addresses address import'));
+
+    // Ensure that we can access the processor setting pages without errors.
+    $this->drupalGet('admin/structure/feeds/uc_addresses/settings/FeedsUcAddressesProcessor');
+    $this->assertText('Settings for Ubercart Addresses processor');
+    $this->drupalGet('admin/structure/feeds/uc_addresses/mapping');
+    $this->assertText('Mapping for Ubercart Addresses processor');
+
+    // Create the users we are referring to in the csv file except 1
+    // (so we can test failing imports as well).
+    $account1 = $this->UcAddressesCreateUser('john.lefagity');
+    $account2 = $this->UcAddressesCreateUser('Paulie');
+    $account3 = $this->UcAddressesCreateUser('XeBukist');
+
+    // Import CSV file.
+    $this->importFile('uc_addresses', $this->absolutePath() . '/tests/feeds/uc_addresses.csv');
+
+    // Assert result.
+    $this->assertText('Created 4 addresses');
+    // One address belonged to an user that was not known on the system.
+    // Another address was from a country that is not installed on the system.
+    $this->assertText('Failed importing 2 addresses');
+
+    // Test the number of addresses in the database (should be 4).
+    $count = db_query("SELECT count(aid) FROM {uc_addresses}")->fetchField();
+    $this->assertEqual($count, 4, 'There are 4 addresses in the uc_addresses table.');
+
+    // Test if the first and second addresses are saved correctly
+    // to the database.
+    $values1 = array(
+      'uid' => $account1->uid,
+      'first_name' => 'John',
+      'last_name' => 'Lefagity',
+      'phone' => '012-12345',
+      'company' => '',
+      'street1' => '123 Mainstreet',
+      'street2' => '',
+      'city' => 'Somecity',
+      'postal_code' => '97005',
+      'country' => 840,
+      'address_name' => 'Home',
+      'default_shipping' => 1,
+      'default_billing' => 1,
+    );
+    $values2 = array(
+      'uid' => $account1->uid,
+      'first_name' => 'John',
+      'last_name' => 'Lefagity',
+      'phone' => '514 514 5414',
+      'company' => 'Abbey',
+      'street1' => '9 Sideway',
+      'street2' => 'Room 45',
+      'city' => 'Othercity',
+      'postal_code' => 'G3S 1Q2',
+      'country' => 124,
+      'address_name' => 'Work',
+      'default_shipping' => 0,
+      'default_billing' => 0,
+    );
+    $this->assertTrue(self::checkAddressValuesInDatabase($values1), 'The first address is correctly saved to the database.');
+    $this->assertTrue(self::checkAddressValuesInDatabase($values2), 'The second address is correctly saved to the database.');
+
+    // Go to each address book and check if the addresses
+    // are displayed as expected.
+    $this->viewAddressBook($account1);
+    // Test if the first imported address is displayed.
+    $this->assertText('Home');
+    $this->assertText('John Lefagity');
+    $this->assertText('123 Mainstreet');
+    $this->assertText('Somecity, OR 97005');
+    $this->assertText('012-12345');
+    // Test if the second imported address is displayed.
+    $this->assertText('Work');
+    $this->assertText('Abbey');
+    $this->assertText('9 Sideway');
+    $this->assertText('Room 45');
+    $this->assertText('Othercity QC  G3S 1Q2');
+    $this->assertText('Canada');
+    $this->assertText('514 514 5414');
+
+    // Test if the fourth imported address is displayed.
+    $this->viewAddressBook($account3);
+    $this->assertText('Ringo Xebukist');
+    $this->assertText('1234 Everblue Street');
+    $this->assertText('LA for one day, CA 90011');
+    $this->assertText('485-1940');
+
+    // Now install the United Kingdom country and import again.
+    module_load_include('countries.inc', 'uc_store');
+    uc_country_import('united_kingdom_826_2.cif');
+    $this->importFile('uc_addresses', $this->absolutePath() . '/tests/feeds/uc_addresses.csv');
+    // Assert result. One additional address should be created.
+    // An other address should still fail.
+    $this->assertText('Created 1 address');
+    $this->assertText('Failed importing 1 address');
+    // Test the number of addresses in the database (should be 5 now).
+    $count = db_query("SELECT count(aid) FROM {uc_addresses}")->fetchField();
+    $this->assertEqual($count, 5, 'There are 5 addresses in the uc_addresses table.');
+
+    // Test if the fifth imported address is displayed.
+    $this->viewAddressBook($account2);
+    $this->assertText('Paul Sigouist');
+    $this->assertText('1965 Penny Lane');
+    $this->assertText('Liverpool');
+    $this->assertText('L99 685');
+    $this->assertText('United Kingdom');
+  }
+
+  /**
+   * Absolute path to Drupal root.
+   */
+  public function absolute() {
+    return realpath(getcwd());
+  }
+
+  /**
+   * Get the absolute directory path of the uc_addresses module.
+   */
+  public function absolutePath() {
+    return $this->absolute() . '/' . drupal_get_path('module', 'uc_addresses');
+  }
+
+  /**
+   * Import a file through the import form. Assumes FeedsFileFetcher in place.
+   */
+  public function importFile($id, $file) {
+    $this->assertTrue(file_exists($file), 'Source file exists');
+    $edit = array(
+      'files[feeds]' => $file,
+    );
+    $this->drupalPost('import/' . $id, $edit, 'Import');
+  }
+}
