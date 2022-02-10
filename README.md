@@ -1,2 +1,2 @@
-# Healthy Community Living
- 
+# HealthyCommunityLiving
+A Living Repository for the revamped Healthy Community Living Website
