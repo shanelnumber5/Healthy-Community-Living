@@ -1,0 +1,160 @@
+/*****************************************/
+/* Customizer control color style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+.sinatra-alignment-control,
+.background-position-control {
+	margin-top: 12px;
+	
+	input[type="radio"]:checked ~ .button {
+		background: #0071a1;
+		border-color: #0071a1;
+		z-index: 1;
+		color: #FFF !important;
+
+		.alignment-position-center-icon:before,
+		.background-position-center-icon:before {
+			background-color: #FFF !important;
+		}
+	}
+
+	input[type="radio"]:focus ~ .button {
+		border-color: #5b9dd9;
+		box-shadow: none !important;
+		color: #23282d;
+	}
+}
+
+.sinatra-alignment-control {
+	.alignment-position-center-icon,
+	.alignment-position-center-icon:before {
+		display: inline-block;
+		line-height: 1;
+		text-align: center;
+		transition: background-color .1s ease-in;
+	}
+
+	.alignment-position-center-icon {
+		height: 20px;
+		margin-top: 13px;
+		vertical-align: top;
+		width: 20px;
+
+		&:before {
+			background-color: #555;
+			border-radius: 50%;
+			content: "";
+			height: 12px;
+			width: 12px;
+		}
+	}
+
+	.button:hover .alignment-position-center-icon:before,
+	input[type="radio"]:focus ~ .button .alignment-position-center-icon:before {
+		background-color: #23282d;
+	}
+
+	.button-group {
+		display: block;
+
+		&.disabled {
+			opacity: .15;
+			pointer-events: none;
+		}
+
+		.button {
+			border-radius: 0;
+			box-shadow: none;
+			/* Following properties are overridden by buttons responsive styles (see: wp-includes/css/buttons.css). */
+			height: 40px !important;
+			line-height: 2.9 !important;
+			margin: 0 -1px 0 0 !important;
+			padding: 0 10px 1px !important;
+			position: relative;
+
+			&:active,
+			&:hover,
+			&:focus {
+				z-index: 1;
+			}
+		}
+
+		.dashicons {
+			margin-top: 9px;
+		}
+
+		& > label {
+			margin: 0 !important;
+
+			&.disabled {
+				opacity: .15;
+				pointer-events: none;
+			}
+		}
+
+		&.si-top {
+			.si-left {
+				.dashicons {
+					transform: rotate(45deg);
+				}
+			}
+
+			.si-right {
+				.dashicons {
+					transform: rotate(-45deg);
+				}
+			}
+		}
+
+		&.si-bottom {
+			.si-left {
+				.dashicons {
+					transform: rotate(-45deg);
+				}
+			}
+
+			.si-right {
+				.dashicons {
+					transform: rotate(45deg);
+				}
+			}
+		}
+
+		&:first-child {
+			& > label:first-child {
+				.button {
+					border-top-left-radius: 3px;
+				}
+			}
+
+			& > label:last-child {
+				.button {
+					border-top-right-radius: 3px;
+				}
+			}
+		}
+
+		&:last-child {
+			& > label:first-child {
+				.button {
+					border-bottom-left-radius: 3px;
+				}
+			}
+
+			& > label:last-child {
+				.button {
+					border-bottom-right-radius: 3px;
+				}
+			}
+		}
+
+		& + .button-group {
+			margin-top: -1px;
+		}
+	}
+}

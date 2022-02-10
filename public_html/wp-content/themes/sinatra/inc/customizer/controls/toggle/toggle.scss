@@ -1,0 +1,86 @@
+/*****************************************/
+/* Customizer control toggle style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+$color_1:               #0085ba;
+$body_color: 			#ddd;
+$admin_border_color: 	#ddd;
+
+.sinatra-toggle-wrapper {
+	display: flex;
+
+	.sinatra-toggle {
+		margin-left: auto;
+		padding-left: 10px;
+		box-sizing: border-box;
+		align-items: center;
+	}
+
+	.customize-control-title {
+		margin-bottom: 0;
+	}
+}
+
+.sinatra-toggle {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+
+	input[type="checkbox"] {
+		display: none;
+
+		&:checked + label .sinatra-toggle-switch {
+			background-color: $color_1 !important;
+
+			&:after {
+				transform: translateX(14px);
+			}
+		}
+	}
+
+	.sinatra-toggle-switch {
+		box-sizing: border-box;
+		background-color: darken( #c7d5df, 15 );
+		border-radius: 9px;
+		padding: 2px;
+		transition: all .2s;
+		outline: 0;
+		display: block;
+		width: 32px;
+		height: 18px;
+		position: relative;
+		cursor: pointer;
+		user-select: none;
+		margin: 0;
+
+		&:after {
+			position: relative;
+			display: block;
+			content: '';
+			width: 14px;
+			height: 14px;
+			left: 0;
+			border-radius: 50%;
+			background: $color_5;
+			transition: all .15s ease;
+			transform: translateX(0px);
+		}
+	}
+
+	label {
+		display: flex;
+		align-items: center;
+		color: $color_3;
+
+		&:hover {
+			.sinatra-toggle-switch {
+				background-color: darken( #c7d5df, 25 );
+			}
+		}
+	}
+}

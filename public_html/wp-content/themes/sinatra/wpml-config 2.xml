@@ -1,0 +1,19 @@
+<wpml-config>
+    <admin-texts>
+        <key name="theme_mods_sinatra">
+            <key name="sinatra_main_nav_mobile_label" />
+            <key name="sinatra_excerpt_more" />
+            <key name="sinatra_pre_footer_cta_text" />
+            <key name="sinatra_pre_footer_cta_btn_text" />
+            <key name="sinatra_header_widgets">
+                <key name="*" />
+            </key>
+            <key name="sinatra_copyright_widgets" >
+                <key name="*" />
+            </key>
+            <key name='custom_logo' />
+            <key name='sinatra_logo_default_retina' />
+            <key name='blogname' />
+        </key>
+    </admin-texts>   
+</wpml-config>

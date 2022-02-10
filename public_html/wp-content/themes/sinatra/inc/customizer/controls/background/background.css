@@ -1,0 +1,65 @@
+/*****************************************/
+/* Customizer background control style
+/*****************************************/
+.sinatra-background-wrapper .actions {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 12px;
+}
+
+.sinatra-background-wrapper .actions .button {
+  margin-top: 0;
+}
+
+.sinatra-background-wrapper .actions .advanced-settings {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-left: auto;
+  text-decoration: none;
+  color: #555d66;
+}
+
+.sinatra-background-wrapper .actions .advanced-settings.up span.dashicons {
+  -webkit-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.sinatra-background-wrapper .actions .advanced-settings:hover {
+  color: #0085ba;
+}
+
+.sinatra-background-wrapper .actions .advanced-settings.hidden {
+  display: none;
+}
+
+.sinatra-background-wrapper .actions .background-image-upload-remove-button {
+  margin-right: 6px;
+}
+
+.sinatra-background-wrapper .background-image {
+  margin-top: 12px;
+  margin-bottom: 24px;
+}
+
+.sinatra-background-wrapper .background-repeat {
+  margin-bottom: 6px;
+}
+
+.sinatra-background-wrapper .more-settings.up {
+  color: #0085ba;
+}
+
+.sinatra-background-wrapper h4 {
+  margin-bottom: 12px;
+}

@@ -1,0 +1,122 @@
+/*****************************************/
+/* Customizer checkbox group control style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+$color_1:               #0085ba;
+$body_color: 			#ddd;
+$admin_border_color: 	#ddd;
+
+.si-checkbox {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    user-select: none;
+    font-size: 14px;
+    cursor: default;
+
+    input[type=checkbox] {
+        position: relative;
+        border: 2px solid currentColor;
+        border-radius: 2px;
+        background: none;
+        clear: none;
+        cursor: pointer;
+        display: inline-block !important;
+        line-height: 0;
+        margin: 1px 0 0 0;
+        outline: 0;
+        padding: 0 !important;
+        text-align: center;
+        vertical-align: text-top;
+        height: 20px;
+        width: 20px;
+        min-width: 20px;
+        opacity: .5;
+        transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: none;
+
+        &:before {
+            position: absolute;
+            margin: 0;
+            content: '';
+            opacity: 0;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid #FFF;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg) scale(0);
+            z-index: 2;
+            transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-sizing: border-box;
+        }
+
+        &:disabled:not(:checked) {
+            border-color: currentColor !important;
+            opacity: .65 !important;
+            pointer-events: none;
+
+            & + .si-label {
+                opacity: .65;
+                pointer-events: none;
+            }
+        }
+
+        &:checked {
+            border-color: $color_1;
+            background-color: $color_1;
+            opacity: 1;
+
+            &:before {
+                opacity: 1;
+                transform: rotate(45deg) scale(1);
+            }
+
+            &:disabled {
+                opacity: .65;
+                pointer-events: none;
+                border-color: $color_1;
+
+                & + .si-label {
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+
+    .si-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding-left: 11px;
+        flex-grow: 1;
+
+        .sinatra-info-icon {
+            margin-left: auto;
+            position: relative !important;
+
+            .sinatra-tooltip {
+                left: auto !important;
+                right: -7px !important;
+
+                &:after {
+                    left: auto !important;
+                    right: 12px !important;
+                }
+            }
+        }
+    }
+
+    &:hover {
+        input[type=checkbox] {
+            border-color: $color_1;
+            opacity: 1;
+        }
+    }
+}

@@ -1,0 +1,59 @@
+/* ==========================================================================
+*  Sinatra Customizer Preview styles.
+*  ========================================================================== */
+.customize-partial-edit-shortcut-blogname,
+.customize-partial-edit-shortcut-sinatra_footer_widgets_align_center,
+.customize-partial-edit-shortcut-sinatra_hero_hover_slider_post_number {
+  display: none !important;
+}
+
+.sinatra-hide-shortcuts .customize-partial-edit-shortcut {
+  display: none !important;
+}
+
+.customize-partial-edit-shortcut {
+  z-index: 9;
+}
+
+.customize-partial-edit-shortcut-sinatra_top_bar_widgets,
+.customize-partial-edit-shortcut-sinatra_enable_pre_footer_cta,
+.customize-partial-edit-shortcut-sinatra_header_widgets,
+.customize-partial-edit-shortcut-sinatra_copyright_widgets,
+.customize-partial-edit-shortcut-sinatra_hero_hover_slider_elements {
+  left: 50%;
+  top: 50%;
+}
+
+.customize-partial-edit-shortcut-sinatra_top_bar_widgets button,
+.customize-partial-edit-shortcut-sinatra_enable_pre_footer_cta button,
+.customize-partial-edit-shortcut-sinatra_header_widgets button,
+.customize-partial-edit-shortcut-sinatra_copyright_widgets button,
+.customize-partial-edit-shortcut-sinatra_hero_hover_slider_elements button {
+  left: -15px;
+  top: -15px;
+}
+
+.sinatra-social-nav .customize-partial-edit-shortcut {
+  top: 0;
+}
+
+.sinatra-social-nav .customize-partial-edit-shortcut button {
+  left: -20px;
+}
+
+.sinatra-primary-nav .customize-partial-edit-shortcut {
+  top: 12px;
+}
+
+.sinatra-primary-nav .customize-partial-edit-shortcut button {
+  left: -25px;
+}
+
+.sinatra-header-layout-3 .customize-partial-edit-shortcut-sinatra_header_layout {
+  left: 30px;
+}
+
+.customize-partial-edit-shortcut-sinatra_footer_layout {
+  top: 50%;
+  left: 35px;
+}

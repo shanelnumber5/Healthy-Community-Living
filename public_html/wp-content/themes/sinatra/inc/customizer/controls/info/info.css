@@ -1,0 +1,24 @@
+/*****************************************/
+/* Customizer control info style.
+/*****************************************/
+.customize-control-sinatra-info {
+  margin-top: auto;
+  margin-bottom: 0 !important;
+}
+
+.sinatra-info-wrapper {
+  position: relative;
+  background-color: #FFF;
+  border-top: 1px solid #ddd;
+  margin-left: -12px;
+  margin-right: -12px;
+  padding: 16px 12px;
+  margin-bottom: -12px;
+  margin-top: 30px;
+}
+
+.sinatra-info-wrapper .button-primary {
+  margin-top: 10px;
+  height: 26px;
+  line-height: 24px;
+}

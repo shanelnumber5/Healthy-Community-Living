@@ -1,0 +1,293 @@
+/*****************************************/
+/* Customizer control widget style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+.sinatra-add-widget-wrap {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.sinatra-control-wrapper.sinatra-widget-wrapper {
+	.customize-control-description {
+		margin-bottom: 12px !important;
+	}
+}
+
+.sinatra-customizer-widget-form,
+.sinatra-widget-tmpls {
+	display: none;
+}
+
+.sinatra-add-widget {
+	&::before {
+		content: "\f132";
+		display: inline-block;
+		position: relative;
+		left: -4px;
+		font: normal 16px/1 dashicons;
+		vertical-align: middle;
+		transition: all 0.1s;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+}
+
+body.sinatra-adding-widget {
+
+	#customize-preview {
+		opacity: 0.4;
+	}
+
+	#sinatra-available-widgets {
+		transform: translate3d(0, 0, 0);
+		visibility: visible;
+	}
+
+	.sinatra-add-widget {
+		background: #eee;
+		border-color: #929793;
+		color: #32373c;
+		box-shadow: inset 0 2px 5px -3px rgba(0, 0, 0, 0.5);
+
+		&:before {
+			transform: rotate(45deg);
+		}
+	}
+}
+
+.sinatra-widget-caption {
+	padding: 0 0 0 25px;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	flex: 1;
+	border-bottom: 1px solid #ddd;
+
+	h3 {
+		font-size: 14px;
+		display: block;
+		font-weight: 200;
+		margin: 0 auto 0 0;
+		padding: 0;
+		line-height: 1;
+	}
+
+	a {
+		margin-left: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 45px;
+		height: 45px;
+		padding: 0 2px 0 0;
+		background: #eee;
+		border-right: 1px solid #ddd;
+		border-left: 1px solid #ddd;
+		color: #444;
+		text-align: left;
+		cursor: pointer;
+		transition: color .15s ease-in-out, border-color .15s ease-in-out, background .15s ease-in-out;
+		box-sizing: content-box;
+		text-decoration: none;
+
+		&:before {
+			font: normal 18px/1 dashicons;
+			content: "\f335";
+		}
+
+		&:hover,
+		&:focus {
+			background-color: #f3f3f5;
+			box-shadow: none;
+			outline: none;
+		}
+	}
+}
+
+#sinatra-available-widgets-list {
+
+	.sinatra-widget {
+		position: relative;
+		padding: 15px 15px 15px 60px;
+		background-color: #fff;
+		border-bottom: 1px solid #ddd;
+		border-left: 4px solid #fff;
+		transition: .15s color ease-in-out, .15s background-color ease-in-out, .15s border-color ease-in-out;
+		cursor: pointer;
+
+		&.disabled {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+
+		.widget {
+			margin: 0;
+		}
+
+		.widget-top {
+			border: none;
+			background: inherit;
+			box-shadow: none !important;
+		}
+
+		.widget-title {
+			position: relative;
+
+			h3 {
+				padding: 0 0 5px;
+				font-size: 14px;
+			}
+
+			i {
+				position: absolute;
+				top: -3px;
+				right: 100%;
+				margin-right: 20px;
+				width: 20px;
+				height: 20px;
+				color: #32373c;
+				font: normal 20px/1 dashicons;
+				text-align: center;
+				box-sizing: border-box;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+		}
+
+		.widget-description {
+			padding: 0;
+			color: #72777c;
+			display: block;
+			font-size: 12px;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+		}
+
+		.widget-title-action {
+			button {
+				display: none;
+			}
+		}
+
+		&:hover,
+		&.selected,
+		&:focus {
+			background-color: #f3f3f5;
+			border-bottom-color: #ccc;
+			color: #0073aa;
+			border-left: 4px solid #0073aa;
+		}
+	}
+}
+
+.sinatra-widget-container {
+
+	.widget {
+		margin-bottom: 5px;
+
+		&:last-child {
+			margin-bottom: 12px;
+		}
+
+		.widget-content {
+			p {
+				margin: 0 0 20px 0;
+			}
+
+			label:not(.switch-label) {
+				color: #23282d;
+				font-weight: 500;
+				display: block;
+			}
+
+			button {
+				display: inline-block;
+				margin-top: 6px;
+			}
+
+			.description {
+				font-size: 11px;
+			}
+		}
+
+		&:first-child {
+			.widget-top {
+				border-top-left-radius: 3px;
+				border-top-right-radius: 3px;
+			}
+		}
+
+		&:last-child  {
+			.widget-top {
+				border-bottom-left-radius: 3px;
+				border-bottom-right-radius: 3px;
+			}
+		}
+
+		.widget-top {
+			border: 1px solid #ddd !important;
+			box-shadow: none !important;
+
+			.widget-title {
+				i {
+					display: none;
+				}
+			}
+		}
+
+		.widget-inside {
+			padding: 20px;
+			border-radius: 0 0 3px 3px;
+		}
+
+		&.sinatra-expanded {
+
+			.widget-top {
+				background-color: #FFF;
+				border-radius: 3px 3px 0 0 !important;
+			}
+
+			.toggle-indicator {
+				transform: rotate(180deg);
+			}
+		}
+
+		.widget-control-actions {
+			margin-top: 15px;
+			display: flex;
+			align-items: center;
+
+			.spinner {
+				margin-left: auto;
+				margin-right: 0;
+				visibility: visible;
+			}
+
+			.widget-control-separator {
+				display: inline-block;
+				margin: 0 2px;
+			}
+		}
+	}
+
+	.sinatra-widget-nav-selected {
+		display: none;
+	}
+
+	.sinatra-widget-nav-has-menu {
+
+		.sinatra-widget-nav-empty {
+			display: none;
+		}
+
+		.sinatra-widget-nav-selected {
+			display: block;
+		}
+	}
+}

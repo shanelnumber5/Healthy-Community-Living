@@ -1,0 +1,30 @@
+/*****************************************/
+/* Customizer button control style
+/*****************************************/
+.sinatra-button-wrapper {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 4px;
+}
+
+.sinatra-button-wrapper .sinatra-control-heading {
+  margin-right: auto;
+}
+
+.sinatra-button-wrapper .button {
+  padding-left: 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sinatra-button-wrapper .customize-control-title {
+  margin-bottom: 0;
+}

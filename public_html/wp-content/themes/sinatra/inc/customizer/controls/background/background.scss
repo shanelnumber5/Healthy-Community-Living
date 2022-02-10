@@ -1,0 +1,58 @@
+/*****************************************/
+/* Customizer background control style
+/*****************************************/
+
+.sinatra-background-wrapper {
+	.actions {
+		display: flex;
+		align-items: center;
+		margin-top: 12px;
+
+		.button {
+			margin-top: 0;
+		}
+
+		.advanced-settings {
+			display: flex;
+			align-items: center;
+			margin-left: auto;
+			text-decoration: none;
+			color: #555d66;
+
+			&.up {
+				span.dashicons {
+					transform: rotate(180deg);
+				}
+			}
+
+			&:hover {
+				color: #0085ba;
+			}
+
+			&.hidden {
+				display: none;
+			}
+		}
+
+		.background-image-upload-remove-button {
+			margin-right: 6px;
+		}
+	}
+
+	.background-image {
+		margin-top: 12px;
+		margin-bottom: 24px;
+	}
+
+	.background-repeat {
+		margin-bottom: 6px;
+	}
+
+	.more-settings.up {
+		color: #0085ba;
+	}
+
+	h4 {
+		margin-bottom: 12px;
+	}
+}

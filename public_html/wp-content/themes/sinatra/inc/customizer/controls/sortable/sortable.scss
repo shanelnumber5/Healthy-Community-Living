@@ -1,0 +1,66 @@
+/*****************************************/
+/* Customizer control sortable style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+.sinatra-sortable-control {
+	margin-top: 12px;
+	margin-bottom: 24px;
+}
+
+.sinatra-sortable-item.invisible {
+	background-color: rgba(255,255,255,0);
+
+	.dashicons-visibility:before {
+		content: '\f530';
+	}
+}
+
+.sinatra-sortable-item {
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	position: relative;
+	line-height: 1.3;
+	font-size: 1em;
+	padding: 0;
+	margin: 0 0 6px;
+	border: 1px solid #dedede;
+
+	.dashicons {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 38px;
+		height: 44px;
+		border-right: 1px solid #dedede;
+		font-size: 16px;
+	}
+
+	.dashicons-menu {
+		cursor: grab;
+
+		&:active {
+			cursor: grabbing;
+		}
+	}
+
+	.dashicons-visibility {
+		cursor: pointer;
+	}
+
+	span {
+		margin-left: 12px;
+		font-weight: 400;
+		white-space: nowrap;
+		margin-right: 30px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: block;
+		line-height: 1;
+	}
+}

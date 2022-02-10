@@ -1,0 +1,159 @@
+/*****************************************/
+/* Customizer control range style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+.sinatra-range-wrapper {
+	.sinatra-control-wrap { 
+		display: flex; 
+		flex-wrap: wrap; 
+		align-items: center; 
+		box-sizing: border-box;
+		margin-top: 12px;
+
+		input[type=range],
+		.sinatra-range-input,
+		.sinatra-reset-range {
+			flex: 1;
+		}
+
+	}
+
+	input[type=range] { 
+		background-color: #ddd; 
+		height: 3px;
+		padding: 0; 
+		margin: 0;
+		cursor: pointer; 
+		transition: background .15s ease;
+		border-radius: 3px;
+		-webkit-appearance: none;
+
+		&:focus { 
+			box-shadow: none !important; 
+			outline: none !important; 
+		}
+
+		&:hover { 
+			background-color: rgba(0, 0, 0, 0.1); 
+		}
+
+		&::-webkit-slider-thumb { 
+			-webkit-appearance: none; 
+			background-color: #2e86b9;
+			width: 15px; 
+			height: 15px;
+			border: none; 
+			border-radius: 50%;
+			transition: background-color .15s ease, box-shadow .15s ease, transform .15s ease;
+
+			&:hover {
+				background-color: #008ec2;
+				box-shadow: 0 0 0 10px rgba(46, 134, 185, 0.12);
+			}
+
+			&:active {
+				box-shadow: none;
+				transform: scale(1.5);
+				cursor: grabbing;
+			}
+		}
+
+		&::-moz-range-track { 
+			border: inherit; 
+			background-color: transparent;
+		}
+
+		&::-ms-track { 
+			border: inherit; 
+			color: transparent; 
+			background-color: transparent; 
+		}
+
+		&::-ms-fill-lower,
+		&::-ms-fill-upper { 
+			background-color: transparent; 
+		}
+
+		&::-ms-tooltip { 
+			display: none; 
+		}
+
+		&::-moz-range-thumb { 
+			background-color: #2e86b9; 
+			width: 15px; 
+			height: 15px;
+			border: none; 
+			border-radius: 30px;
+			transition: all .15s ease;
+
+			&:hover {
+				background-color: #008ec2;
+				transform: scale(1.25);
+			}
+		}
+
+		&::-ms-thumb { 
+			background-color: #2e86b9; 
+			width: 15px; 
+			height: 15px;
+			border: none; 
+			border-radius: 30px;
+			transition: all .15s ease;
+
+			&:hover {
+				background-color: #008ec2;
+				transform: scale(1.25);
+			}
+		}
+	}
+	
+	.sinatra-range-input {
+		max-width: 50px; 
+		height: 28px; 
+		text-align: center;
+		font-size: 13px; 
+		border-radius: 3px;
+		font-weight: 400; 
+		color: $color_3; 
+		-moz-appearance: textfield;
+		margin-left: 6px !important;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button { 
+			-webkit-appearance: none; 
+			margin: 0; 
+		}
+	}
+
+	.sinatra-reset-range { 
+		max-width: 16px;
+		margin-left: 12px;
+		display: inline-block; 
+		position: relative; 
+		line-height: 1; 
+		color: rgba(0, 0, 0, 0.2); 
+		cursor: pointer; 
+		text-align: center;
+		
+		&:hover { 
+			color: #f00; 
+		}
+
+		span { 
+			width: 13px; 
+			height: 13px; 
+			font-size: 13px; 
+			line-height: 1; 
+		}
+	}
+
+	.sinatra-range-unit {
+		margin-left: 6px;
+		color: #555d66;
+	}
+}

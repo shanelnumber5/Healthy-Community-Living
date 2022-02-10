@@ -1,0 +1,17 @@
+/*****************************************/
+/* Right-to-left language support
+ * https://codex.wordpress.org/Right-to-Left_Language_Support
+/*****************************************/
+body {
+  direction: rtl;
+  unicode-bidi: embed;
+}
+
+th {
+  text-align: right;
+}
+
+.screen-reader-text:focus {
+  left: auto;
+  right: 5px;
+}
