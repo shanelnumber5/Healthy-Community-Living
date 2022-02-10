@@ -1,0 +1,405 @@
+<?php
+
+/**
+ * @file
+ * jQuery Tabs Field module allows you to create jQuery tabs field.
+ */
+
+/**
+ * Implements hook_field_info().
+ */
+function field_jquery_tabs_field_info() {
+  return array(
+    'field_jquery_tabs' => array(
+      'label' => t('jQuery Tabs Field'),
+      'description' => t('jQuery Tabs Field.'),
+      'default_widget' => 'field_jquery_tabs_widget',
+      'default_formatter' => 'field_jquery_tabs_default',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function field_jquery_tabs_field_widget_info() {
+  return array(
+    'field_jquery_tabs_widget' => array(
+      'label' => t('jQuery Tabs'),
+      'field types' => array('field_jquery_tabs'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function field_jquery_tabs_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+
+  $field_name = $field['field_name'];
+  $wrapper = 'jquery-tabs-wrapper-' . str_replace("_", "-", $field_name);
+  $element += array(
+    '#type' => 'fieldset',
+    '#tree' => TRUE,
+    '#title' => isset($instance['label']) ? $instance['label'] : NULL,
+    '#description' => isset($instance['description']) ? $instance['description'] : NULL,
+    '#prefix' => '<div id="' . $wrapper . '">',
+    '#suffix' => '</div>',
+  );
+
+  $field_data = array(
+    'field_name' => $field_name,
+    'langcode' => $langcode,
+    'delta' => $delta,
+  );
+
+  $form_state['jquery_tabs']['field_data'] = $field_data;
+
+  // Build the fieldset with the proper number of names. We'll use
+  // $form_state['num_names'] to determine the number of textfields to build.
+  if (empty($form_state['num_names'][$field_name])) {
+    if (isset($items[$delta])) {
+      $form_state['num_names'][$field_name] = _field_jquery_tabs_entered_tab_count($items[$delta]);
+    }
+    else {
+      $form_state['num_names'][$field_name] = 1;
+    }
+  }
+
+  for ($i = 1; $i <= $form_state['num_names'][$field_name]; $i++) {
+    $element['tab_title_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Tab @value Title', array('@value' => $i)),
+      '#size' => 50,
+      '#maxlength' => 50,
+      '#description' => t('Enter title for the Tab @value', array('@value' => $i)),
+      '#required' => ($delta == 0 && $instance['required'] && $i == 1) ? TRUE : FALSE,
+      '#default_value' => isset($items[$delta]['tab_title_' . $i]) ? $items[$delta]['tab_title_' . $i] : NULL,
+    );
+
+    $body_default_value = (isset($instance['default_value'][$delta]['tab_body_1']['value']) && $i < 2) ? $instance['default_value'][$delta]['tab_body_1']['value'] : '';
+    $body_default_format = isset($instance['default_value'][$delta]['tab_body_1']['format']) ? $instance['default_value'][$delta]['tab_body_1']['format'] : 'full_html';
+
+    if (isset($items[$delta]['tab_body_' . $i]) && is_array($items[$delta]['tab_body_' . $i])) {
+      $body_default_value = isset($items[$delta]['tab_body_' . $i]['value']) ? $items[$delta]['tab_body_' . $i]['value'] : '';
+      $body_default_format = isset($items[$delta]['tab_body_' . $i]['format']) ? $items[$delta]['tab_body_' . $i]['format'] : 'full_html';
+    }
+    elseif (!empty($items[$delta]['tab_body_' . $i])) {
+      $body_default_value = isset($items[$delta]['tab_body_' . $i]) ? $items[$delta]['tab_body_' . $i] : '';
+      $body_default_format = isset($items[$delta]['tab_format_' . $i]) ? $items[$delta]['tab_format_' . $i] : 'full_html';
+    }
+
+    $element['tab_body_' . $i] = array(
+      '#type' => 'text_format',
+      '#title' => t('Tab @value Body', array('@value' => $i)),
+      '#cols' => 60,
+      '#rows' => 5,
+      '#description' => t('Enter body for the Tab @value', array('@value' => $i)),
+      '#default_value' => $body_default_value,
+      '#format' => $body_default_format,
+    );
+  }
+
+  if ($form_state['num_names'][$field_name] < 7) {
+    $element['add_jquery_tab'] = array(
+      '#type' => 'submit',
+      '#value' => t('Add one more in @field_label', array('@field_label' => $instance['label'])),
+      '#submit' => array('_field_jquery_tabs_add_more_add_one'),
+      '#attributes' => array('class' => array($field_name)),
+      '#ajax' => array(
+        'callback' => '_field_jquery_tabs_add_more_callback',
+        'wrapper' => $wrapper,
+      ),
+    );
+  }
+  if ($form_state['num_names'][$field_name] > 1) {
+    $element['remove_jquery_tab'] = array(
+      '#type' => 'submit',
+      '#value' => t('Remove one in @field_label', array('@field_label' => $instance['label'])),
+      '#attributes' => array('class' => array($field_name)),
+      '#submit' => array('_field_jquery_tabs_add_more_remove_one'),
+      '#ajax' => array(
+        'callback' => '_field_jquery_tabs_add_more_callback',
+        'wrapper' => $wrapper,
+      ),
+    );
+  }
+
+  return $element;
+}
+
+/**
+ * Callback for getting number of opened tabs in form.
+ */
+function _field_jquery_tabs_entered_tab_count($item) {
+  $count = 1;
+  if (isset($item['tab_title_1']) && isset($item['tab_title_2']) &&
+      isset($item['tab_title_3']) && isset($item['tab_title_4']) &&
+      isset($item['tab_title_5']) && isset($item['tab_title_6']) &&
+      isset($item['tab_title_7'])) {
+    $count = 7;
+  }
+  elseif (isset($item['tab_title_1']) && isset($item['tab_title_2']) &&
+      isset($item['tab_title_3']) && isset($item['tab_title_4']) &&
+      isset($item['tab_title_5']) && isset($item['tab_title_6'])) {
+    $count = 6;
+  }
+  elseif (isset($item['tab_title_1']) && isset($item['tab_title_2']) &&
+      isset($item['tab_title_3']) && isset($item['tab_title_4']) &&
+      isset($item['tab_title_5'])) {
+    $count = 5;
+  }
+  elseif (isset($item['tab_title_1']) && isset($item['tab_title_2']) &&
+      isset($item['tab_title_3']) && isset($item['tab_title_4'])) {
+    $count = 4;
+  }
+  elseif (isset($item['tab_title_1']) && isset($item['tab_title_2']) &&
+      isset($item['tab_title_3'])) {
+    $count = 3;
+  }
+  elseif (isset($item['tab_title_1']) && isset($item['tab_title_2'])) {
+    $count = 2;
+  }
+  return $count;
+}
+
+/**
+ * Callback for both ajax-enabled buttons.
+ *
+ * Selects and returns the fieldset with the names in it.
+ */
+function _field_jquery_tabs_add_more_callback($form, $form_state) {
+  $field_name = $form_state['clicked_button']['#attributes']['class'][0];
+  $delta = $form_state['jquery_tabs']['field_data']['delta'];
+  $langcode = $form_state['jquery_tabs']['field_data']['langcode'];
+  return $form[$field_name][$langcode][$delta];
+}
+
+/**
+ * Submit handler for the "add-one-more" button.
+ *
+ * Increments the max counter and causes a rebuild.
+ */
+function _field_jquery_tabs_add_more_add_one($form, &$form_state) {
+  $field_name = $form_state['clicked_button']['#attributes']['class'][0];
+  $form_state['num_names'][$field_name]++;
+  $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function field_jquery_tabs_field_is_empty($item, $field) {
+
+  return empty($item['tab_title_1']) && empty($item['tab_body_1']);
+}
+
+/**
+ * Submit handler for the "remove one" button.
+ *
+ * Decrements the max counter and causes a form rebuild.
+ */
+function _field_jquery_tabs_add_more_remove_one($form, &$form_state) {
+  $field_name = $form_state['clicked_button']['#attributes']['class'][0];
+  if ($form_state['num_names'][$field_name] > 1) {
+    $form_state['num_names'][$field_name]--;
+  }
+  $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Implements hook_field_validate().
+ */
+function field_jquery_tabs_field_validate($entity_type, $entity, $field, $instance, $langcode, &$items, &$errors) {
+  foreach ($items as $delta => $value) {
+    _field_jquery_tabs_validate($items[$delta], $delta, $field, $entity, $instance, $langcode);
+  }
+}
+
+/**
+ * Callback function for validate.
+ */
+function _field_jquery_tabs_validate(&$item, $delta, $field, $node, $instance, $langcode) {
+
+  for ($i = 2; $i <= 7; $i++) {
+    if (isset($item['tab_body_' . $i])) {
+      if (drupal_strlen($item['tab_body_' . $i]['value'])) {
+        if (empty($item['tab_title_' . $i])) {
+          form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][tab_title_' . $i, t('Tab @value Title is mandatory if you choose to enter text in Tab @value body', array('@value' => $i)));
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_presave().
+ */
+function field_jquery_tabs_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  foreach ($items as $delta => $value) {
+    for ($i = 1; $i <= 7; $i++) {
+      if (!empty($items[$delta]['tab_body_' . $i]['value'])) {
+        $v = $items[$delta]['tab_body_' . $i];
+        $items[$delta]['tab_body_' . $i] = $v['value'];
+        $items[$delta]['tab_format_' . $i] = $v['format'];
+      }
+      else {
+        unset($items[$delta]['tab_body_' . $i]['format']);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function field_jquery_tabs_field_formatter_info() {
+  return array(
+    'field_jquery_tabs_default' => array(
+      'label' => t('jQuery Horizontal Tabs'),
+      'field types' => array('field_jquery_tabs'),
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+    ),
+    'field_jquery_tabs_vertical' => array(
+      'label' => t('jQuery Vertical Tabs'),
+      'field types' => array('field_jquery_tabs'),
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function field_jquery_tabs_theme() {
+  return array(
+    'field_jquery_tabs_wrapper' => array(
+      'variables' => array(),
+      'template' => 'templates/field-jquery-tabs-wrapper',
+    ),
+    'field_jquery_tabs_list' => array(
+      'variables' => array(),
+      'template' => 'templates/field-jquery-tabs-lists',
+    ),
+    'field_jquery_tabs_body' => array(
+      'variables' => array(),
+      'template' => 'templates/field-jquery-tabs-body',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function field_jquery_tabs_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+
+  switch ($display['type']) {
+    case 'field_jquery_tabs_default':
+      drupal_add_library('system', 'ui.tabs');
+      $tabs_list = '';
+      $tabs_body = '';
+      $is_tabs_exists = FALSE;
+      $suffix = str_replace(array('.', ' '), array('-', '-'), microtime());
+      foreach ($items as $delta => $item) {
+        for ($i = 1; $i <= 7; $i++) {
+          if (!empty($item['tab_title_' . $i])) {
+            $is_tabs_exists = TRUE;
+            $tabs_list .= theme('field_jquery_tabs_list', array(
+              'suffix' => $suffix,
+              'tab_title' => check_plain($item['tab_title_' . $i]),
+              'counter' => $i,
+                )
+            );
+
+            $tabs_body .= theme('field_jquery_tabs_body', array(
+              'suffix' => $suffix,
+              'tab_body' => check_markup($item['tab_body_' . $i], isset($item['tab_format_' . $i]) ?
+                      $item['tab_format_' . $i] : 'plain_text', $langcode),
+              'counter' => $i,
+                )
+            );
+          }
+        }
+        if ($is_tabs_exists) {
+
+          $js = ' jQuery( "#tabs-' . $suffix . '" ).tabs();';
+
+          drupal_add_js('jQuery(document).ready(function () { ' . $js . ' });', array(
+            'type' => 'inline',
+            'scope' => 'header',
+              )
+          );
+          $output = theme('field_jquery_tabs_wrapper', array(
+            'tabs_list' => $tabs_list,
+            'tabs_body' => $tabs_body,
+            'suffix' => $suffix,
+              )
+          );
+          $element[$delta]['#markup'] = $output;
+        }
+      }
+
+      break;
+
+    case 'field_jquery_tabs_vertical':
+      drupal_add_library('system', 'ui.tabs');
+      $tabs_list = '';
+      $tabs_body = '';
+      $is_tabs_exists = FALSE;
+      $suffix = str_replace(array('.', ' '), array('-', '-'), microtime());
+      foreach ($items as $delta => $item) {
+        for ($i = 1; $i <= 7; $i++) {
+          if (!empty($item['tab_title_' . $i])) {
+            $is_tabs_exists = TRUE;
+            $tabs_list .= theme('field_jquery_tabs_list', array(
+              'suffix' => $suffix,
+              'tab_title' => check_plain($item['tab_title_' . $i]),
+              'counter' => $i,
+                )
+            );
+
+            $tabs_body .= theme('field_jquery_tabs_body', array(
+              'suffix' => $suffix,
+              'tab_body' => check_markup($item['tab_body_' . $i], isset($item['tab_format_' . $i]) ?
+                      $item['tab_format_' . $i] : 'plain_text', $langcode),
+              'counter' => $i,
+                )
+            );
+          }
+        }
+        if ($is_tabs_exists) {
+          drupal_add_css(drupal_get_path('module', 'field_jquery_tabs') . '/css/field_jquery_tabs_vertical_tabs.css');
+          $js = ' jQuery( "#tabs-' . $suffix . '" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+            jQuery( "#tabs-' . $suffix . ' li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );';
+
+          drupal_add_js('jQuery(document).ready(function () { ' . $js . ' });', array(
+            'type' => 'inline',
+            'scope' => 'header',
+              )
+          );
+          $output = theme('field_jquery_tabs_wrapper', array(
+            'tabs_list' => $tabs_list,
+            'tabs_body' => $tabs_body,
+            'suffix' => $suffix,
+              )
+          );
+          $element[$delta]['#markup'] = $output;
+        }
+      }
+      break;
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function field_jquery_tabs_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'field_ui_field_edit_form') {
+    if ($form['#field']['type'] == 'field_jquery_tabs') {
+      $form['field']['cardinality']['#default_value'] = 1;
+      $form['field']['cardinality']['#attributes'] = array('disabled' => TRUE);
+    }
+  }
+}

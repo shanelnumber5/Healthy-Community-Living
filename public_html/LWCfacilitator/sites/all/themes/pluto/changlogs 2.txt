@@ -1,0 +1,10 @@
+<p>07/06/2014</p>
+<pre>
+  + Add custom css code to pluto.css, fix issue recent work full width on large screen.
+  + Update pluto.css, template.php fixed read-more button for default portfolio style.
+  
+</pre>
+10/06/2014
+<pre>
++ Update template.php fix secondary tabs.
+</pre>

@@ -1,0 +1,138 @@
+<?php
+
+
+
+/**
+ * Implementation of hook_block_info()
+ */
+function widget_block_info() {
+  $blocks['widget_flickr'] = array(
+      'info' => t('Flickr Widget'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implementation of hook_block_configure()
+ */
+function widget_block_configure($delta = '') {
+  $form = array();
+  switch ($delta) {
+
+    case 'widget_flickr':
+
+
+      $form['widget_flickr_id'] = array(
+          '#type' => 'textfield',
+          '#title' => t('Your flickr ID'),
+          '#default_value' => variable_get('widget_flickr_id', '78504614@N05'),
+          '#description' => t('Eg: 78504614@N05')
+      );
+
+      $form['widget_flickr_photo_count'] = array(
+          '#type' => 'select',
+          '#title' => t('Number of recent photos items to display'),
+          '#default_value' => variable_get('widget_flickr_photo_count', 6),
+          '#options' => drupal_map_assoc(array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 30)),
+      );
+
+
+      break;
+  }
+
+  return $form;
+}
+
+/**
+ * Implementation of hook_block_save()
+ */
+function widget_block_save($delta = '', $edit = array()) {
+  switch ($delta) {
+    case 'widget_flickr':
+      variable_set('widget_flickr_id', $edit['widget_flickr_id']);
+      variable_set('widget_flickr_photo_count', $edit['widget_flickr_photo_count']);
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_block_view()
+ */
+function widget_block_view($delta = '') {
+  // This example is adapted from node.module.
+  $block = array();
+
+  switch ($delta) {
+
+    case 'widget_flickr':
+
+      $block['subject'] = t('Photo Stream');
+      $block['content'] = array(
+          '#theme' => 'widget_flickr',
+          '#settings' => array(
+              'widget_flickr_id' => variable_get('widget_flickr_id', '78504614@N05'),
+              'widget_flickr_photo_count' => variable_get('widget_flickr_photo_count', 6),
+          ),
+      );
+
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implementation of hook_theme()
+ * 
+ */
+function widget_theme($existing, $type, $theme, $path) {
+  return array(
+      'widget_flickr' => array(
+          'variables' => array('settings' => array('widget_flickr_id' => NULL, 'widget_flickr_photo_count' => NULL)),
+          'template' => 'widget_flickr'
+      ),
+  );
+}
+
+function twitter_time($a) {
+  //get current timestampt
+  $b = strtotime("now");
+  //get timestamp when tweet created
+  $c = strtotime($a);
+  //get difference
+  $d = $b - $c;
+  //calculate different time values
+  $minute = 60;
+  $hour = $minute * 60;
+  $day = $hour * 24;
+  $week = $day * 7;
+
+  if (is_numeric($d) && $d > 0) {
+    //if less then 3 seconds
+    if ($d < 3)
+      return "right now";
+    //if less then minute
+    if ($d < $minute)
+      return floor($d) . " seconds ago";
+    //if less then 2 minutes
+    if ($d < $minute * 2)
+      return "about 1 minute ago";
+    //if less then hour
+    if ($d < $hour)
+      return floor($d / $minute) . " minutes ago";
+    //if less then 2 hours
+    if ($d < $hour * 2)
+      return "about 1 hour ago";
+    //if less then day
+    if ($d < $day)
+      return floor($d / $hour) . " hours ago";
+    //if more then day, but less then 2 days
+    if ($d > $day && $d < $day * 2)
+      return "yesterday";
+    //if less then year
+    if ($d < $day * 365)
+      return floor($d / $day) . " days ago";
+    //else return more than a year
+    return "over a year ago";
+  }
+}

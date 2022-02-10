@@ -1,0 +1,191 @@
+Ubercart Addresses 7.x-1.x, xxxx-xx-xx
+------------------------------
+- Issue #2018225 by MegaChriz: preprocess variables for packing slip template.
+- Issue #2130011 by MegaChriz: fixed removing addresses of account when deleting
+  the account.
+- Issue #2168877 by MegaChriz: fixed country/zone fields not set to id when
+  creating a new order.
+- Issue #2068927 by MegaChriz: fixed UcAddressesUnownedException upon completing
+  checkout.
+- Issue #2323179 by MegaChriz: fixed Undefined property: UcOrder:: in
+  uc_addresses_uc_order_address_property_get(), added hook
+  hook_uc_addresses_order_load().
+- Issue #2450931 by MegaChriz: added tests for getting and setting entity
+  properties via the Entity property API.
+- Issue #2461299 by MegaChriz: fixed field handler API does not always work
+  with an UcAddressesSchemaAddress.
+- Issue #2602514: by MegaChriz: fixed FeedsUcAddressesProcessor doesn't invoke
+  hooks to add or alter tags.
+
+Ubercart Addresses 7.x-1.0-beta1, 2013-06-07
+------------------------------
+- Issue #1974976 by MegaChriz: fixed failing upgrade path from uc_addresses
+  6.x-1.x.
+- Issue #1986798 by MegaChriz: fixed bug where two addresses could be marked
+  as the same default type through the API.
+- Issue #1986732 by MegaChriz: added feature to change the weight of the
+  address form element on the user registration page.
+- Issue #1309546 by MegaChriz: added Feeds integration.
+- Issue #1424038 by MegaChriz: added "copy address" feature in order
+  administration section.
+
+Ubercart Addresses 7.x-1.0-alpha2, 2013-04-18
+------------------------------
+- Issue #1829348 by MegaChriz: sort countries list after translation.
+- Issue #1843562 by MegaChriz: respect Ubercart's "same address for billing
+  and delivery by default" setting.
+- Issue #1854736 by MegaChriz: fixed notice bug that occurred when having
+  a field appearing in one of the address panes only.
+- by MegaChriz: moved UcAddressesTextFieldHandler from the example module
+  to the main module and renamed the used handler in the example module.
+- Issue #1860040 by MegaChriz: ensure an address instance is assigned to
+  the order when an user without addresses enters checkout.
+- Issue #1866096 by MegaChriz: populate extra fields from previous orders.
+- Issue #1871916 by MegaChriz: display a warning when a field handler is
+  missing.
+- Issue #1894858 by MegaChriz: made API change in UcAddressesPermissions to
+  be able to check access for other users.
+- Issue #1895918 by MegaChriz: fixed bug where trying to load a non-
+  existing address could lead to a PHP notice error.
+- Issue #1911136 by MegaChriz: separated schema definitions from field
+  handler API definitions in the example module.
+- Issue #1831424 by MegaChriz: added Entity integration.
+- Issue #1900150 by MegaChriz: added Views address access filters.
+- Issue #1910626 by MegaChriz: API change: specified field data types.
+- Issue #1900176 by MegaChriz: added Views address action links.
+- Issue #1908904 by MegaChriz: added uc_addresses relationship in user
+  based views.
+- Issue #1900468 by MegaChriz: Entity integration: added address properties
+  to user and uc_order.
+- Issue #1927258 by MegaChriz: fixed bug where selecting an address at
+  checkout leaded to checkbox fields always being checked.
+- Issue #1942748 by MegaChriz: added Views address row style plugin.
+- Issue #1942746 by MegaChriz: added Views display access plugin and Views
+  argument validator plugins for addresses.
+- Issue #1433034 by MegaChriz: added default View for the address book page.
+- Issue #1961590 by MegaChriz: fixed "empty" address format.
+
+Ubercart Addresses 7.x-1.0-alpha1, 2012-10-11
+------------------------------
+- Issue #1104854 by MegaChriz: ported Ubercart Addresses 6.x-2.x to
+  Drupal 7.
+
+Ubercart Addresses 6.x-2.0-alpha2, 2012-10-11
+------------------------------
+- Issue #1381120 by MegaChriz: fixed foreach warning in address book when
+  user has no addresses.
+- Issue #1382088 by MegaChriz: added automated tests.
+- by MegaChriz: backport of several changes made in 7.x-1.x branch.
+- Issue #1412060 by MegaChriz: renamed permissions that contained an
+  apostrophe: "everyone's" has been replaced by "all".
+- Issue #1578362 by MegaChriz: implemented address tokens in order context.
+- Issue #1668666 by miccelito, MegaChriz: make default addresses on address
+  book page better themable.
+- Issue #1670124 by MegaChriz: renamed theme hook "uc_addresses_pane" to
+  "uc_addresses_form".
+- Issue #1678406 by MegaChriz: fixed bug while loading Ubercart order which
+  could result into a UcAddressesInvalidFieldException error when the order
+  had fields starting with 'delivery' or 'billing' that were unknown to
+  Ubercart Addresses.
+- Issue #1391216 by MegaChriz, phead, MegaChriz: added basic Views
+  integration.
+- Issue #1382088 by MegaChriz: adjusted automated tests 'checkout' to be
+  consistent with Ubercart's checkout test.
+- Issue #1382088 by MegaChriz: changed methods getEditAddressValues() and
+  generateAddressFieldValue() from UcAddressesTestCase class from
+  'protected' to 'public static'.
+- Issue #1735678 by MegaChriz: added an test for checking autofilling
+  addresses on checkout.
+- Issue #1785168 by MegaChriz: Ensure new addresses are saved after
+  checkout.
+- Issue #1785168 by MegaChriz: Ensure no double addresses are saved.
+- Issue #1701324 by MegaChriz: Fixed bug where selecting an address from
+  a previous order at checkout resulted into a "Illegal choice" error.
+
+Ubercart Addresses 6.x-2.0-alpha1, 2011-12-16
+------------------------------
+- by MegaChriz: little correction in upgrade script.
+- Issue #1368162 by MegaChriz: added odd/even classes for "other addresses"
+  in the address book.
+- by MegaChriz: the property '#uc_addresses_required' of the
+  uc_addresses_address now accept arrays, the required-setting of address
+  fields can now be overridden before the uc_addresses_address element
+  is processed.
+- by MegaChriz: added date tokens for "created" and "modified".
+- by MegaChriz: minor coding standards fixes.
+- by MegaChriz: minor text strings fixes.
+- by MegaChriz: added descriptions for address fields.
+
+Ubercart Addresses 6.x-2.x-dev, 2011-11-25
+------------------------------
+- by MegaChriz: removed unused functions uc_addresses_get_field_handlers()
+  and uc_addresses_compare().
+- by MegaChriz: replaced property '#required' in the uc_addresses_address
+  form element with '#uc_addresses_required'. Setting this to FALSE makes
+  all address fields non-required (even if they are configured to be
+  required). The field handlers were adjusted to fit with this change.
+- by MegaChriz: setting a default value for the property
+  '#uc_addresses_address' for the uc_addresses_address form element is moved
+  to the process function. This is done to increase performance: CTools'
+  plugin system is no longer unnecessary invoked on every request with a
+  form.
+- by MegaChriz: other minor changes.
+
+Ubercart Addresses 6.x-2.x-dev, 2011-11-04
+------------------------------
+- by MegaChriz: fixed PHP foreach warning on checkout page (forgot to test
+  anonymous checkout).
+- by MegaChriz: fixed minor bugs in the API.
+
+Ubercart Addresses 6.x-2.x-dev, 2011-10-31
+------------------------------
+- Issue #1327148 by MegaChriz: fixed a bug that could result in a fatal
+  error when trying to save an user with no addresses.
+- by MegaChriz: renamed permissions:
+  - "view own default address" has become "view own default addresses".
+  - "view default addresses" has become "view everyone's default addresses".
+- by MegaChriz: API change in the field handler API. The strings array is
+  removed from the field definition. Instead, extra properties can be
+  defined. In field handlers, getString() is replaced by getProperty().
+- Issue #396342 by MegaChriz: added support for getting addresses from
+  other sources than the address book. Two new hooks are introduced:
+  - hook_uc_addresses_select_addresses()
+  - hook_uc_addresses_select_addresses_alter()
+- by MegaChriz: added help via hook_help().
+
+Ubercart Addresses 6.x-2.x-dev, 2011-10-16
+------------------------------
+- Issue #660376 by MegaChriz: Implemented user tokens for default
+  addresses.
+- Documented used variables in templates.
+- Issue #1305348 by gease, MegaChriz: prevent address being saved as user
+  data in the user table.
+- Issue #1307896 by MegaChriz: implemented default values for fields.
+- by MegaChriz: added more documentation.
+- Issue #396342 by MegaChriz: Implemented address book in admin order
+  interface (partly done).
+
+Ubercart Addresses 6.x-2.x-dev, 2011-10-01
+------------------------------
+- by MegaChriz: Removed own checkout panes (due to complexity with CA
+  triggering).
+- by MegaChriz: Increased dependency of Ubercart to Ubercart 2.6.
+- by MegaChriz: Implemented order panes (rough version, incomplete).
+- by MegaChriz: Implemented tokens for address display.
+- by MegaChriz: Replaced address display in invoice with Ubercart
+  Addresses version.
+- by MegaChriz: added hook hook_uc_addresses_presave().
+- by MegaChriz: moved hooks documentation to uc_addresses.api.php.
+
+Ubercart Addresses 6.x-2.x-dev, 2011-09-14
+------------------------------
+New features:
+- by freixas, MegaChriz: Implemented a total new API.
+- by MegaChriz: Added a system for adding extra address fields (for
+  developers).
+- by MegaChriz: added hooks for addresses operations (load, insert, update
+  and delete).
+- by MegaChriz: Added address format display settings for addresses from
+  Ubercart Addresses.
+- by freixas, MegaChriz: Improved permission settings.
+- by MegaChriz: Improved theming.

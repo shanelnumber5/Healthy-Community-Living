@@ -1,0 +1,426 @@
+<?php
+
+/**
+ * @file
+ * Test cases for the api component.
+ */
+
+/**
+ * Test cases for the api component.
+ */
+class UcAddressesApiTestCase extends UcAddressesTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Unit testing',
+      'description' => 'Ensure that the API behaves as expected.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  /**
+   * Tests if addresses can be added, saved and deleted.
+   */
+  public function testAddressBookCrud() {
+    // First, get the address book of the admin user.
+    $addressBook = $this->UcAddressesGetAddressBook($this->adminUser->uid);
+
+    // Add a new address.
+    $address1 = $addressBook->addAddress();
+    // Ensure the address book has exactly one address in its registry.
+    $this->assertEqual(count($addressBook->getAddresses()), 1, 'The address book contains exactly one address.');
+    // Try to delete the address again and test again how many addresses the address book contains (should be 0).
+    $address1->delete();
+    $this->assertEqual(count($addressBook->getAddresses()), 0, 'The address book contains no addresses.');
+
+    // Add a new address and ensure it is new.
+    $address2 = $addressBook->addAddress();
+    $this->assertTrue($address2->isNew(), 'The address is new.');
+
+    // Fill the address (all field values should be present).
+    $values = self::getEditAddressValues();
+    $address2->setMultipleFields($values['values'], TRUE);
+
+    // Save all addresses in the address book and ensure the address is no longer new (thus has a definitive address ID).
+    $addressBook->save();
+    $this->assertFalse($address2->isNew(), 'The address is no longer new.');
+    // Check if the address exists in the database.
+    $this->assertTrue(self::checkAddressValuesInDatabase($values['values']), 'The address is correctly saved to the database.');
+
+    // Reset the address book.
+    $addressBook->reset();
+
+    // Try to get the address for the user.
+    $address2_2 = $addressBook->getAddressById($address2->getId());
+    // Ensure these two addresses have the same ID.
+    $this->assertEqual($address2_2->getId(), $address2->getId(), format_string('Address %aid succesfully loaded from the database.', array('%aid' => $address2->getId())));
+
+    // Reset the address book again.
+    $addressBook->reset();
+
+    // Try to delete the address.
+    $this->assertTrue($addressBook->deleteAddressById($address2->getId()), format_string('Address %aid is deleted.', array('%aid' => $address2->getId())));
+    // Ensure the database table is empty now.
+    $number_of_addresses = db_query("SELECT COUNT(aid) AS number_of_addresses FROM {uc_addresses}")->fetchField();
+    $this->assertEqual($number_of_addresses, 0, 'There are no addresses in the uc_addresses table.');
+  }
+
+  /**
+   * Tests unique address names.
+   */
+  public function testAddressNames() {
+    $addressBook = $this->UcAddressesGetAddressBook($this->adminUser->uid);
+
+    // Add a new address and give it a name.
+    $address1 = $addressBook->addAddress();
+    $addressBook->setAddressAsDefault($address1, 'billing');
+    $name = self::randomName(12);
+    $address1->setName($name);
+    $address1->save();
+    // Ensure the address has the name assigned.
+    $this->assertEqual($address1->getName(), $name, format_string('Address %aid got the name %name.', array('%aid' => $address1->getId(), '%name' => $name)));
+
+    // Reset the address book.
+    $addressBook->reset();
+
+    // Add a new address and try to give it the same name as address1.
+    $address2 = $addressBook->addAddress();
+    $address2->setName($name);
+    // Ensure address2 has NOT the name assigned.
+    $this->assertNotEqual($address2->getName(), $name, format_string('Address %aid does not got the name %name.', array('%aid' => $address2->getId(), '%name' => $name)));
+
+    // Try to delete address1 (should not be possible, because address should be a default address).
+    $this->assertFalse($addressBook->deleteAddressByName($name), format_string('Address %name is not deleted.', array('%name' => $name)));
+    // Make address2 the default and try again.
+    $addressBook->setAddressAsDefault($address2, 'billing');
+    $this->assertTrue($addressBook->deleteAddressByName($name), format_string('Address %name is deleted.', array('%name' => $name)));
+  }
+
+  /**
+   * Tests default addresses.
+   */
+  public function testDefaultAddresses() {
+    $addressBook = $this->UcAddressesGetAddressBook($this->adminUser->uid);
+
+    // Create a new address and mark it as default billing.
+    $address1 = $addressBook->addAddress();
+    $addressBook->setAddressAsDefault($address1, 'billing');
+    $address1->save();
+    // Ensure that the address is the default billing address.
+    $default_billing_aid = db_query("SELECT aid FROM {uc_addresses} WHERE default_billing = :default_billing", array(':default_billing' => 1))->fetchField();
+    $this->assertEqual($address1->getId(), $default_billing_aid, 'The address is the default billing address.');
+
+    // Reset the address book.
+    $addressBook->reset();
+
+    // Try to delete address1. This should not be possible, because
+    // deleting default addresses is not allowed.
+    $this->assertFalse($addressBook->deleteAddressById($address1->getId()), format_string('Address %aid is not deleted.', array('%aid' => $address1->getId())));
+    // Create a new address and delete the first one.
+    $address2 = $addressBook->addAddress();
+    $addressBook->setAddressAsDefault($address2, 'billing');
+    $this->assertTrue($addressBook->deleteAddressById($address1->getId()), format_string('Address %aid is deleted.', array('%aid' => $address1->getId())));
+    // Ensure the database table is empty now ($address2 is not yet saved).
+    $number_of_addresses = db_query("SELECT COUNT(aid) AS number_of_addresses FROM {uc_addresses}")->fetchField();
+    $this->assertEqual($number_of_addresses, 0, 'There are no addresses in the uc_addresses table.');
+
+    // Now save $address2 and ensure that this address is the default
+    // billing address in the database.
+    $address2->save();
+    $default_billing_aid = db_query("SELECT aid FROM {uc_addresses} WHERE default_billing = :default_billing", array(':default_billing' => 1))->fetchField();
+    $this->assertEqual($address2->getId(), $default_billing_aid, 'The address is the default billing address.');
+
+    // Create a third address and mark this as default billing as well.
+    $address3 = $addressBook->addAddress();
+    $addressBook->setAddressAsDefault($address3, 'billing');
+    $address3->save();
+
+    // Ensure the user has only one default billing address.
+    $aids = db_select('uc_addresses')
+      ->fields('uc_addresses', array('aid'))
+      ->condition('default_billing', 1)
+      ->execute()
+      ->fetchAll();
+    $this->assertEqual(count($aids), 1, 'The database contains one default billing address.');
+  }
+
+  /**
+   * Tests the address book's performance hint setting.
+   */
+  public function testPerformanceHintSetting() {
+    $addressBook = $this->UcAddressesGetAddressBook($this->adminUser->uid);
+
+    // Add three addresses and save them all.
+    for ($i = 0; $i < 3; $i++) {
+      $address = $addressBook->addAddress();
+      $values = self::getEditAddressValues();
+      $address->setMultipleFields($values['values'], TRUE);
+    }
+    $addressBook->save();
+    // Get addresses for later use.
+    $addresses = $addressBook->getAddresses();
+    // Make sure we have three addresses.
+    $this->assertEqual(count($addresses), 3, 'The address book contains 3 addresses.');
+
+    // Reset the address book.
+    $addressBook->reset();
+
+    // Ensure the performance hint is set to load a single address.
+    $addressBook->setPerformanceHint(UcAddressesAddressBook::PERF_HINT_LOAD_ONE);
+    $this->assertEqual($addressBook->getPerformanceHint(), UcAddressesAddressBook::PERF_HINT_LOAD_ONE, 'Performance hint is set to PERF_HINT_LOAD_ONE.');
+    // Load the first address.
+    $address1 = reset($addresses);
+    $addressBook->getAddressById($address1->getId());
+    // Check if the only address that is loaded now is $address1.
+    foreach ($addresses as $address) {
+      if ($address->getId() == $address1->getId()) {
+        // The address should be loaded.
+        $this->assertTrue($addressBook->addressExists($address->getId()), format_string('Address %aid is loaded.', array('%aid' => $address->getId())));
+      }
+      else {
+        // The address should not be loaded.
+        $this->assertFalse($addressBook->addressExists($address->getId()), format_string('Address %aid is not loaded.', array('%aid' => $address->getId())));
+      }
+    }
+
+    // Reset the address book again.
+    $addressBook->reset();
+
+    // Ensure the performance hint is set to load all address.
+    $addressBook->setPerformanceHint(UcAddressesAddressBook::PERF_HINT_LOAD_ALL);
+    $this->assertEqual($addressBook->getPerformanceHint(), UcAddressesAddressBook::PERF_HINT_LOAD_ALL, 'Performance hint is set to PERF_HINT_LOAD_ALL.');
+    // Load address1.
+    $addressBook->getAddressById($address1->getId());
+    // Check if all address are loaded.
+    foreach ($addresses as $address) {
+      // Each address should be loaded.
+      $this->assertTrue($addressBook->addressExists($address->getId()), format_string('Address %aid is loaded.', array('%aid' => $address->getId())));
+    }
+    // Set performance hint back to load one.
+    $addressBook->setPerformanceHint(UcAddressesAddressBook::PERF_HINT_LOAD_ONE);
+  }
+
+  /**
+   * Tests if address objects can be converted to a string.
+   */
+  public function testAddressOutput() {
+    $addressBook = $this->UcAddressesGetAddressBook($this->adminUser->uid);
+
+    // Add three addresses.
+    for ($i = 0; $i < 3; $i++) {
+      $address = $addressBook->addAddress();
+      $values = self::getEditAddressValues();
+      $address->setMultipleFields($values['values'], TRUE);
+    }
+    $addresses = $addressBook->getAddresses();
+
+    $address1 = reset($addresses);
+    $this->verbose(theme('uc_addresses_list_address', array('address' => $address1)));
+    $this->verbose($address1->__toString());
+    $output = (string) $addressBook;
+    $this->verbose($output);
+
+    // Test if all addresses are displayed.
+    foreach ($addresses as $address) {
+      $this->doAddressValuesDisplayedTests($address->getRawFieldData(), 'address_view', $output);
+    }
+  }
+
+  /**
+   * Tests if address loading works as expected across
+   * multiple address books.
+   */
+  public function testMultipleAddressBooks() {
+    // Get address books from two users.
+    $addressBook1 = $this->UcAddressesGetAddressBook($this->adminUser->uid);
+    $addressBook2 = $this->UcAddressesGetAddressBook($this->customer->uid);
+
+    // Add an address to the first address book.
+    $address1 = $addressBook1->addAddress();
+    $values = self::getEditAddressValues();
+    $address1->setMultipleFields($values['values'], TRUE);
+    $address1->save();
+
+    // Ensure this address can't be get from address book 2.
+    $this->assertFalse($addressBook2->getAddressById($address1->getId()), format_string('Address %aid does not belong to user %uid.', array('%aid' => $address1->getId(), '%uid' => $addressBook2->getUserId())));
+
+    // Reset the first address book.
+    $addressBook1->reset();
+
+    // Ensure addresses are equal when either getAddressById() or loadAddress() is used.
+    $address1_1 = $addressBook1->getAddressById($address1->getId());
+    $address1_2 = UcAddressesAddressBook::loadAddress($address1->getId());
+    $this->assertTrue($address1_1 === $address1_2, 'UcAddressesAddressBook::loadAddress() loads exactly the same address as $addressBook->getAddressById().');
+
+    // Try to load a non-existent address using the addressBook's getAddressById() method.
+    $this->assertFalse($addressBook1->getAddressById(997), 'Address 997 does not exists.');
+    // Try again, but now using the loadAddress() method.
+    $this->assertFalse(UcAddressesAddressBook::loadAddress(998), 'Address 998 does not exists.');
+
+    // Set performance hint of address book 1 to load all and ensure that this setting
+    // is unchanged in address book 2.
+    $addressBook1->setPerformanceHint(UcAddressesAddressBook::PERF_HINT_LOAD_ALL);
+    $this->assertEqual($addressBook2->getPerformanceHint(), UcAddressesAddressBook::PERF_HINT_LOAD_ONE, 'Performance hint is set to PERF_HINT_LOAD_ONE.');
+  }
+
+  /**
+   * Tests if a proper address format is generated when there is
+   * no default country set.
+   */
+  public function testAddressFormatWithoutDefaultCountry() {
+    $this->drupalLogin($this->adminUser);
+    // Ensure there is no store country set.
+    variable_del('uc_store_country');
+
+    // Remove the U.S. country from Ubercart.
+    // This will leave Canada as the only available country.
+    $country_id = 840;
+    db_delete('uc_countries')
+      ->condition('country_id', $country_id)
+      ->execute();
+    db_delete('uc_zones')
+      ->condition('zone_country_id', $country_id)
+      ->execute();
+    variable_del('uc_address_format_' . $country_id);
+
+    // Adjust the address format for Canada.
+    $canada_address_format = self::randomName();
+    $this->verbose($canada_address_format);
+    variable_set('uc_addresses_address_format_124', $canada_address_format);
+
+    // Disable the country field.
+    $address_fields = variable_get('uc_address_fields', drupal_map_assoc(array('first_name', 'last_name', 'phone', 'company', 'street1', 'street2', 'city', 'zone', 'postal_code', 'country')));
+    unset($address_fields['country']);
+    variable_set('uc_address_fields', $address_fields);
+
+    // Create an address.
+    $aid = $this->createAddress($this->adminUser);
+    $addressBook = UcAddressesAddressBook::get($this->adminUser->uid);
+    $addressBook->reset();
+    $address = $addressBook->getAddressById($aid);
+    if ($address instanceof UcAddressesAddress) {
+      // Ensure Canada is used for the address.
+      $this->assertEqual($address->getField('country'), '124', format_string('Canada is used as the default country. (ID = !country_id)', array('!country_id' => $address->getField('country'))));
+
+      // Output the address for display.
+      $this->viewAddress($this->adminUser, $address->getId());
+      // Ensure Canada's address format is used.
+      $this->assertText($canada_address_format, 'The address format for Canada was used for the address label.');
+
+      // Test also if the displayed address is not empty
+      // when a country is used that does not exists.
+      $address->setField('country', 1234);
+      $address->save();
+      $this->viewAddress($this->adminUser, $address->getId());
+      $this->assertText($address->getFieldValue('last_name'), 'Last name was found in the outputted address label.');
+      $this->assertText($address->getFieldValue('city'), 'City was found in the outputted address label.');
+    }
+  }
+
+  /**
+   * Tests field handler with an UcAddressesSchemaAddress.
+   */
+  public function testFieldHandlerApi() {
+    $schemaAddress = new UcAddressesSchemaAddress();
+    $addressBookAddress = UcAddressesAddressBook::newAddress();
+    $address_values = self::getEditAddressValues();
+
+    foreach ($address_values['values'] as $field => $value) {
+      $schemaAddress->setField($field, $value);
+      $addressBookAddress->setField($field, $value);
+    }
+
+    // Test each handler in action.
+    foreach ($address_values['values'] as $field => $value) {
+      $vars = array(
+        '%field' => $field,
+      );
+
+      $handler = $schemaAddress->getHandler($field);
+      $this->assertTrue($handler instanceof UcAddressesFieldHandler, format_string('The handler for field %field is UcAddressesFieldHandler.', $vars));
+
+      $this->doHandlerTests($schemaAddress, $field, $handler);
+    }
+
+    // Assert that handlers for fields 'name', 'default_shipping' and
+    // 'default_billing' can't be used with an UcAddressesSchemaAddress
+    // instance.
+    foreach (array('address_name', 'default_shipping', 'default_billing') as $field) {
+      $vars = array(
+        '%field' => $field,
+      );
+
+      $handler = $schemaAddress->getHandler($field);
+      $this->assertTrue($handler instanceof UcAddressesMissingFieldHandler, format_string('The handler for field %field is UcAddressesMissingFieldHandler when using UcAddressesSchemaAddress.', $vars));
+
+      // Ensure that calling methods from a missing handler doesn't result into
+      // fatal errors.
+      $this->doHandlerTests($schemaAddress, $field, $handler);
+
+      // Ensure that the handler is not missing for this field with an
+      // UcAddressesAddress instance.
+      $handler = $addressBookAddress->getHandler($field);
+      $this->assertFalse($handler instanceof UcAddressesMissingFieldHandler, format_string('The handler for field %field is not UcAddressesMissingFieldHandler when using UcAddressesAddress.', $vars));
+    }
+  }
+
+  /**
+   * Do handler tests.
+   *
+   * @param UcAddressesSchemaAddress $address
+   *   The address that requested the handler.
+   * @param string $field
+   *   The field that belongs to the handler.
+   * @param UcAddressesFieldHandler $handler
+   *   The handler to test.
+   *
+   * @return void
+   */
+  protected function doHandlerTests(UcAddressesSchemaAddress $address, $field, UcAddressesFieldHandler $handler) {
+    $vars = array(
+      '%field' => $field,
+    );
+
+    $address_values1 = array();
+    $value1 = self::generateAddressFieldValue($field, $address_values1);
+    $address_values2 = array();
+    $value2 = self::generateAddressFieldValue($field, $address_values2);
+
+    // Getters.
+    $this->assertEqual($handler->getFieldName(), $field, format_string('The method getFieldName() for field %field returns the expected value.', $vars));
+    $this->assertEqual($handler->getAddress(), $address, format_string('The method getAddress() for field %field returns the expected value.', $vars));
+    $this->assertTrue(is_string($handler->getContext()), format_string('The method getContext() for field %field returns the expected format.', $vars));
+    $this->assertTrue(is_string($handler->getFieldTitle()), format_string('The method getFieldTitle() for field %field returns the expected format.', $vars));
+
+    $form = array();
+    $form_state = array();
+    $form_field = $handler->getFormField($form, $form_state);
+    $render = drupal_render($form_field);
+
+    $this->assertTrue(is_bool($handler->isFieldEnabled()), format_string('The method isFieldEnabled() for field %field returns the expected format.', $vars));
+    $this->assertTrue(is_bool($handler->isFieldRequired()), format_string('The method isFieldRequired() for field %field returns the expected format.', $vars));
+
+    // Setters.
+    $handler->setValue($value1);
+    $this->assertEqual($address->getField($field), $value1, format_string('The method setValue() had set the expected value.', $vars));
+
+    // Action.
+    $handler->validateValue($value2);
+    $this->assertTrue(is_bool($handler->checkContext()), format_string('The method checkContext() for field %field returns the expected format.', $vars));
+
+    // Feeds.
+    $this->assertTrue(is_array($handler->getMappingTargets()), format_string('The method getMappingTargets() for field %field returns the expected format.', $vars));
+    $handler->mapValue($value2);
+    $this->assertEqual($address->getField($field), $value2, format_string('The method mapValue() for field %field has set the expected value.', $vars));
+
+    // Output.
+    $this->assertTrue(is_array($handler->getTokenInfo()), format_string('The method getTokenInfo() for field %field returns the expected format.', $vars));
+    $this->assertTrue(is_array($handler->getOutputFormats()), format_string('The method getOutputFormats() for field %field returns the expected format.', $vars));
+    $this->assertTrue(is_string($handler->outputValue()), format_string('The method outputValue() for field %field returns the expected format.', $vars));
+  }
+}

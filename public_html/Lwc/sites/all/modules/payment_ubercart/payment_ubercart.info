@@ -1,0 +1,16 @@
+name = Payment for Ubercart
+description = "Allows Ubercart orders to be paid using Payment."
+configure = admin/config/services/payment/payment_ubercart
+core = 7.x
+dependencies[] = payment (>=1.8)
+dependencies[] = uc_payment
+package = Payment
+files[] = tests/PaymentUbercartCheckoutWebTestCase.test
+files[] = tests/PaymentUbercartDeleteOrderWebTestCase.test
+
+; Information added by Drupal.org packaging script on 2014-02-27
+version = "7.x-1.3"
+core = "7.x"
+project = "payment_ubercart"
+datestamp = "1393511655"
+

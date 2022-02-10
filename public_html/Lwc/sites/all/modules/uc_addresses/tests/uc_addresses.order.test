@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Test cases for order admin.
+ */
+
+/**
+ * Test cases order administration.
+ */
+class UcAddressesOrderTestCase extends UbercartOrderTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Orders',
+      'description' => 'Ensure that orders function properly when Ubercart Addresses is enabled.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'rules', 'uc_store', 'uc_order'),
+    );
+  }
+
+  /**
+   * Setup modules.
+   */
+  public function setUp($modules = array(), $permissions = array()) {
+    parent::setUp($modules, $permissions);
+
+    // Install Ubercart Addresses and flush schema cache.
+    module_enable(array('ctools', 'uc_addresses'));
+    drupal_get_schema(NULL, TRUE);
+  }
+
+  /**
+   * Override of UbercartOrderTestCase::testOrderEditing().
+   *
+   * With Ubercart Addresses, address fields on the order administration form
+   * have a bit different name.
+   * Example:
+   * Instead of "billing_first_name",
+   * Ubercart Addresses uses "bill_to[address][billing_first_name]".
+   * This is done to fix issues with the zone field.
+   */
+  public function testOrderEditing() {
+    $order = $this->ucCreateOrder($this->customer);
+
+    $this->drupalLogin($this->customer);
+    $this->drupalGet('user/' . $this->customer->uid . '/orders');
+    $this->assertText(t('My order history'));
+
+    $this->drupalGet('user/' . $this->customer->uid . '/orders/' . $order->order_id);
+    $this->assertResponse(200, 'Customer can view their own order.');
+
+    $this->drupalGet('admin/store/orders/' . $order->order_id);
+    $this->assertResponse(403, 'Customer may not edit orders.');
+
+    $this->drupalLogin($this->adminUser);
+    $this->drupalGet('user/' . $this->customer->uid . '/orders/' . $order->order_id);
+    $this->assertText(drupal_strtoupper($order->billing_first_name . ' ' . $order->billing_last_name), 'Found customer name.');
+
+    $edit = array(
+      'bill_to[address][billing_first_name]' => $this->randomName(8),
+      'bill_to[address][billing_last_name]' => $this->randomName(15),
+    );
+    $this->drupalPost('admin/store/orders/' . $order->order_id . '/edit', $edit, t('Submit changes'));
+    $this->assertText(t('Order changes saved.'));
+    $this->assertFieldByName('bill_to[address][billing_first_name]', $edit['bill_to[address][billing_first_name]'], 'Billing first name changed.');
+    $this->assertFieldByName('bill_to[address][billing_last_name]', $edit['bill_to[address][billing_last_name]'], 'Billing last name changed.');
+  }
+
+  /**
+   * Test if editing an order works properly when an extra field is added.
+   */
+  public function testOrderExtraFields() {
+    $definition = array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+    );
+    db_add_field('uc_orders', 'delivery_extra_field', $definition);
+    $this->testOrderEditing();
+  }
+}

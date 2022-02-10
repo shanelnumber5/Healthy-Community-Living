@@ -1,0 +1,52 @@
+<?php
+
+function page_builder_schema() {
+  $schema['pagebuilder'] = array(
+      'description' => 'TODO: please describe this table!',
+      'fields' => array(
+          'id' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'serial',
+              'not null' => TRUE,
+          ),
+          'page_title' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'varchar',
+              'length' => '255',
+              'not null' => FALSE,
+          ),
+          'show_title' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'int',
+              'not null' => TRUE,
+              'default' => 0,
+          ),
+          'active' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'int',
+              'not null' => TRUE,
+              'default' => 0,
+          ),
+          'data' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'text',
+              'size' => 'big',
+              'not null' => TRUE,
+          ),
+          'created' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'int',
+              'not null' => TRUE,
+          ),
+          'updated' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'int',
+              'not null' => FALSE,
+          ),
+      ),
+      'primary key' => array('id'),
+  );
+
+
+  return $schema;
+}

@@ -1,0 +1,562 @@
+<?php
+
+/**
+ * @file
+ * Allow exporting of module lists.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function module_export_permission() {
+  return array(
+    'administer modules export' => array(
+      'title' => 'Administer modules export',
+      'description' => 'Administer modules export',
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function module_export_menu() {
+  $items['admin/modules/export'] = array(
+    'title' => 'Export',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('module_export_settings_form'),
+    'description' => 'Build distribution files from current settings',
+    'access arguments' => array('administer modules export'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 40,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_help().
+ */
+function module_export_help($path, $arg) {
+  switch ($path) {
+    case 'admin/modules/export':
+      return t("Creates an empty module with dependency of all the currently enabled modules which can be used to sync the same modules on another Drupal installation. <br/><br/> Use Drush to enable all the modules in one step on the other Drupal site. Command:-'drush en -y exported_module_name '.") . '</p>';
+  }
+}
+
+/**
+ * Implements form for exporting modules.
+ */
+function module_export_settings_form() {
+  $form = array();
+
+  $form['name'] = array(
+    '#title' => t('Exported Module Name'),
+    '#description' => t('Choose a module name Example: Studio Machine @suggestion', array('@suggestion' => '(Do not begin name with numbers.)')),
+    '#type' => 'textfield',
+    '#attributes' => array('class' => array('profile-name')),
+    '#field_suffix' => '<span class="field-suffix"></span>',
+    '#required' => TRUE,
+  );
+
+  $form['description'] = array(
+    '#title' => t('Description'),
+    '#description' => t('Provide a short description of what users should expect when they use this profile.'),
+    '#type' => 'textfield',
+  );
+
+  $form['module_type'] = array(
+    '#title' => t('Select Module Types'),
+    '#description' => t('Choose which type of modules to be selected to export.'),
+    '#type' => 'select',
+    '#options' => array(
+      -1 => t('All'),
+      1 => t('Enabled'),
+      0 => t('Non Enabled'),
+    ),
+    '#default_value' => 1,
+  );
+  $form['format'] = array(
+    '#title' => t('Export format'),
+    '#type' => 'radios',
+    '#options' => array(
+      0 => t('Module'),
+      1 => t('CSV'),
+    ),
+    '#default_value' => 0,
+  );
+  $form['drupal_version'] = array(
+    '#title' => t('Select Drupal Version'),
+    '#description' => t('Select the target Drupal version.'),
+    '#type' => 'select',
+    '#options' => array(
+      0 => t('6.x'),
+      1 => t('7.x'),
+    ),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="format"]' => array('value' => 0),
+      ),
+    ),
+    '#default_value' => 1,
+  );
+
+  $form['check_version'] = array(
+    '#title' => t('Check Minor Version'),
+    '#description' => t('If it checked, the all installable module version should be the same.'),
+    '#type' => 'checkbox',
+    '#default_value' => 0,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="format"]' => array('value' => 0),
+      ),
+    ),
+  );
+
+  $form['use-module'] = array(
+    '#type' => 'container',
+    '#children' => '<p><h4>How to use the exported module.</h4></p><p>Download and extract the module into the modules folder of another Drupal installation. You can then review the module dependencies to check the status of the module or enable it to enable all the required modules.</p>',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="format"]' => array('value' => 0),
+      ),
+    ),
+  );
+  $form['buttons']['submit']['module'] = array(
+    '#type' => 'submit',
+    '#value' => t('Download module'),
+    '#weight' => 10,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="format"]' => array('value' => 0),
+      ),
+    ),
+  );
+
+  $form['buttons']['submit']['csv'] = array(
+    '#type' => 'submit',
+    '#value' => t('Download csv'),
+    '#weight' => 10,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="format"]' => array('value' => 1),
+      ),
+    ),
+  );
+  return $form;
+}
+
+/**
+ * Form validation handler for module_export_export_form().
+ */
+function module_export_settings_form_validate($form, &$form_state) {
+  $module_name = $form_state['values']['name'];
+  if (preg_match('/^\d/', $module_name) === 1) {
+    form_set_error('name', t('Module name should not start with a number.'));
+  }
+
+  $private_path = drupal_realpath('private://');
+  if ($private_path == "" || !is_writable($private_path)) {
+    form_set_error('name', t('Private file path is not set or not writable'));
+  }
+}
+
+/**
+ * Form submission handler for module_export_export_form().
+ */
+function module_export_settings_form_submit($form, &$form_state) {
+  $name = $form_state['values']['name'];
+  $machine_name = preg_replace('/_+/', '_', preg_replace('/[^a-z0-9]/', '_', strtolower($form_state['values']['name'])));
+
+  $csv_format = $form_state['values']['format'];
+  $description = $form_state['values']['description'];
+  $drupal_version_ar = array(
+    0 => '6.x',
+    1 => '7.x',
+  );
+  $drupal_version = $drupal_version_ar[$form_state['values']['drupal_version']];
+  $module_type = $form_state['values']['module_type'];
+  // Getting list of modules.
+  $module_array = module_export_get_module_list($module_type);
+
+  if (ob_get_level()) {
+    ob_end_clean();
+  }
+  /*
+   * If a csv file is asked to export.
+   * Calling a module_export_create_csv function.
+   * This will prepare the csv file ready to download.
+   */
+  if ($csv_format == 1) {
+    $filename = $machine_name . ' .csv';
+    module_export_create_csv($filename, $machine_name, $drupal_version, $module_array);
+  }
+  else {
+    $scheme = 'private://';
+
+    $dir = $scheme . $machine_name . '_' . $drupal_version;
+    if (!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
+      drupal_set_message(t('Private file path is not writeable'), 'error');
+      drupal_goto($_GET['q']);
+    }
+
+    $files = array();
+
+    // Creating Info File.
+    $filename = $machine_name . '.info';
+    $files[] = module_export_create_info_file($filename, $dir, $machine_name, $name, $description, $drupal_version, $module_array);
+
+    // Creating Module File.
+    $check_version = isset($form_state['values']['check_version']) ? $form_state['values']['check_version'] : 0;
+    $filename = $machine_name . '.module';
+    $files[] = module_export_create_module_file($filename, $dir, $module_array, $check_version);
+
+    $dir_path = drupal_realpath($dir);
+
+    if (module_export_tar($dir_path, $files, $machine_name)) {
+      $tar_uri = $scheme . $machine_name . '_' . $drupal_version . '.tar.gz';
+      $tar_path = drupal_realpath($tar_uri);
+
+      module_export_download_tar($machine_name . '_' . $drupal_version . '.tar.gz', $tar_path);
+    }
+  }
+}
+
+/**
+ * Preparing a csv file listing all the modules.
+ *
+ * @param string $filename
+ *   Name of the file to be export.
+ * @param string $machine_name
+ *   Export module machine name.
+ * @param string $drupal_version
+ *   Drupal version of the module.
+ */
+function module_export_create_csv($filename, $machine_name, $drupal_version, $module_array = array()) {
+  $output = module_export_get_infocsv_file_content($module_array, TRUE);
+  drupal_add_http_header('Content-type', 'text/csv');
+  drupal_add_http_header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+  drupal_send_headers();
+  print $output;
+  drupal_exit();
+}
+
+/**
+ * Function to create a info file listing all the modules.
+ *
+ * @param string $filename
+ *   Name of the file to be export.
+ * @param string $machine_name
+ *   Export module machine name.
+ * @param string $name
+ *   Name of the exported module.
+ * @param string $description
+ *   Description about the exported module.
+ * @param float $drupal_version
+ *   Drupal version of the module.
+ */
+function module_export_create_info_file($filename, $dir, $machine_name, $name, $description, $drupal_version, $module_array = array()) {
+  $info_file = "; Packaging information for $machine_name\n";
+  $info_file .= "name = \"$name\"\n";
+  $info_file .= "description = \"$description\"\n";
+  $info_file .= "core = \"$drupal_version\"\n";
+
+  $info_file .= "\n\n; ----------\n";
+  $info_file .= "; Dependencies\n";
+  $info_file .= "; ----------\n";
+  $info_file .= module_export_get_infocsv_file_content($module_array, FALSE);
+  $info_file .= "\n";
+
+  return file_save_data($info_file, $dir . '/' . $filename, FILE_EXISTS_REPLACE);
+}
+
+/**
+ * Create a module file.
+ *
+ * @param string $filename
+ *   Name of the file to be export.
+ * @param string $dir
+ *   Directory path of file where it will create.
+ */
+function module_export_create_module_file($filename, $dir, $module_array = array(), $check_version = FALSE) {
+  $module_file = "<?php \n \n// This file is required for the module to work";
+  $module_file .= "\n\n";
+
+  if ($check_version) {
+    $module_file .= module_export_get_module_code($filename, $module_array);
+  }
+
+  return file_save_data($module_file, $dir . '/' . $filename, FILE_EXISTS_REPLACE);
+}
+
+/**
+ * It create code for newly generated module.
+ *
+ * @param string $module_name
+ *   Name of module file.
+ */
+function module_export_get_module_code($module_name, $module_array = array()) {
+
+  if (!count($module_array)) {
+    return FALSE;
+  }
+
+  $fn_name = str_replace('.module', '', $module_name);
+
+  $module_file = 'function ' . $fn_name . '_modules_enabled($enabled_modules) {';
+  $module_file .= "\n";
+
+  foreach ($module_array as $modules) {
+    foreach ($modules as $module => $vals) {
+      $module_file .= "\t\t" . '$modules["' . $module . '"] = "' . $vals["version"] . '";';
+      $module_file .= "\n";
+    }
+  }
+
+  $module_file .= '$result = db_select("system", "s")
+    ->fields("s", array("name", "info"))
+    ->condition("s.name", "module_export", "<>")
+    ->condition("s.type", "module", "=")
+    ->execute();
+
+  $flag = 0;
+  foreach ($result as $row) {
+    $info = unserialize($row->info);
+    if (array_key_exists($row->name, $modules) && $info["version"] != $modules[$row->name]) {
+      $flag = 1;
+      drupal_set_message(check_plain(t($row->name . " version is not compatible.")), "error");
+    }
+  }
+
+  if ($flag) {
+    module_disable($enabled_modules);
+  }
+
+}';
+  return $module_file;
+}
+
+/**
+ * Get the string of the module list.
+ *
+ * @param int $module_type
+ *   Choose module enabled status types for export.
+ */
+function module_export_get_module_list($module_type) {
+  $system = array();
+  $files = system_rebuild_module_data();
+  // Remove hidden modules from display list.
+  $visible_files = $files;
+  foreach ($visible_files as $filename => $file) {
+    if (!empty($file->info['hidden'])) {
+      unset($visible_files[$filename]);
+    }
+  }
+
+  foreach ($visible_files as $val) {
+    if ($module_type == 1) {
+      if ($val->status == 1) {
+        $system[$val->name] = $val->info;
+        $system[$val->name]['status'] = $val->status;
+      }
+    }
+    elseif ($module_type == 0) {
+      if ($val->status == 0) {
+        $system[$val->name] = $val->info;
+        $system[$val->name]['status'] = $val->status;
+      }
+    }
+    else {
+      $system[$val->name] = $val->info;
+      $system[$val->name]['status'] = $val->status;
+    }
+  }
+  unset($system['module_export']);
+  foreach ($system as $module => $info) {
+    if (!isset($info['package'])) {
+      $info['package'] = 'Other';
+    }
+  }
+
+  $module_array = array();
+  foreach ($system as $module => $info) {
+    if (!isset($info['package'])) {
+      $info['package'] = 'Other';
+    }
+    $module_array[$info['package']][$module]['version'] = $info['version'];
+    $module_array[$info['package']][$module]['status'] = $info['status'];
+  }
+
+  ksort($module_array);
+  foreach ($module_array as $key => $package) {
+    ksort($module_array[$key]);
+  }
+
+  return $module_array;
+}
+
+/**
+ * Preparing module info file content.
+ *
+ * @param bool $csv
+ *   Choose format to return csv or module.
+ */
+function module_export_get_infocsv_file_content($module_array = array(), $csv = FALSE) {
+  $enabled = array(
+    0 => 'Disabled',
+    1 => 'Enabled',
+  );
+  $output = "";
+  if ($csv == 1) {
+    $get_availables = update_get_available(TRUE);
+
+    $output = "Title, Package, Installed Version, Current Version, Is latest, Module Url, Dependencies, Status \n";
+    foreach ($module_array as $package => $projects) {
+      $output .= '';
+      foreach ($projects as $project => $details) {
+        $pr = array();
+        // Parse module info file.
+        $module_path = drupal_get_path("module", $project) . "/" . $project . ".info";
+        $info_file = drupal_parse_info_file($module_path);
+        if ($package == 'Core') {
+          $pr = $get_availables['drupal'];
+        }
+        else {
+          if (array_key_exists('project', $info_file)) {
+            $parent_project = $info_file['project'];
+          }
+          else {
+            $parent_project = $project;
+          }
+
+          if (array_key_exists($parent_project, $get_availables)) {
+            $pr = $get_availables[$parent_project];
+          }
+        }
+
+        // Fetch project dependencies.
+        if (array_key_exists('dependencies', $info_file)) {
+          $dependencies = $info_file['dependencies'];
+        }
+        else {
+          $dependencies = array();
+        }
+
+        // Get project link.
+        if (array_key_exists('link', $pr)) {
+          $url = $pr['link'];
+        }
+        else {
+          $url = '';
+        }
+
+        // Get project releases.
+        if (array_key_exists('releases', $pr)) {
+          $releases = $pr['releases'];
+        }
+        else {
+          $releases = array();
+        }
+
+        // Check if current version is latest.
+        $latest_release = '';
+        if (is_array($releases)) {
+          reset($releases);
+          $latest_release = key($releases);
+
+          if (isset($latest_release) && $latest_release == $details['version']) {
+            $is_latest = t('Yes');
+          }
+          elseif (isset($latest_release) && $latest_release != $details['version']) {
+            $is_latest = t('No');
+          }
+          else {
+            $is_latest = '';
+          }
+        }
+        // Replace comma from package name.
+        $packg = str_replace(',', '', $package);
+        $current_version = (isset($latest_release)) ? $latest_release : '';
+        $output .= "$project, $packg, " . $details['version'] . ",$current_version, $is_latest, $url,";
+        if (!empty($dependencies)) {
+          $i = 0;
+          $len = count($dependencies);
+          foreach ($dependencies as $key => $dependency) {
+            if ($key == $len - 1) {
+              $output .= $dependency . ',';
+            }
+            else {
+              $output .= $dependency . '|';
+            }
+          }
+        }
+        else {
+          $output .= ' ,';
+        }
+        $output .= $enabled[$details['status']] . "\n";
+      }
+    }
+  }
+  else {
+    foreach ($module_array as $package => $projects) {
+      $output .= "\n; $package\n";
+      foreach ($projects as $project => $details) {
+        $output .= "dependencies[] = $project\n";
+      }
+    }
+  }
+
+  return $output;
+}
+
+/**
+ * Module export_tar creating tar file.
+ *
+ * @param string $dir
+ *   Path of the export file directory.
+ * @param string $folder
+ *   Name of folder which zip file contain.
+ */
+function module_export_tar($dir = '', $files = array(), $folder = '') {
+  module_load_include('inc', 'system', 'system.tar');
+
+  if (file_exists($dir . '.tar.gz')) {
+    drupal_unlink($dir . '.tar.gz');
+  }
+
+  $tar_ob = new Archive_Tar($dir . '.tar.gz', TRUE);
+
+  $file_path = array();
+  foreach ($files as $file) {
+    $file_path[] = drupal_realpath($file->uri);
+  }
+
+  $op = $tar_ob->addModify($file_path, $folder, $dir);
+
+  // Removing created files.
+  foreach ($file_path as $path) {
+    drupal_unlink($path);
+  }
+
+  // Removing Directory.
+  drupal_rmdir($dir);
+
+  return $op;
+}
+
+/**
+ * Force fully download tar file.
+ *
+ * @param string $file_name
+ *   Name of tar file.
+ * @param string $file_path
+ *   Location of created tar file.
+ */
+function module_export_download_tar($file_name, $file_path) {
+  drupal_add_http_header('Content-description', 'File Download');
+  drupal_add_http_header('Content-type', 'application/x-gtar');
+  drupal_add_http_header('Content-length', filesize($file_path));
+  drupal_add_http_header('Content-Disposition', 'attachment; filename="' . $file_name . '"');
+  readfile($file_path);
+  drupal_unlink($file_path);
+  drupal_exit();
+}

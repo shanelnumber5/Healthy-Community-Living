@@ -1,0 +1,9 @@
+UPGRADE TO 6.x-2.x FIRST
+------------------------
+You first need to upgrade to Extra Fields Pane 6.x-2.0-alpha1 or later,
+before upgrading to Extra Fields Pane 7.x-1.x.
+
+The upgrade script to 7.x-1.x only updates the module weight of Extra
+Fields Pane to make sure code is executed after Ubercart Addresses code.
+There were no schema changes between the 6.x-2.0-alpha1 and 7.x-1.x
+version.

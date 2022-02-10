@@ -1,0 +1,471 @@
+<?php
+
+/**
+ * @file
+ * Test cases for the address book component.
+ */
+
+/**
+ * Base class for test cases for the address book component.
+ */
+abstract class UcAddressesAddressBookTestCase extends UcAddressesTestCase {
+  // -----------------------------------------------------------------------------
+  // HELPER FUNCTIONS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Does basic tests for viewing, editing and deleting own addresses.
+   *
+   * @param object $account
+   *   The user to do tests for.
+   * @param boolean $may_view_own_default
+   *   If the user may view it's own default addresses.
+   * @param boolean $may_view_own
+   *   If the user may view it's own addresses.
+   * @param boolean $may_edit_own
+   *   If the user may edit it's own addresses.
+   * @param boolean $may_delete_own
+   *   If the user may delete it's own addresses.
+   *
+   * @return void
+   */
+  protected function doOwnAddressTests($account, $may_view_own_default, $may_view_own, $may_edit_own, $may_delete_own) {
+    // Tell the address book we want to load multiple addresses.
+    UcAddressesAddressBook::get($account->uid)->setPerformanceHint(UcAddressesAddressBook::PERF_HINT_LOAD_ALL);
+
+    // Check if this user has any addresses, if not create one.
+    $number_of_addresses = db_query("SELECT COUNT(aid) FROM {uc_addresses} WHERE uid = :uid", array(':uid' => $account->uid))->fetchField();
+    if ($number_of_addresses < 1) {
+      $this->drupalLogin($this->adminUser);
+      $this->viewAddressBook($this->adminUser, TRUE);
+
+      // Ensure there are no addresses displayed.
+      $this->assertText(t('No addresses have been saved.'));
+
+      // Create one address.
+      $aid = $this->createAddress($account);
+      $this->verbose(t('Address with ID %aid created', array('%aid' => $aid)));
+    }
+
+    // Make sure nothing is loaded for the address book.
+    UcAddressesAddressBook::get($account->uid)->reset();
+
+    $this->drupalLogin($account);
+    $this->viewAddressBook($account, $may_view_own_default);
+
+    // Check if this user has a default billing address.
+    if ($default_address = UcAddressesAddressBook::get($account->uid)->getDefaultAddress('billing')) {
+      // Address is the default billing.
+    }
+    // Else check if this user has a default shipping address.
+    elseif ($default_address = UcAddressesAddressBook::get($account->uid)->getDefaultAddress('shipping')) {
+      // Address is the default shipping.
+    }
+
+    if ($default_address) {
+      // Test if the default address may viewed, edited or deleted.
+      // Default addresses may never be deleted!
+      $this->doCrudTests($account, $default_address->getId(), $may_view_own_default, $may_edit_own, FALSE);
+    }
+
+    // Try to add an address.
+    $aid = $this->createAddress($account, $may_edit_own);
+    if ($aid) {
+      $this->doCrudTests($account, $aid, $may_view_own, $may_edit_own, $may_delete_own);
+    }
+  }
+
+  /**
+   * Does basic tests for viewing, editing and deleting other ones addresses.
+   *
+   * @param object $account
+   *   The user to do tests for.
+   * @param boolean $may_view_default
+   *   If the user may view all default addresses.
+   * @param boolean $may_view_all
+   *   If the user may view all addresses.
+   * @param boolean $may_edit_all
+   *   If the user may edit all addresses.
+   * @param boolean $may_delete_all
+   *   If the user may delete all addresses.
+   *
+   * @return void
+   */
+  protected function doOtherUsersAddressTests($account, $may_view_default, $may_view_all, $may_edit_all, $may_delete_all) {
+    // First make sure that there is an user with three addresses.
+    $addressBook = UcAddressesAddressBook::get($this->basicUser->uid);
+    $addressBook->setPerformanceHint(UcAddressesAddressBook::PERF_HINT_LOAD_ALL);
+
+    // Setup
+    $this->drupalLogin($this->adminUser);
+    db_delete('uc_addresses')
+      ->condition('uid', $this->basicUser->uid)
+      ->execute();
+    // Create an address named 'temp_name'.
+    $temp_name_aid = $this->createAddress($this->basicUser, TRUE, array('address_name' => 'temp_name'));
+    // Create default billing/shipping addresses.
+    $default_billing_aid = $this->createAddress($this->basicUser, TRUE, array('default_billing' => TRUE));
+    $default_shipping_aid = $this->createAddress($this->basicUser, TRUE, array('default_shipping' => TRUE));
+
+    // Make sure nothing is loaded for the address book.
+    $addressBook->reset();
+
+    $this->drupalLogin($account);
+    $this->viewAddressBook($this->basicUser, $may_view_default);
+
+    // Test the default billing address
+    if ($default_billing_address = $addressBook->getAddressById($default_billing_aid)) {
+      $this->assertTrue($default_billing_address->isDefault('billing'), t('The address is the default billing address.'));
+      $this->doCrudTests($this->basicUser, $default_billing_address->getId(), $may_view_default, $may_edit_all, FALSE);
+    }
+    else {
+      $this->fail(t('There is no default billing address.'));
+    }
+
+    // Test the default shipping address
+    if ($default_shipping_address = $addressBook->getAddressById($default_shipping_aid)) {
+      // Ensure it is the default shipping
+      $this->assertTrue($default_shipping_address->isDefault('shipping'), t('The address is the default shipping address.'));
+      $this->doCrudTests($this->basicUser, $default_shipping_address->getId(), $may_view_default, $may_edit_all, FALSE);
+    }
+    else {
+      $this->fail(t('There is no default shipping address.'));
+    }
+
+    // Test the address named 'temp_name'.
+    if ($address = $addressBook->getAddressByName('temp_name')) {
+      $this->doCrudTests($this->basicUser, $address->getId(), $may_view_all, $may_edit_all, $may_delete_all, array('address_name' => 'temp_name'));
+    }
+    else {
+      $this->fail(t('There is no address named %name', array('%name' => 'temp_name')));
+    }
+
+    // Try to add an address
+    $aid = $this->createAddress($this->basicUser, $may_edit_all);
+    if ($aid) {
+      $this->doCrudTests($this->basicUser, $aid, $may_view_all, $may_edit_all, $may_delete_all);
+    }
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookCustomerBasicTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Customer Basic',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a customer with no privileges is able to view, edit and delete
+   * addresses.
+   */
+  public function testCustomerBasic() {
+    $customerBasic = $this->drupalCreateUser();
+    $this->doOwnAddressTests($customerBasic, FALSE, FALSE, FALSE, FALSE);
+    $this->doOtherUsersAddressTests($customerBasic, FALSE, FALSE, FALSE, FALSE);
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookCustomerViewDefTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Customer View Defaults',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a customer who only may view it's own default addresses is able to
+   * view, edit and delete addresses.
+   */
+  public function testCustomerViewDef() {
+    $customerViewDef = $this->drupalCreateUser(array('view own default addresses'));
+    $this->doOwnAddressTests($customerViewDef, TRUE, FALSE, FALSE, FALSE);
+    $this->doOtherUsersAddressTests($customerViewDef, FALSE, FALSE, FALSE, FALSE);
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookCustomerViewTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Customer View',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a customer who only may view it's own addresses is able to view,
+   * edit and delete addresses.
+   */
+  public function testCustomerView() {
+    $customerView = $this->drupalCreateUser(array('view own addresses'));
+    $this->doOwnAddressTests($customerView, TRUE, TRUE, FALSE, FALSE);
+    $this->doOtherUsersAddressTests($customerView, FALSE, FALSE, FALSE, FALSE);
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookCustomerEditTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Customer Edit',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a customer who only may view it's own addresses is able to view,
+   * edit and delete addresses.
+   */
+  public function testCustomerEdit() {
+    $customerEdit = $this->drupalCreateUser(array('add/edit own addresses'));
+    $this->doOwnAddressTests($customerEdit, TRUE, TRUE, TRUE, FALSE);
+    $this->doOtherUsersAddressTests($customerEdit, FALSE, FALSE, FALSE, FALSE);
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookCustomerDeleteTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Customer Delete',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a customer who may view, edit and delete it's own addresses is able
+   * to view, edit and delete addresses.
+   */
+  public function testCustomerDelete() {
+    $customerDelete = $this->drupalCreateUser(array('add/edit own addresses', 'delete own addresses'));
+    $this->doOwnAddressTests($customerDelete, TRUE, TRUE, TRUE, TRUE);
+    $this->doOtherUsersAddressTests($customerDelete, FALSE, FALSE, FALSE, FALSE);
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookAdminViewDefTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Admin View Defaults',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a admin who may only view default addresses is able to view, edit
+   * and delete addresses.
+   */
+  public function testAdminViewDef() {
+    $adminViewDef = $this->drupalCreateUser(array('view all default addresses'));
+    $this->doOwnAddressTests($adminViewDef, TRUE, FALSE, FALSE, FALSE);
+    $this->doOtherUsersAddressTests($adminViewDef, TRUE, FALSE, FALSE, FALSE);
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookAdminViewTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Admin View',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a admin who may view all addresses is able to view, edit and delete
+   * addresses.
+   */
+  public function testAdminView() {
+    $adminView = $this->drupalCreateUser(array('view all addresses'));
+    $this->doOwnAddressTests($adminView, TRUE, TRUE, FALSE, FALSE);
+    $this->doOtherUsersAddressTests($adminView, TRUE, TRUE, FALSE, FALSE);
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookAdminEditTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Admin Edit',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a admin who may view and edit all addresses is able to view, edit
+   * and delete addresses.
+   */
+  public function testAdminEdit() {
+    $adminEdit = $this->drupalCreateUser(array('add/edit all addresses'));
+    $this->doOwnAddressTests($adminEdit, TRUE, TRUE, TRUE, FALSE);
+    $this->doOtherUsersAddressTests($adminEdit, TRUE, TRUE, TRUE, FALSE);
+  }
+}
+
+/**
+ * Test cases for the address book component.
+ */
+class UcAddressesAddressBookAdminAllTestCase extends UcAddressesAddressBookTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Address book: Admin All',
+      'description' => 'Tests for the address book: view, edit and delete addresses.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if a admin with all uc_addresses privileges is able to view, edit and
+   * delete addresses.
+   */
+  public function testAdminAll() {
+    $adminAll = $this->drupalCreateUser(array('add/edit all addresses', 'delete all addresses'));
+    $this->doOwnAddressTests($adminAll, TRUE, TRUE, TRUE, TRUE);
+    $this->doOtherUsersAddressTests($adminAll, TRUE, TRUE, TRUE, TRUE);
+  }
+
+  /**
+   * Test if double addresses are not saved.
+   */
+  public function testDoubleAddresses() {
+    $adminAll = $this->drupalCreateUser(array('add/edit all addresses', 'delete all addresses'));
+    $values = self::getEditAddressValues(array('address'), array(), 'address_form');
+    $this->drupalLogin($adminAll);
+
+    // Create first address.
+    $this->createAddress($adminAll, TRUE, $values['values']);
+
+    // Now try to create an address with the same values.
+    // A (form) error should be displayed about that the address already exists.
+    $this->drupalPost($this->constructAddressUrl($adminAll) . 'add', $values['form_values'], t('Save address'));
+    $this->assertText(t('This address already appears in your address book. A new address was not added.'), t('The address already appeared in the address book.'));
+
+    // Create an other address.
+    $aid = $this->createAddress($adminAll, TRUE);
+    // Now try to edit this same address, but with the values from the first address.
+    // This should also result into a (form) error, though with a different message
+    // than the first.
+    $this->drupalPost($this->constructAddressUrl($adminAll, $aid) . 'edit', $values['form_values'], t('Save address'));
+    $this->assertText(t('The revised address is already in your address book. Your change was not made.'), t('The revised address already appeared in the address book.'));
+  }
+}

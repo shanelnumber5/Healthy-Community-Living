@@ -1,0 +1,485 @@
+<?php
+
+/**
+ * @TODO:
+ * * Add new accordion types: entities, fields, field values, views rows/fields.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function accordions_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#accordions':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>';
+      $output .= t('Various types of content, such as blocks, can be displayed with an accordion-like behaviour. Items in accordion groups will initially appear \'collapsed\' with only their titles showing. Clicking an item\'s title will \'expand\' that item to show its whole content, and collapse any other accordion items in the same group.');
+      $output .= '</p>';
+      $output .= '<h3>' . t('Usage instructions') . '</h3>';
+      $output .= '<p>';
+      $output .= t('First, <a href="!url">configure the allowed types of accordion</a>, then edit/configure those types of content (for example, configure a block) and set the accordion group name to be used for that item.', array('!url' => url('admin/config/user-interface/accordions')));
+      $output .= '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * The implementations are cached by module_implements_write_cache() so we don't
+ * need to add any caching to our processing.
+ */
+function accordions_module_implements_alter(&$implementations, $hook) {
+  // Disable any hooks for disabled accordion types.
+  $disabled_types = accordions_get_types(FALSE);
+  foreach ($disabled_types as $type_info) {
+    if (!empty($type_info['hooks'])) {
+      foreach ($type_info['hooks'] as $module => $hooks) {
+        if (in_array($hook, $hooks)) {
+          unset($implementations[$module]);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ *
+ * The theme registry is cached so we don't need to add any caching to our
+ * processing.
+ */
+function accordions_theme_registry_alter(&$theme_registry) {
+  // Disable any hooks for disabled accordion types.
+  $disabled_types = accordions_get_types(FALSE);
+  foreach ($disabled_types as $type_info) {
+    if (!empty($type_info['theme hooks'])) {
+      foreach ($type_info['theme hooks'] as $hook => $stages) {
+        foreach ($stages as $stage => $functions) {
+          foreach ($functions as $function) {
+            $pos = array_search($function, $theme_registry[$hook][$stage], TRUE);
+            if ($pos !== FALSE) {
+              unset($theme_registry[$hook][$stage][$pos]);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_hook_info().
+ */
+function accordions_hook_info() {
+  $return = array();
+
+  $return['accordions_types'] = array(
+    'group' => 'accordions',
+  );
+
+  return $return;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function accordions_permission() {
+  $permissions = array();
+
+  $permissions['administer accordion types'] = array(
+    'title' => t('Administer accordion types'),
+    'description' => t('Administer accordion types'),
+  );
+
+  $permissions['configure accordion items'] = array(
+    'title' => t('Configure accordion items'),
+    'description' => t('Only allows users to edit the accordion settings of those items that they have permission to configure anyway.'),
+  );
+
+  return $permissions;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function accordions_menu() {
+  $items = array();
+
+  $items['accordions/autocomplete'] = array(
+    'title' => 'Accordions autocomplete',
+    'page callback' => 'accordions_autocomplete',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/config/user-interface/accordions'] = array(
+    'title' => 'Accordions',
+    'description' => 'Configure content that can be collapsed/expanded like an accordion.',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer accordion types'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('accordions_admin_form'),
+    'file' => 'accordions.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Accordions autocomplete menu callback.
+ */
+function accordions_autocomplete($string = '') {
+  $matches = array();
+  if ($string) {
+    $result = db_select('accordions','a')->fields('a', array('name'))->condition('name', db_like($string) . '%', 'LIKE')->range(0, 10)->execute();
+    foreach ($result as $accordion) {
+      $matches[$accordion->name] = check_plain($accordion->name);
+    }
+  }
+
+  drupal_json_output($matches);
+}
+
+/**
+ * Implements hook_library().
+ */
+function accordions_library() {
+  $path = drupal_get_path('module', 'accordions');
+
+  $libraries = array();
+
+  $libraries['accordions.collapse'] = array(
+    'title' => 'Accordions collapsible items',
+    'version' => '1.0',
+    'js' => array(
+      "$path/accordions.js" => array(),
+    ),
+    'dependencies' => array(
+      // accordions.js relies on collapseScrollIntoView in collapse.js
+      array('system', 'drupal.collapse'),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Helper function to add javascript library & type-specific settings.
+ *
+ * We don't actually add the settings until hook_js_alter(), so that all the
+ * accordions types settings can be added together at the last possible minute,
+ * to make merging them together into one array easier.
+ */
+function accordions_js($type = NULL) {
+  drupal_add_library('accordions', 'accordions.collapse');
+
+  $js = &drupal_static(__FUNCTION__, array());
+  if (isset($type) && !isset($js[$type])) {
+    $js[$type] = array();
+    $info = accordions_get_types(TRUE);
+    if (isset($info[$type])) {
+      $js[$type]['label'] = $info[$type]['label selector'];
+      $js[$type]['content'] = $info[$type]['content selector'];
+    }
+  }
+  return $js;
+}
+
+/**
+ * Implements hook_js_alter().
+ *
+ * Add in our javascript settings.
+ */
+function accordions_js_alter(&$javascript) {
+  if ($accordions_js = accordions_js()) {
+    $javascript['settings']['data'][] = array('accordions' => $accordions_js);
+  }
+}
+
+/**
+ * Helper function to get all accordions types (whether enabled or not).
+ *
+ * @param $filter
+ *   Only return enabled types if TRUE. Only return disabled types if FALSE.
+ *   Return all if NULL. If $filter is a string, only return the accordion type
+ *   matching the string.
+ * @return Array of accordion types data, or if $filter is a string, just the
+ *   array for that accordion type or NULL if that type does not exist.
+ */
+function accordions_get_types($filter = TRUE) {
+  $info = &drupal_static(__FUNCTION__);
+
+  if (!isset($info)) {
+    if ($cache = cache_get('accordions_types')) {
+      $info = $cache->data;
+    }
+    else {
+      $info = module_invoke_all('accordions_types');
+      drupal_alter('accordions_types', $info);
+      cache_set('accordions_types', $info, 'cache');
+    }
+  }
+
+  // Allow the current theme to alter the type info (this cannot be cached as we
+  // would need to cache per-theme). This is based on code from drupal_alter().
+  global $theme, $base_theme_info;
+  if (isset($theme)) {
+    $theme_keys = array();
+    foreach ($base_theme_info as $base) {
+      $theme_keys[] = $base->name;
+    }
+    $theme_keys[] = $theme;
+    foreach ($theme_keys as $theme_key) {
+      $function = $theme_key . '_accordions_types_current_theme_tweaks';
+      if (function_exists($function)) {
+        $function($info);
+      }
+    }
+  }
+
+  if (isset($filter)) {
+    if (is_string($filter)) {
+      return isset($info[$filter]) ? $info[$filter] : NULL;
+    }
+    $disabled_types = array();
+    $enabled_types = array();
+    $setting = variable_get('accordions_enabled_types', array());
+    foreach ($info as $type => $type_info) {
+      if (empty($setting[$type])) {
+        $disabled_types[$type] = $type_info;
+        continue;
+      }
+      elseif (!empty($type_info['dependencies'])) {
+        foreach ($type_info['dependencies'] as $dependency) {
+          if (!module_exists($dependency)) {
+            $disabled_types[$type] = $type_info;
+            break;
+          }
+        }
+      }
+      $enabled_types[$type] = $type_info;
+    }
+    return $filter ? $enabled_types : $disabled_types;
+  }
+
+  return $info;
+}
+
+/**
+ * Reset our cache of accordions types.
+ */
+function accordions_reset_types_cache() {
+  drupal_static_reset('accordions_get_types');
+  cache_clear_all('accordions_types', 'cache');
+}
+
+/**
+ * Helper function for forms to use to add accordion item configuration.
+ *
+ * @return TRUE if accordion form element is added.
+ */
+function accordions_add_configure_accordion_form_element(&$form, $form_id, $type, $subtype, $id, $human_name = NULL) {
+  // Only users with permission to configure accordion items normally should be
+  // allowed to configure the accordion settings for this block.
+  if (!user_access('configure accordion items')) {
+    return FALSE;
+  }
+
+  $existing_record = accordions_item_load($type, $subtype, $id);
+
+  if ($existing_record) {
+    $form['#accordions'] = $existing_record;
+  }
+  else {
+    $form['#accordions'] = array(
+      'type' => $type,
+      'subtype' => $subtype,
+      'id' => $id,
+    );
+  }
+
+  $form['accordions'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Accordion behaviour'),
+    '#description' => t('Make this @name behave as part of an accordion group. Items in accordion groups will initially appear \'collapsed\' with only their @name titles showing. Clicking an item\'s title will \'expand\' that @name to show its whole content, and collapse any other accordion items in the same group. Note that a @name without a title will show in full as it has no label to toggle its collapsed/expanded state.', array('@name' => $human_name)),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE,
+    '#states' => array(
+      'enabled' => array(
+        ':input[name="title"]' => array('filled' => TRUE),
+      ),
+    ),
+  );
+  $form['accordions']['name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Accordion group name'),
+    '#description' => t('Enable accordion behaviour for this @name by giving it an accordion group name that it will share with the other items in the same group. For example, <em>sidebar-blocks</em>. This should only contain alphanumeric characters, hyphens or underscores.', array('@name' => $human_name)),
+    '#default_value' => $existing_record ? $existing_record['name'] : '',
+    '#autocomplete_path' => 'accordions/autocomplete',
+    '#maxlength' => 32,
+    '#element_validate' => array(
+      'accordions_name_element_validate'
+    ),
+  );
+  $form['accordions']['initial'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show this @name as expanded initially.', array('@name' => $human_name)),
+    '#default_value' => $existing_record ? $existing_record['initial'] : FALSE,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="accordions[name]"]' => array('filled' => TRUE),
+      ),
+    ),
+  );
+
+  // Add our own form submission handlers if necessary to the common places that
+  // they may need to be added to.
+  if (!isset($form['#submit'])) {
+    $form['#submit'] = array($form_id . '_submit');
+  }
+  $form['#submit'][] = 'accordions_configure_accordion_form_submit';
+  if (isset($form['submit']['#submit'])) {
+    $form['submit']['#submit'][] = 'accordions_configure_accordion_form_submit';
+  }
+  if (isset($form['actions']['submit']['#submit'])) {
+    $form['actions']['submit']['#submit'][] = 'accordions_configure_accordion_form_submit';
+  }
+
+  return TRUE;
+}
+
+/**
+ * Form element validation handler that ensures accordion group names only
+ * contain alphanumeric characters, underscores or hyphens.
+ */
+function accordions_name_element_validate($element, &$form_state) {
+  // Verify that the machine name contains no disallowed characters.
+  $value = $element['#value'];
+  if ($value !== '' && preg_match('@[^A-Za-z0-9_-]+@', $value)) {
+    form_error($element, t('The accordion group name must contain only alphanumeric characters, hyphens or underscores.'));
+  }
+}
+
+/**
+ * Additional form submission handler for forms containing the accordion item
+ * configuration form.
+ */
+function accordions_configure_accordion_form_submit($form, &$form_state) {
+  if (!empty($form['#accordions'])) {
+    $info = accordions_get_types($form['#accordions']['type']);
+    // Use values callback to allow type-specific mapping of type, subtype & ID.
+    if (!empty($info['values callback'])) {
+      if (!empty($info['module'])) {
+        module_load_include('accordions.inc', $info['module']);
+      }
+      $function = $info['values callback'];
+      if (function_exists($function)) {
+        $form['#accordions'] = $function($form, $form_state) + $form['#accordions'];
+      }
+    }
+
+    db_delete('accordions')
+      ->condition('type', $form['#accordions']['type'])
+      ->condition('subtype', $form['#accordions']['subtype'])
+      ->condition('id', $form['#accordions']['id'])
+      ->execute();
+    if (!empty($form_state['values']['accordions']['name'])) {
+      $record = $form_state['values']['accordions'] + $form['#accordions'];
+      drupal_write_record('accordions', $record);
+    }
+  }
+}
+
+/**
+ * Helper function to load an existing accordion item record.
+ */
+function accordions_item_load($type, $subtype, $id, $fields = array()) {
+  $query = db_select('accordions', 'a')
+    // Callers can specify fields to return. All fields are returned by default.
+    ->fields('a', $fields)
+    ->condition('type', $type)
+    ->condition('id', $id);
+  // Subtype does not apply to some accordion types.
+  if (isset($subtype)) {
+    $query->condition('subtype', $subtype);
+  }
+  $record = $query->execute()->fetchAssoc();
+  return $record;
+}
+
+/* --- ACCORDION TYPE SPECIFIC CODE BEGINS --- */
+
+/* BLOCK ACCORDIONS */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function accordions_form_block_add_block_form_alter(&$form, &$form_state, $form_id) {
+  accordions_form_block_admin_configure_alter($form, $form_state, $form_id);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function accordions_form_block_admin_configure_alter(&$form, &$form_state, $form_id) {
+  $subtype = isset($form_state['build_info']['args'][0]) ? $form_state['build_info']['args'][0] : NULL;
+  $accordion_id = isset($form_state['build_info']['args'][1]) ? $form_state['build_info']['args'][1] : NULL;
+  if (accordions_add_configure_accordion_form_element($form, $form_id, 'block', $subtype, $accordion_id, t('block'))) {
+    $form['accordions']['#group'] = 'visibility';
+    $form['accordions']['#weight'] = 50;
+  }
+}
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function accordions_preprocess_block(&$vars) {
+  $record = accordions_item_load('block', $vars['block']->module, $vars['block']->delta, array('name', 'initial'));
+  if ($record) {
+    // The .accordion class is used to identify items needing processing as
+    // accordions in javascript, and for easier theming of all accordions.
+    $vars['classes_array'][] = 'accordion';
+    // The data-accordions-type attribute is used to identify how the accordion
+    // item needs processing (e.g. what selector to use to find the label).
+    $vars['attributes_array']['data-accordions-type'] = 'block';
+    // The data-accordions-group attribute is used for grouping items into
+    // distinct accordions.
+    $vars['attributes_array']['data-accordions-group'] = $record['name'];
+    // The data-accordions-initial attribute is used to determine that the
+    // accordion item should initially be expanded.
+    if ($record['initial']) {
+      $vars['attributes_array']['data-accordions-initial'] = TRUE;
+    }
+    accordions_js('block');
+  }
+}
+
+/** --- THEME-SPECIFIC CODE BEGINS --- */
+
+// Some themes change the default wrapping markup around the labels & content
+// of the types of content that can be made into accordion items.
+// THEMENAME_accordions_types_current_theme_tweaks() can be implemented by
+// themes (and their base themes) to change the label & content selectors.
+
+/**
+ * Implements the special theme-specific hook,
+ * hook_accordions_types_current_theme_tweaks() on behalf of core Garland theme.
+ */
+if (!function_exists('garland_accordions_types_current_theme_tweaks')) {
+  function garland_accordions_types_current_theme_tweaks(&$info) {
+    $info['block']['label selector'] = 'h2.title';
+  }
+}
+
+/**
+ * Implements the special theme-specific hook,
+ * hook_accordions_types_current_theme_tweaks() on behalf of the Omega theme.
+ */
+if (!function_exists('omega_accordions_types_current_theme_tweaks')) {
+  function omega_accordions_types_current_theme_tweaks(&$info) {
+    $info['block']['label selector'] = '.block-title';
+  }
+}
