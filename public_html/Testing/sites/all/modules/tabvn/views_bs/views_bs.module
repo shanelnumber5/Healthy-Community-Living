@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * Implements hook_views_api().
+ */
+function views_bs_views_api() {
+  return array("api" => "3.0");
+}
+
+/**
+ * Implements hook_theme();
+ */
+function views_bs_theme($existing, $type, $theme, $path) {
+  return array(
+      'views_bs_isotope_filter' => array(
+          'variables' => array(),
+      ),
+  );
+}
+
+function theme_views_bs_isotope_filter($variables) {
+
+
+  global $language;
+  if (module_exists('i18n_taxonomy')) {
+    $language = i18n_language();
+  }
+
+  $view = $variables['view'];
+  $vars['view'] = $view;
+  $terms_arr = array();
+  $field_filter_name = !empty($vars['view']->style_options['filter_terms']) ? $vars['view']->style_options['filter_terms'] : FALSE;
+  if ($field_filter_name && !empty($vars['view']->field[$field_filter_name]->field_info['settings']['allowed_values'][0]['vocabulary'])) {
+    $vob_name = $vars['view']->field[$field_filter_name]->field_info['settings']['allowed_values'][0]['vocabulary'];
+    $vocabulary = taxonomy_vocabulary_machine_name_load($vob_name);
+
+    $terms = taxonomy_get_tree($vocabulary->vid);
+    if (!empty($terms)) {
+      $terms_arr = $terms;
+    }
+  }
+
+
+
+  $output = '<div class="row">';
+  if (!empty($terms_arr)) {
+
+    $element_id = $view->name . '-' . $view->style_plugin->display->id;
+
+
+    static $instances = array();
+    if (isset($instances[$element_id])) {
+      $instances[$element_id] ++;
+      $element_id .= "_" . $instances[$element_id];
+    } else {
+      $instances[$element_id] = 1;
+    }
+
+    $id = $element_id;
+    $output .= ' <div id="views-bs-filter-wrapper-' . $id . '" class="views-bs-term-filter col-lg-12">';
+    $output .= '<ul id="views-bs-filters-' . $id . '" class="option-set filter-group list-inline">';
+    $output .= '<li><a href="#filter=*" class="btn btn-default btn-primary filter-item filter-by-all" data-filter="*">' . t('All') . '</a></li>';
+    foreach ($terms_arr as $term) {
+      if (module_exists('i18n_taxonomy')) {
+        $term_name = i18n_taxonomy_term_name($term, $language->language);
+      } else {
+        $term_name = $term->name;
+      }
+      $output .= '<li><a href="#filter=.' . drupal_html_class($term_name) . '" class="btn btn-default filter-item filter-by-' . drupal_html_class($term_name) . '" data-filter=".' . drupal_html_class($term_name) . '">' . $term_name . '</a></li>';
+    }
+  }
+
+  $output .= '</ul>';
+  $output .= '</div>';
+  $output .= '</div>';
+
+
+  return $output;
+}

@@ -1,0 +1,75 @@
+<?php
+/**
+ * @file
+ * Install this module
+ */
+function time_spent_install() {
+}
+
+function time_spent_uninstall() {
+  drupal_uninstall_schema('time_spent');
+  variable_del('time_spent_roles');
+  variable_del('time_spent_node_types');
+  variable_del('time_spent_timer');
+  variable_del('time_spent_limit');
+}
+function time_spent_schema() {
+  $schema['time_spent_page'] = array(
+    'description' => t('Monitors the time spent by a user on page.'),
+    'fields' => array(
+      'time_spent_id' => array(
+        'description' => t('Unique id'),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'nid' => array(
+        'description' => t('Node id'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0),
+      'uid' => array(
+        'description' => t('User id.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0),
+      'timespent' => array(
+        'description' => t('The time spent on the page by this user.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      ),
+    'indexes' => array(
+      'uid'        => array('uid'),
+      'nid'        => array('nid'),
+      ),
+    'primary key' => array('time_spent_id'),
+    );
+  $schema['time_spent_site'] = array(
+    'description' => t('Monitors the time spent by a user on the entire site.'),
+    'fields' => array(
+      'time_spent_site_id' => array(
+        'description' => t('Unique id'),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'uid' => array(
+        'description' => t('User id.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0),
+      'timespent' => array(
+        'description' => t('The time spent on the page by this user.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      ),
+    'indexes' => array(
+      'uid'        => array('uid'),
+      ),
+    'primary key' => array('time_spent_site_id'),
+    );
+  return $schema;
+}

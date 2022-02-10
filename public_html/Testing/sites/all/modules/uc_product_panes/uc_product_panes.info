@@ -1,0 +1,16 @@
+name = Ubercart Product Checkout Panes
+description = "Allows for checkout panes to be configured on a per product basis."
+core = 7.x
+package = Ubercart - extra
+
+dependencies[] = uc_product
+
+files[] = uc_product_panes.install
+files[] = uc_product_panes.module
+
+; Information added by drupal.org packaging script on 2013-02-20
+version = "7.x-1.2"
+core = "7.x"
+project = "uc_product_panes"
+datestamp = "1361375079"
+
