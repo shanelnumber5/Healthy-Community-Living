@@ -1,0 +1,15 @@
+v1.2
+- added option to show content by years
+
+v1.1
+- timeline html is removed when there is no content
+- added option for starting item
+
+v1.03
+- added support for update notification on modules update page
+- removed unnecessary js files 
+- added notification that preview in views is not available
+- fixed bug on bootstrap themes
+
+v1.0
+Initial release

@@ -1,0 +1,144 @@
+<?php
+
+/**
+ * Implements hook_init()
+ */
+function flexslider_format_init() {
+  $path = drupal_get_path('module', 'flexslider_format');
+  drupal_add_js($path . '/js/jquery.flexslider.js');
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function flexslider_format_field_formatter_info() {
+
+
+  return array(
+      'flexslider_format_php_image' => array(
+          'label' => t('Flexslider format'),
+          'field types' => array('image'),
+          'settings' => array(
+              'source_image_style' => 'medium',
+              'destination_image_style' => 'large',
+          ),
+      ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function flexslider_format_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  $summary = '';
+
+  if ($display['type'] == 'flexslider_format_php_image') {
+    // Source image styles.
+    $value = empty($settings['source_image_style']) ? '<em>' . t('Empty') . '</em>' : $settings['source_image_style'];
+    $value = is_array($value) ? implode(', ', array_filter($value)) : $value;
+    $summary .= "Source image styles: {$value}<br />";
+    // Destination image styles.
+    $value = empty($settings['destination_image_style']) ? '<em>' . t('Empty') . '</em>' : $settings['destination_image_style'];
+    $value = is_array($value) ? implode(', ', array_filter($value)) : $value;
+    $summary .= "Destination image styles: {$value}<br />";
+  }
+
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function flexslider_format_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  $form = array();
+  $image_style_options = image_style_options();
+  $form['source_image_style'] = array(
+      '#weight' => '0',
+      '#default_value' => $settings['source_image_style'],
+      '#type' => 'select',
+      '#required' => '0',
+      '#multiple_toggle' => '1',
+      '#title' => t('Image style'),
+      '#options' => $image_style_options,
+  );
+
+  if (module_exists('colorbox')) {
+    $form['destination_image_style'] = array(
+        '#weight' => '1',
+        '#default_value' => $settings['destination_image_style'],
+        '#type' => 'select',
+        '#options' => $image_style_options,
+        '#required' => '0',
+        '#multiple_toggle' => '1',
+        '#title' => t('Colorbox view style'),
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function flexslider_format_field_formatter_view($obj_type, $object, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+
+  // Build variables array for formatter.
+  $variables = array(
+      '#obj_type' => $obj_type,
+      '#object' => $object,
+      '#field' => $field,
+      '#instance' => $instance,
+      '#langcode' => $langcode,
+      '#items' => $items,
+      '#display' => $display,
+  );
+
+  if (function_exists($function = "{$display['module']}_field_formatter_{$display['type']}")) {
+    $element[0] = array(
+        '#markup' => $function($variables),
+    );
+  }
+
+  return $element;
+}
+
+/**
+ * Field Formatter;
+ */
+function flexslider_format_field_formatter_flexslider_format_php_image($variables) {
+  // Formatter settings.
+
+  $entity = array();
+  if (!empty($variables['#object']) && !empty($variables['#obj_type'])) {
+    $entity['type'] = $variables['#obj_type'];
+    $entity['object'] = $variables['#object'];
+  }
+  $settings = $variables['#display']['settings'];
+  if (!empty($variables['#items'])) {
+    return theme('flexslider_format_view', array('items' => $variables['#items'], 'settings' => $settings, 'entity' => $entity));
+  }
+}
+
+/**
+ * 
+ * Hook_theme()
+ */
+function flexslider_format_theme($existing, $type, $theme, $path) {
+  return array(
+      'flexslider_format_view' => array(
+          'variables' => array('items' => NULL, 'settings' => NULL, 'entity' => NULL),
+          'template' => 'flexslider_format_view',
+      ),
+  );
+}
+
+function flexslider_format_views_api() {
+   return array("api" => "3.0");
+}
