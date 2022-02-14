@@ -16,8 +16,10 @@ if ($_POST['redirect']) {
 	// User submit login form, process and prepare authentication cookie for destination page to authenticate.
 
 	// Set cookie with authentication credentials
-	$passwordSecret = '';
-	setrawcookie($cookieName, "weeblylogin:" . hash_hmac("sha256", $_POST['p'], $passwordSecret), time()+(60*60*24*30), '/');
+	$passwordSalt = '';
+	// Only take the back chunk which is just the hashed password excluding the salt
+	$password = substr(crypt($_POST['p'], $passwordSalt), -31);
+	setrawcookie($cookieName, "weeblylogin:" . $password, time()+(60*60*24*30), '/');
 
 	// adapt protocol
 	$protocol='http';
@@ -143,14 +145,4 @@ function showLogin($cookieName) {
 		<input type='password' name='p' id='p'/>
 		<input type='submit' id='submit' value='Login'/>
 		<input type='hidden' name='redirect' value='{$redirectUrl}'/>
-		<input type='hidden' name='u' value='weebs'/>
-		{$loginErrorMessage}
-	</form>
-
-
-</div>
-</body>
-</html>
-EOT;
-
-}
+		<input typ
