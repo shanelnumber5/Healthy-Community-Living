@@ -207,3 +207,12 @@ CKEDITOR.plugins.sourcearea =
 		}
 	}
 };
+( 'saveSnapshot' );
+				editor.getCommand( 'source' ).setState( CKEDITOR.TRISTATE_DISABLED );
+				editor.setMode( editor.mode == 'source' ? 'wysiwyg' : 'source' );
+			},
+
+			canUndo : false
+		}
+	}
+};

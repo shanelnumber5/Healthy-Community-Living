@@ -13,4 +13,5 @@ jQuery.extend(jQuery.colorbox.settings, {
 	imgError: "Nie udało się załadować obrazka.",
 	slideshowStart: "rozpocznij pokaz slajdów",
 	slideshowStop: "zatrzymaj pokaz slajdów"
+}); slajdów"
 });

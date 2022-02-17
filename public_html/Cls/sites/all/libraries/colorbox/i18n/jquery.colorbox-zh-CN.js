@@ -12,4 +12,5 @@ jQuery.extend(jQuery.colorbox.settings, {
 	imgError: "此图片无法加载",
 	slideshowStart: "开始播放幻灯片",
 	slideshowStop: "停止播放幻灯片"
+});��灯片"
 });

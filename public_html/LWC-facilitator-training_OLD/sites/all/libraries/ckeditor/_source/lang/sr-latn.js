@@ -813,3 +813,24 @@ CKEDITOR.lang['sr-latn'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+etUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Western European', // MISSING
+		docType : 'Zaglavlje tipa dokumenta',
+		docTypeOther : 'Ostala zaglavlja tipa dokumenta',
+		xhtmlDec : 'Ukljuci XHTML deklaracije',
+		bgColor : 'Boja pozadine',
+		bgImage : 'URL pozadinske slike',
+		bgFixed : 'Fiksirana pozadina',
+		txtColor : 'Boja teksta',
+		margin : 'Margine stranice',
+		marginTop : 'Gornja',
+		marginLeft : 'Leva',
+		marginRight : 'Desna',
+		marginBottom : 'Donja',
+		metaKeywords : 'Ključne reci za indeksiranje dokumenta (razdvojene zarezima)',
+		metaDescription : 'Opis dokumenta',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Autorska prava',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

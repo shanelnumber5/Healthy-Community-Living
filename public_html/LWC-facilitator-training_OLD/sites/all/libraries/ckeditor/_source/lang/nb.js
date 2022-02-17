@@ -813,3 +813,27 @@ CKEDITOR.lang['nb'] =
 		previewHtml : '<p>Dette er en <strong>eksempeltekst</strong>. Du bruker <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+: 'Japansk',
+		charsetKR : 'Koreansk',
+		charsetTR : 'Tyrkisk',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Vesteuropeisk',
+		docType : 'Dokumenttype header',
+		docTypeOther : 'Annet dokumenttype header',
+		xhtmlDec : 'Inkluder XHTML-deklarasjon',
+		bgColor : 'Bakgrunnsfarge',
+		bgImage : 'URL for bakgrunnsbilde',
+		bgFixed : 'Lås bakgrunnsbilde',
+		txtColor : 'Tekstfarge',
+		margin : 'Sidemargin',
+		marginTop : 'Topp',
+		marginLeft : 'Venstre',
+		marginRight : 'Høyre',
+		marginBottom : 'Bunn',
+		metaKeywords : 'Dokument nøkkelord (kommaseparert)',
+		metaDescription : 'Dokumentbeskrivelse',
+		metaAuthor : 'Forfatter',
+		metaCopyright : 'Kopirett',
+		previewHtml : '<p>Dette er en <strong>eksempeltekst</strong>. Du bruker <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

@@ -76,3 +76,12 @@ CKEDITOR.plugins.add( 'table',
 		}
 	}
 } );
+TRISTATE_OFF
+						};
+					}
+
+					return null;
+				} );
+		}
+	}
+} );

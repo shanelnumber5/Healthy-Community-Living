@@ -150,3 +150,9 @@ CKEDITOR.focusManager.prototype =
  *         alert( 'The editor named ' + e.editor.name + ' lost the focus' );
  *     });
  */
+@example
+ * editor.on( 'blur', function( e )
+ *     {
+ *         alert( 'The editor named ' + e.editor.name + ' lost the focus' );
+ *     });
+ */

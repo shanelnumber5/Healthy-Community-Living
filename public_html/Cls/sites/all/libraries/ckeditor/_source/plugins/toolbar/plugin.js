@@ -543,3 +543,22 @@ CKEDITOR.config.toolbarCanCollapse = true;
  * @example
  * config.toolbarGroupCycling = false;
  */
+ITOR.config.toolbarStartupExpanded
+ * @type Boolean
+ * @default true
+ * @example
+ * config.toolbarStartupExpanded = false;
+ */
+
+/**
+ * When enabled, makes the arrow keys navigation cycle within the current
+ * toolbar group. Otherwise the arrows will move trought all items available in
+ * the toolbar. The TAB key will still be used to quickly jump among the
+ * toolbar groups.
+ * @name CKEDITOR.config.toolbarGroupCycling
+ * @since 3.6
+ * @type Boolean
+ * @default true
+ * @example
+ * config.toolbarGroupCycling = false;
+ */

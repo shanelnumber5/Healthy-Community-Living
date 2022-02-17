@@ -126,3 +126,9 @@ CKEDITOR.tools.extend( CKEDITOR.dom.text.prototype,
 				return this.$.nodeValue.substring( indexA, indexB );
 		}
 	});
+)
+				return this.$.nodeValue.substr( indexA );
+			else
+				return this.$.nodeValue.substring( indexA, indexB );
+		}
+	});

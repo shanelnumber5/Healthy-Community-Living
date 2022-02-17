@@ -813,3 +813,25 @@ CKEDITOR.lang['es'] =
 		previewHtml : '<p>Este es un <strong>texto de ejemplo</strong>. Usted está usando <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+rco',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Europeo occidental',
+		docType : 'Tipo de documento',
+		docTypeOther : 'Otro tipo de documento',
+		xhtmlDec : 'Incluir declaración XHTML',
+		bgColor : 'Color de fondo',
+		bgImage : 'Imagen de fondo',
+		bgFixed : 'Fondo fijo (no se desplaza)',
+		txtColor : 'Color del texto',
+		margin : 'Márgenes',
+		marginTop : 'Superior',
+		marginLeft : 'Izquierdo',
+		marginRight : 'Derecho',
+		marginBottom : 'Inferior',
+		metaKeywords : 'Palabras claves del documento separadas por coma (meta keywords)',
+		metaDescription : 'Descripción del documento',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Copyright',
+		previewHtml : '<p>Este es un <strong>texto de ejemplo</strong>. Usted está usando <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

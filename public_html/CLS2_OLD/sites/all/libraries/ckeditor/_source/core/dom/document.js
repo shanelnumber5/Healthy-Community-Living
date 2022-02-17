@@ -249,3 +249,13 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype,
 			this.$.close();
 		}
 	});
+ry log in IE. (#5657)
+			this.$.open( 'text/html', 'replace' );
+
+			// Support for custom document.domain in IE.
+			CKEDITOR.env.isCustomDomain() &&  ( this.$.domain = document.domain );
+
+			this.$.write( html );
+			this.$.close();
+		}
+	});

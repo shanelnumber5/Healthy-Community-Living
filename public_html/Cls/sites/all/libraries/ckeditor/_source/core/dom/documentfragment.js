@@ -47,3 +47,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.documentFragment.prototype,
 		'getChild' : 1,
 		'getChildren' : 1
 	} );
+
+		'getChild' : 1,
+		'getChildren' : 1
+	} );

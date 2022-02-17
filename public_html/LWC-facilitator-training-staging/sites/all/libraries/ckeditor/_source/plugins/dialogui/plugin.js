@@ -1539,3 +1539,48 @@ CKEDITOR.plugins.add( 'dialogui' );
  * @name CKEDITOR.ui.dialog.fileButton#formLoaded
  * @event
  */
+ed
+							this.on( 'formLoaded', function()
+							{
+								this.getInputElement().on( 'change', function(){ this.fire( 'change', { value : this.getValue() } ); }, this );
+							}, this );
+							this._.domOnChangeRegistered = true;
+						}
+
+						this.on( 'change', func );
+					}
+				},
+
+				keyboardFocusable : true
+			}, true );
+
+	CKEDITOR.ui.dialog.fileButton.prototype = new CKEDITOR.ui.dialog.button;
+
+	CKEDITOR.ui.dialog.fieldset.prototype = CKEDITOR.tools.clone( CKEDITOR.ui.dialog.hbox.prototype );
+
+	CKEDITOR.dialog.addUIElement( 'text', textBuilder );
+	CKEDITOR.dialog.addUIElement( 'password', textBuilder );
+	CKEDITOR.dialog.addUIElement( 'textarea', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'checkbox', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'radio', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'button', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'select', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'file', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'fileButton', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'html', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'fieldset', containerBuilder );
+})();
+
+/**
+ * Fired when the value of the uiElement is changed
+ * @name CKEDITOR.ui.dialog.uiElement#change
+ * @event
+ */
+
+/**
+ * Fired when the inner frame created by the element is ready.
+ * Each time the button is used or the dialog is loaded a new
+ * form might be created.
+ * @name CKEDITOR.ui.dialog.fileButton#formLoaded
+ * @event
+ */

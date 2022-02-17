@@ -1322,3 +1322,4 @@ if ( ! function_exists( 'optin_monster_tag' ) ) {
 		return optin_monster( $id, 'slug', array(), $return );
 
 	}
+}

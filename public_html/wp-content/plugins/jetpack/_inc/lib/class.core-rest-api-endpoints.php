@@ -4126,3 +4126,7 @@ class Jetpack_Core_Json_Api_Endpoints {
 	}
 
 } // class end
+ess' => $updated_option ) );
+	}
+
+} // class end

@@ -263,3 +263,6 @@ abstract class CacheBase {
 		return $data;
 	}
 }
+return $data;
+	}
+}

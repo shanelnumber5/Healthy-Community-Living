@@ -903,4 +903,40 @@ Project demo: http://shindiristudio.com/timeline
 
 
 
+})(jQuery);('close', $(this).attr('href').substr(1));
+					/*console.log($(this));*/
+					
+					/*if ($this.find('.item[data-count="'+$(this).attr('data-count')+'"] a.read_more[href="#"]').length==0)
+					$this.timeline('close', $(this).attr('href').substr(1));*/
+				});
+			});
+			
+			$this.find('#t_line_left').click(function(){
+				$this.timeline('lineLeft');
+			});
+			
+			$this.find('#t_line_right').click(function(){
+				$this.timeline('lineRight');
+			});
+			
+		}
+	};
+
+	// Initiate methods
+	$.fn.timeline = function( method ) {
+    
+		if ( t_methods[method] ) {
+			return t_methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return t_methods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' +  method + ' does not exist on jQuery.timeline' );
+		}    
+  
+	};
+
+	
+
+
+
 })(jQuery);

@@ -182,3 +182,8 @@ class Jetpack_Search_Debug_Bar extends Debug_Bar_Panel {
 		<?php
 	}
 }
+"><?php echo esc_html_x( 'Minify', 'label for formatting JSON', 'jetpack' ); ?></span>
+		</div>
+		<?php
+	}
+}

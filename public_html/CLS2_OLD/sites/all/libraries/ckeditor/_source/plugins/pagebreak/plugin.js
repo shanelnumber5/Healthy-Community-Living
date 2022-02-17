@@ -162,3 +162,12 @@ CKEDITOR.plugins.pagebreakCmd =
 		editor.fire( 'saveSnapshot' );
 	}
 };
+ange.fixBlock( true, editor.config.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'p'  );
+
+				range.select();
+			}
+		}
+
+		editor.fire( 'saveSnapshot' );
+	}
+};

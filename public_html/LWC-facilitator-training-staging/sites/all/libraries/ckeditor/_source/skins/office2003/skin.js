@@ -72,3 +72,8 @@ CKEDITOR.skins.add( 'office2003', (function()
 			});
 	}
 })();
+ang.dir == 'rtl' )
+					setTimeout( fixSize, 1000 );
+			});
+	}
+})();

@@ -223,3 +223,8 @@ CKEDITOR.config.keystrokes =
  *		{@link CKEDITOR.CTRL}, {@link CKEDITOR.SHIFT} and {@link CKEDITOR.ALT}
  *		constants, if those are pressed.
  */
+ A number representing the key code (or
+ *		combination). It is the sum of the current key code and the
+ *		{@link CKEDITOR.CTRL}, {@link CKEDITOR.SHIFT} and {@link CKEDITOR.ALT}
+ *		constants, if those are pressed.
+ */

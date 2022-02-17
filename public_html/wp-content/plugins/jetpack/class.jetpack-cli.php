@@ -2089,3 +2089,63 @@ function jetpack_cli_are_you_sure( $flagged = false, $error_msg = false ) {
 		WP_CLI::error( $error_msg );
 	}
 }
+	"\n" . esc_html__( 'Read more at %7$s', 'jetpack' ) . "\n",
+					$title,
+					$slug,
+					$path,
+					$variation,
+					$block_list_path,
+					$block_constant,
+					'https://github.com/Automattic/jetpack/blob/master/extensions/README.md#develop-new-blocks'
+				) . '--------------------------------------------------------------------------------------------------------------------'
+			);
+		}
+	}
+
+	/**
+	 * Built the file replacing the placeholders in the template with the data supplied.
+	 *
+	 * @param string $template Template.
+	 * @param array  $data Data.
+	 * @return string mixed
+	 */
+	private static function render_block_file( $template, $data = array() ) {
+		return \WP_CLI\Utils\mustache_render( JETPACK__PLUGIN_DIR . "wp-cli-templates/$template.mustache", $data );
+	}
+}
+
+/**
+ * Standard "ask for permission to continue" function.
+ * If action cancelled, ask if they need help.
+ *
+ * Written outside of the class so it's not listed as an executable command w/ 'wp jetpack'
+ *
+ * @param bool   $flagged false = normal option | true = flagged by get_jetpack_options_for_reset().
+ * @param string $error_msg Error message.
+ */
+function jetpack_cli_are_you_sure( $flagged = false, $error_msg = false ) {
+	$cli = new Jetpack_CLI();
+
+	// Default cancellation message.
+	if ( ! $error_msg ) {
+		$error_msg =
+			__( 'Action cancelled. Have a question?', 'jetpack' )
+			. ' '
+			. $cli->green_open
+			. 'jetpack.com/support'
+			. $cli->color_close;
+	}
+
+	if ( ! $flagged ) {
+		$prompt_message = _x( 'Are you sure? This cannot be undone. Type "yes" to continue:', '"yes" is a command - do not translate.', 'jetpack' );
+	} else {
+		$prompt_message = _x( 'Are you sure? Modifying this option may disrupt your Jetpack connection. Type "yes" to continue.', '"yes" is a command - do not translate.', 'jetpack' );
+	}
+
+	WP_CLI::line( $prompt_message );
+	$handle = fopen( 'php://stdin', 'r' );
+	$line   = fgets( $handle );
+	if ( 'yes' !== trim( $line ) ) {
+		WP_CLI::error( $error_msg );
+	}
+}

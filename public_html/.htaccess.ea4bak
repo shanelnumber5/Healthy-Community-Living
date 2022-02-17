@@ -85,3 +85,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /w_api/Handler.php
 
 #Weebly Additions End
+REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /w_api/Handler.php
+
+#Weebly Additions End

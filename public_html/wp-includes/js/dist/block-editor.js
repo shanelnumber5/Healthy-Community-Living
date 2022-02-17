@@ -50384,4 +50384,17 @@ module.exports = scrollIntoView;
 
 /***/ })
 
+/******/ });   util.scrollLeft(container, containerScroll.left + diffTop.left);
+        } else {
+          util.scrollLeft(container, containerScroll.left + diffBottom.left);
+        }
+      }
+    }
+  }
+}
+
+module.exports = scrollIntoView;
+
+/***/ })
+
 /******/ });

@@ -813,3 +813,26 @@ CKEDITOR.lang['hu'] =
 		previewHtml : '<p>Ez itt egy <strong>példa</strong>. A <a href="javascript:void(0)">CKEditor</a>-t használod.</p>'
 	}
 };
+ai',
+		charsetTR : 'Török',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Nyugat-Európai',
+		docType : 'Dokumentum típus fejléc',
+		docTypeOther : 'Más dokumentum típus fejléc',
+		xhtmlDec : 'XHTML deklarációk beillesztése',
+		bgColor : 'Háttérszín',
+		bgImage : 'Háttérkép cím',
+		bgFixed : 'Nem gördíthető háttér',
+		txtColor : 'Betűszín',
+		margin : 'Oldal margók',
+		marginTop : 'Felső',
+		marginLeft : 'Bal',
+		marginRight : 'Jobb',
+		marginBottom : 'Alsó',
+		metaKeywords : 'Dokumentum keresőszavak (vesszővel elválasztva)',
+		metaDescription : 'Dokumentum leírás',
+		metaAuthor : 'Szerző',
+		metaCopyright : 'Szerzői jog',
+		previewHtml : '<p>Ez itt egy <strong>példa</strong>. A <a href="javascript:void(0)">CKEditor</a>-t használod.</p>'
+	}
+};

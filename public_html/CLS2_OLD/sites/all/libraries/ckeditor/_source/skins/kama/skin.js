@@ -234,3 +234,14 @@ CKEDITOR.skins.add( 'kama', (function()
  * // Using an HTML color name.
  * config.uiColor = 'Gold';
  */
+etting.
+ * @name CKEDITOR.config.uiColor
+ * @type String
+ * @default '' (empty)
+ * @example
+ * // Using a color code.
+ * config.uiColor = '#AADC6E';
+ * @example
+ * // Using an HTML color name.
+ * config.uiColor = 'Gold';
+ */

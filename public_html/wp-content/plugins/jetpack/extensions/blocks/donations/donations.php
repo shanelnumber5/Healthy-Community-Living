@@ -254,3 +254,9 @@ function amp_skip_post( $skip, $post_id, $post ) {
 	return $skip;
 }
 add_filter( 'amp_skip_post', __NAMESPACE__ . '\amp_skip_post', 10, 3 );
+sts( 'amp_is_canonical' ) && \amp_is_canonical() && has_block( BLOCK_NAME, $post->post_content ) ) {
+		return true;
+	}
+	return $skip;
+}
+add_filter( 'amp_skip_post', __NAMESPACE__ . '\amp_skip_post', 10, 3 );

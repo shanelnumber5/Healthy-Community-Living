@@ -197,3 +197,28 @@ class ComposerStaticInitf11009ded9fc4592b6a05b61ce272b3c_jetpackⓥ10_5_1
         }, null, ClassLoader::class);
     }
 }
+ack_vendor/automattic/jetpack-connection/legacy/class-jetpack-xmlrpc-server.php',
+        'Twitter\\Text\\Autolink' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/Autolink.php',
+        'Twitter\\Text\\Configuration' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/Configuration.php',
+        'Twitter\\Text\\EmojiRegex' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/EmojiRegex.php',
+        'Twitter\\Text\\Extractor' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/Extractor.php',
+        'Twitter\\Text\\HitHighlighter' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/HitHighlighter.php',
+        'Twitter\\Text\\ParseResults' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/ParseResults.php',
+        'Twitter\\Text\\Parser' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/Parser.php',
+        'Twitter\\Text\\Regex' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/Regex.php',
+        'Twitter\\Text\\StringUtils' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/StringUtils.php',
+        'Twitter\\Text\\TldLists' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/TldLists.php',
+        'Twitter\\Text\\Validator' => __DIR__ . '/..' . '/nojimage/twitter-text-php/lib/Twitter/Text/Validator.php',
+    );
+
+    public static function getInitializer(ClassLoader $loader)
+    {
+        return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf11009ded9fc4592b6a05b61ce272b3c_jetpackⓥ10_6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf11009ded9fc4592b6a05b61ce272b3c_jetpackⓥ10_6::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitf11009ded9fc4592b6a05b61ce272b3c_jetpackⓥ10_6::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitf11009ded9fc4592b6a05b61ce272b3c_jetpackⓥ10_6::$classMap;
+
+        }, null, ClassLoader::class);
+    }
+}

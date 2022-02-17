@@ -813,3 +813,25 @@ CKEDITOR.lang['eo'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+urkish', // MISSING
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Western European', // MISSING
+		docType : 'Dokumenta Tipo',
+		docTypeOther : 'Alia Dokumenta Tipo',
+		xhtmlDec : 'Inkluzivi XHTML Deklaroj',
+		bgColor : 'Fona Koloro',
+		bgImage : 'URL de Fona Bildo',
+		bgFixed : 'Neruluma Fono',
+		txtColor : 'Teksta Koloro',
+		margin : 'Paĝaj Marĝenoj',
+		marginTop : 'Supra',
+		marginLeft : 'Maldekstra',
+		marginRight : 'Dekstra',
+		marginBottom : 'Malsupra',
+		metaKeywords : 'Ŝlosilvortoj de la Dokumento (apartigita de komoj)',
+		metaDescription : 'Dokumenta Priskribo',
+		metaAuthor : 'Verkinto',
+		metaCopyright : 'Kopirajto',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

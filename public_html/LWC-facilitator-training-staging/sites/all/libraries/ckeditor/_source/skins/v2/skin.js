@@ -68,3 +68,9 @@ CKEDITOR.skins.add( 'v2', (function()
 			});
 	}
 })();
+etSize( 'height', height );
+					},
+					100 );
+			});
+	}
+})();

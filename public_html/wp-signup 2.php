@@ -1019,3 +1019,43 @@ do_action( 'after_signup_form' );
 
 <?php
 get_footer( 'wp-signup' );
+ ( ! is_user_logged_in() && ( 'blog' === $active_signup ) ) {
+				_e( 'Sorry, new registrations are not allowed at this time.' );
+			} else {
+				_e( 'You are logged in already. No need to register again!' );
+			}
+
+			if ( $newblogname ) {
+				$newblog = get_blogaddress_by_name( $newblogname );
+
+				if ( 'blog' === $active_signup || 'all' === $active_signup ) {
+					printf(
+						/* translators: %s: Site address. */
+						'<p>' . __( 'The site you were looking for, %s, does not exist, but you can create it now!' ) . '</p>',
+						'<strong>' . $newblog . '</strong>'
+					);
+				} else {
+					printf(
+						/* translators: %s: Site address. */
+						'<p>' . __( 'The site you were looking for, %s, does not exist.' ) . '</p>',
+						'<strong>' . $newblog . '</strong>'
+					);
+				}
+			}
+			break;
+	}
+}
+?>
+</div>
+</div>
+<?php
+/**
+ * Fires after the sign-up forms, before wp_footer.
+ *
+ * @since 3.0.0
+ */
+do_action( 'after_signup_form' );
+?>
+
+<?php
+get_footer( 'wp-signup' );

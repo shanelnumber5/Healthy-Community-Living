@@ -813,3 +813,19 @@ CKEDITOR.lang['bg'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+bgColor : 'Цвят на фона',
+		bgImage : 'Пълен път до фоновото изображение',
+		bgFixed : 'Не-повтарящо се фоново изображение',
+		txtColor : 'Цвят на текста',
+		margin : 'Отстъпи на страницата',
+		marginTop : 'Горе',
+		marginLeft : 'Ляво',
+		marginRight : 'Дясно',
+		marginBottom : 'Долу',
+		metaKeywords : 'Ключови думи за документа (разделени със запетаи)',
+		metaDescription : 'Описание на документа',
+		metaAuthor : 'Автор',
+		metaCopyright : 'Авторски права',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

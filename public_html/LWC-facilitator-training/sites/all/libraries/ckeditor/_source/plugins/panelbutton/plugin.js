@@ -142,3 +142,13 @@ CKEDITOR.plugins.add( 'panelbutton',
  * @example
  */
 CKEDITOR.UI_PANELBUTTON = 'panelbutton';
+TOR.ui.panelButton.handler );
+	}
+});
+
+/**
+ * Button UI element.
+ * @constant
+ * @example
+ */
+CKEDITOR.UI_PANELBUTTON = 'panelbutton';

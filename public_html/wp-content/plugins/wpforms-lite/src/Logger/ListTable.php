@@ -538,3 +538,6 @@ class ListTable extends WP_List_Table {
 		return $this->repository->get_total();
 	}
 }
+tory->get_total();
+	}
+}

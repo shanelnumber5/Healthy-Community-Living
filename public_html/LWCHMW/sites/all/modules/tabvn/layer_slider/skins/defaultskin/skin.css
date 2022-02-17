@@ -1,0 +1,105 @@
+/* LayerSlider Default Skin */
+
+
+
+.ls-defaultskin {
+  margin:0;
+  position: relative;
+  zoom: 1;
+
+}
+
+.ls-defaultskin .ls-bottom-nav-wrapper {
+  text-align: center;
+  margin: 15px auto 0px auto;
+  position: relative;
+}
+
+.ls-defaultskin .ls-playvideo {
+  width: 50px;
+  height: 50px;
+  margin-left: -25px;
+  margin-top: -25px;
+}
+
+
+.ls-defaultskin .ls-bottom-slidebuttons,
+.ls-defaultskin .ls-bottom-slidebuttons a,
+.ls-defaultskin .ls-nav-start,
+.ls-defaultskin .ls-nav-stop,
+.ls-defaultskin .ls-nav-sides {
+  height: 28px;
+}
+
+.ls-defaultskin .ls-bottom-slidebuttons,
+.ls-defaultskin .ls-bottom-slidebuttons a,
+.ls-defaultskin .ls-nav-start,
+.ls-defaultskin .ls-nav-stop,
+.ls-defaultskin .ls-nav-sides {
+  display: inline-block;
+}
+
+.ls-defaultskin .ls-nav-start,
+.ls-defaultskin .ls-nav-stop {
+  width: 24px;
+}
+
+.ls-defaultskin .ls-bottom-slidebuttons a {
+  width: 20px;
+}
+
+.ls-defaultskin .ls-nav-sides {
+  width: 6px;	
+}
+
+
+
+.ls-defaultskin .ls-thumbnail-hover {
+  bottom: 55px;
+  padding: 4px;
+  margin-left: 1px;
+}
+
+.ls-defaultskin .ls-thumbnail-hover-bg {
+  background: white;
+  box-shadow: 0px 2px 12px -4px black;
+  border-radius: 4px;
+}
+
+.ls-defaultskin .ls-thumbnail-hover span {
+  border: 5px solid white;
+  margin-left: -5px;
+}
+
+
+
+.ls-defaultskin .ls-thumbnail {
+  top: -20px;
+}
+
+.ls-defaultskin .ls-thumbnail-inner {
+  padding: 5px;
+  margin-left: -5px;
+  background: white;
+  box-shadow: 0px 3px 35px -10px black;
+  border-radius: 4px;
+}
+
+.ls-defaultskin .ls-thumbnail-slide a {
+  margin-right: 5px;
+}
+
+.ls-defaultskin .ls-nothumb {
+  background: #eee;
+}
+
+
+
+.ls-defaultskin .ls-above-thumbnails {
+  display: none;
+}
+
+.ls-defaultskin .ls-below-thumbnails {
+  display: block;
+  margin-top: -20px;
+}

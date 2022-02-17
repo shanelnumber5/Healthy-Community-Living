@@ -276,3 +276,12 @@ CKEDITOR.config.editingBlock = true;
  * @event
  * @param {String} previousMode The previous mode of the editor.
  */
+he mode which is about to be set.
+ */
+
+/**
+ * Fired after setting the editing mode. See also CKEDITOR.editor#beforeSetMode and CKEDITOR.editor#beforeModeUnload
+ * @name CKEDITOR.editor#mode
+ * @event
+ * @param {String} previousMode The previous mode of the editor.
+ */

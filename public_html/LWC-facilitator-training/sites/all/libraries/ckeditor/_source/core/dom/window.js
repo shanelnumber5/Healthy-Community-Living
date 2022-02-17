@@ -94,3 +94,9 @@ CKEDITOR.tools.extend( CKEDITOR.dom.window.prototype,
 			}
 		}
 	});
+0,
+					y : doc.documentElement.scrollTop || doc.body.scrollTop || 0
+				};
+			}
+		}
+	});

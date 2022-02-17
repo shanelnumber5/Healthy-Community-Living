@@ -356,3 +356,104 @@ class Jetpack_Modules_List_Table extends WP_List_Table {
 	}
 
 }
+tivate', 'jetpack' ) );
+		} elseif ( ! empty( $item['activated'] ) ) {
+			$url               = wp_nonce_url(
+				Jetpack::admin_url(
+					array(
+						'page'   => 'jetpack',
+						'action' => 'deactivate',
+						'module' => $item['module'],
+					)
+				),
+				'jetpack_deactivate-' . $item['module']
+			);
+			$actions['delete'] = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Deactivate', 'jetpack' ) );
+		}
+
+		return $this->row_actions( $actions ) . wptexturize( $item['name'] );
+	}
+
+	/**
+	 * Column description.
+	 *
+	 * @param object|array $item Item.
+	 * @return string HTML.
+	 */
+	public function column_description( $item ) {
+		ob_start();
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		/** This action is documented in class.jetpack-admin.php */
+		echo apply_filters( 'jetpack_short_module_description', $item['description'], $item['module'] );
+		/** This action is documented in class.jetpack-admin.php */
+		do_action( 'jetpack_learn_more_button_' . $item['module'] );
+		echo '<div id="more-info-' . $item['module'] . '" class="more-info">';
+		/** This action is documented in class.jetpack-admin.php */
+		do_action( 'jetpack_module_more_info_' . $item['module'] );
+		echo '</div>';
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+		return ob_get_clean();
+	}
+
+	/**
+	 * Return module tags HTML.
+	 *
+	 * @param object|array $item Item.
+	 * @return string HTML.
+	 */
+	public function column_module_tags( $item ) {
+		$module_tags = array();
+		foreach ( $item['module_tags'] as $module_tag ) {
+			$module_tags[] = sprintf( '<a href="%3$s" data-title="%2$s">%1$s</a>', esc_html( $module_tag ), esc_attr( $module_tag ), esc_url( add_query_arg( 'module_tag', rawurlencode( $module_tag ) ) ) );
+		}
+		return implode( ', ', $module_tags );
+	}
+
+	/**
+	 * Column default value.
+	 *
+	 * @param object|array $item Item.
+	 * @param string       $column_name Column name.
+	 * @return string
+	 */
+	public function column_default( $item, $column_name ) {
+		switch ( $column_name ) {
+			case 'icon':
+			case 'name':
+			case 'description':
+				return '';
+			default:
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+				return print_r( $item, true );
+		}
+	}
+
+	/**
+	 * Check if the info parameter provided in the URL corresponds to an actual module.
+	 *
+	 * @param string|false $info Info parameter.
+	 * @param array        $modules Modules array.
+	 * @return string|false
+	 */
+	public function module_info_check( $info, $modules ) {
+		if ( ! $info ) {
+			return false;
+		} elseif ( array_key_exists( $info, $modules ) ) {
+			return $info;
+		}
+	}
+
+	/**
+	 * Core switched their `display_tablenav()` method to protected, so we can't access it directly.
+	 * Instead, let's include an access function to make it doable without errors!
+	 *
+	 * @see https://github.com/WordPress/WordPress/commit/d28f6344de97616de8ece543ed290c4ba2383622
+	 *
+	 * @param string $which Which nav table to display.
+	 * @return mixed
+	 */
+	public function unprotected_display_tablenav( $which = 'top' ) {
+		return $this->display_tablenav( $which );
+	}
+
+}

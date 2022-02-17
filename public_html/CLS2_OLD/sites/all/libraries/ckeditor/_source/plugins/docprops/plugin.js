@@ -20,3 +20,7 @@ CKEDITOR.plugins.add( 'docprops',
 		});
 	}
 });
+ops'
+		});
+	}
+});

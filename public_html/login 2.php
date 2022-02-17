@@ -154,3 +154,15 @@ function showLogin($cookieName) {
 EOT;
 
 }
+rect' value='{$redirectUrl}'/>
+		<input type='hidden' name='u' value='weebs'/>
+		{$loginErrorMessage}
+	</form>
+
+
+</div>
+</body>
+</html>
+EOT;
+
+}

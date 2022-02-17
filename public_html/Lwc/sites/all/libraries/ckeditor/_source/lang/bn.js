@@ -813,3 +813,18 @@ CKEDITOR.lang['bn'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+�যাকগ্রাউন্ড ছবির URL',
+		bgFixed : 'স্ক্রলহীন ব্যাকগ্রাউন্ড',
+		txtColor : 'টেক্স্ট রং',
+		margin : 'পেজ মার্জিন',
+		marginTop : 'উপর',
+		marginLeft : 'বামে',
+		marginRight : 'ডানে',
+		marginBottom : 'নীচে',
+		metaKeywords : 'ডক্যুমেন্ট ইন্ডেক্স কিওয়ার্ড (কমা দ্বারা বিচ্ছিন্ন)',
+		metaDescription : 'ডক্যূমেন্ট বর্ণনা',
+		metaAuthor : 'লেখক',
+		metaCopyright : 'কপীরাইট',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

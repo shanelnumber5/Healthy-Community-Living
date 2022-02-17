@@ -306,3 +306,17 @@ CKEDITOR.htmlParser.cssStyle = function()
 		}
 	};
 })();
+, writer, isChildrenFiltered ? null : filter );
+				// Close the element.
+				writer.closeTag( writeName );
+			}
+		},
+
+		writeChildrenHtml : function( writer, filter )
+		{
+			// Send children.
+			CKEDITOR.htmlParser.fragment.prototype.writeChildrenHtml.apply( this, arguments );
+
+		}
+	};
+})();

@@ -85,3 +85,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
+nt, 'cke_iframe', 'iframe', true );
+						}
+					}
+				});
+			}
+		}
+	});
+})();

@@ -532,3 +532,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @example
  * config.filebrowserWindowHeight = '50%';
  */
+WindowWidth
+ * @type Number|String
+ * @default <code>'80%'</code>
+ * @example
+ * config.filebrowserWindowWidth = 750;
+ * @example
+ * config.filebrowserWindowWidth = '50%';
+ */
+
+/**
+ * The height of the file browser popup window. It can be a number denoting a value in
+ * pixels or a percent string.
+ * @name CKEDITOR.config.filebrowserWindowHeight
+ * @type Number|String
+ * @default <code>'70%'</code>
+ * @example
+ * config.filebrowserWindowHeight = 580;
+ * @example
+ * config.filebrowserWindowHeight = '50%';
+ */

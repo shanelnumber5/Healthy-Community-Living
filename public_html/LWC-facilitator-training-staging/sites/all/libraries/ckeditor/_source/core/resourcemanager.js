@@ -236,3 +236,17 @@ CKEDITOR.resourceManager.prototype =
 			, this);
 	}
 };
+r j = 0 ; j < nameList.length ; j++ )
+					{
+						var name = nameList[ j ];
+						resources[ name ] = this.get( name );
+
+						loaded[ name ] = 1;
+					}
+				}
+
+				callback.call( scope, resources );
+			}
+			, this);
+	}
+};

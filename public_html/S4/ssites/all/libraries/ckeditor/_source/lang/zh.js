@@ -813,3 +813,28 @@ CKEDITOR.lang['zh'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+,
+		charsetJP : '日文',
+		charsetKR : '韓文',
+		charsetTR : '土耳其文',
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : '西歐語系',
+		docType : '文件類型',
+		docTypeOther : '其他文件類型',
+		xhtmlDec : '包含 XHTML 定義',
+		bgColor : '背景顏色',
+		bgImage : '背景影像',
+		bgFixed : '浮水印',
+		txtColor : '文字顏色',
+		margin : '頁面邊界',
+		marginTop : '上',
+		marginLeft : '左',
+		marginRight : '右',
+		marginBottom : '下',
+		metaKeywords : '文件索引關鍵字 (用半形逗號[,]分隔)',
+		metaDescription : '文件說明',
+		metaAuthor : '作者',
+		metaCopyright : '版權所有',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

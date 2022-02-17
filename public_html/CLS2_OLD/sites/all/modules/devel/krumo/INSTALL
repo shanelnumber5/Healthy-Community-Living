@@ -29,4 +29,4 @@ So far those two are the only configuration options.
 
 All the CSS files ("skin.css") from the "Krumo/skins/" sub-folders must have the 
 proper permissions in order to be readable from Krumo. Same applies for 
-"krumo.ini" and "krumo.js" files.
+"krumo.ini" and "krumo.js" files.rumo.ini" and "krumo.js" files.

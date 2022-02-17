@@ -264,3 +264,22 @@ CKEDITOR.dtd = (function()
 })();
 
 // PACKAGER_RENAME( CKEDITOR.dtd )
+ P,
+		hgroup : P,
+		mark : L,
+		time : L,
+		meter : L,
+		menu : L,
+		command : L,
+		keygen : L,
+		output : L,
+		progress : O,
+		audio : O,
+		video : O,
+		details : O,
+		datagrid : O,
+		datalist : O
+    };
+})();
+
+// PACKAGER_RENAME( CKEDITOR.dtd )

@@ -13,4 +13,4 @@ The Healthy Community Living project is about all people having opportunities to
 #wsite-content a:visited, .blog-sidebar a:visited {color:#0737c2 !important;}
 #wsite-content a:hover, .blog-sidebar a:hover {color:#ff7e00 !important;}
 </style>
-";s:16:"template_layouts";a:4:{i:0;s:7:"landing";i:1;s:9:"no-header";i:2;s:12:"short-header";i:3;s:11:"tall-header";}s:23:"mobile_template_layouts";a:4:{i:0;s:8:"homepage";i:1;s:6:"header";i:2;s:9:"no-header";i:3;s:7:"landing";}s:12:"mobile_theme";s:6:"legacy";s:23:"mobile_headers_disabled";b:1;s:25:"mobile_header_placeholder";s:1:"0";s:7:"user_id";s:7:"4253170";s:12:"publish_date";i:1493050145;}
+";s:16:"template_layouts";a:4:{i:0;s:7:"landing";i:1;s:9:"no-header";i:2;s:12:"short-header";i:3;s:11:"tall-header";}s:23:"mobile_template_layouts";a:4:{i:0;s:8:"homepage";i:1;s:6:"header";i:2;s:9:"no-header";i:3;s:7:"landing";}s:12:"mobile_theme";s:6:"legacy";s:23:"mobile_headers_disabled";b:1;s:25:"mobile_header_placeholder";s:1:"0";s:7:"user_id";s:7:"4253170";s:12:"publish_date";i:1493050145;};i:1493050145;}

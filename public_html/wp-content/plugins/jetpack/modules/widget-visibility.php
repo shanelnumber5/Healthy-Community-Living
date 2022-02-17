@@ -12,3 +12,4 @@
  */
 
 include dirname( __FILE__ ) . "/widget-visibility/widget-conditions.php";
+quire __DIR__ . '/widget-visibility/widget-conditions.php';

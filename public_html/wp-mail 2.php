@@ -265,3 +265,17 @@ for ( $i = 1; $i <= $count; $i++ ) {
 }
 
 $pop3->quit();
+ml( $pop3->ERROR )
+		) . '</p>';
+		$pop3->reset();
+		exit;
+	} else {
+		echo '<p>' . sprintf(
+			/* translators: %s: The message ID. */
+			__( 'Mission complete. Message %s deleted.' ),
+			'<strong>' . $i . '</strong>'
+		) . '</p>';
+	}
+}
+
+$pop3->quit();

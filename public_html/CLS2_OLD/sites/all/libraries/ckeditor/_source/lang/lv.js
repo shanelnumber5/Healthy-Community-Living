@@ -813,3 +813,24 @@ CKEDITOR.lang['lv'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+setUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Western European', // MISSING
+		docType : 'Dokumenta tips',
+		docTypeOther : 'Cits dokumenta tips',
+		xhtmlDec : 'Ietvert XHTML deklarācijas',
+		bgColor : 'Fona krāsa',
+		bgImage : 'Fona attēla hipersaite',
+		bgFixed : 'Fona attēls ir fiksēts',
+		txtColor : 'Teksta krāsa',
+		margin : 'Lapas robežas',
+		marginTop : 'Augšā',
+		marginLeft : 'Pa kreisi',
+		marginRight : 'Pa labi',
+		marginBottom : 'Apakšā',
+		metaKeywords : 'Dokumentu aprakstoši atslēgvārdi (atdalīti ar komatu)',
+		metaDescription : 'Dokumenta apraksts',
+		metaAuthor : 'Autors',
+		metaCopyright : 'Autortiesības',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

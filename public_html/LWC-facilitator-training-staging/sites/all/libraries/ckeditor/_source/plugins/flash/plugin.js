@@ -152,3 +152,12 @@ CKEDITOR.tools.extend( CKEDITOR.config,
 	 */
 	flashConvertOnEdit : false
 } );
+ag : true,
+
+	/**
+	 * Use embedTagOnly and addEmbedTag values on edit.
+	 * @type Boolean
+	 * @default false
+	 */
+	flashConvertOnEdit : false
+} );

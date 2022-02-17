@@ -27,3 +27,4 @@ function jetpack_markdown_posting_always_on() {
 	}
 }
 add_action( 'admin_init', 'jetpack_markdown_posting_always_on', 11 );
+admin_init', 'jetpack_markdown_posting_always_on', 11 );

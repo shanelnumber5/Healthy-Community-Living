@@ -1,0 +1,503 @@
+.sc_dishes_compact .sc_dishes_slider.slider_outer_pagination_pos_bottom {
+	padding-bottom: 3em;
+}
+
+.sc_dishes_item .sc_dishes_item_thumb {
+	margin-bottom: 0;
+}
+
+
+/* Style 'Default' */
+.sc_dishes_default .sc_dishes_item {
+	background-color:#fafafa;
+	margin-bottom: 2em;
+	text-align:center;
+	padding-top:0.0001px;
+}
+.sc_dishes_default.slider_swiper .sc_dishes_item,
+.sc_dishes_default .columns_padding_bottom .sc_dishes_item {
+	margin-bottom:0;
+}
+
+.sc_dishes_default .sc_dishes_item_thumb img {
+	width: 100%;
+}
+
+.sc_dishes_default .sc_dishes_item_info {
+	padding: 1.5em 2em;
+}
+
+.sc_dishes_default .sc_dishes_item_title {
+	margin: 0;
+}
+.sc_dishes_default .sc_dishes_item_subtitle {
+	font-size: 0.9286em;
+	line-height:1.5em;
+	margin-top: 0.5em;
+}
+
+.sc_dishes_default .sc_dishes_item_content {
+	margin-top:1em;
+}
+.sc_dishes_default .sc_dishes_item_content p {
+	margin:0;
+}
+
+.sc_dishes_default .sc_dishes_item_button {
+	margin:1em 0 0;
+}
+
+.sc_dishes_default .sc_dishes_item_image {
+	position: relative;
+}
+
+.sc_dishes_default .sc_dishes_item_featured_left,
+.sc_dishes_default .sc_dishes_item_featured_right {
+	position:relative;
+	overflow:hidden;
+	background-color: transparent;
+}
+.sc_dishes_default .sc_dishes_item_featured_left {
+	text-align:left;
+}
+.sc_dishes_default .sc_dishes_item_featured_right {
+	text-align:right;
+}
+
+.sc_dishes_default .sc_dishes_item_featured_left .sc_dishes_item_image,
+.sc_dishes_default .sc_dishes_item_featured_right .sc_dishes_item_image {
+	width:30%;
+	position:absolute;
+	z-index:1;
+	top: 0;
+}
+.sc_dishes_default .sc_dishes_item_featured_left .dishes_page_spicy_label,
+.sc_dishes_default .sc_dishes_item_featured_right .dishes_page_spicy_label {
+	display:none;
+}
+.sc_dishes_default .sc_dishes_item_featured_left .sc_dishes_item_content,
+.sc_dishes_default .sc_dishes_item_featured_right .sc_dishes_item_content {
+	min-height:0;
+}
+
+.sc_dishes_default .sc_dishes_item_featured_left .sc_dishes_item_image {
+	left: 0;
+}
+.sc_dishes_default .sc_dishes_item_featured_left .sc_dishes_item_info {
+	text-align:left;
+	padding: 0 0 0 2em;
+	margin-left: 4em;
+}
+.sc_dishes_default .sc_dishes_item_featured_left.without_content .sc_dishes_item_info {
+	margin-left: 3em;
+}
+.sc_dishes_default .sc_dishes_item_featured_left.with_image .sc_dishes_item_info {
+	margin-left: 30%;
+}
+.sc_dishes_default .sc_dishes_item_featured_right .sc_dishes_item_image {
+	right: 0;
+}
+.sc_dishes_default .sc_dishes_item_featured_right .sc_dishes_item_info {
+	text-align:right;
+	padding: 0 2em 0 0;
+	margin-right: 4em;
+}
+.sc_dishes_default .sc_dishes_item_featured_right.without_content .sc_dishes_item_info {
+	margin-right: 3em;
+}
+.sc_dishes_default .sc_dishes_item_featured_right.with_image .sc_dishes_item_info {
+	margin-right: 30%;
+}
+
+
+
+/* Style 'Float' */
+.sc_dishes_float .sc_dishes_item {
+	margin-bottom: 2em;
+	text-align:left;
+	padding-top:0.0001px;
+}
+.sc_dishes_float.slider_swiper .sc_dishes_item,
+.sc_dishes_float .columns_padding_bottom .sc_dishes_item {
+	margin-bottom:0;
+}
+
+.sc_dishes_float {
+	overflow: hidden;
+}
+.sc_dishes_float .sc_dishes_item_image {
+	width: 33.3333%;
+	position:relative;
+}
+.sc_dishes_float .sc_dishes_item_featured_left .sc_dishes_item_image {
+	float:left;
+	margin: 0 1.5em 0.75em 0;
+}
+.sc_dishes_float .sc_dishes_item_featured_right .sc_dishes_item_image {
+	float: right;
+	margin: 0 0 0.75em 1.5em;
+}
+
+.sc_dishes_float .dishes_page_spicy_label {
+	display:none;
+}
+
+.sc_dishes_float .sc_dishes_item_title {
+	margin: 0;
+	position:relative;
+	padding-right: 4em;
+}
+.sc_dishes_float .sc_dishes_item_price {
+	position:absolute;
+	z-index:1;
+	right: 0;
+	top: 0;
+}
+.sc_dishes_float .sc_dishes_item_featured_right .sc_dishes_item_title {
+	margin-right: 36%;
+}
+.sc_dishes_float .sc_dishes_item_subtitle {
+	font-size: 0.9286em;
+	line-height:1.5em;
+	margin-top: 0.5em;
+}
+
+.sc_dishes_float .sc_dishes_item_content {
+	margin-top:0.5em;
+	min-height:0;
+}
+.sc_dishes_float .sc_dishes_item_content p {
+	margin:0;
+}
+
+.sc_dishes_float .sc_dishes_item_button {
+	margin:0.5em 0 0;
+}
+
+
+/* Style 'Compact' */
+.sc_dishes_compact .sc_dishes_item {
+	background-color:#fafafa;
+	position:relative;
+}
+.sc_dishes_compact .sc_dishes_item_header {
+	color:#fff;
+	background-color:#333;
+	background-position:center;
+	background-size:cover;
+	background-repeat:no-repeat;
+	width:30%;
+	height:100%;
+	position:absolute;
+	z-index:1;
+	left:0;
+	top:0;
+	bottom:0;
+}
+.sc_dishes_compact .sc_dishes_item.with_image .sc_dishes_item_header:before {
+	content: ' ';
+	position:absolute;
+	z-index:-1;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom:0;
+	background-color:rgba(0,0,0,0.5);
+}
+.sc_dishes_compact .sc_dishes_item.without_content .sc_dishes_item_header {
+	position:relative;
+	bottom: auto;
+	width:100%;
+	height: auto;
+}
+.sc_dishes_compact .sc_dishes_item_header_info {
+	position:absolute;
+	z-index:1;
+	top: 50%;
+	left:0;
+	width: 100%;
+	padding: 1.5em;
+	-webkit-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+	-webkit-transform:translateY(-50%);
+	    -ms-transform:translateY(-50%);
+	        transform:translateY(-50%);
+}
+
+.sc_dishes_compact .dishes_page_spicy_label {
+	display:none;
+}
+.sc_dishes_compact .sc_dishes_item_price {
+	display:block;
+	font-size: 2.5em;
+	line-height:1em;
+	color:#fff;
+}
+.sc_dishes_compact .sc_dishes_item_title {
+	margin: 1em 0 0;
+}
+.sc_dishes_compact .sc_dishes_item_subtitle {
+	line-height:1.2em;
+}
+.sc_dishes_compact .sc_dishes_item_title+.sc_dishes_item_subtitle {
+	margin-top:0.6em;
+}
+
+.sc_dishes_compact .sc_dishes_item_content {
+	margin-left: 30%;
+	padding: 2em 3em;
+	min-height: 10em;
+}
+.sc_dishes_compact .sc_dishes_item_featured_right .sc_dishes_item_header {
+	left: auto;
+	right:0;
+}
+.sc_dishes_compact .sc_dishes_item_featured_right .sc_dishes_item_content {
+	margin-left:0;
+	margin-right:30%;
+}
+
+.sc_dishes_compact .sc_dishes_item_content p {
+	margin:0;
+}
+.sc_dishes_compact .sc_dishes_item_content p + p {
+	margin-top:0.4em;
+}
+.sc_dishes_compact .sc_dishes_item_text + .sc_dishes_item_button {
+	margin-top: 0.5em;
+}
+
+
+/* Single post */
+.dishes_page_header {
+	position:relative;
+	margin-bottom: 2em;
+}
+.dishes_page_spicy {
+	position:absolute;
+	z-index:1;
+	right: 0;
+	top: 0;
+	font-size:11px;
+	font-weight:bold;
+	text-transform:uppercase;
+	padding-right: 6px;
+	display: inline-block;
+	background-color:#f0f0f0;
+	color: #333;
+}
+.dishes_page_spicy:before {
+	content: '\e8c0';
+	font-family: 'trx_addons_icons';
+	font-size: 13px;
+	font-weight:normal;
+	display:inline-block;
+	margin:0 6px 0 0;
+	width: 2em;
+	text-align:center;
+	line-height:inherit;
+	color: #fff;
+	background-color: #44b21e;
+}
+.dishes_page_spicy_value:after {
+	content: '/5';
+}
+.dishes_page_spicy_2:before { background-color: #97f216; }
+.dishes_page_spicy_3:before { background-color: #f7dd00; }
+.dishes_page_spicy_4:before { background-color: #f25e16; }
+.dishes_page_spicy_5:before { background-color: #e41111; }
+
+.dishes_page_title {
+	position:relative;
+	padding-right: 3em;
+}
+.dishes_page_price {
+	position:absolute;
+	z-index:1;
+	right: 0;
+	top: 0;
+}
+
+.dishes_page_details {
+	overflow:hidden;
+}
+.dishes_page_details_title {
+	display:none;
+}
+.dishes_page_details_nutritions,
+.dishes_page_details_ingredients {
+	float:left;
+	max-width: 48%;
+}
+.dishes_page_details_nutritions {
+	margin-right:4%;
+}
+
+/* Popup with details */
+#trx_addons_dishes_details_popup_overlay {
+	position: fixed;
+	z-index: 100000;
+	left:0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color:rgba(0,0,0,0.9);
+	display: none;
+}
+#trx_addons_dishes_details_popup {
+	position: fixed;
+	z-index: 100001;
+	left:50%;
+	top: 50%;
+	width: 50%;
+	height: 80%;
+	-webkit-transform:translate(-50%, -50%);
+	    -ms-transform:translate(-50%, -50%);
+	        transform:translate(-50%, -50%);
+	display: none;
+}
+.trx_addons_dishes_details_popup_close,
+.trx_addons_dishes_details_popup_prev,
+.trx_addons_dishes_details_popup_next {
+	position:absolute;
+	z-index: 1;
+	top: -2em;
+	right:-2em;
+	color: #fff;
+	font-size: 1.5em;
+	padding: 6px;
+	cursor:pointer;
+}
+.trx_addons_dishes_details_popup_prev,
+.trx_addons_dishes_details_popup_next {
+	top: 50%;
+	-webkit-transform:translateY(-50%);
+	    -ms-transform:translateY(-50%);
+	        transform:translateY(-50%);
+}
+.trx_addons_dishes_details_popup_prev {
+	left: -2em;
+	right: auto;
+}
+#trx_addons_dishes_details_popup .trx_addons_dishes_details_content {
+	position: absolute;
+	z-index: 1;
+	left:0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #fff;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+#trx_addons_dishes_details_popup .dishes_page_title {
+	background-color: #f0f0f0;
+	margin: 0;
+	padding: 0.2em 3em 0.2em 0.5em;
+}
+#trx_addons_dishes_details_popup .dishes_page_price {
+	top: 0.2em;
+	right: 0.5em;
+}
+#trx_addons_dishes_details_popup .dishes_page_header {
+	margin-bottom:0;
+}
+#trx_addons_dishes_details_popup .dishes_page_content {
+	padding: 2em;
+}
+#trx_addons_dishes_details_popup .dishes_page_details {
+	padding: 0 2em;
+}
+#trx_addons_dishes_details_popup .dishes_page_details_title {
+	display:none;
+}
+#trx_addons_dishes_details_popup .dishes_page_details_nutritions_title,
+#trx_addons_dishes_details_popup .dishes_page_details_ingredients_title {
+	margin-top: 0;
+}
+#trx_addons_dishes_details_popup .dishes_page_button {
+	padding: 1em 2em 2em;
+}
+
+@media (max-width: 959px) {
+	.sc_dishes_default .dishes_page_spicy_label {
+		display:none;
+	}
+	#trx_addons_dishes_details_popup {
+		width: 80%;
+	}
+	#trx_addons_dishes_details_popup .dishes_page_details_nutritions,
+	#trx_addons_dishes_details_popup .dishes_page_details_ingredients {
+		width: 100%;
+		float:none;
+	}
+	#trx_addons_dishes_details_popup .dishes_page_details_ingredients_title {
+		margin-top: 2em;
+	}
+}
+
+@media (max-width: 767px) {
+	.sc_dishes_default .sc_dishes_item_featured_left .sc_dishes_item_image,
+	.sc_dishes_default .sc_dishes_item_featured_right .sc_dishes_item_image {
+		width:100%;
+		position:relative;
+		top: auto;
+		left:auto;
+		right: auto;
+	}
+	.sc_dishes_default .sc_dishes_item_featured_left .dishes_page_spicy_label,
+	.sc_dishes_default .sc_dishes_item_featured_right .dishes_page_spicy_label {
+		display:inline-block;
+	}
+	.sc_dishes_default .sc_dishes_item_featured_left .sc_dishes_item_info,
+	.sc_dishes_default .sc_dishes_item_featured_right .sc_dishes_item_info,
+	.sc_dishes_default .sc_dishes_item_featured_left.with_image .sc_dishes_item_info,
+	.sc_dishes_default .sc_dishes_item_featured_right.with_image .sc_dishes_item_info,
+	.sc_dishes_default .sc_dishes_item_featured_left.without_content .sc_dishes_item_info,
+	.sc_dishes_default .sc_dishes_item_featured_right.without_content .sc_dishes_item_info {
+		text-align:center;
+		padding: 0;
+		margin-left: 0;
+		margin-top: 2em;
+	}
+
+	.sc_dishes_float .sc_dishes_item_image {
+		width: 100%;
+		position:relative;
+	}
+	.sc_dishes_float .sc_dishes_item_featured_left .sc_dishes_item_image,
+	.sc_dishes_float .sc_dishes_item_featured_right .sc_dishes_item_image {
+		float: none;
+		margin: 0 0 2em 0;
+	}
+	.sc_dishes_float .sc_dishes_item_title,
+	.sc_dishes_float .sc_dishes_item_featured_right .sc_dishes_item_title {
+		margin: 0;
+	}
+
+	.sc_dishes_compact .sc_dishes_item_header,
+	.sc_dishes_compact .sc_dishes_item_featured_right .sc_dishes_item_header {
+		width:100%;
+		height:auto;
+		position:relative;
+		left:auto;
+		right: auto;
+		top:auto;
+		bottom:auto;
+	}
+	.sc_dishes_compact .sc_dishes_item_header_info {
+		position:static;
+		left: auto;
+		top: auto;
+		-webkit-transform:none;
+			-ms-transform:none;
+				transform:none;
+	}
+	.sc_dishes_compact .sc_dishes_item_content,
+	.sc_dishes_compact .sc_dishes_item_featured_right .sc_dishes_item_content {
+		margin: 0;
+		min-height: 0;
+	}
+
+}

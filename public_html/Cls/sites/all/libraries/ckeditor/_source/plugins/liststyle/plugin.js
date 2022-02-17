@@ -64,3 +64,5 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.plugins.add( 'liststyle', CKEDITOR.plugins.liststyle );
 })();
+R.plugins.add( 'liststyle', CKEDITOR.plugins.liststyle );
+})();

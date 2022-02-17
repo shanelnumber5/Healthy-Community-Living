@@ -539,3 +539,15 @@ CKEDITOR.config.menu_groups =
 	'tablecell,tablecellproperties,tablerow,tablecolumn,table,'+
 	'anchor,link,image,flash,' +
 	'checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,div';
+s defined in the groups.
+ * @type String
+ * @default 'clipboard,form,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea'
+ * @example
+ * config.menu_groups = 'clipboard,table,anchor,link,image';
+ */
+CKEDITOR.config.menu_groups =
+	'clipboard,' +
+	'form,' +
+	'tablecell,tablecellproperties,tablerow,tablecolumn,table,'+
+	'anchor,link,image,flash,' +
+	'checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,div';

@@ -248,3 +248,91 @@ class REST_Controller {
 	}
 
 }
+tivate plan: activate the search module, instant search and do initial configuration.
+	 * Typically called from WPCOM.
+	 *
+	 * POST `jetpack/v4/search/plan/activate`
+	 *
+	 * @param WP_REST_Request $request - REST request.
+	 */
+	public function activate_plan( $request ) {
+		// Update plan data, plan info is in the request body.
+		// We do this to avoid another call to WPCOM and reduce latency.
+		$plan_info = $request->get_json_params();
+		if ( ! $this->plan->set_plan_options( $plan_info ) ) {
+			$this->plan->get_plan_info_from_wpcom();
+		}
+		// Activate module.
+		// Eligibility is checked in `activate` function.
+		$ret = $this->search_module->activate();
+		if ( is_wp_error( $ret ) ) {
+			return $ret;
+		}
+		// Enable Instant Search.
+		// Eligibility is checked in `enable_instant_search` function.
+		$ret = $this->search_module->enable_instant_search();
+		if ( is_wp_error( $ret ) ) {
+			return $ret;
+		}
+
+		// Automatically configure necessary settings for instant search.
+		// TODO: need to revist the logic here when Instant Search migration is finished.
+		// We will either to make sure the auto config process idempotent or call it only once.
+		// Automattic\Jetpack\Search\Instant_Search::instanace()->auto_config_search();//.
+
+		return rest_ensure_response(
+			array(
+				'code' => 'success',
+			)
+		);
+	}
+
+	/**
+	 * Deactivate plan: turn off search module and instant search.
+	 * If the plan is still valid then the function would simply deactivate the search module.
+	 * Typically called from WPCOM.
+	 *
+	 * POST `jetpack/v4/search/plan/deactivate`
+	 */
+	public function deactivate_plan() {
+		// Instant Search would be disabled along with search module.
+		$this->search_module->deactivate();
+		return rest_ensure_response(
+			array(
+				'code' => 'success',
+			)
+		);
+	}
+
+	/**
+	 * Forward remote response to client with error handling.
+	 *
+	 * @param array|WP_Error $response - Resopnse from WPCOM.
+	 */
+	protected function make_proper_response( $response ) {
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$body        = json_decode( wp_remote_retrieve_body( $response ), true );
+		$status_code = wp_remote_retrieve_response_code( $response );
+
+		if ( 200 === $status_code ) {
+			return $body;
+		}
+
+		return new WP_Error(
+			isset( $body['error'] ) ? 'remote-error-' . $body['error'] : 'remote-error',
+			isset( $body['message'] ) ? $body['message'] : 'unknown remote error',
+			array( 'status' => $status_code )
+		);
+	}
+
+	/**
+	 * Get blog id
+	 */
+	protected function get_blog_id() {
+		return $this->is_wpcom ? get_current_blog_id() : Jetpack_Options::get_option( 'id' );
+	}
+
+}

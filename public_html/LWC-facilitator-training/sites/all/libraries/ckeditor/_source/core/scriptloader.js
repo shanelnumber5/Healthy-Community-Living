@@ -178,3 +178,11 @@ CKEDITOR.scriptLoader = (function()
 		}
 	};
 })();
+CKEDITOR.document.getDocumentElement().setStyle( 'cursor', 'wait' );
+			for ( var i = 0 ; i < scriptCount ; i++ )
+			{
+				loadScript( scriptUrl[ i ] );
+			}
+		}
+	};
+})();

@@ -43,3 +43,6 @@ function theme_noqty($variables) {
   $element = $variables['form'];
   return $element['#default_value'];
 }
+];
+  return $element['#default_value'];
+}

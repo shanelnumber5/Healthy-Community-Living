@@ -63,3 +63,5 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * var html = '&lt;p&gt;This is &lt;b&gt;an example&lt;/b&gt;.&lt;/p&gt;';
  * var data = editor.dataProcessor.toDataFormat( html );  // 'This is [b]an example[/b].'
  */
+sor.toDataFormat( html );  // 'This is [b]an example[/b].'
+ */

@@ -146,3 +146,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * // Only add rules for p and span elements.
  * config.stylesheetParser_validSelectors = /\^(p|span)\.\w+/;
  */
+ser_skipSelectors
+ * @example
+ * // Only add rules for p and span elements.
+ * config.stylesheetParser_validSelectors = /\^(p|span)\.\w+/;
+ */

@@ -398,3 +398,22 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
  * @event
  * @param {Object} holder The element wrapping the panel
  */
+link = index >= 0 && this.element.getElementsByTag( 'a' ).getItem( index );
+
+					if ( link )
+						link.$[ keyAction ] ? link.$[ keyAction ]() : link.$[ 'on' + keyAction ]();
+
+					return false;
+			}
+
+			return true;
+		}
+	}
+});
+
+/**
+ * Fired when a panel is added to the document
+ * @name CKEDITOR#ariaWidget
+ * @event
+ * @param {Object} holder The element wrapping the panel
+ */

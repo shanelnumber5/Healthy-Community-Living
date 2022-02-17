@@ -18,3 +18,4 @@ CKEDITOR.dom =
 {};
 
 // PACKAGER_RENAME( CKEDITOR.dom )
+ME( CKEDITOR.dom )

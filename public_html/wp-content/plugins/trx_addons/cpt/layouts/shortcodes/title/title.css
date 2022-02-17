@@ -1,0 +1,38 @@
+.sc_layouts_title_caption {
+	margin: 0 auto;
+}
+.sc_layouts_row_type_compact .sc_layouts_title_caption {
+	font-size: 2em;
+}
+.sc_layouts_title_meta + .sc_layouts_title_title > .sc_layouts_title_caption {
+	font-size: 3em;
+	line-height: 1.2em;
+	margin: 0.2em 0 0.2em;
+}
+.sc_layouts_title_caption img {
+	display:inline-block;
+	max-height:1.5em;
+	vertical-align:middle;
+	width:auto;
+	margin: -0.2em 0.2em 0 0;
+}
+.sc_layouts_title_link {
+	display:inline-block;
+	margin:0.5em 0 2em;
+}
+.sc_layouts_title_meta .post_edit:before {
+	margin-right: 0.5em;
+}
+.sc_layouts_title_description {
+	font-size:13px;
+	line-height:19px;
+	margin: 4px auto 1em;
+	max-width:75%;
+}
+.sc_layouts_title_description p {
+	margin:0;
+}
+
+.sc_layouts_title_breadcrumbs {
+	margin-top: 0.5em;
+}

@@ -105,3 +105,9 @@ class Admin {
 	}
 
 }
+pty( $_GET['page'] ) && 'wpcom-connection-manager' === $_GET['page'] ) {
+			add_action( 'plugins_loaded', array( 'Automattic\\Jetpack\\Identity_Crisis', 'init' ) );
+		}
+	}
+
+}

@@ -117,3 +117,12 @@ CKEDITOR.dom.elementPath.prototype =
 		return null;
 	}
 };
+; i++ )
+		{
+			if ( elements[ i ].getName() in tagNames )
+				return elements[ i ];
+		}
+
+		return null;
+	}
+};

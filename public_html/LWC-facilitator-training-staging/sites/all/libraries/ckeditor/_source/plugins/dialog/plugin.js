@@ -3306,3 +3306,114 @@ CKEDITOR.plugins.add( 'dialog',
  * @param {Number} width The new width.
  * @param {Number} height The new height.
  */
+stance of magnetic borders used in moving and resizing dialogs,
+ * measured in pixels.
+ * @name CKEDITOR.config.dialog_magnetDistance
+ * @type Number
+ * @default 20
+ * @example
+ * config.dialog_magnetDistance = 30;
+ */
+
+/**
+ * The guideline to follow when generating the dialog buttons. There are 3 possible options:
+ * <ul>
+ *     <li>'OS' - the buttons will be displayed in the default order of the user's OS;</li>
+ *     <li>'ltr' - for Left-To-Right order;</li>
+ *     <li>'rtl' - for Right-To-Left order.</li>
+ * </ul>
+ * @name CKEDITOR.config.dialog_buttonsOrder
+ * @type String
+ * @default 'OS'
+ * @since 3.5
+ * @example
+ * config.dialog_buttonsOrder = 'rtl';
+ */
+
+/**
+ * The dialog contents to removed. It's a string composed by dialog name and tab name with a colon between them.
+ * Separate each pair with semicolon (see example).
+ * <b>Note: All names are case-sensitive.</b>
+ * <b>Note: Be cautious when specifying dialog tabs that are mandatory, like "info", dialog functionality might be broken because of this!</b>
+ * @name CKEDITOR.config.removeDialogTabs
+ * @type String
+ * @since 3.5
+ * @default ''
+ * @example
+ * config.removeDialogTabs = 'flash:advanced;image:Link';
+ */
+
+/**
+ * Fired when a dialog definition is about to be used to create a dialog into
+ * an editor instance. This event makes it possible to customize the definition
+ * before creating it.
+ * <p>Note that this event is called only the first time a specific dialog is
+ * opened. Successive openings will use the cached dialog, and this event will
+ * not get fired.</p>
+ * @name CKEDITOR#dialogDefinition
+ * @event
+ * @param {CKEDITOR.dialog.definition} data The dialog defination that
+ *		is being loaded.
+ * @param {CKEDITOR.editor} editor The editor instance that will use the
+ *		dialog.
+ */
+
+/**
+ * Fired when a tab is going to be selected in a dialog
+ * @name CKEDITOR.dialog#selectPage
+ * @event
+ * @param {String} page The id of the page that it's gonna be selected.
+ * @param {String} currentPage The id of the current page.
+ */
+
+/**
+ * Fired when the user tries to dismiss a dialog
+ * @name CKEDITOR.dialog#cancel
+ * @event
+ * @param {Boolean} hide Whether the event should proceed or not.
+ */
+
+/**
+ * Fired when the user tries to confirm a dialog
+ * @name CKEDITOR.dialog#ok
+ * @event
+ * @param {Boolean} hide Whether the event should proceed or not.
+ */
+
+/**
+ * Fired when a dialog is shown
+ * @name CKEDITOR.dialog#show
+ * @event
+ */
+
+/**
+ * Fired when a dialog is shown
+ * @name CKEDITOR.editor#dialogShow
+ * @event
+ */
+
+/**
+ * Fired when a dialog is hidden
+ * @name CKEDITOR.dialog#hide
+ * @event
+ */
+
+/**
+ * Fired when a dialog is hidden
+ * @name CKEDITOR.editor#dialogHide
+ * @event
+ */
+
+/**
+ * Fired when a dialog is being resized. The event is fired on
+ * both the 'CKEDITOR.dialog' object and the dialog instance
+ * since 3.5.3, previously it's available only in the global object.
+ * @name CKEDITOR.dialog#resize
+ * @since 3.5
+ * @event
+ * @param {CKEDITOR.dialog} dialog The dialog being resized (if
+ * it's fired on the dialog itself, this parameter isn't sent).
+ * @param {String} skin The skin name.
+ * @param {Number} width The new width.
+ * @param {Number} height The new height.
+ */

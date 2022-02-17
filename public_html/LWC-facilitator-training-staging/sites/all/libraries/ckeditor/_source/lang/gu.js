@@ -813,3 +813,18 @@ CKEDITOR.lang['gu'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+��્ડ ચિત્ર URL',
+		bgFixed : 'સ્ક્રોલ ન થાય તેવું બૅકગ્રાઉન્ડ',
+		txtColor : 'શબ્દનો રંગ',
+		margin : 'પેજ માર્જિન',
+		marginTop : 'ઉપર',
+		marginLeft : 'ડાબી',
+		marginRight : 'જમણી',
+		marginBottom : 'નીચે',
+		metaKeywords : 'ડૉક્યુમન્ટ ઇન્ડેક્સ સંકેતશબ્દ (અલ્પવિરામ (,) થી અલગ કરો)',
+		metaDescription : 'ડૉક્યુમન્ટ વર્ણન',
+		metaAuthor : 'લેખક',
+		metaCopyright : 'કૉપિરાઇટ',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

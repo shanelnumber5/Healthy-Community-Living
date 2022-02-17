@@ -741,3 +741,20 @@ class Jetpack_Network {
 		return $options[ $name ];
 	}
 }
+ide option
+	 *
+	 * @since 2.9
+	 *
+	 * @param string $name - Name of the option in the database.
+	 **/
+	public function get_option( $name ) {
+		$options = get_site_option( $this->settings_name, $this->setting_defaults );
+		$options = wp_parse_args( $options, $this->setting_defaults );
+
+		if ( ! isset( $options[ $name ] ) ) {
+			$options[ $name ] = null;
+		}
+
+		return $options[ $name ];
+	}
+}

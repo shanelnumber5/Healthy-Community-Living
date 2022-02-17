@@ -256,3 +256,12 @@ CKEDITOR.dom.domObject.prototype = (function()
 	CKEDITOR.event.implementOn( domObjectProto );
 
 })( CKEDITOR.dom.domObject.prototype );
+d = function()
+	{
+		return this.$[ 'data-cke-expando' ] || ( this.$[ 'data-cke-expando' ] = CKEDITOR.tools.getNextNumber() );
+	};
+
+	// Implement CKEDITOR.event.
+	CKEDITOR.event.implementOn( domObjectProto );
+
+})( CKEDITOR.dom.domObject.prototype );

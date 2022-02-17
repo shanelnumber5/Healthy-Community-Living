@@ -111,3 +111,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
+ton( 'Preview',
+				{
+					label : editor.lang.preview,
+					command : pluginName
+				});
+		}
+	});
+})();

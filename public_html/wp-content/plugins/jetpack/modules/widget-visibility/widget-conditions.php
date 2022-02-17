@@ -1144,3 +1144,36 @@ $current_url = ! empty( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_S
 if ( is_customize_preview() || 'widgets.php' === $pagenow || ( false !== strpos( $current_url, '/wp-json/wp/v2/block-renderer' ) ) ) {
 	Jetpack_Widget_Conditions::add_block_attributes_filter();
 }
+.
+						if ( 0 === strpos( $rule['minor'], 'post_type_archive' ) ) {
+							$rule_type = 'post_type_archive';
+						} elseif ( 0 === strpos( $rule['minor'], 'post_type' ) ) {
+							$rule_type = 'post_type';
+						}
+
+						if ( $rule_type ) {
+							$post_type     = substr( $rule['minor'], strlen( $rule_type ) + 1 );
+							$rule['minor'] = $rule_type . '-' . $post_type;
+							$rule['major'] = 'page';
+
+							$instances[ $number ]['conditions']['rules'][ $index ] = $rule;
+						}
+					}
+				}
+
+				update_option( $opts['callback'][0]->option_name, $instances );
+			}
+		}
+	}
+
+}
+
+add_action( 'init', array( 'Jetpack_Widget_Conditions', 'init' ) );
+
+// Add the 'conditions' attribute to server side rendered blocks
+// 'init' happens too late to hook on block registration.
+global $pagenow;
+$current_url = ! empty( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+if ( is_customize_preview() || 'widgets.php' === $pagenow || ( false !== strpos( $current_url, '/wp-json/wp/v2/block-renderer' ) ) ) {
+	Jetpack_Widget_Conditions::add_block_attributes_filter();
+}

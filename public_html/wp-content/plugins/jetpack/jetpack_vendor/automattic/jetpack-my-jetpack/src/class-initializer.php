@@ -99,3 +99,105 @@ class Initializer {
 		echo '<div id="my-jetpack-container"></div>';
 	}
 }
+n void
+	 */
+	public static function enqueue_scripts() {
+		Assets::register_script(
+			'my_jetpack_main_app',
+			'../build/index.js',
+			__FILE__,
+			array(
+				'enqueue'    => true,
+				'in_footer'  => true,
+				'textdomain' => 'jetpack-my-jetpack',
+			)
+		);
+		wp_localize_script(
+			'my_jetpack_main_app',
+			'myJetpackInitialState',
+			array(
+				'apiRoot'               => esc_url_raw( rest_url() ),
+				'apiNonce'              => wp_create_nonce( 'wp_rest' ),
+				'products'              => array(
+					'items' => Products::get_products(),
+				),
+				'purchases'             => array(
+					'items' => array(),
+				),
+				'redirectUrl'           => admin_url( '?page=my-jetpack' ),
+				'topJetpackMenuItemUrl' => Admin_Menu::get_top_level_menu_item_url(),
+				'siteSuffix'            => ( new Status() )->get_site_suffix(),
+			)
+		);
+
+		// Connection Initial State.
+		wp_add_inline_script( 'my_jetpack_main_app', Connection_Initial_State::render(), 'before' );
+
+		// Required for Analytics.
+		if ( self::can_use_analytics() ) {
+			Tracking::register_tracks_functions_scripts( true );
+		}
+	}
+
+	/**
+	 * Echoes the admin page content.
+	 *
+	 * @return void
+	 */
+	public static function admin_page() {
+		echo '<div id="my-jetpack-container"></div>';
+	}
+
+	/**
+	 * Register the REST API routes.
+	 *
+	 * @return void
+	 */
+	public static function register_rest_endpoints() {
+		new REST_Products();
+		new REST_Purchases();
+
+		register_rest_route(
+			'my-jetpack/v1',
+			'site',
+			array(
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => __CLASS__ . '::get_site',
+				'permission_callback' => __CLASS__ . '::permissions_callback',
+			)
+		);
+	}
+
+	/**
+	 * Check user capability to access the endpoint.
+	 *
+	 * @access public
+	 * @static
+	 *
+	 * @return true|WP_Error
+	 */
+	public static function permissions_callback() {
+		return current_user_can( 'manage_options' );
+	}
+
+	/**
+	 * Site full-data endpoint.
+	 *
+	 * @return object Site data.
+	 */
+	public static function get_site() {
+		$site_id           = \Jetpack_Options::get_option( 'id' );
+		$wpcom_endpoint    = sprintf( '/sites/%d?force=wpcom', $site_id );
+		$wpcom_api_version = '1.1';
+		$response          = Client::wpcom_json_api_request_as_blog( $wpcom_endpoint, $wpcom_api_version );
+		$response_code     = wp_remote_retrieve_response_code( $response );
+		$body              = json_decode( wp_remote_retrieve_body( $response ) );
+
+		if ( is_wp_error( $response ) || empty( $response['body'] ) ) {
+			return new \WP_Error( 'site_data_fetch_failed', 'Site data fetch failed', array( 'status' => $response_code ) );
+		}
+
+		return rest_ensure_response( $body, 200 );
+	}
+
+}

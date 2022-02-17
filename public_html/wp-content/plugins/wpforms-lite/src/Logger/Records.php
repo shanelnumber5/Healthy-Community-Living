@@ -124,3 +124,18 @@ class Records implements Countable, Iterator {
 		$this->iterator_position = 0;
 	}
 }
+		$this->list[] = $record;
+	}
+
+	/**
+	 * Clear collection.
+	 *
+	 * @since 1.6.3
+	 */
+	#[\ReturnTypeWillChange]
+	public function clear() {
+
+		$this->list              = [];
+		$this->iterator_position = 0;
+	}
+}

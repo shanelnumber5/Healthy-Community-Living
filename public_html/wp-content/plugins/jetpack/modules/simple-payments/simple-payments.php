@@ -568,3 +568,103 @@ class Jetpack_Simple_Payments {
 	}
 }
 Jetpack_Simple_Payments::getInstance();
+          * productId - the ID of the product being paid for.
+	 *
+	 * @return bool
+	 */
+	public function is_valid( $attrs ) {
+		if ( ! $this->validate_paypal_email( $attrs ) ) {
+			return false;
+		}
+
+		if ( ! $this->validate_price( $attrs ) ) {
+			return false;
+		}
+
+		if ( ! $this->validate_product( $attrs ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check that the email address to make a payment to is valid
+	 *
+	 * @param array $attrs Key-value array of attributes.
+	 *
+	 * @return boolean
+	 */
+	private function validate_paypal_email( $attrs ) {
+		if ( empty( $attrs['email'] ) ) {
+			return false;
+		}
+		return (bool) filter_var( $attrs['email'], FILTER_VALIDATE_EMAIL );
+	}
+
+	/**
+	 * Check that the price is valid
+	 *
+	 * @param array $attrs Key-value array of attributes.
+	 *
+	 * @return bool
+	 */
+	private function validate_price( $attrs ) {
+		if ( empty( $attrs['price'] ) ) {
+			return false;
+		}
+		return (bool) self::sanitize_price( $attrs['price'] );
+	}
+
+	/**
+	 * Check that the stored product is valid
+	 *
+	 * Valid means it has a title, and the currency is accepted.
+	 *
+	 * @param array $attrs Key-value array of attributes.
+	 *
+	 * @return bool
+	 */
+	private function validate_product( $attrs ) {
+		if ( empty( $attrs['productId'] ) ) {
+			return false;
+		}
+		$product = $this->get_product( $attrs['productId'] );
+		if ( ! $product ) {
+			return false;
+		}
+		// This title is the one used by paypal, it's set from the title set in the block content, unless the block
+		// content title is blank.
+		if ( ! get_the_title( $product ) ) {
+			return false;
+		}
+
+		$currency = get_post_meta( $product->ID, 'spay_currency', true );
+		return (bool) self::sanitize_currency( $currency );
+	}
+
+	/**
+	 * Format a price for display
+	 *
+	 * Largely taken from WordPress.com Store_Price class
+	 *
+	 * The currency array will have the shape:
+	 *   format  => string sprintf format with placeholders `%1$s`: Symbol `%2$s`: Price.
+	 *   symbol  => string Symbol string
+	 *   desc    => string Text description of currency
+	 *   decimal => int    Number of decimal places
+	 *
+	 * @param  string $the_currency The desired currency, e.g. 'USD'.
+	 * @return ?array               Currency object or null if not found.
+	 */
+	private static function get_currency( $the_currency ) {
+		jetpack_require_lib( 'class-jetpack-currencies' );
+		$currencies = Jetpack_Currencies::CURRENCIES;
+
+		if ( isset( $currencies[ $the_currency ] ) ) {
+			return $currencies[ $the_currency ];
+		}
+		return null;
+	}
+}
+Jetpack_Simple_Payments::getInstance();

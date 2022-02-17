@@ -576,3 +576,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @see CKEDITOR.editor#beforeUndoImage
  * @event
  */
+ome point. It's saved into an undo store, so the editor is
+ * able to recover the editor state on undo and redo operations.
+ * @name CKEDITOR.editor#beforeUndoImage
+ * @since 3.5.3
+ * @see CKEDITOR.editor#afterUndoImage
+ * @event
+ */
+
+/**
+ * Fired after an undo image is taken. An undo image represents the
+ * editor state at some point. It's saved into an undo store, so the editor is
+ * able to recover the editor state on undo and redo operations.
+ * @name CKEDITOR.editor#afterUndoImage
+ * @since 3.5.3
+ * @see CKEDITOR.editor#beforeUndoImage
+ * @event
+ */

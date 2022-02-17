@@ -104,3 +104,7 @@ if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
 
 	wp_die( $die, __( 'WordPress &rsaquo; Error' ) );
 }
+( 'Create a Configuration File' ) . '</a></p>';
+
+	wp_die( $die, __( 'WordPress &rsaquo; Error' ) );
+}

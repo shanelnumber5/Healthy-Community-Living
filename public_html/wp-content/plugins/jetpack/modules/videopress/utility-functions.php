@@ -712,3 +712,7 @@ function videopress_is_valid_video_rating( $rating ) {
 }
 
 add_filter( 'the_content', 'jetpack_videopress_flash_embed_filter', 7 ); // Needs to be priority 7 to allow Core to oEmbed.
+-17' ), true );
+}
+
+add_filter( 'the_content', 'jetpack_videopress_flash_embed_filter', 7 ); // Needs to be priority 7 to allow Core to oEmbed.

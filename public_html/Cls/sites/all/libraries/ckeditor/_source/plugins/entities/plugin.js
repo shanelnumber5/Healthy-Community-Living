@@ -248,3 +248,10 @@ CKEDITOR.config.entities_greek = true;
  * config.entities_additional = '#1049';		// Adds Cyrillic capital letter Short I (&#1049;).
  */
 CKEDITOR.config.entities_additional = '#39';
+tional
+ * @default <code>'#39'</code>  (The single quote (') character.)
+ * @type String
+ * @example
+ * config.entities_additional = '#1049';		// Adds Cyrillic capital letter Short I (&#1049;).
+ */
+CKEDITOR.config.entities_additional = '#39';

@@ -18,3 +18,7 @@ class time_spent_handler_field_timespent extends views_handler_field {
   }
 
 }
+$value);
+  }
+
+}

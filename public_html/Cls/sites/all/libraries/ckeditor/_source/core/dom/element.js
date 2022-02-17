@@ -1689,3 +1689,52 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			return size;
 		};
 })();
+order-right-width","padding-left", "padding-right" ],
+		height : [ "border-top-width", "border-bottom-width", "padding-top",  "padding-bottom" ]
+	};
+
+	function marginAndPaddingSize( type )
+	{
+		var adjustment = 0;
+		for ( var i = 0, len = sides[ type ].length; i < len; i++ )
+			adjustment += parseInt( this.getComputedStyle( sides [ type ][ i ] ) || 0, 10 ) || 0;
+		return adjustment;
+	}
+
+	/**
+	 * Sets the element size considering the box model.
+	 * @name CKEDITOR.dom.element.prototype.setSize
+	 * @function
+	 * @param {String} type The dimension to set. It accepts "width" and "height".
+	 * @param {Number} size The length unit in px.
+	 * @param {Boolean} isBorderBox Apply the size based on the border box model.
+	 */
+	CKEDITOR.dom.element.prototype.setSize = function( type, size, isBorderBox )
+		{
+			if ( typeof size == 'number' )
+			{
+				if ( isBorderBox && !( CKEDITOR.env.ie && CKEDITOR.env.quirks ) )
+					size -= marginAndPaddingSize.call( this, type );
+
+				this.setStyle( type, size + 'px' );
+			}
+		};
+
+	/**
+	 * Gets the element size, possibly considering the box model.
+	 * @name CKEDITOR.dom.element.prototype.getSize
+	 * @function
+	 * @param {String} type The dimension to get. It accepts "width" and "height".
+	 * @param {Boolean} isBorderBox Get the size based on the border box model.
+	 */
+	CKEDITOR.dom.element.prototype.getSize = function( type, isBorderBox )
+		{
+			var size = Math.max( this.$[ 'offset' + CKEDITOR.tools.capitalize( type )  ],
+				this.$[ 'client' + CKEDITOR.tools.capitalize( type )  ] ) || 0;
+
+			if ( isBorderBox )
+				size -= marginAndPaddingSize.call( this, type );
+
+			return size;
+		};
+})();

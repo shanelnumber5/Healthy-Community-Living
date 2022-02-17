@@ -121,3 +121,9 @@
   }
 
 })();
+if (iframes[i].src.indexOf('h5p') !== -1) {
+      iframes[i].contentWindow.postMessage(ready, '*');
+    }
+  }
+
+})();

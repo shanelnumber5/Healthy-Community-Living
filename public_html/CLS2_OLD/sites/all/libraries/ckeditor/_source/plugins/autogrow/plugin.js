@@ -139,3 +139,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @default 0
  * @since 3.6.2
  */
+with document size when auto resizing.
+ * @name CKEDITOR.config.autoGrow_bottomSpace
+ * @type Number
+ * @default 0
+ * @since 3.6.2
+ */

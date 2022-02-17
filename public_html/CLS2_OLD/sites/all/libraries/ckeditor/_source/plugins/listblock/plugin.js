@@ -264,3 +264,22 @@ CKEDITOR.plugins.add( 'listblock',
 			});
 	}
 });
+		{
+								if ( link.equals( selected ) )
+								{
+									this._.focusIndex = i;
+									break;
+								}
+							}
+
+							setTimeout( function()
+								{
+									selected.focus();
+								},
+								0 );
+						}
+					}
+				}
+			});
+	}
+});

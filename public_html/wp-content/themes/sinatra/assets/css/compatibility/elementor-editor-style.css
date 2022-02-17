@@ -1,0 +1,7 @@
+/* ==========================================================================
+*  Elementor editor styles.
+*  ========================================================================== */
+#elementor ul.elementor-editor-element-settings {
+  margin: 0;
+  list-style: none;
+}

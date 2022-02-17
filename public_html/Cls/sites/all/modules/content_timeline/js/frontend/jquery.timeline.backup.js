@@ -745,3 +745,38 @@ if (!Array.prototype.indexOf) {
 	}
 
 }
+line_right').click(function(){
+				$this.timeline('lineRight');
+			});
+			
+		}
+	};
+
+	// Initiate methods
+	$.fn.timeline = function( method ) {
+    
+		if ( t_methods[method] ) {
+			return t_methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return t_methods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' +  method + ' does not exist on jQuery.timeline' );
+		}    
+  
+	};
+
+	
+
+
+
+})(jQuery);
+
+if (!Array.prototype.indexOf) {
+	Array.prototype.indexOf = function(obj, start) {
+	     for (var i = (start || 0), j = this.length; i < j; i++) {
+	         if (this[i] === obj) { return i; }
+	     }
+	     return -1;
+	}
+
+}

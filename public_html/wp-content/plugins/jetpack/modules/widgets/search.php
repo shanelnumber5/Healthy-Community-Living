@@ -1081,3 +1081,21 @@ class Jetpack_Search_Widget extends WP_Widget {
 		<?php
 	}
 }
+get_field_name( 'num_filters' ) ); ?>[]"
+						type="number"
+						value="<?php $this->render_widget_attr( 'count', $args['count'], $is_template ); ?>"
+						min="1"
+						max="50"
+						step="1"
+						required
+					/>
+				</label>
+			</p>
+
+			<p class="jetpack-search-filters-widget__controls">
+				<a href="#" class="delete"><?php esc_html_e( 'Remove', 'jetpack' ); ?></a>
+			</p>
+		</div>
+		<?php
+	}
+}

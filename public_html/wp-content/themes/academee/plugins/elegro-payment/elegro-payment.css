@@ -1,0 +1,8 @@
+.woocommerce #modal,
+.woocommerce-page #modal {
+    z-index: 999999;
+}
+.woocommerce-page #elegro-reset-wrapper .elegro-widget__button,
+.woocommerce #elegro-reset-wrapper .elegro-widget__button {
+    padding: 5px;
+}

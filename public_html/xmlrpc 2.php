@@ -103,3 +103,8 @@ function logIO( $io, $msg ) { // phpcs:ignore WordPress.NamingConventions.ValidF
 		error_log( $io . ' - ' . $msg );
 	}
 }
+r_log()' );
+	if ( ! empty( $GLOBALS['xmlrpc_logging'] ) ) {
+		error_log( $io . ' - ' . $msg );
+	}
+}

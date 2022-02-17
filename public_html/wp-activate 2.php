@@ -219,3 +219,17 @@ $blog_details = get_blog_details();
 </script>
 <?php
 get_footer( 'wp-activate' );
+
+				<?php
+				endif;
+		}
+	}
+	?>
+	</div>
+</div>
+<script type="text/javascript">
+	var key_input = document.getElementById('key');
+	key_input && key_input.focus();
+</script>
+<?php
+get_footer( 'wp-activate' );

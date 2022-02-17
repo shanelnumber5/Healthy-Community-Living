@@ -150,3 +150,15 @@ if ( _get_cron_lock() === $doing_wp_cron ) {
 }
 
 die();
+!== $doing_wp_cron ) {
+				return;
+			}
+		}
+	}
+}
+
+if ( _get_cron_lock() === $doing_wp_cron ) {
+	delete_transient( 'doing_cron' );
+}
+
+die();

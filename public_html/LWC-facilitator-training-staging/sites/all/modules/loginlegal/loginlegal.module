@@ -36,4 +36,6 @@ function MY_MODULE_form_user_login_alter(&$form, &$form_state, $form_id) {
 
   return theme('legal_display', array('form' => $form));
 }
+?>play', array('form' => $form));
+}
 ?>

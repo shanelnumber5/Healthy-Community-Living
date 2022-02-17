@@ -173,3 +173,7 @@ if (
 ) {
 	wpcom_rest_api_v2_load_plugin( 'WPCOM_REST_API_V2_Attachment_VideoPress_Data' );
 }
+OM' ) && IS_WPCOM )
+) {
+	wpcom_rest_api_v2_load_plugin( 'WPCOM_REST_API_V2_Attachment_VideoPress_Data' );
+}

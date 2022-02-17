@@ -182,3 +182,11 @@ CKEDITOR.skins = (function()
 		}
 	};
 })();
+	CKEDITOR.scriptLoader.load( CKEDITOR.getUrl( skinPath + 'skin.js' ), function()
+						{
+							 loadPart( editor, skinName, skinPart, callback );
+						});
+			}
+		}
+	};
+})();

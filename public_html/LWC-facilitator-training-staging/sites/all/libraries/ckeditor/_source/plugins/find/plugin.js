@@ -45,3 +45,4 @@ CKEDITOR.plugins.add( 'find',
  *     };
  */
 CKEDITOR.config.find_highlight = { element : 'span', styles : { 'background-color' : '#004', 'color' : '#fff' } };
+ground-color' : '#004', 'color' : '#fff' } };

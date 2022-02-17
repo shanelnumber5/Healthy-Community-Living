@@ -126,3 +126,8 @@ CKEDITOR.event.implementOn( CKEDITOR.ui );
  * @event
  * @param {Object} element The new element
  */
+t fired when a new UI element is ready
+ * @name CKEDITOR.ui#ready
+ * @event
+ * @param {Object} element The new element
+ */

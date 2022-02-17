@@ -232,3 +232,12 @@ CKEDITOR.config.fontSize_style =
 		styles		: { 'font-size' : '#(size)' },
 		overrides	: [ { element : 'font', attributes : { 'size' : null } } ]
 	};
+', attributes : { 'size' : null } } ]
+ *     };
+ */
+CKEDITOR.config.fontSize_style =
+	{
+		element		: 'span',
+		styles		: { 'font-size' : '#(size)' },
+		overrides	: [ { element : 'font', attributes : { 'size' : null } } ]
+	};

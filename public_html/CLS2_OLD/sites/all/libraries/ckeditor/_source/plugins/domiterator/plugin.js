@@ -359,3 +359,20 @@ CKEDITOR.plugins.add( 'domiterator' );
 		return new iterator( this );
 	};
 })();
+ changed, so we can rely on it for the
+			// next interation.
+			if ( !this._.nextNode )
+			{
+				this._.nextNode = ( isLast || block.equals( lastNode ) ) ? null :
+					getNextSourceNode( block, 1, lastNode );
+			}
+
+			return block;
+		}
+	};
+
+	CKEDITOR.dom.range.prototype.createIterator = function()
+	{
+		return new iterator( this );
+	};
+})();

@@ -150,3 +150,11 @@ if ( ! empty( $tb_url ) && ! empty( $title ) ) {
 	do_action( 'trackback_post', $trackback_id );
 	trackback_response( 0 );
 }
+
+	 * @since 1.2.0
+	 *
+	 * @param int $trackback_id Trackback ID.
+	 */
+	do_action( 'trackback_post', $trackback_id );
+	trackback_response( 0 );
+}

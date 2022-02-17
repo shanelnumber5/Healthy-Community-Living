@@ -813,3 +813,17 @@ CKEDITOR.lang['th'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+ื่อน',
+		txtColor : 'สีตัวอักษร',
+		margin : 'ระยะขอบของหน้าเอกสาร',
+		marginTop : 'ด้านบน',
+		marginLeft : 'ด้านซ้าย',
+		marginRight : 'ด้านขวา',
+		marginBottom : 'ด้านล่าง',
+		metaKeywords : 'คำสำคัญอธิบายเอกสาร (คั่นคำด้วย คอมม่า)',
+		metaDescription : 'ประโยคอธิบายเกี่ยวกับเอกสาร',
+		metaAuthor : 'ผู้สร้างเอกสาร',
+		metaCopyright : 'สงวนลิขสิทธิ์',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

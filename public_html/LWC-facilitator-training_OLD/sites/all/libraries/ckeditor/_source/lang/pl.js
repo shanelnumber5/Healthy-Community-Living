@@ -813,3 +813,24 @@ CKEDITOR.lang['pl'] =
 		previewHtml : '<p>To jest <strong>przykładowy tekst</strong>. Korzystasz z programu <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Zachodnioeuropejskie',
+		docType : 'Definicja typu dokumentu',
+		docTypeOther : 'Inna definicja typu dokumentu',
+		xhtmlDec : 'Uwzględnij deklaracje XHTML',
+		bgColor : 'Kolor tła',
+		bgImage : 'Adres URL obrazka tła',
+		bgFixed : 'Tło nieruchome (nieprzewijające się)',
+		txtColor : 'Kolor tekstu',
+		margin : 'Marginesy strony',
+		marginTop : 'Górny',
+		marginLeft : 'Lewy',
+		marginRight : 'Prawy',
+		marginBottom : 'Dolny',
+		metaKeywords : 'Słowa kluczowe dokumentu (oddzielone przecinkami)',
+		metaDescription : 'Opis dokumentu',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Prawa autorskie',
+		previewHtml : '<p>To jest <strong>przykładowy tekst</strong>. Korzystasz z programu <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

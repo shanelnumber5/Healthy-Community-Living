@@ -813,3 +813,26 @@ CKEDITOR.lang['de'] =
 		previewHtml : '<p>Das ist ein <strong>Beispieltext</strong>. Du schreibst in <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+charsetKR : 'Koreanisch',
+		charsetTR : 'Türkisch',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Westeuropäisch',
+		docType : 'Dokumententyp',
+		docTypeOther : 'Anderer Dokumententyp',
+		xhtmlDec : 'Beziehe XHTML Deklarationen ein',
+		bgColor : 'Hintergrundfarbe',
+		bgImage : 'Hintergrundbild URL',
+		bgFixed : 'feststehender Hintergrund',
+		txtColor : 'Textfarbe',
+		margin : 'Seitenränder',
+		marginTop : 'Oben',
+		marginLeft : 'Links',
+		marginRight : 'Rechts',
+		marginBottom : 'Unten',
+		metaKeywords : 'Schlüsselwörter (durch Komma getrennt)',
+		metaDescription : 'Dokument-Beschreibung',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Copyright',
+		previewHtml : '<p>Das ist ein <strong>Beispieltext</strong>. Du schreibst in <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

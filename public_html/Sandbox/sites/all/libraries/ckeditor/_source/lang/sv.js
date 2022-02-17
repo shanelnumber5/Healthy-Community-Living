@@ -812,3 +812,27 @@ CKEDITOR.lang['sv'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+arsetJP : 'Japanska',
+		charsetKR : 'Koreanska',
+		charsetTR : 'Turkiska',
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Väst Europa',
+		docType : 'Sidhuvud',
+		docTypeOther : 'Övriga sidhuvuden',
+		xhtmlDec : 'Inkludera XHTML deklaration',
+		bgColor : 'Bakgrundsfärg',
+		bgImage : 'Bakgrundsbildens URL',
+		bgFixed : 'Fast bakgrund',
+		txtColor : 'Textfärg',
+		margin : 'Sidmarginal',
+		marginTop : 'Topp',
+		marginLeft : 'Vänster',
+		marginRight : 'Höger',
+		marginBottom : 'Botten',
+		metaKeywords : 'Sidans nyckelord',
+		metaDescription : 'Sidans beskrivning',
+		metaAuthor : 'Författare',
+		metaCopyright : 'Upphovsrätt',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

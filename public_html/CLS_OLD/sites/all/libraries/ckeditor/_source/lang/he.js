@@ -813,3 +813,23 @@ CKEDITOR.lang['he'] =
 		previewHtml : '<p>זהו <strong>טקסט הדגמה</strong>. את/ה משתמש/ת ב<a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+
+		docType : 'כותר סוג מסמך',
+		docTypeOther : 'כותר סוג מסמך אחר',
+		xhtmlDec : 'כלול הכרזות XHTML',
+		bgColor : 'צבע רקע',
+		bgImage : 'כתובת של תמונת רקע',
+		bgFixed : 'רקע לא נגלל (צמוד)',
+		txtColor : 'צבע טקסט',
+		margin : 'מרווחי עמוד',
+		marginTop : 'עליון',
+		marginLeft : 'שמאלי',
+		marginRight : 'ימני',
+		marginBottom : 'תחתון',
+		metaKeywords : 'מילות מפתח של המסמך (מופרדות בפסיק)',
+		metaDescription : 'תיאור המסמך',
+		metaAuthor : 'מחבר/ת',
+		metaCopyright : 'זכויות יוצרים',
+		previewHtml : '<p>זהו <strong>טקסט הדגמה</strong>. את/ה משתמש/ת ב<a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

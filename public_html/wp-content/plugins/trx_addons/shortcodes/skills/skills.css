@@ -1,0 +1,90 @@
+.sc_skills {
+	position: relative;	
+	padding-top: 0.0001px;
+}
+
+/* Pie chart */
+.sc_skills_pie.sc_skills_compact_off .sc_skills_item {
+	position: relative;
+}
+.sc_skills_pie.sc_skills_compact_off .sc_skills_total {
+	position:absolute;
+	z-index:1;
+	left: 50%;
+	top: 46%;
+	-webkit-transform:translateX(-50%) translateY(-50%);
+	    -ms-transform:translateX(-50%) translateY(-50%);
+	        transform:translateX(-50%) translateY(-50%);
+	display:inline-block;
+	font-size: 3em;
+	line-height:1em;
+}
+.sc_skills_pie.sc_skills_compact_off .sc_skills_item_title {
+	text-align:center;
+	font-size:1.1429em;
+}
+.sc_skills_pie.sc_skills_compact_off .sc_skills_icon {
+	margin-right: 0.5em;
+}
+.sc_skills_pie.sc_skills_compact_off .sc_skills_icon img {
+	width: 1.5em;
+}
+.sc_skills_pie.sc_skills_compact_on {
+	overflow:hidden;	
+}
+.sc_skills_pie.sc_skills_compact_on .sc_skills_legend {
+	width: 50%;
+	float: right;
+}
+.sc_skills_pie.sc_skills_compact_on .sc_skills_legend_item {
+	line-height:1.7em;
+	overflow:hidden;
+}
+.sc_skills_pie.sc_skills_compact_on .sc_skills_legend_marker {
+	display:inline-block;
+	vertical-align:middle;
+	width: 1em;
+	height: 1em;
+	margin:0 0.5em 0.1em 1em;
+}
+.sc_skills_pie.sc_skills_compact_on .sc_skills_legend_title {
+	width:60%;
+	display:inline-block;
+	vertical-align:middle;
+}
+.sc_skills_pie.sc_skills_compact_on .sc_skills_legend_value {
+	width:20%;
+	display:inline-block;
+	vertical-align:middle;
+	text-align:right;
+}
+.sc_skills_pie.sc_skills_compact_on .sc_skills_item {
+	width: 50%;
+	float: left;
+}
+
+
+/* Counter */
+.sc_skills_counter .sc_skills_item_wrap {
+	max-width: 6.5em;
+}
+.sc_skills_counter .sc_skills_icon {
+	position:relative;
+	display:block;
+	text-align:center;
+	font-size: 5.5em;
+	line-height:1em;
+	color: #efa758;
+}
+.sc_skills_counter .sc_skills_total {
+	display:block;
+	text-align:center;
+	font-size: 2.5em;
+	line-height:1.3em;
+	margin:0.4em 0;
+}
+.sc_skills_counter .sc_skills_item_title {
+	text-align:center;
+	font-size:1.1429em;
+	line-height:1.3em;
+}

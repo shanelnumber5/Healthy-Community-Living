@@ -114,3 +114,5 @@ function jetpack_display_posts_widget_conditionally_activate_cron() {
  */
 add_action( 'jetpack_deactivate_module_widgets', 'Jetpack_Display_Posts_Widget::deactivate_cron_static' );
 register_deactivation_hook( plugin_basename( JETPACK__PLUGIN_FILE ), 'Jetpack_Display_Posts_Widget::deactivate_cron_static' );
+eactivate_module_widgets', 'Jetpack_Display_Posts_Widget::deactivate_cron_static' );
+register_deactivation_hook( plugin_basename( JETPACK__PLUGIN_FILE ), 'Jetpack_Display_Posts_Widget::deactivate_cron_static' );

@@ -209,3 +209,12 @@ packages :
 		}
 
 	]
+enubutton/plugin.js',
+					'_source/plugins/dialogui/plugin.js',
+					'_source/plugins/panel/plugin.js',
+					'_source/plugins/listblock/plugin.js',
+					'_source/themes/default/theme.js'
+				]
+		}
+
+	]

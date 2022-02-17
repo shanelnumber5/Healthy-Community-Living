@@ -85,3 +85,7 @@ if ( CKEDITOR.env.ie )
  * @name CKEDITOR#loaded
  * @event
  */
+ is fully loaded and ready for interaction.
+ * @name CKEDITOR#loaded
+ * @event
+ */

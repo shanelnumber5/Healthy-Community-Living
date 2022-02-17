@@ -215,3 +215,11 @@ class Module_Control {
 	}
 
 }
+$active Array of active module slugs.
+		 */
+		$active_modules = apply_filters( 'jetpack_active_modules', $active_modules );
+
+		return array_unique( $active_modules );
+	}
+
+}

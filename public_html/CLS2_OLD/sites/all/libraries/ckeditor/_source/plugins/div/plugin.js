@@ -119,3 +119,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	} );
 })();
+ this.path + 'dialogs/div.js' );
+			CKEDITOR.dialog.add( 'editdiv', this.path + 'dialogs/div.js' );
+		}
+	} );
+})();

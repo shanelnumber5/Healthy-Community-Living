@@ -761,3 +761,41 @@ class Jetpack_Likes_Settings {
 		update_option( 'sharing-options', $options );
 	}
 }
+redaddy is not loaded, we still need to save the the settings of the "Show buttons on" option.
+	 */
+	function admin_settings_showbuttonon_callback() {
+		$options = get_option( 'sharing-options' );
+		if ( ! is_array( $options ) ) {
+			$options = array();
+		}
+
+		$shows   = array_values( get_post_types( array( 'public' => true ) ) );
+		$shows[] = 'index';
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- triggered due to the 'sharing_admin_update' action, but the code in sharing.php checks for the nonce before firing the action.
+		$data = $_POST;
+
+		if ( isset( $data['show'] ) ) {
+			if ( is_scalar( $data['show'] ) ) {
+				switch ( $data['show'] ) {
+					case 'posts':
+						$data['show'] = array( 'post', 'page' );
+						break;
+					case 'index':
+						$data['show'] = array( 'index' );
+						break;
+					case 'posts-index':
+						$data['show'] = array( 'post', 'page', 'index' );
+						break;
+				}
+			}
+
+			if ( $data['show'] = array_intersect( $data['show'], $shows ) ) {
+				$options['global']['show'] = $data['show'];
+			}
+		} else {
+			$options['global']['show'] = array();
+		}
+
+		update_option( 'sharing-options', $options );
+	}
+}

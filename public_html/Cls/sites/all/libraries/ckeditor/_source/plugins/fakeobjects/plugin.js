@@ -173,3 +173,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 })();
+( 'width' ), width ) );
+			height && element.setAttribute( 'height', replaceCssLength( element.getAttribute( 'height' ), height ) );
+		}
+
+		return element;
+	};
+
+})();

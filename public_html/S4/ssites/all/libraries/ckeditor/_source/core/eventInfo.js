@@ -118,3 +118,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  *     });
  * alert( someObject.fire( 'someEvent' ) );  // "true"
  */
+{
+ *         // This one will not be called.
+ *     });
+ * alert( someObject.fire( 'someEvent' ) );  // "true"
+ */

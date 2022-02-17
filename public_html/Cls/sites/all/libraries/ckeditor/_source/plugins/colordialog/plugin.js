@@ -13,3 +13,4 @@ CKEDITOR.plugins.colordialog =
 };
 
 CKEDITOR.plugins.add( 'colordialog', CKEDITOR.plugins.colordialog );
+olordialog );

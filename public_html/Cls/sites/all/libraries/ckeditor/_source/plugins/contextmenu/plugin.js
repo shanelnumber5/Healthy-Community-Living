@@ -177,3 +177,10 @@ CKEDITOR.plugins.add( 'contextmenu',
  * @example
  * config.browserContextMenuOnCtrl = false;
  */
+* @name CKEDITOR.config.browserContextMenuOnCtrl
+ * @since 3.0.2
+ * @type Boolean
+ * @default <code>true</code>
+ * @example
+ * config.browserContextMenuOnCtrl = false;
+ */

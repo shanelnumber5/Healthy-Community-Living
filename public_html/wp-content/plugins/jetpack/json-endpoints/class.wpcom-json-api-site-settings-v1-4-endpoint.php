@@ -127,3 +127,19 @@ class WPCOM_JSON_API_Site_Settings_V1_4_Endpoint extends WPCOM_JSON_API_Site_Set
 		);
 	}
 }
+M_JSON_API_Site_Settings_V1_3_Endpoint {
+	protected function get_defaults() {
+		return array(
+			'code'                          => '',
+			'anonymize_ip'                  => false,
+			'ec_track_purchases'            => false,
+			'ec_track_add_to_cart'          => false,
+			'enh_ec_tracking'               => false,
+			'enh_ec_track_remove_from_cart' => false,
+			'enh_ec_track_prod_impression'  => false,
+			'enh_ec_track_prod_click'       => false,
+			'enh_ec_track_prod_detail_view' => false,
+			'enh_ec_track_checkout_started' => false,
+		);
+	}
+}

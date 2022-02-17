@@ -813,3 +813,25 @@ CKEDITOR.lang['nl'] =
 		previewHtml : '<p>Dit is <strong>voorbeeld tekst</strong>. Je gebruikt <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+rsetTR : 'Turks',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'West Europees',
+		docType : 'Documenttype-definitie',
+		docTypeOther : 'Andere documenttype-definitie',
+		xhtmlDec : 'XHTML declaratie invoegen',
+		bgColor : 'Achtergrondkleur',
+		bgImage : 'Achtergrondafbeelding URL',
+		bgFixed : 'Niet-scrollend (gefixeerde) achtergrond',
+		txtColor : 'Tekstkleur',
+		margin : 'Pagina marges',
+		marginTop : 'Boven',
+		marginLeft : 'Links',
+		marginRight : 'Rechts',
+		marginBottom : 'Onder',
+		metaKeywords : 'Trefwoorden voor indexering (komma-gescheiden)',
+		metaDescription : 'Documentbeschrijving',
+		metaAuthor : 'Auteur',
+		metaCopyright : 'Auteursrechten',
+		previewHtml : '<p>Dit is <strong>voorbeeld tekst</strong>. Je gebruikt <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

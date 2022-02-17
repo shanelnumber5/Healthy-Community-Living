@@ -813,3 +813,27 @@ CKEDITOR.lang['fi'] =
 		previewHtml : '<p>Tämä on <strong>esimerkkitekstiä</strong>. Käytät juuri <a href="javascript:void(0)">CKEditoria</a>.</p>'
 	}
 };
+ : 'Japani',
+		charsetKR : 'Korealainen',
+		charsetTR : 'Turkkilainen',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Länsieurooppalainen',
+		docType : 'Dokumentin tyyppi',
+		docTypeOther : 'Muu dokumentin tyyppi',
+		xhtmlDec : 'Lisää XHTML julistukset',
+		bgColor : 'Taustaväri',
+		bgImage : 'Taustakuva',
+		bgFixed : 'Paikallaanpysyvä tausta',
+		txtColor : 'Tekstiväri',
+		margin : 'Sivun marginaalit',
+		marginTop : 'Ylä',
+		marginLeft : 'Vasen',
+		marginRight : 'Oikea',
+		marginBottom : 'Ala',
+		metaKeywords : 'Hakusanat (pilkulla erotettuna)',
+		metaDescription : 'Kuvaus',
+		metaAuthor : 'Tekijä',
+		metaCopyright : 'Tekijänoikeudet',
+		previewHtml : '<p>Tämä on <strong>esimerkkitekstiä</strong>. Käytät juuri <a href="javascript:void(0)">CKEditoria</a>.</p>'
+	}
+};

@@ -184,3 +184,10 @@ if ( !CKEDITOR.editor )
 	// "Inherit" (copy actually) from CKEDITOR.event.
 	CKEDITOR.event.implementOn( CKEDITOR.editor.prototype, true );
 }
+totype.fireOnce.call( this, eventName, data, this );
+		}
+	};
+
+	// "Inherit" (copy actually) from CKEDITOR.event.
+	CKEDITOR.event.implementOn( CKEDITOR.editor.prototype, true );
+}

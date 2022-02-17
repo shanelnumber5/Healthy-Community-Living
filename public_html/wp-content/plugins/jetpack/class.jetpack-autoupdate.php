@@ -304,3 +304,45 @@ class Jetpack_Autoupdate {
 }
 
 Jetpack_Autoupdate::init();
+tials( false, WP_PLUGIN_DIR, false ) ) {
+			$result[] = 'no-plugin-directory-write-access';
+		}
+		if ( ! $skin->request_filesystem_credentials( false, WP_CONTENT_DIR, false ) ) {
+			$result[] = 'no-wp-content-directory-write-access';
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get the plugin slug.
+	 *
+	 * @param string $plugin_file Plugin file.
+	 * @return string Slug.
+	 */
+	public static function get_plugin_slug( $plugin_file ) {
+		$update_plugins = get_site_transient( 'update_plugins' );
+		if ( isset( $update_plugins->no_update ) ) {
+			if ( isset( $update_plugins->no_update[ $plugin_file ] ) ) {
+				$slug = $update_plugins->no_update[ $plugin_file ]->slug;
+			}
+		}
+		if ( empty( $slug ) && isset( $update_plugins->response ) ) {
+			if ( isset( $update_plugins->response[ $plugin_file ] ) ) {
+				$slug = $update_plugins->response[ $plugin_file ]->slug;
+			}
+		}
+
+		// Try to infer from the plugin file if not cached.
+		if ( empty( $slug ) ) {
+			$slug = dirname( $plugin_file );
+			if ( '.' === $slug ) {
+				$slug = preg_replace( '/(.+)\.php$/', '$1', $plugin_file );
+			}
+		}
+		return $slug;
+	}
+
+}
+
+Jetpack_Autoupdate::init();

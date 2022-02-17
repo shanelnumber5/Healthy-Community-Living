@@ -772,3 +772,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		requires : [ 'domiterator' ]
 	} );
 })();
+abel : editor.lang.numberedlist,
+					command : 'numberedlist'
+				} );
+			editor.ui.addButton( 'BulletedList',
+				{
+					label : editor.lang.bulletedlist,
+					command : 'bulletedlist'
+				} );
+
+			// Register the state changing handlers.
+			editor.on( 'selectionChange', CKEDITOR.tools.bind( onSelectionChange, numberedListCommand ) );
+			editor.on( 'selectionChange', CKEDITOR.tools.bind( onSelectionChange, bulletedListCommand ) );
+		},
+
+		afterInit : function ( editor )
+		{
+			var dataProcessor = editor.dataProcessor;
+			if ( dataProcessor )
+			{
+				dataProcessor.dataFilter.addRules( defaultListDataFilterRules );
+				dataProcessor.htmlFilter.addRules( defaultListHtmlFilterRules );
+			}
+		},
+
+		requires : [ 'domiterator' ]
+	} );
+})();

@@ -143,3 +143,14 @@ CKEDITOR.htmlParser.basicWriter = CKEDITOR.tools.createClass(
 		}
 	}
 });
+etHtml : function( reset )
+		{
+			var html = this._.output.join( '' );
+
+			if ( reset )
+				this.reset();
+
+			return html;
+		}
+	}
+});

@@ -303,3 +303,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		requires : [ 'domiterator' ]
 	} );
 })();
+editor )
+		{
+			editor.addCommand( 'blockquote', commandObject );
+
+			editor.ui.addButton( 'Blockquote',
+				{
+					label : editor.lang.blockquote,
+					command : 'blockquote'
+				} );
+
+			editor.on( 'selectionChange', onSelectionChange );
+		},
+
+		requires : [ 'domiterator' ]
+	} );
+})();

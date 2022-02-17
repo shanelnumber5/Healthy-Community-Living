@@ -813,3 +813,25 @@ CKEDITOR.lang['cy'] =
 		previewHtml : '<p>Dyma ychydig o <strong>destun sampl</strong>. Rydych chi\'n defnyddio <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+ceg',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Ewropeaidd Gorllewinol',
+		docType : 'Pennawd Math y Ddogfen',
+		docTypeOther : 'Pennawd Math y Ddogfen Arall',
+		xhtmlDec : 'Cynnwys Datganiadau XHTML',
+		bgColor : 'Lliw Cefndir',
+		bgImage : 'URL Delwedd Cefndir',
+		bgFixed : 'Cefndir Sefydlog (Ddim yn Sgrolio)',
+		txtColor : 'Lliw y Testun',
+		margin : 'Ffin y Dudalen',
+		marginTop : 'Brig',
+		marginLeft : 'Chwith',
+		marginRight : 'Dde',
+		marginBottom : 'Gwaelod',
+		metaKeywords : 'Allweddeiriau Indecsio Dogfen (gwahanu gyda choma)',
+		metaDescription : 'Disgrifiad y Ddogfen',
+		metaAuthor : 'Awdur',
+		metaCopyright : 'Hawlfraint',
+		previewHtml : '<p>Dyma ychydig o <strong>destun sampl</strong>. Rydych chi\'n defnyddio <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

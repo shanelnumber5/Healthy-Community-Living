@@ -1164,3 +1164,58 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @field
  * @example
  */
+KEDITOR.dialog.add}.
+ * @name CKEDITOR.dialog.definition.textarea
+ * @extends CKEDITOR.dialog.definition.labeledElement
+ * @constructor
+ * @example
+ * // There is no constructor for this class, the user just has to define an
+ * // object with the appropriate properties.
+ *
+ * // Example:
+ * {
+ * 	<b>type : 'textarea',</b>
+ * 	id : 'message',
+ * 	label : 'Your comment',
+ * 	'default' : '',
+ * 	validate : function() {
+ * 		if ( this.getValue().length < 5 )
+ * 		{
+ * 			api.openMsgDialog( 'The comment is too short.' );
+ * 			return false;
+ * 		}
+ * 	}
+ * }
+ */
+
+/**
+ * The number of rows.
+ * @name CKEDITOR.dialog.definition.textarea.prototype.rows
+ * @type Number
+ * @field
+ * @example
+ */
+
+/**
+ * The number of columns.
+ * @name CKEDITOR.dialog.definition.textarea.prototype.cols
+ * @type Number
+ * @field
+ * @example
+ */
+
+/**
+ * (Optional) The validation function.
+ * @name CKEDITOR.dialog.definition.textarea.prototype.validate
+ * @field
+ * @type Function
+ * @example
+ */
+
+/**
+ * The default value.
+ * @name CKEDITOR.dialog.definition.textarea.prototype.default
+ * @type String
+ * @field
+ * @example
+ */

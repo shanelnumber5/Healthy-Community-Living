@@ -971,3 +971,28 @@ CKEDITOR.plugins.scayt =
  * @example
  * config.scayt_contextMenuItemsOrder = 'moresuggest|control|suggest';
  */
+ Makes it possible to activate a custom dictionary in SCAYT. The user
+ * dictionary name must be used. Available only for the licensed version.
+ * @name CKEDITOR.config.scayt_userDictionaryName
+ * @type String
+ * @default <code>''</code>
+ * @example
+ * config.scayt_userDictionaryName = 'MyDictionary';
+ */
+
+/**
+ * Defines the order SCAYT context menu items by groups.
+ * This must be a string with one or more of the following
+ * words separated by a pipe character ("|"):
+ * <ul>
+ *     <li><code>suggest</code> &ndash; main suggestion word list,</li>
+ *     <li><code>moresuggest</code> &ndash; more suggestions word list,</li>
+ *     <li><code>control</code> &ndash; SCAYT commands, such as "Ignore" and "Add Word".</li>
+ * </ul>
+ *
+ * @name CKEDITOR.config.scayt_contextMenuItemsOrder
+ * @type String
+ * @default <code>'suggest|moresuggest|control'</code>
+ * @example
+ * config.scayt_contextMenuItemsOrder = 'moresuggest|control|suggest';
+ */

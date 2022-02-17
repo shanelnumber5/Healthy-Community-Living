@@ -813,3 +813,24 @@ CKEDITOR.lang['ms'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+UN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Western European', // MISSING
+		docType : 'Jenis Kepala Dokumen',
+		docTypeOther : 'Jenis Kepala Dokumen yang Lain',
+		xhtmlDec : 'Masukkan pemula kod XHTML',
+		bgColor : 'Warna Latarbelakang',
+		bgImage : 'URL Gambar Latarbelakang',
+		bgFixed : 'Imej Latarbelakang tanpa Skrol',
+		txtColor : 'Warna Text',
+		margin : 'Margin Muka Surat',
+		marginTop : 'Atas',
+		marginLeft : 'Kiri',
+		marginRight : 'Kanan',
+		marginBottom : 'Bawah',
+		metaKeywords : 'Kata Kunci Indeks Dokumen (dipisahkan oleh koma)',
+		metaDescription : 'Keterangan Dokumen',
+		metaAuthor : 'Penulis',
+		metaCopyright : 'Hakcipta',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

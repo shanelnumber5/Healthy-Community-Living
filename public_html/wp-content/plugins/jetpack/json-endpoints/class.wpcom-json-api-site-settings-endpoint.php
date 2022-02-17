@@ -949,3 +949,48 @@ class WPCOM_JSON_API_Site_Settings_Endpoint extends WPCOM_JSON_API_Endpoint {
 
 	}
 }
+posts_options as $key => $value ) {
+					if ( isset( $old_relatedposts_options[ $key ] ) && $value !== $old_relatedposts_options[ $key ] ) {
+						$updated[ 'jetpack_relatedposts_' . $key ] = $value;
+					}
+				}
+			}
+		}
+
+		if ( ! empty( $sharing_options ) && class_exists( 'Sharing_Service' ) ) {
+			$ss = new Sharing_Service();
+
+			/*
+			 * Merge current values with updated, since Sharing_Service expects
+			 * all values to be included when updating
+			 */
+			$current_sharing_options = $ss->get_global_options();
+			foreach ( $current_sharing_options as $key => $val ) {
+				if ( ! isset( $sharing_options[ $key ] ) ) {
+					$sharing_options[ $key ] = $val;
+				}
+			}
+
+			$updated_social_options = $ss->set_global_options( $sharing_options );
+
+			if ( isset( $input['sharing_button_style'] ) ) {
+				$updated['sharing_button_style'] = (string) $updated_social_options['button_style'];
+			}
+			if ( isset( $input['sharing_label'] ) ) {
+				// Sharing_Service won't report label as updated if set to default.
+				$updated['sharing_label'] = (string) $sharing_options['sharing_label'];
+			}
+			if ( isset( $input['sharing_show'] ) ) {
+				$updated['sharing_show'] = (array) $updated_social_options['show'];
+			}
+			if ( isset( $input['sharing_open_links'] ) ) {
+				$updated['sharing_open_links'] = (string) $updated_social_options['open_links'];
+			}
+		}
+
+		return array(
+			'updated' => $updated,
+		);
+
+	}
+}

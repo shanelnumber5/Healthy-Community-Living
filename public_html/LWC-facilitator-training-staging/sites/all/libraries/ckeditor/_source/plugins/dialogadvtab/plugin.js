@@ -206,3 +206,19 @@ CKEDITOR.plugins.add( 'dialogadvtab',
 });
 
 })();
+			});
+			}
+
+			result.elements[ 0 ].children.push(
+				{
+					type : 'hbox',
+					widths : [ '50%', '50%' ],
+					children : [].concat( contents )
+				});
+		}
+
+		return result;
+	}
+});
+
+})();

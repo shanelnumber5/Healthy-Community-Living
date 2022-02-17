@@ -594,3 +594,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * 		return false;
  * }
  */
+th line-height; When a function is instead specified,
+ * it'll be passed a {@link CKEDITOR.htmlParser.element} to decide whether adding the filler text
+ * by expecting a boolean return value.
+ * @name CKEDITOR.config.fillEmptyBlocks
+ * @since 3.5
+ * @type Boolean
+ * @default true
+ * @example
+ * config.fillEmptyBlocks = false;	// Prevent filler nodes in all empty blocks.
+ *
+ * // Prevent filler node only in float cleaners.
+ * config.fillEmptyBlocks = function( element )
+ * {
+ * 	if ( element.attributes[ 'class' ].indexOf ( 'clear-both' ) != -1 )
+ * 		return false;
+ * }
+ */

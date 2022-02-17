@@ -4,4 +4,4 @@ description = Make quantity field (Qty) in cart readonly.
 core = 7.x
 version = 7.x-5.3
 package = Ubercart - extra
-dependencies[] = uc_cart
+dependencies[] = uc_cartc_cart

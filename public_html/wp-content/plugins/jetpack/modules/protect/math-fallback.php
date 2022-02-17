@@ -162,3 +162,9 @@ if ( ! class_exists( 'Jetpack_Protect_Math_Authenticate' ) ) {
 
 	}
 }
+v>
+		<?php
+		}
+
+	}
+}

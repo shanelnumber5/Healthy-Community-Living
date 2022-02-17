@@ -1,0 +1,57 @@
+/*--------------Contact Form 7-----------------*/
+form.wpcf7-form input[type="email"],
+form.wpcf7-form textarea,
+form.wpcf7-form input[type="text"]{
+    width: 100%;
+}
+
+form.wpcf7-form .row {
+    padding-bottom: 1.3em;
+    margin-right: 0;
+}
+
+form.wpcf7-form input[type="checkbox"],
+form.wpcf7-form input[type="submit"]{
+    width: auto;
+}
+
+form.wpcf7-form .wpcf7-acceptance span.wpcf7-list-item {
+    margin: 0.3em 0 0 0;
+    display: block;
+    position: relative;
+    line-height: 1em;
+}
+form.wpcf7-form .sc_form_field_button .ajax-loader,
+form.wpcf7-form .wpcf7-acceptance input {
+    display: none;
+}
+
+form.wpcf7-form .wpcf7-acceptance span.wpcf7-list-item-label {
+    padding-left: 1.5em;
+    display: block;
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
+form.wpcf7-form .flex {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+form.wpcf7-form .itm {
+    flex-basis: 48%;
+}
+
+form.wpcf7-form .sc_form_field_button{
+    text-align: center;
+}
+form.wpcf7-form .sc_form_field_button input[type="submit"]{
+    margin-top: 2.8em;
+}
+
+.wpcf7-form .wpcf7-acceptance input[type="checkbox"] + span:before{
+    top:0;
+    -webkit-transform: translateY(30%);
+    -ms-transform: translateY(30%);
+    transform: translateY(30%);
+}

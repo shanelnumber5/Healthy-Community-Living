@@ -64,3 +64,8 @@ function composerRequiref11009ded9fc4592b6a05b61ce272b3c_jetpackⓥ10_5_1($fileI
         $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
     }
 }
+_files'][$fileIdentifier] = true;
+
+        require $file;
+    }
+}

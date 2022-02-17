@@ -1057,3 +1057,40 @@ CKEDITOR.on( 'loaded', function()
  * @since 3.6
  * @param {CKEDITOR.editor} editor This editor instance.
  */
+etData
+ * @event
+ * @param {CKEDITOR.editor} editor This editor instance.
+ * @param {String} data.dataValue The data that has been set.
+ */
+
+/**
+ * Internal event to perform the <code>#insertHtml</code> call
+ * @name CKEDITOR.editor#insertHtml
+ * @event
+ * @param {CKEDITOR.editor} editor This editor instance.
+ * @param {String} data The HTML to insert.
+ */
+
+/**
+ * Internal event to perform the <code>#insertText</code> call
+ * @name CKEDITOR.editor#insertText
+ * @event
+ * @param {CKEDITOR.editor} editor This editor instance.
+ * @param {String} text The text to insert.
+ */
+
+/**
+ * Internal event to perform the <code>#insertElement</code> call
+ * @name CKEDITOR.editor#insertElement
+ * @event
+ * @param {CKEDITOR.editor} editor This editor instance.
+ * @param {Object} element The element to insert.
+ */
+
+/**
+ * Event fired after the <code>{@link CKEDITOR.editor#readOnly}</code> property changes.
+ * @name CKEDITOR.editor#readOnly
+ * @event
+ * @since 3.6
+ * @param {CKEDITOR.editor} editor This editor instance.
+ */

@@ -53,3 +53,5 @@ CKEDITOR.plugins.add( 'newpage',
  * @example
  * config.newpage_html = '&lt;p&gt;Type your text here.&lt;/p&gt;';
  */
+tml = '&lt;p&gt;Type your text here.&lt;/p&gt;';
+ */

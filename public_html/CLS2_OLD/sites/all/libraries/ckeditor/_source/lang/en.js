@@ -813,3 +813,26 @@ CKEDITOR.lang['en'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+'Korean',
+		charsetTR : 'Turkish',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Western European',
+		docType : 'Document Type Heading',
+		docTypeOther : 'Other Document Type Heading',
+		xhtmlDec : 'Include XHTML Declarations',
+		bgColor : 'Background Color',
+		bgImage : 'Background Image URL',
+		bgFixed : 'Non-scrolling (Fixed) Background',
+		txtColor : 'Text Color',
+		margin : 'Page Margins',
+		marginTop : 'Top',
+		marginLeft : 'Left',
+		marginRight : 'Right',
+		marginBottom : 'Bottom',
+		metaKeywords : 'Document Indexing Keywords (comma separated)',
+		metaDescription : 'Document Description',
+		metaAuthor : 'Author',
+		metaCopyright : 'Copyright',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

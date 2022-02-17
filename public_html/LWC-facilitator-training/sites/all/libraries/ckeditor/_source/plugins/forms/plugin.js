@@ -286,3 +286,15 @@ if ( CKEDITOR.env.ie )
 				};
 		});
 }
+ :
+								return !!this.$.checked;
+							case 'value' :
+								var type = this.getAttribute( 'type' );
+								return type == 'checkbox' || type == 'radio' ? this.$.value != 'on' : this.$.value;
+						}
+					}
+
+					return original.apply( this, arguments );
+				};
+		});
+}

@@ -1345,3 +1345,47 @@ CKEDITOR.config.ignoreEmptyParagraph = true;
  * @event
  * @param {Object} element The element being added
  */
+rs can always reach the native context menu by holding the <em>Ctrl</em> key when right-clicking if {@link CKEDITOR.config.browserContextMenuOnCtrl}
+ * is enabled or you're simply not using the context menu plugin.
+ *
+ * @type Boolean
+ * @default true
+ * @example
+ * config.disableNativeSpellChecker = false;
+ */
+CKEDITOR.config.disableNativeSpellChecker = true;
+
+/**
+ * Whether the editor must output an empty value ("") if it's contents is made
+ * by an empty paragraph only.
+ * @type Boolean
+ * @default true
+ * @example
+ * config.ignoreEmptyParagraph = false;
+ */
+CKEDITOR.config.ignoreEmptyParagraph = true;
+
+/**
+ * Fired when data is loaded and ready for retrieval in an editor instance.
+ * @name CKEDITOR.editor#dataReady
+ * @event
+ */
+
+/**
+ * Whether automatically create wrapping blocks around inline contents inside document body,
+ * this helps to ensure the integrality of the block enter mode.
+ * <strong>Note:</strong> Changing the default value might introduce unpredictable usability issues.
+ * @name CKEDITOR.config.autoParagraph
+ * @since 3.6
+ * @type Boolean
+ * @default true
+ * @example
+ * config.autoParagraph = false;
+ */
+
+/**
+ * Fired when some elements are added to the document
+ * @name CKEDITOR.editor#ariaWidget
+ * @event
+ * @param {Object} element The element being added
+ */

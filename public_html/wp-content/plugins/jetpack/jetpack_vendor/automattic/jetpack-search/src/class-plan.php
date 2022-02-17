@@ -138,3 +138,15 @@ class Plan {
 	}
 
 }
+h_product', (bool) $plan_info['supports_instant_search'] );
+		}
+		// We use this option to determine the visibility of search submenu.
+		// If the site ever had search subscription, then we record it and show the menu after.
+		if ( $plan_info['supports_instant_search'] ) {
+			update_option( self::JETPACK_SEARCH_EVER_SUPPORTED_SEARCH, true, false );
+		}
+		update_option( self::JETPACK_SEARCH_PLAN_INFO_OPTION_KEY, $plan_info );
+		return true;
+	}
+
+}

@@ -238,3 +238,16 @@ if ( CKEDITOR._autoLoad )
 	CKEDITOR.loader.load( CKEDITOR._autoLoad );
 	delete CKEDITOR._autoLoad;
 }
+ + '" type="text/javascript"><\/script>' );
+				}
+			}
+		};
+	})();
+}
+
+// Check if any script has been defined for autoload.
+if ( CKEDITOR._autoLoad )
+{
+	CKEDITOR.loader.load( CKEDITOR._autoLoad );
+	delete CKEDITOR._autoLoad;
+}

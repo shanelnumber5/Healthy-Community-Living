@@ -813,3 +813,18 @@ CKEDITOR.lang['km'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+��ាងក្រោម',
+		bgFixed : 'ទំព័រក្រោមមិនប្តូរ',
+		txtColor : 'ពណ៌អក្សរ',
+		margin : 'ស៊ុមទំព័រ',
+		marginTop : 'លើ',
+		marginLeft : 'ឆ្វេង',
+		marginRight : 'ស្ដាំ',
+		marginBottom : 'ក្រោម',
+		metaKeywords : 'ពាក្យនៅក្នុងឯកសារ (ផ្តាច់ពីគ្នាដោយក្បៀស)',
+		metaDescription : 'សេចក្តីអត្ថាធិប្បាយអំពីឯកសារ',
+		metaAuthor : 'អ្នកនិពន្ធ',
+		metaCopyright : 'រក្សាសិទ្ធិ៏',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

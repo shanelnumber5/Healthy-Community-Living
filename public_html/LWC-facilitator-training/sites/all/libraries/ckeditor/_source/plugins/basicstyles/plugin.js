@@ -127,3 +127,8 @@ CKEDITOR.config.coreStyles_subscript = { element : 'sub' };
  *     };
  */
 CKEDITOR.config.coreStyles_superscript = { element : 'sup' };
+: 'Superscript' },
+ *         overrides : 'sup'
+ *     };
+ */
+CKEDITOR.config.coreStyles_superscript = { element : 'sup' };

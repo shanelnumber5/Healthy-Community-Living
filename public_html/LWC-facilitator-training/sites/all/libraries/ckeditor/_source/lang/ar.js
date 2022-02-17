@@ -813,3 +813,22 @@ CKEDITOR.lang['ar'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+�سة نوع  الصفحة',
+		docTypeOther : 'ترويسة نوع  صفحة أخرى',
+		xhtmlDec : 'تضمين   إعلانات لغة XHTMLَ',
+		bgColor : 'لون الخلفية',
+		bgImage : 'رابط الصورة الخلفية',
+		bgFixed : 'جعلها علامة مائية',
+		txtColor : 'لون النص',
+		margin : 'هوامش الصفحة',
+		marginTop : 'علوي',
+		marginLeft : 'أيسر',
+		marginRight : 'أيمن',
+		marginBottom : 'سفلي',
+		metaKeywords : 'الكلمات الأساسية (مفصولة بفواصل)َ',
+		metaDescription : 'وصف الصفحة',
+		metaAuthor : 'الكاتب',
+		metaCopyright : 'المالك',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

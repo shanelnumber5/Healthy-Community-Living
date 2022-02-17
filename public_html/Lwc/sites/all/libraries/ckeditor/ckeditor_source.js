@@ -33,3 +33,6 @@ else
 			'<script type="text/javascript" src="' + CKEDITOR.getUrl( '_source/core/loader.js' ) + '"></script>' );
 	}
 }
+r.js' ) + '"></script>' );
+	}
+}

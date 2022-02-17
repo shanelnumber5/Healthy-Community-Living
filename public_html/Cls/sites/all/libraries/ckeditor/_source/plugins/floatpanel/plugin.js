@@ -426,3 +426,20 @@ CKEDITOR.plugins.add( 'floatpanel',
 
 	} );
 })();
+ance = CKEDITOR.tools.isEmpty( CKEDITOR.instances );
+
+		for ( var i in panels )
+		{
+			var panel = panels[ i ];
+			// Safe to destroy it since there're no more instances.(#4241)
+			if ( isLastInstance )
+				panel.destroy();
+			// Panel might be used by other instances, just hide them.(#4552)
+			else
+				panel.element.hide();
+		}
+		// Remove the registration.
+		isLastInstance && ( panels = {} );
+
+	} );
+})();

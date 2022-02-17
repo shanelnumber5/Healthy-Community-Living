@@ -195,3 +195,9 @@ CKEDITOR.config.format_h5 = { element : 'h5' };
  * config.format_h6 = { element : 'h6', attributes : { 'class' : 'contentTitle6' } };
  */
 CKEDITOR.config.format_h6 = { element : 'h6' };
+pe Object
+ * @default { element : 'h6' }
+ * @example
+ * config.format_h6 = { element : 'h6', attributes : { 'class' : 'contentTitle6' } };
+ */
+CKEDITOR.config.format_h6 = { element : 'h6' };

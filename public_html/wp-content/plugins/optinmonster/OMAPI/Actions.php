@@ -240,4 +240,13 @@ class OMAPI_Actions {
 			in_array( (string) $api->response_code, array( '410', '401', '424', '403' ), true )
 			&& '10051' === (string) $error_code
 		) {
-			OMAPI_ApiKey::regenerate( $creds['apikey'
+			OMAPI_ApiKey::regenerate( $creds['apikey'] );
+
+			// Regenerated, so we want to refresh the page.
+			return true;
+		}
+
+		// No luck.
+		return false;
+	}
+}

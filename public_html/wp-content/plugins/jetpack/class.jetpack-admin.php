@@ -471,3 +471,74 @@ class Jetpack_Admin {
 	}
 }
 Jetpack_Admin::init();
+,
+			__( 'Debugging Center', 'jetpack' ),
+			'',
+			'manage_options',
+			'jetpack-debugger',
+			array( $this, 'wrap_debugger_page' )
+		);
+		add_action( "admin_head-$debugger_hook", array( 'Jetpack_Debugger', 'jetpack_debug_admin_head' ) );
+	}
+
+	/**
+	 * Wrap debugger page.
+	 */
+	public function wrap_debugger_page() {
+		nocache_headers();
+		if ( ! current_user_can( 'manage_options' ) ) {
+			die( '-1' );
+		}
+		Jetpack_Admin_Page::wrap_ui( array( $this, 'debugger_page' ) );
+	}
+
+	/**
+	 * Display debugger page.
+	 */
+	public function debugger_page() {
+		jetpack_require_lib( 'debugger' );
+		Jetpack_Debugger::jetpack_debug_display_handler();
+	}
+
+	/**
+	 * Determines if JITMs should display on a particular screen.
+	 *
+	 * @param bool   $value The default value of the filter.
+	 * @param string $screen_id The ID of the screen being tested for JITM display.
+	 *
+	 * @return bool True if JITMs should display, false otherwise.
+	 */
+	public function should_display_jitms_on_screen( $value, $screen_id ) {
+		// Disable all JITMs on these pages.
+		if (
+		in_array(
+			$screen_id,
+			array(
+				'jetpack_page_akismet-key-config',
+				'admin_page_jetpack_modules',
+			),
+			true
+		) ) {
+			return false;
+		}
+
+		// Disable all JITMs on pages where the recommendations banner is displaying.
+		if (
+			in_array(
+				$screen_id,
+				array(
+					'dashboard',
+					'plugins',
+					'jetpack_page_stats',
+				),
+				true
+			)
+			&& \Jetpack_Recommendations_Banner::can_be_displayed()
+		) {
+			return false;
+		}
+
+		return $value;
+	}
+}
+Jetpack_Admin::init();

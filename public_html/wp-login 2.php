@@ -1518,3 +1518,62 @@ switch ( $action ) {
 		login_footer();
 		break;
 } // End action switch.
+	$login_script .= 'setTimeout( function() {';
+		$login_script .= 'try {';
+
+		if ( $user_login ) {
+			$login_script .= 'd = document.getElementById( "user_pass" ); d.value = "";';
+		} else {
+			$login_script .= 'd = document.getElementById( "user_login" );';
+
+			if ( $errors->get_error_code() === 'invalid_username' ) {
+				$login_script .= 'd.value = "";';
+			}
+		}
+
+		$login_script .= 'd.focus(); d.select();';
+		$login_script .= '} catch( er ) {}';
+		$login_script .= '}, 200);';
+		$login_script .= "}\n"; // End of wp_attempt_focus().
+
+		/**
+		 * Filters whether to print the call to `wp_attempt_focus()` on the login screen.
+		 *
+		 * @since 4.8.0
+		 *
+		 * @param bool $print Whether to print the function call. Default true.
+		 */
+		if ( apply_filters( 'enable_login_autofocus', true ) && ! $error ) {
+			$login_script .= "wp_attempt_focus();\n";
+		}
+
+		// Run `wpOnload()` if defined.
+		$login_script .= "if ( typeof wpOnload === 'function' ) { wpOnload() }";
+
+		?>
+		<script type="text/javascript">
+			<?php echo $login_script; ?>
+		</script>
+		<?php
+
+		if ( $interim_login ) {
+			?>
+			<script type="text/javascript">
+			( function() {
+				try {
+					var i, links = document.getElementsByTagName( 'a' );
+					for ( i in links ) {
+						if ( links[i].href ) {
+							links[i].target = '_blank';
+							links[i].rel = 'noopener';
+						}
+					}
+				} catch( er ) {}
+			}());
+			</script>
+			<?php
+		}
+
+		login_footer();
+		break;
+} // End action switch.

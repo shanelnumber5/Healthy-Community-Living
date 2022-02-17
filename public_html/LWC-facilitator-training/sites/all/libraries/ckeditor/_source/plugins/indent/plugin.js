@@ -459,3 +459,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * // Use the classes 'Indent1', 'Indent2', 'Indent3'
  * config.indentClasses = ['Indent1', 'Indent2', 'Indent3'];
  */
+fault 'px'
+ * @example
+ * config.indentUnit = 'em';
+ */
+
+ /**
+ * List of classes to use for indenting the contents. If it's null, no classes will be used
+ * and instead the {@link #indentUnit} and {@link #indentOffset} properties will be used.
+ * @name CKEDITOR.config.indentClasses
+ * @type Array
+ * @default null
+ * @example
+ * // Use the classes 'Indent1', 'Indent2', 'Indent3'
+ * config.indentClasses = ['Indent1', 'Indent2', 'Indent3'];
+ */

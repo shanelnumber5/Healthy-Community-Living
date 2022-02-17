@@ -940,3 +940,29 @@ class Actions {
 		return $result;
 	}
 }
+le ) ? $sync_module->get_status() : array();
+
+		$full_queue = self::$sender->get_full_sync_queue();
+
+		$result = array_merge(
+			$full_sync_status,
+			$checksums,
+			$debug,
+			array(
+				'cron_size'            => count( $cron_timestamps ),
+				'next_cron'            => $next_cron,
+				'queue_size'           => $queue->size(),
+				'queue_lag'            => $queue->lag(),
+				'queue_next_sync'      => ( self::$sender->get_next_sync_time( 'sync' ) - microtime( true ) ),
+				'full_queue_next_sync' => ( self::$sender->get_next_sync_time( 'full_sync' ) - microtime( true ) ),
+			)
+		);
+
+		// Verify $sync_module is not false.
+		if ( ( $sync_module ) && false === strpos( get_class( $sync_module ), 'Full_Sync_Immediately' ) ) {
+			$result['full_queue_size'] = $full_queue->size();
+			$result['full_queue_lag']  = $full_queue->lag();
+		}
+		return $result;
+	}
+}

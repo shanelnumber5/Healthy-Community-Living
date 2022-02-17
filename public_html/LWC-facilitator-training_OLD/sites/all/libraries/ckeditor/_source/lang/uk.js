@@ -813,3 +813,21 @@ CKEDITOR.lang['uk'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+документу',
+		xhtmlDec : 'Ввімкнути XHTML оголошення',
+		bgColor : 'Колір тла',
+		bgImage : 'URL зображення тла',
+		bgFixed : 'Тло без прокрутки',
+		txtColor : 'Колір тексту',
+		margin : 'Відступи сторінки',
+		marginTop : 'Верхній',
+		marginLeft : 'Лівий',
+		marginRight : 'Правий',
+		marginBottom : 'Нижній',
+		metaKeywords : 'Ключові слова документа (розділені комами)',
+		metaDescription : 'Опис документа',
+		metaAuthor : 'Автор',
+		metaCopyright : 'Авторські права',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

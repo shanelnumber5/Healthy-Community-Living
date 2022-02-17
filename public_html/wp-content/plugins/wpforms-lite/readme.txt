@@ -717,3 +717,10 @@ Syed Balkhi
 - Fixed: Compatibility issues with Elementor.
 
 [See changelog for all versions](https://plugins.svn.wordpress.org/wpforms-lite/trunk/changelog.txt).
+ent issues (WordPress 5.4+).
+- Fixed: Form Builder field option panel is not available if field is placed before the last form field.
+- Fixed: Fallback population for fields with choices (checkbox, radio etc) when special characters are used.
+- Fixed: Integrity of decoded data with additional sanitizing.
+- Fixed: Compatibility issues with Elementor.
+
+[See changelog for all versions](https://plugins.svn.wordpress.org/wpforms-lite/trunk/changelog.txt).

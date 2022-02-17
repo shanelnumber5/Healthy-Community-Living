@@ -95,3 +95,11 @@ endforeach; // $cats
 ?>
 </body>
 </opml>
+	endforeach; // $bookmarks
+	?>
+</outline>
+	<?php
+endforeach; // $cats
+?>
+</body>
+</opml>

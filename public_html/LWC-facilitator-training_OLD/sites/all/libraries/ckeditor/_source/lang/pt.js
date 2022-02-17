@@ -813,3 +813,24 @@ CKEDITOR.lang['pt'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+
+		charsetWE : 'Western European', // MISSING
+		docType : 'Tipo de Cabeçalho do Documento',
+		docTypeOther : 'Outro Tipo de Cabeçalho do Documento',
+		xhtmlDec : 'Incluir Declarações XHTML',
+		bgColor : 'Cor de Fundo',
+		bgImage : 'Caminho para a Imagem de Fundo',
+		bgFixed : 'Fundo Fixo',
+		txtColor : 'Cor do Texto',
+		margin : 'Margem das Páginas',
+		marginTop : 'Topo',
+		marginLeft : 'Esquerda',
+		marginRight : 'Direita',
+		marginBottom : 'Fundo',
+		metaKeywords : 'Palavras de Indexação do Documento (separadas por virgula)',
+		metaDescription : 'Descrição do Documento',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Direitos de Autor',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

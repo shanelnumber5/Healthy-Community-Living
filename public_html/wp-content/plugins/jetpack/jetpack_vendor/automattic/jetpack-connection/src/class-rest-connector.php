@@ -858,3 +858,9 @@ class REST_Connector {
 		return new WP_Error( 'invalid_user_permission_set_connection_owner', self::get_user_permissions_error_msg(), array( 'status' => rest_authorization_required_code() ) );
 	}
 }
+			return true;
+		}
+
+		return new WP_Error( 'invalid_user_permission_set_connection_owner', self::get_user_permissions_error_msg(), array( 'status' => rest_authorization_required_code() ) );
+	}
+}

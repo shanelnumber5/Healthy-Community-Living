@@ -16,3 +16,5 @@ jQuery.extend(jQuery.colorbox.settings, {
 	slideshowStart: "آغاز نمایش خودکار",
 	slideshowStop: "توقف نمایش خودکار"
 });
+ودکار"
+});

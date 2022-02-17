@@ -1,0 +1,564 @@
+=== START empty 2022-01-31 02:10:23 ===
+Users deleted
+WordPress content removed
+=== END empty 2022-01-31 02:10:26 ===
+
+=== START test_database 2022-01-31 02:10:33 ===
+Connected with success to the Drupal database
+Drupal data found:
+0 articles
+7 pages
+0 categories
+6 tags
+37 users
+3 comments
+1 Portfolio categories
+1 Newsletter
+3 Section 1
+1 Timeline Event Dates
+0 Catalog
+3 News
+8 Embed Resource Page
+1 FAQ
+178 Interactive content
+0 Healthyliving
+0 Long answer question
+1 Matching
+0 Multiple choice question
+0 Panel
+17 Assignments
+2 Product
+1 Quiz
+0 Drag and drop question with lines
+0 Quiz directions
+0 Scale question
+0 Short answer question
+0 Simplenews newsletter
+7 Timeline
+0 True/false question
+1 Webform
+
+[WARNING] Your Drupal database contains Ubercart products. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/ubercart/" target="_blank">Ubercart add-on</a> to import them.
+=== END test_database 2022-01-31 02:10:33 ===
+
+=== START import 2022-01-31 02:10:50 ===
+Connected with success to the Drupal database
+Drupal data found:
+0 articles
+7 pages
+0 categories
+6 tags
+37 users
+3 comments
+1 Portfolio categories
+1 Newsletter
+3 Section 1
+1 Timeline Event Dates
+0 Catalog
+3 News
+8 Embed Resource Page
+1 FAQ
+178 Interactive content
+0 Healthyliving
+0 Long answer question
+1 Matching
+0 Multiple choice question
+0 Panel
+17 Assignments
+2 Product
+1 Quiz
+0 Drag and drop question with lines
+0 Quiz directions
+0 Scale question
+0 Short answer question
+0 Simplenews newsletter
+7 Timeline
+0 True/false question
+1 Webform
+
+[WARNING] Your Drupal database contains Ubercart products. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/ubercart/" target="_blank">Ubercart add-on</a> to import them.
+[ERROR] The URL field is required to import the media.
+=== END import 2022-01-31 02:10:50 ===
+
+=== START import 2022-01-31 02:12:35 ===
+Connected with success to the Drupal database
+Drupal data found:
+0 articles
+7 pages
+0 categories
+6 tags
+37 users
+3 comments
+1 Portfolio categories
+1 Newsletter
+3 Section 1
+1 Timeline Event Dates
+0 Catalog
+3 News
+8 Embed Resource Page
+1 FAQ
+178 Interactive content
+0 Healthyliving
+0 Long answer question
+1 Matching
+0 Multiple choice question
+0 Panel
+17 Assignments
+2 Product
+1 Quiz
+0 Drag and drop question with lines
+0 Quiz directions
+0 Scale question
+0 Short answer question
+0 Simplenews newsletter
+7 Timeline
+0 True/false question
+1 Webform
+
+[WARNING] Your Drupal database contains Ubercart products. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/ubercart/" target="_blank">Ubercart add-on</a> to import them.
+[ERROR] HTTP connection failed
+Newsletter taxonomy registered
+Section 1 taxonomy registered
+Timeline Event Dates taxonomy registered
+Catalog taxonomy registered
+News post type registered
+Embed Resource Page post type registered
+FAQ post type registered
+Interactive content post type registered
+Healthyliving post type registered
+Long answer question post type registered
+Matching post type registered
+Multiple choice question post type registered
+Panel post type registered
+Assignments post type registered
+Product post type registered
+Quiz post type registered
+Drag and drop question with lines post type registered
+Quiz directions post type registered
+Scale question post type registered
+Short answer question post type registered
+Simplenews newsletter post type registered
+Timeline post type registered
+True/false question post type registered
+Webform post type registered
+Importing authors...
+Authors imported
+Importing users...
+37 users imported
+Importing categories...
+0 categories imported
+Importing tags...
+6 tags imported
+Importing portfolio_categories...
+0 Portfolio categories imported
+Importing newsletter...
+1 Newsletter imported
+Importing sections...
+3 Section 1 imported
+Importing timeline_event_dates...
+1 Timeline Event Dates imported
+Importing catalog...
+0 Catalog imported
+Importing pages...
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/details.jpg (node ID=111) to /home4/ealtibj2/public_html/wp-content/uploads/2015/01/details.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/details.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/01/details.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/youtube_cover.jpg (node ID=112) to /home4/ealtibj2/public_html/wp-content/uploads/2015/02/youtube_cover.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/youtube_cover.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/02/youtube_cover.jpg : Not Found
+7 pages imported
+Importing blocks...
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/LivingWell-72dpi-rgb-300x73.jpg (block ID=3) to /home4/ealtibj2/public_html/wp-content/uploads/2022/01/LivingWell-72dpi-rgb-300x73.jpg : Not Found
+19 blocks imported
+Importing blogs...
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/photoshop.jpg (node ID=92) to /home4/ealtibj2/public_html/wp-content/uploads/2015/01/photoshop.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/photoshop.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/01/photoshop.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/8601795375_11d8a8fd4f_b_1.jpg (node ID=96) to /home4/ealtibj2/public_html/wp-content/uploads/2014/12/8601795375_11d8a8fd4f_b_1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/8601795375_11d8a8fd4f_b_1.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2014/12/8601795375_11d8a8fd4f_b_1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/9475567919_5237ff1112_b_1.jpg (node ID=102) to /home4/ealtibj2/public_html/wp-content/uploads/2014/12/9475567919_5237ff1112_b_1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/9475567919_5237ff1112_b_1.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2014/12/9475567919_5237ff1112_b_1.jpg : Not Found
+3 News imported
+Importing embed_resource_pages...
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-pascaline2.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-pascaline2.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-pascaline2.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-pascaline2.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-leibniz2.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-leibniz2.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-jacquard.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-jacquard.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-babbage2.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-babbage2.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-hollerith.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-hollerith.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-bush.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-bush.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-colossus.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-colossus.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-markI.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-markI.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-eniac.jpg (node ID=145) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-eniac.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/embed page test1.jpg (node ID=146) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/embed-page-test1.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-hopper.jpg (node ID=147) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-hopper.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-hopper.jpg (node ID=147) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-hopper.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-bartik.jpg (node ID=147) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-bartik.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-snyder_0.jpg (node ID=147) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-snyder_0.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA1-mcnulty.jpg (node ID=147) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA1-mcnulty.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA2-roberts-.jpg (node ID=152) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA2-roberts-.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA2-roberts-.jpg (node ID=152) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA2-roberts-.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA2-Altair.jpg (node ID=152) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA2-Altair.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA2-ibm-pc.jpg (node ID=153) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA2-ibm-pc.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA2-ibm-pc.jpg (node ID=153) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA2-ibm-pc.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA2-apple2a.jpg (node ID=154) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA2-apple2a.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A2-FA2-apple2a.jpg (node ID=154) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/A2-FA2-apple2a.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A7-FA1-laposky.jpg (node ID=155) to /home4/ealtibj2/public_html/wp-content/uploads/2015/08/A7-FA1-laposky.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A7-FA1-laposky.jpg (node ID=155) to /home4/ealtibj2/public_html/wp-content/uploads/2015/08/A7-FA1-laposky.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A7-FA1-franke.jpg (node ID=155) to /home4/ealtibj2/public_html/wp-content/uploads/2015/08/A7-FA1-franke.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A7-FA1-whitney.jpg (node ID=155) to /home4/ealtibj2/public_html/wp-content/uploads/2015/08/A7-FA1-whitney.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/A7-FA1-csuri.jpg (node ID=155) to /home4/ealtibj2/public_html/wp-content/uploads/2015/08/A7-FA1-csuri.jpg : Not Found
+8 Embed Resource Pages imported
+Importing faqs...
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/FAQ-banner.jpg (node ID=349) to /home4/ealtibj2/public_html/wp-content/uploads/2017/02/FAQ-banner.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/FAQ-banner.jpg (node ID=349) to /home4/ealtibj2/public_html/wp-content/uploads/2017/02/FAQ-banner.jpg : Not Found
+1 FAQs imported
+Importing h5p_contents...
+178 Interactive contents imported
+Importing healthy_livings...
+0 Healthylivings imported
+Importing long_answers...
+0 Long answer questions imported
+Importing matchings...
+1 Matchings imported
+Importing multichoices...
+0 Multiple choice questions imported
+Importing panels...
+0 Panels imported
+Importing portfolios...
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/problem_solving_overview_video.png (node ID=115) to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/problem_solving_overview_video.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/problem_solving_overview_video.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/problem_solving_overview_video.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter-2-Problem-Solving-Banner.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-2-Problem-Solving-Banner.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Problem Solving.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/Problem-Solving.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A3.jpg (node ID=116) to /home4/ealtibj2/public_html/wp-content/uploads/2015/08/Assignment-Video_Link_A3.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A3.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/08/Assignment-Video_Link_A3.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter 3 Healthy Reactions Banner.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-3-Healthy-Reactions-Banner.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Healthy Reactions.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/Healthy-Reactions.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A4-button.jpg (node ID=117) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A4-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A4-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A4-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter 4 Beating the Blues Banner.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-4-Beating-the-Blues-Banner.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/BeatingTheBlues.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/BeatingTheBlues.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A5-button.jpg (node ID=119) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A5-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A5-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A5-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter 5 Healthy Communication Banner Image.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-5-Healthy-Communication-Banner-Image.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/HealthyCommunication.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/HealthyCommunication.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/GoalSettingVideoOverview_0.png (node ID=121) to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/GoalSettingVideoOverview_0.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/GoalSettingVideoOverview_0.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/GoalSettingVideoOverview_0.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter 6 Seeking Information Banner_0.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-6-Seeking-Information-Banner_0.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/SeekingInformation.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/SeekingInformation.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A7-button.jpg (node ID=122) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A7-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A7-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A7-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter 7 Physical Activity Banner.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-7-Physical-Activity-Banner.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/PhysicalActivity.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/PhysicalActivity.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A8-button.jpg (node ID=124) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A8-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A8-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A8-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter 8 Eating Well Banner Image.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-8-Eating-Well-Banner-Image.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/EatingWell.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/EatingWell.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A9-button.jpg (node ID=126) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A9-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A9-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A9-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter 9 Advocacy Banner.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-9-Advocacy-Banner.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Advocacy.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/Advocacy.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A10-button.jpg (node ID=127) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A10-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A10-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A10-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter-10-Maintenance-Banner-Image.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-10-Maintenance-Banner-Image.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Maintenance.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/Maintenance.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A11-button.jpg (node ID=128) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A11-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A11-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A11-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Header-Image-11.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/06/Assignment-Header-Image-11.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Page-Poster-A11.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Page-Poster-A11.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A12-button.jpg (node ID=129) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A12-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A12-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A12-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Header-Image-12.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/06/Assignment-Header-Image-12.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Page-Poster-A12.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Page-Poster-A12.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A13-button.jpg (node ID=130) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A13-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A13-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A13-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Header-Image-13.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/06/Assignment-Header-Image-13.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Page-Poster-A13.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Page-Poster-A13.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A14-button.jpg (node ID=131) to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A14-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Video_Link_A14-button.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Video_Link_A14-button.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Header-Image-14.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/06/Assignment-Header-Image-14.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Assignment-Page-Poster-A14.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/Assignment-Page-Poster-A14.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/GoalSettingVideoOverview.png (node ID=141) to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/GoalSettingVideoOverview.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/GoalSettingVideoOverview.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/GoalSettingVideoOverview.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Chapter 1 Goal Setting Banner Image.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/08/Chapter-1-Goal-Setting-Banner-Image.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/GoalSetting.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2016/06/GoalSetting.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/Orientation-Chapter-Banner_0.png to /home4/ealtibj2/public_html/wp-content/uploads/2016/10/Orientation-Chapter-Banner_0.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/OrientationLinkIcon_0.png to /home4/ealtibj2/public_html/wp-content/uploads/2017/01/OrientationLinkIcon_0.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/FO Banner.png to /home4/ealtibj2/public_html/wp-content/uploads/2017/01/FO-Banner.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/FacOverviewLinkIcon_0.png to /home4/ealtibj2/public_html/wp-content/uploads/2017/01/FacOverviewLinkIcon_0.png : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/IMG_2305_0.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2017/02/IMG_2305_0.jpg : Not Found
+17 Assignments imported
+Importing products...
+2 Products imported
+Importing quizs...
+1 Quizs imported
+Importing quiz_ddlines...
+0 Drag and drop question with lines imported
+Importing quiz_directions...
+0 Quiz directions imported
+Importing scales...
+0 Scale questions imported
+Importing short_answers...
+0 Short answer questions imported
+Importing simplenews...
+0 Simplenews newsletters imported
+Importing timelines...
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/1914-WWI-begins.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/1914-WWI-begins.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/2015-apple-watch.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/2015-apple-watch.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/1903-wright-brothers.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/1903-wright-brothers.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/1905-einstein.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/1905-einstein.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/1908-model-T_0.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/1908-model-T_0.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/1930-vannevar-bush-analog_0.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/1930-vannevar-bush-analog_0.jpg : Not Found
+[ERROR] Can't copy https://healthycommunityliving.com/index.html/sites/default/files/1985-andy-warhol-harry.jpg to /home4/ealtibj2/public_html/wp-content/uploads/2015/07/1985-andy-warhol-harry.jpg : Not Found
+7 Timelines imported
+Importing truefalses...
+0 True/false questions imported
+Importing webforms...
+1 Webforms imported
+Importing redirects...
+232 redirects imported
+Setting parent pages...
+0 parent pages set
+Importing node relationships...
+Importing media relationships...
+Importing comments...
+3 comments imported
+Importing menus...
+18 menu items imported
+0 medias imported
+Don't forget to modify internal links.
+IMPORT COMPLETED
+=== END import 2022-01-31 02:16:50 ===
+
+=== START modify_links 2022-01-31 02:17:11 ===
+Modifying internal links...
+0 internal links modified
+=== END modify_links 2022-01-31 02:17:11 ===
+
+=== START test_database 2022-01-31 02:58:46 ===
+Connected with success to the Drupal database
+Drupal data found:
+0 articles
+7 pages
+0 categories
+6 tags
+37 users
+3 comments
+1 Portfolio categories
+1 Newsletter
+3 Section 1
+1 Timeline Event Dates
+0 Catalog
+3 News
+8 Embed Resource Page
+1 FAQ
+178 Interactive content
+0 Healthyliving
+0 Long answer question
+1 Matching
+0 Multiple choice question
+0 Panel
+17 Assignments
+2 Product
+1 Quiz
+0 Drag and drop question with lines
+0 Quiz directions
+0 Scale question
+0 Short answer question
+0 Simplenews newsletter
+7 Timeline
+0 True/false question
+1 Webform
+
+[WARNING] Your Drupal database contains Ubercart products. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/ubercart/" target="_blank">Ubercart add-on</a> to import them.
+=== END test_database 2022-01-31 02:58:46 ===
+
+=== START save 2022-01-31 02:58:58 ===
+Settings saved
+=== END save 2022-01-31 02:58:58 ===
+
+=== START import 2022-01-31 02:59:05 ===
+Connected with success to the Drupal database
+Drupal data found:
+0 articles
+7 pages
+0 categories
+6 tags
+37 users
+3 comments
+1 Portfolio categories
+1 Newsletter
+3 Section 1
+1 Timeline Event Dates
+0 Catalog
+3 News
+8 Embed Resource Page
+1 FAQ
+178 Interactive content
+0 Healthyliving
+0 Long answer question
+1 Matching
+0 Multiple choice question
+0 Panel
+17 Assignments
+2 Product
+1 Quiz
+0 Drag and drop question with lines
+0 Quiz directions
+0 Scale question
+0 Short answer question
+0 Simplenews newsletter
+7 Timeline
+0 True/false question
+1 Webform
+
+[WARNING] Your Drupal database contains Ubercart products. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/ubercart/" target="_blank">Ubercart add-on</a> to import them.
+HTTP connection successful
+Newsletter taxonomy registered
+Section 1 taxonomy registered
+Timeline Event Dates taxonomy registered
+Catalog taxonomy registered
+News post type registered
+Embed Resource Page post type registered
+FAQ post type registered
+Interactive content post type registered
+Healthyliving post type registered
+Long answer question post type registered
+Matching post type registered
+Multiple choice question post type registered
+Panel post type registered
+Assignments post type registered
+Product post type registered
+Quiz post type registered
+Drag and drop question with lines post type registered
+Quiz directions post type registered
+Scale question post type registered
+Short answer question post type registered
+Simplenews newsletter post type registered
+Timeline post type registered
+True/false question post type registered
+Webform post type registered
+Importing authors...
+Authors imported
+Importing users...
+0 users imported
+Importing categories...
+0 categories imported
+Importing tags...
+0 tags imported
+Importing portfolio_categories...
+0 Portfolio categories imported
+Importing newsletter...
+0 Newsletter imported
+Importing sections...
+0 Section 1 imported
+Importing timeline_event_dates...
+0 Timeline Event Dates imported
+Importing catalog...
+0 Catalog imported
+Importing pages...
+0 pages imported
+Importing blocks...
+0 blocks imported
+Importing blogs...
+0 News imported
+Importing embed_resource_pages...
+0 Embed Resource Pages imported
+Importing faqs...
+0 FAQs imported
+Importing h5p_contents...
+0 Interactive contents imported
+Importing healthy_livings...
+0 Healthylivings imported
+Importing long_answers...
+0 Long answer questions imported
+Importing matchings...
+0 Matchings imported
+Importing multichoices...
+0 Multiple choice questions imported
+Importing panels...
+0 Panels imported
+Importing portfolios...
+0 Assignments imported
+Importing products...
+0 Products imported
+Importing quizs...
+0 Quizs imported
+Importing quiz_ddlines...
+0 Drag and drop question with lines imported
+Importing quiz_directions...
+0 Quiz directions imported
+Importing scales...
+0 Scale questions imported
+Importing short_answers...
+0 Short answer questions imported
+Importing simplenews...
+0 Simplenews newsletters imported
+Importing timelines...
+0 Timelines imported
+Importing truefalses...
+0 True/false questions imported
+Importing webforms...
+0 Webforms imported
+Importing redirects...
+0 redirects imported
+Setting parent pages...
+0 parent pages set
+Importing node relationships...
+Importing media relationships...
+Importing comments...
+0 comments imported
+Importing menus...
+0 menu items imported
+0 medias imported
+Don't forget to modify internal links.
+IMPORT COMPLETED
+=== END import 2022-01-31 02:59:06 ===
+
+=== START test_database 2022-02-14 20:54:33 ===
+Connected with success to the Drupal database
+Drupal data found:
+0 articles
+7 pages
+0 categories
+6 tags
+37 users
+3 comments
+1 Portfolio categories
+1 Newsletter
+3 Section 1
+1 Timeline Event Dates
+0 Catalog
+3 News
+8 Embed Resource Page
+1 FAQ
+178 Interactive content
+0 Healthyliving
+0 Long answer question
+1 Matching
+0 Multiple choice question
+0 Panel
+17 Assignments
+2 Product
+1 Quiz
+0 Drag and drop question with lines
+0 Quiz directions
+0 Scale question
+0 Short answer question
+0 Simplenews newsletter
+7 Timeline
+0 True/false question
+1 Webform
+
+[WARNING] Your Drupal database contains Ubercart products. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/ubercart/" target="_blank">Ubercart add-on</a> to import them.
+=== END test_database 2022-02-14 20:54:33 ===
+

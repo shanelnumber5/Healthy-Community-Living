@@ -352,3 +352,12 @@ class Jetpack_Plan {
 		return false;
 	}
 }
+, $plan['supports'], true )
+			|| in_array( $feature, $plan['features']['active'], true )
+		) {
+			return true;
+		}
+
+		return false;
+	}
+}

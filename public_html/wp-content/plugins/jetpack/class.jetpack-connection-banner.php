@@ -554,3 +554,36 @@ class Jetpack_Connection_Banner {
 		<?php
 	}
 }
+					<?php
+						endif;
+					?>
+
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Renders the legacy network connection banner.
+	 */
+	public function network_connect_notice() {
+		?>
+		<div id="message" class="updated jetpack-message">
+			<div class="squeezer">
+				<h2>
+					<?php
+						echo wp_kses(
+							__(
+								'<strong>Jetpack is activated!</strong> Each site on your network must be connected individually by an admin on that site.',
+								'jetpack'
+							),
+							array( 'strong' => array() )
+						);
+					?>
+				</h2>
+			</div>
+		</div>
+		<?php
+	}
+}

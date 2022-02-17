@@ -82,3 +82,4 @@ Stack trace:
 #6 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(331): WP_Hook->apply_filters(NULL, Array)
 #7 /home4/ealtibj2/public_html/wp-includes/plugin.php(474): WP_Hook->do_action(Array)
 #8 /home4/ealtibj2/public_html/wp-settings.php(587): do_ac in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203
+ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203

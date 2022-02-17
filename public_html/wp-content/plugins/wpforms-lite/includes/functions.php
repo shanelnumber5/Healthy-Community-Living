@@ -3088,3 +3088,10 @@ function wpforms_get_pages_list( $args = [] ) {
 
 	return $list;
 }
+e->post_title ) ? $page->post_title : sprintf( __( '#%d (no title)', 'wpforms-lite' ), $page->ID );
+		$depth             = count( $page->ancestors );
+		$list[ $page->ID ] = str_repeat( '&nbsp;', $depth * 3 ) . $title;
+	}
+
+	return $list;
+}

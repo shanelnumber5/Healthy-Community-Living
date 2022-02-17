@@ -813,3 +813,20 @@ CKEDITOR.lang['sr'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+xhtmlDec : 'Улључи XHTML декларације',
+		bgColor : 'Боја позадине',
+		bgImage : 'УРЛ позадинске слике',
+		bgFixed : 'Фиксирана позадина',
+		txtColor : 'Боја текста',
+		margin : 'Маргине странице',
+		marginTop : 'Горња',
+		marginLeft : 'Лева',
+		marginRight : 'Десна',
+		marginBottom : 'Доња',
+		metaKeywords : 'Кључне речи за индексирање документа (раздвојене зарезом)',
+		metaDescription : 'Опис документа',
+		metaAuthor : 'Аутор',
+		metaCopyright : 'Ауторска права',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

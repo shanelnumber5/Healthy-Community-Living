@@ -158,3 +158,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @example
  * config.startupOutlineBlocks = true;
  */
+ks in FCKeditor)
+ * @name CKEDITOR.config.startupOutlineBlocks
+ * @type Boolean
+ * @default false
+ * @example
+ * config.startupOutlineBlocks = true;
+ */

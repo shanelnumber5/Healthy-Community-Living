@@ -813,3 +813,25 @@ CKEDITOR.lang['is'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+yrkneskt',
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Vestur-evrópst',
+		docType : 'Flokkur skjalategunda',
+		docTypeOther : 'Annar flokkur skjalategunda',
+		xhtmlDec : 'Fella inn XHTML lýsingu',
+		bgColor : 'Bakgrunnslitur',
+		bgImage : 'Slóð bakgrunnsmyndar',
+		bgFixed : 'Læstur bakgrunnur',
+		txtColor : 'Litur texta',
+		margin : 'Hliðarspássía',
+		marginTop : 'Efst',
+		marginLeft : 'Vinstri',
+		marginRight : 'Hægri',
+		marginBottom : 'Neðst',
+		metaKeywords : 'Lykilorð efnisorðaskrár (aðgreind með kommum)',
+		metaDescription : 'Lýsing skjals',
+		metaAuthor : 'Höfundur',
+		metaCopyright : 'Höfundarréttur',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

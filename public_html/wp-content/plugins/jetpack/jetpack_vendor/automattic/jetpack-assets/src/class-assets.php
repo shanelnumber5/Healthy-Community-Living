@@ -702,3 +702,56 @@ class Assets {
 // Enable section folding in vim:
 // vim: foldmarker=//\ region,//\ endregion foldmethod=marker
 // .
+
+	 * @param string $translation Translated text.
+	 * @param string $single The text to be used if the number is singular.
+	 * @param string $plural The text to be used if the number is plural.
+	 * @param string $number The number to compare against to use either the singular or plural form.
+	 * @param string $context Context information for the translators.
+	 * @param string $domain Text domain.
+	 * @return string Translated text.
+	 */
+	public static function filter_ngettext_with_context( $translation, $single, $plural, $number, $context, $domain ) {
+		if ( $translation === $single || $translation === $plural ) {
+			// phpcs:ignore WordPress.WP.I18n
+			$translation = _nx( $single, $plural, $number, $context, self::$domain_map[ $domain ][0] );
+		}
+		return $translation;
+	}
+
+	/**
+	 * Filter for `load_script_translation_file`.
+	 *
+	 * @since 1.15.0
+	 * @param string|false $file Path to the translation file to load. False if there isn't one.
+	 * @param string       $handle Name of the script to register a translation domain to.
+	 * @param string       $domain The text domain.
+	 */
+	public static function filter_load_script_translation_file( $file, $handle, $domain ) {
+		if ( false !== $file && isset( self::$domain_map[ $domain ] ) && ! is_readable( $file ) ) {
+			// Determine the part of the filename after the domain.
+			$suffix = basename( $file );
+			$l      = strlen( $domain );
+			if ( substr( $suffix, 0, $l ) !== $domain || '-' !== $suffix[ $l ] ) {
+				return $file;
+			}
+			$suffix   = substr( $suffix, $l );
+			$lang_dir = Jetpack_Constants::get_constant( 'WP_LANG_DIR' );
+
+			// Look for replacement files.
+			list( $newdomain, $type ) = self::$domain_map[ $domain ];
+			$newfile                  = $lang_dir . ( 'core' === $type ? '/' : "/{$type}/" ) . $newdomain . $suffix;
+			if ( is_readable( $newfile ) ) {
+				return $newfile;
+			}
+		}
+		return $file;
+	}
+
+	// endregion .
+
+}
+
+// Enable section folding in vim:
+// vim: foldmarker=//\ region,//\ endregion foldmethod=marker
+// .

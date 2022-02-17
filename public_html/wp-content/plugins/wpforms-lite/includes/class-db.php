@@ -431,3 +431,65 @@ abstract class WPForms_DB {
 		return $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table;
 	}
 }
+/**
+	 * Build WHERE for a query.
+	 *
+	 * @since 1.7.2.1
+	 *
+	 * @param array           $args    Optional args.
+	 * @param array           $keys    Allowed arg items.
+	 * @param string|string[] $formats Formats of arg items.
+	 *
+	 * @return string
+	 */
+	protected function build_query_where( $args, $keys = [], $formats = [] ) {
+
+		$formats = array_pad( $formats, count( $keys ), '%d' );
+		$where   = '';
+
+		foreach ( $keys as $index => $key ) {
+			// Value `$args[ $key ]` can be a natural number and a numeric string.
+			// We should skip empty string values, but continue working with '0'.
+			if ( empty( $args[ $key ] ) && $args[ $key ] !== '0' ) {
+				continue;
+			}
+
+			$ids = $this->prepare_in( $args[ $key ], $formats[ $index ] );
+
+			$where .= empty( $where ) ? 'WHERE' : 'AND';
+			$where .= " `{$key}` IN ( {$ids} ) ";
+		}
+
+		return $where;
+	}
+
+	/**
+	 * Changes array of items into string of items, separated by comma and sql-escaped.
+	 *
+	 * @see https://coderwall.com/p/zepnaw
+	 *
+	 * @since 1.7.2.1
+	 *
+	 * @param mixed|array $items  Item(s) to be joined into string.
+	 * @param string      $format Can be %s or %d.
+	 *
+	 * @return string Items separated by comma and sql-escaped.
+	 */
+	private function prepare_in( $items, $format = '%s' ) {
+
+		global $wpdb;
+
+		$items    = (array) $items;
+		$how_many = count( $items );
+
+		if ( $how_many === 0 ) {
+			return '';
+		}
+
+		$placeholders    = array_fill( 0, $how_many, $format );
+		$prepared_format = implode( ',', $placeholders );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $wpdb->prepare( $prepared_format, $items );
+	}
+}

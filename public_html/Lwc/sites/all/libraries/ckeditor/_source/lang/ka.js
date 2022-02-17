@@ -813,3 +813,17 @@ CKEDITOR.lang['ka'] =
 		previewHtml : '<p>ეს არის <strong>საცდელი ტექსტი</strong>. თქვენ <a href="javascript:void(0)">CKEditor</a>-ით სარგებლობთ.</p>'
 	}
 };
+ირებული) ფონი',
+		txtColor : 'ტექსტის ფერი',
+		margin : 'გვერდის კიდეები',
+		marginTop : 'ზედა',
+		marginLeft : 'მარცხენა',
+		marginRight : 'მარჯვენა',
+		marginBottom : 'ქვედა',
+		metaKeywords : 'დოკუმენტის საკვანძო სიტყვები (მძიმით გამოყოფილი)',
+		metaDescription : 'დოკუმენტის აღწერა',
+		metaAuthor : 'ავტორი',
+		metaCopyright : 'Copyright',
+		previewHtml : '<p>ეს არის <strong>საცდელი ტექსტი</strong>. თქვენ <a href="javascript:void(0)">CKEditor</a>-ით სარგებლობთ.</p>'
+	}
+};

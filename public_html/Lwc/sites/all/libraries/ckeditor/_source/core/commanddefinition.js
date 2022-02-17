@@ -127,3 +127,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  *     modes : { wysiwyg : 1 }    // Command is available in wysiwyg mode only.
  * });
  */
+  {
+ *         // ...
+ *     },
+ *     modes : { wysiwyg : 1 }    // Command is available in wysiwyg mode only.
+ * });
+ */

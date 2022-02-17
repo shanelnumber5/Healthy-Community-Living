@@ -1019,3 +1019,17 @@
 
 = 1.0.0 =
 * Initial release.
+rification preventing proper API calls on some servers
+
+= 1.0.2 =
+* Added: Widget to display form
+* Added: Function to display form, `wpforms_display( $form_id )`
+* Changed: Default notification settings for Contact form template
+* Changed: Success message styling for full form theme
+
+= 1.0.1 =
+* Added: "From Name" and "Reply To" Setting>Notification fields
+* Added: Smart Tags feature to all Setting>Notification fields
+
+= 1.0.0 =
+* Initial release.

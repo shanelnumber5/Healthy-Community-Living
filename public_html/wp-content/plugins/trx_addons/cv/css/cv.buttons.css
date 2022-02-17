@@ -1,0 +1,24 @@
+/* CV Card: Styles for the buttons 'Blog' and 'CV Card' */
+.trx_addons_cv_button {
+	position:fixed;
+	z-index:100000;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	    -ms-transform: translateY(-50%);
+	        transform: translateY(-50%);
+}
+.trx_addons_cv_splash .trx_addons_cv_button {
+	display:none;
+}
+.trx_addons_cv_button_cv {
+	left: 0;
+	margin-left:-83px;
+}
+.trx_addons_cv_button_blog {
+	right: 0;
+	margin-right:-60px;
+}
+.trx_addons_cv_button_cv:hover,
+.trx_addons_cv_button_blog:hover {
+	margin:0;
+}

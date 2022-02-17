@@ -813,3 +813,20 @@ CKEDITOR.lang['el'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+ML',
+		bgColor : 'Χρώμα φόντου',
+		bgImage : 'Διεύθυνση εικόνας φόντου',
+		bgFixed : 'Φόντο χωρίς κύλιση',
+		txtColor : 'Χρώμα Γραμμάτων',
+		margin : 'Περιθώρια σελίδας',
+		marginTop : 'Κορυφή',
+		marginLeft : 'Αριστερά',
+		marginRight : 'Δεξιά',
+		marginBottom : 'Κάτω',
+		metaKeywords : 'Λέξεις κλειδιά δείκτες εγγράφου (διαχωρισμός με κόμμα)',
+		metaDescription : 'Περιγραφή εγγράφου',
+		metaAuthor : 'Συγγραφέας',
+		metaCopyright : 'Πνευματικά δικαιώματα',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

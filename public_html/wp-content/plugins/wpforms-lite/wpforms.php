@@ -228,3 +228,4 @@ if ( version_compare( phpversion(), '5.5', '<' ) ) {
 require_once dirname( __FILE__ ) . '/src/WPForms.php';
 
 wpforms();
+();

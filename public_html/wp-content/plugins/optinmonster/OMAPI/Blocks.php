@@ -357,4 +357,19 @@ class OMAPI_Blocks {
 		// Gutenberg block shortcodes default to following the rules.
 		// See assets/js/campaign-selector.js, attributes.followrules
 		if ( ! isset( $atts['followrules'] ) ) {
+			$atts['followrules'] = true;) ) {
 			$atts['followrules'] = true;
+		}
+
+		$output = $this->base->shortcode->shortcode( $atts );
+
+		if (
+			! empty( $output )
+			&& ! wp_script_is( $this->base->plugin_slug . '-api-script', 'enqueued' )
+		) {
+
+			// Need to enqueue the base api script.
+			$this->base->output->api_script();
+		}
+
+		// Just return the shortcode output to t

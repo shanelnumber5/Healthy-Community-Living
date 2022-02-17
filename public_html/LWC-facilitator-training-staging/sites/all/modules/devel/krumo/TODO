@@ -21,4 +21,4 @@ Features: GUI
  - Add top-level links for collapsing and expanding the whole tree
  - Add object & array -level links for collapsing and expanding all the
  	nested nodes
- - Print all parent classes for the rendered objects
+ - Print all parent classes for the rendered objectsor the rendered objects

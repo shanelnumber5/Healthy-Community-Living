@@ -211,3 +211,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @constructor
  * @example
  */
+ctor. This class is not really part
+ *	of the API. It just describes the return type of {@link CKEDITOR.dom.rangeList#createIterator}.
+ * @name CKEDITOR.dom.rangeListIterator
+ * @constructor
+ * @example
+ */

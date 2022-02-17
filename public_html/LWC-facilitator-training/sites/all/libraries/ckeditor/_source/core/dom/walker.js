@@ -460,3 +460,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 })();
+at the end of an element, and return it.
+	CKEDITOR.dom.element.prototype.getBogus = function()
+	{
+		// Bogus are not always at the end, e.g. <p><a>text<br /></a></p> (#7070).
+		var tail = this;
+		do { tail = tail.getPreviousSourceNode(); }
+		while ( toSkip( tail ) )
+
+		if ( tail && ( !CKEDITOR.env.ie ? tail.is && tail.is( 'br' )
+				: tail.getText && tailNbspRegex.test( tail.getText() ) ) )
+		{
+			return tail;
+		}
+		return false;
+	};
+
+})();

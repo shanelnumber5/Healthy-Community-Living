@@ -1585,3 +1585,38 @@
         });
     }
 })(jQuery);
+;
+                var top = ($(window).height() / 2) - (options.initialHeight / 2);
+                var left = ($(window).width() / 2) - (options.initialWidth / 2);
+                container.css({top: top, left: left}).show();
+                videoembed.css({'background': '#fff url(css/loading.gif) no-repeat center', 'height': options.contentsHeight, 'width': options.contentsWidth});
+                overlay.css('display','block').fadeTo("fast", options.defaultOverLayFade);
+                caption.html(title);
+                videoembed.fadeIn("slow",function() { insert(); });
+                return false;
+            }
+
+            function insert()
+            {
+                videoembed.css('background','#fff');
+                embed = '<iframe src="' + videoSrc + '" width="' + options.contentsWidth + '" height="' + options.contentsHeight + '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+                videoembed.html(embed);
+            }
+
+            var options = $.extend({
+                initialWidth: 640,
+                initialHeight: 400,
+                contentsWidth: 640,
+                contentsHeight: 350,
+                defaultOverLayFade: 0.8,
+                click: function() {}
+            }, opt);
+            var overlay, container, caption, videoembed, embed;
+            var element = $(this);
+            var videoSrc = element.attr("href");
+            var title = element.attr("title");
+            //lets start it
+            init();
+        });
+    }
+})(jQuery);

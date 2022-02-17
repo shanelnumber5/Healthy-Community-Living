@@ -441,3 +441,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	});
 
 })();
+tCustomData( '_cke_table_pillars', ( pillars = buildTableColumnPillars( table ) ) );
+							table.on( 'mouseout', clearPillarsCache );
+							table.on( 'mousedown', clearPillarsCache );
+						}
+
+						var pillar = getPillarAtPosition( pillars, evt.$.clientX );
+						if ( pillar )
+						{
+							!resizer && ( resizer = new columnResizer( editor ) );
+							resizer.attachTo( pillar );
+						}
+					});
+			});
+		}
+	});
+
+})();

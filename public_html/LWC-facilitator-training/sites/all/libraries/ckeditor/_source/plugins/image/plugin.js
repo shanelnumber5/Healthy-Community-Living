@@ -79,3 +79,6 @@ CKEDITOR.config.image_removeLinkByEmptyURL = true;
  * @example
  * config.image_previewText = CKEDITOR.tools.repeat( '___ ', 100 );
  */
+ample
+ * config.image_previewText = CKEDITOR.tools.repeat( '___ ', 100 );
+ */

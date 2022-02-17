@@ -1702,3 +1702,27 @@ function jetpack_stats_post_table_cell( $column, $post_id ) {
 		}
 	}
 }
+* @return mixed
+ */
+function jetpack_stats_post_table_cell( $column, $post_id ) {
+	if ( 'stats' === $column ) {
+		if ( 'publish' !== get_post_status( $post_id ) ) {
+			printf(
+				'<span aria-hidden="true">—</span><span class="screen-reader-text">%s</span>',
+				esc_html__( 'No stats', 'jetpack' )
+			);
+		} else {
+			$stats_post_url = Redirect::get_url(
+				'calypso-stats-post',
+				array(
+					'path' => $post_id,
+				)
+			);
+			printf(
+				'<a href="%s" title="%s" class="dashicons dashicons-chart-bar" target="_blank"></a>',
+				esc_url( $stats_post_url ),
+				esc_html__( 'View stats for this post in WordPress.com', 'jetpack' )
+			);
+		}
+	}
+}

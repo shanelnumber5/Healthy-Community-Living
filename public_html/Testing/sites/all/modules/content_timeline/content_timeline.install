@@ -586,4 +586,27 @@ function _create_image_styles() {
 function _delete_image_styles() {
   image_style_delete(image_style_load('timeline_item'));
   image_style_delete(image_style_load('timeline_item_open'));
+}timeline_item_open'));
+
+  $effect10 = array(
+    'name' => 'image_scale_and_crop',
+    'data' => array(
+      'width' => 240,
+      'height' => 125),
+    'isid' => $style10['isid']);
+
+  $effect20 = array(
+    'name' => 'image_scale_and_crop',
+    'data' => array(
+      'width' => 490,
+      'height' => 155),
+    'isid' => $style20['isid']);
+
+  image_effect_save($effect10);
+  image_effect_save($effect20);
+
+}
+function _delete_image_styles() {
+  image_style_delete(image_style_load('timeline_item'));
+  image_style_delete(image_style_load('timeline_item_open'));
 }

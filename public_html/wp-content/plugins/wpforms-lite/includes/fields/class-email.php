@@ -926,3 +926,6 @@ class WPForms_Field_Email extends WPForms_Field {
 		return $this->glue_email_pattern_parts( $parts );
 	}
 }
+n_parts( $parts );
+	}
+}

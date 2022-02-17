@@ -216,3 +216,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			-1;
 	}
 })();
+A = styleA.type,
+			typeB = styleB.type;
+
+		return typeA == typeB ? 0 :
+			typeA == CKEDITOR.STYLE_OBJECT ? -1 :
+			typeB == CKEDITOR.STYLE_OBJECT ? 1 :
+			typeB == CKEDITOR.STYLE_BLOCK ? 1 :
+			-1;
+	}
+})();

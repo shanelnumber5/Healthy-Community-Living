@@ -143,3 +143,14 @@ CKEDITOR.SHIFT = 0x220000;
  * @example
  */
 CKEDITOR.ALT = 0x440000;
+constant
+ * @example
+ */
+CKEDITOR.SHIFT = 0x220000;
+
+/**
+ * ALT key (0x440000).
+ * @constant
+ * @example
+ */
+CKEDITOR.ALT = 0x440000;

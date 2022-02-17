@@ -304,3 +304,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		});
 	}
 })();
+}
+					else
+					{
+						if ( isSetter )
+							oldValMethod.call( $this, newValue );
+						else
+						{
+							result = oldValMethod.call( $this );
+							// break;
+							return null;
+						}
+					}
+
+					return true;
+				});
+				return isSetter ? this : result;
+			};
+		});
+	}
+})();

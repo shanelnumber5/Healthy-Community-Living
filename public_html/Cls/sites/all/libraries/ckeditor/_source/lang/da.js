@@ -813,3 +813,25 @@ CKEDITOR.lang['da'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+ : 'Tyrkisk',
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Vesteuropæisk',
+		docType : 'Dokumenttype kategori',
+		docTypeOther : 'Anden dokumenttype kategori',
+		xhtmlDec : 'Inkludere XHTML deklartion',
+		bgColor : 'Baggrundsfarve',
+		bgImage : 'Baggrundsbillede URL',
+		bgFixed : 'Fastlåst baggrund',
+		txtColor : 'Tekstfarve',
+		margin : 'Sidemargen',
+		marginTop : 'Øverst',
+		marginLeft : 'Venstre',
+		marginRight : 'Højre',
+		marginBottom : 'Nederst',
+		metaKeywords : 'Dokument index nøgleord (kommasepareret)',
+		metaDescription : 'Dokument beskrivelse',
+		metaAuthor : 'Forfatter',
+		metaCopyright : 'Copyright', // MISSING
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

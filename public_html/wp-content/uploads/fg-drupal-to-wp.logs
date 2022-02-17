@@ -1,0 +1,17 @@
+=== START test_database 2022-01-30 19:34:02 ===
+Connected with success to the Drupal database
+Drupal data found:
+0 articles
+7 pages
+0 categories
+6 tags
+
+[WARNING] Your Drupal database contains users. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/" target="_blank">Premium version</a> to import them.
+[WARNING] Your Drupal database contains comments. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/" target="_blank">Premium version</a> to import them.
+[WARNING] Your Drupal database contains custom nodes. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/" target="_blank">Premium version</a> to import them.
+[WARNING] Your Drupal database contains custom taxonomies. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/" target="_blank">Premium version</a> to import them.
+[WARNING] Your Drupal database contains URL alias. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/" target="_blank">Premium version</a> to import them.
+[WARNING] Your Drupal database contains navigation menus. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/" target="_blank">Premium version</a> to import them.
+[WARNING] Your Drupal database contains Ubercart products. You need the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/" target="_blank">Premium version</a> and the <a href="https://www.fredericgilles.net/fg-drupal-to-wordpress/ubercart/" target="_blank">Ubercart add-on</a> to import them.
+=== END test_database 2022-01-30 19:34:02 ===
+

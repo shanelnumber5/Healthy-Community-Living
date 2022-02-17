@@ -813,3 +813,20 @@ CKEDITOR.lang['ru'] =
 		previewHtml : '<p>Это <strong>пример</strong> текста, написанного с помощью <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+HTML',
+		bgColor : 'Цвет фона',
+		bgImage : 'Ссылка на фоновое изображение',
+		bgFixed : 'Фон прикреплён (не проматывается)',
+		txtColor : 'Цвет текста',
+		margin : 'Отступы страницы',
+		marginTop : 'Верхний',
+		marginLeft : 'Левый',
+		marginRight : 'Правый',
+		marginBottom : 'Нижний',
+		metaKeywords : 'Ключевые слова документа (через запятую)',
+		metaDescription : 'Описание документа',
+		metaAuthor : 'Автор',
+		metaCopyright : 'Авторские права',
+		previewHtml : '<p>Это <strong>пример</strong> текста, написанного с помощью <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

@@ -51,3 +51,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	};
 })();
+return;
+
+			writer.text( text );
+		}
+	};
+})();

@@ -531,4 +531,7 @@ Syed Balkhi
 * Fixed an issue that could cause the Editor to break on Wordpress versions < 5.3.
 * Update shortcodes to handle the id paramater for back-compat.
 * Update classic editor shortcode button to use the slug parameter.
-* Fix bug causing "To receive the requested features, you
+* Fix bug causing "To receive the requested features, youor shortcode button to use the slug parameter.
+* Fix bug causing "To receive the requested features, you will need to upgrade to Pro" notice to show, even after upgrading.
+* Fix preview-campaign not working when site is using OptinMonster custom domains.
+* Improved information in the support data 

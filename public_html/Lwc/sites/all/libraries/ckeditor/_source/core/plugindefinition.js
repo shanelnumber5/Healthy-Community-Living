@@ -81,3 +81,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  *     }
  * });
  */
+t( 'Editor "' + editor.name + '" is being initialized!' );
+ *     }
+ * });
+ */

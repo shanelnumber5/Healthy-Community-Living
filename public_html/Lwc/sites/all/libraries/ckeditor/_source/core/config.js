@@ -437,3 +437,17 @@ CKEDITOR.config =
  */
 
 // PACKAGER_RENAME( CKEDITOR.config )
+".<br />
+ * <br />
+ * If enabled in a Left-To-Right written document, the "Left Justify"
+ * alignment button will be shown as active, even if the alignment style is not
+ * explicitly applied to the current paragraph in the editor.
+ * @name CKEDITOR.config.useComputedState
+ * @type Boolean
+ * @default <code>true</code>
+ * @since 3.4
+ * @example
+ * config.useComputedState = false;
+ */
+
+// PACKAGER_RENAME( CKEDITOR.config )

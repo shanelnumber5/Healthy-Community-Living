@@ -816,3 +816,32 @@ jQuery( function() {
 }
 
 add_action( 'init', array( WPCom_Markdown::get_instance(), 'load' ) );
+wp_query ) {
+		$wp_query->set( 'suppress_filters', false );
+		add_action( 'the_posts', array( $this, 'the_posts' ), 10, 2 );
+	}
+
+	/**
+	 * Swaps post_content and post_content_filtered for editing.
+	 *
+	 * @param array $posts Posts returned by the just-completed query.
+	 * @return array Modified $posts
+	 */
+	public function the_posts( $posts ) {
+		foreach ( $posts as $key => $post ) {
+			if ( $this->is_markdown( $post->ID ) && ! empty( $posts[ $key ]->post_content_filtered ) ) {
+				$markdown                             = $posts[ $key ]->post_content_filtered;
+				$posts[ $key ]->post_content_filtered = $posts[ $key ]->post_content;
+				$posts[ $key ]->post_content          = $markdown;
+			}
+		}
+		return $posts;
+	}
+
+	/**
+	 * Singleton silence is golden
+	 */
+	private function __construct() {}
+}
+
+add_action( 'init', array( WPCom_Markdown::get_instance(), 'load' ) );

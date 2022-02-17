@@ -97,3 +97,6 @@ CKEDITOR.config.templates_files =
  * config.templates_replaceContent = false;
  */
 CKEDITOR.config.templates_replaceContent = true;
+* config.templates_replaceContent = false;
+ */
+CKEDITOR.config.templates_replaceContent = true;

@@ -351,3 +351,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	} );
 })();
+
+			// Restore the command state after mode change, unless it has been changed to disabled (#6467)
+			editor.on( 'mode', function()
+				{
+					var command = editor.getCommand( 'maximize' );
+					command.setState( command.state == CKEDITOR.TRISTATE_DISABLED ? CKEDITOR.TRISTATE_DISABLED : savedState );
+				}, null, null, 100 );
+		}
+	} );
+})();

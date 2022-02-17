@@ -96,3 +96,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @example
  * config.forcePasteAsPlainText = true;
  */
+
+ * @type Boolean
+ * @default false
+ * @example
+ * config.forcePasteAsPlainText = true;
+ */

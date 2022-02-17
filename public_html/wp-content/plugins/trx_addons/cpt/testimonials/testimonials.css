@@ -1,0 +1,89 @@
+.sc_testimonials_title,
+.sc_testimonials_subtitle,
+.sc_testimonials_descr,
+.sc_testimonials_button {
+	text-align:center;
+}
+.sc_testimonials_item_content {
+	text-align:center;
+	font-size: 1.2em;
+}
+.sc_testimonials [class*="column"] .sc_testimonials_item_content {
+	text-align: left;
+	font-size: 1em;
+}
+.sc_testimonials_item_content:before {
+	content: '\e8b8';
+	font-family:'trx_addons_icons';
+	font-size: 1.5em;
+	line-height:1.5em;
+	color: #efa758;
+	display:block;
+	margin-bottom: 2em;
+}
+.sc_testimonials_item_content p {
+	margin:0;
+}
+.sc_testimonials_item_content p+p {
+	margin-top:1em;
+}
+
+.sc_testimonials_item_author {
+	margin:3em auto 0;
+	max-width:22em;
+	padding: 1.5em 0.5em 1.5em 1.3em;
+	background-color:#292929;
+	color: #fff;
+	-webkit-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.sc_testimonials [class*="column"] .sc_testimonials_item_author {
+	text-align:left;
+	padding-left:0;
+}
+.sc_testimonials_item_author_avatar,
+.sc_testimonials_item_author_data {
+	display:inline-block;
+	vertical-align:middle;
+}
+.sc_testimonials_item_author_avatar {
+	overflow:hidden;
+	margin: 0 1.3em 0 0.6em;
+	width: 5em;
+	height: 5em;
+	-webkit-border-radius: 50%;
+	    -ms-border-radius: 50%;
+			border-radius: 50%;
+}
+.sc_testimonials_item_author_data {
+	max-width:50%;
+}
+.sc_testimonials_item_author_title {
+	margin: 0;
+	color: #fff;
+}
+.sc_testimonials_item_author_title + .sc_testimonials_item_author_subtitle {
+	margin-top: 0.5em;
+	color: #ddd;
+	font-size:0.9286em;
+	line-height:1.3em;
+}
+
+.sc_testimonials_simple .sc_testimonials_item_author_data:before {
+	content: ' ';
+	width: 1px;
+	height: 1.5em;
+	margin: 1.3em auto;
+	background-color: #ddd;
+	display:inline-block;
+	vertical-align:middle;
+}
+
+.sc_testimonials_simple [class*="column"] .sc_testimonials_item_author_data {
+	border-left: 1px solid #ddd;
+	padding-left: 1.5em;
+}
+.sc_testimonials_simple [class*="column"] .sc_testimonials_item_author_data:before {
+	display:none;
+}

@@ -22,3 +22,6 @@ CKEDITOR.plugins.add( 'about',
 		CKEDITOR.dialog.add( 'about', this.path + 'dialogs/about.js' );
 	}
 });
+/about.js' );
+	}
+});

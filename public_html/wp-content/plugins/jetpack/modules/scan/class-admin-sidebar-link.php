@@ -195,3 +195,9 @@ class Admin_Sidebar_Link {
 }
 
 
+SCHEDULE_ACTION_HOOK );
+		}
+
+		$this->schedule_refresh_checked = true;
+	}
+}

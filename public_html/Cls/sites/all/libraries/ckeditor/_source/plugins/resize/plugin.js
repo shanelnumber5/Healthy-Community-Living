@@ -166,3 +166,11 @@ CKEDITOR.plugins.add( 'resize',
  * @example
  * config.resize_dir = 'vertical';
  */
+code>horizontal</code>.
+ * @name CKEDITOR.config.resize_dir
+ * @type String
+ * @default 'both'
+ * @since 3.3
+ * @example
+ * config.resize_dir = 'vertical';
+ */

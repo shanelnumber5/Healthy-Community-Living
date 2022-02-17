@@ -7640,3 +7640,4 @@ msgstr ""
 #: wpforms.php:198
 msgid "<strong>Note:</strong> WPForms plugin is disabled on your site until you fix the issue. <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Read more for additional information.</a>"
 msgstr ""
+""

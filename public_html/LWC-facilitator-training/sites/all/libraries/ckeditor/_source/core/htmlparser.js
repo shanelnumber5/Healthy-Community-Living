@@ -222,3 +222,16 @@ CKEDITOR.htmlParser = function()
 		}
 	};
 })();
+inue;
+				}
+
+				// Comment
+				if ( ( tagName = parts[ 2 ] ) )
+					this.onComment( tagName );
+			}
+
+			if ( html.length > nextIndex )
+				this.onText( html.substring( nextIndex, html.length ) );
+		}
+	};
+})();

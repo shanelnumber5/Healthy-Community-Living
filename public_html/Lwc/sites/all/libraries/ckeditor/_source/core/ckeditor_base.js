@@ -225,3 +225,12 @@ if ( !window.CKEDITOR )
  */
 
 // PACKAGER_RENAME( CKEDITOR )
+R.editorConfig = function( config )
+ * {
+ *     // Define changes to default configuration here. For example:
+ *     config.language = 'fr';
+ *     config.uiColor = '#AADC6E';
+ * };
+ */
+
+// PACKAGER_RENAME( CKEDITOR )

@@ -137,3 +137,12 @@ class Jetpack_Heartbeat {
 	}
 
 }
+		return $stats;
+		}
+
+		$jetpack_stats = self::generate_stats_array();
+
+		return array_merge( $stats, $jetpack_stats );
+	}
+
+}

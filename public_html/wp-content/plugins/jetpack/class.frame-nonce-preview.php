@@ -115,3 +115,24 @@ class Jetpack_Frame_Nonce_Preview {
 }
 
 Jetpack_Frame_Nonce_Preview::get_instance();
+ost.
+		add_filter( 'comments_open', '__return_false' );
+		add_filter( 'pings_open', '__return_false' );
+
+		return $posts;
+	}
+
+	/**
+	 * Handle validation for autosave preview request
+	 *
+	 * @since 4.7.0
+	 */
+	public function handle_autosave_nonce_validation() {
+		if ( ! $this->is_frame_nonce_valid() ) {
+			wp_die( esc_html__( 'Sorry, you are not allowed to preview drafts.', 'jetpack' ) );
+		}
+		add_filter( 'the_preview', '_set_preview' );
+	}
+}
+
+Jetpack_Frame_Nonce_Preview::get_instance();

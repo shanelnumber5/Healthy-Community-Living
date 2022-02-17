@@ -49,3 +49,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.3.0]: https://github.com/Automattic/jetpack-search/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/Automattic/jetpack-search/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Automattic/jetpack-search/compare/v0.1.0...v0.2.0
+ded new state store for search dashboard
+- Search package: duplicated search dashboard dependencies to the package
+
+### Changed
+- Search: migrate/create necessary APIs for the frontend
+- Search: removed other dependencies from copied code
+
+## 0.1.0 - 2021-11-09
+### Added
+- Add a new Search package with Helper and Options classes.
+- Search: Migrate helper classes from Jetpack plugin
+
+### Changed
+- Set `convertDeprecationsToExceptions` true in PHPUnit config.
+- Updated package dependencies.
+- Update PHPUnit configs to include just what needs coverage rather than include everything then try to exclude stuff that doesn't.
+
+[0.5.4]: https://github.com/Automattic/jetpack-search/compare/v0.5.3...v0.5.4
+[0.5.3]: https://github.com/Automattic/jetpack-search/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/Automattic/jetpack-search/compare/v0.5.1...v0.5.2
+[0.5.1]: https://github.com/Automattic/jetpack-search/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/Automattic/jetpack-search/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/Automattic/jetpack-search/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/Automattic/jetpack-search/compare/v0.2.1...v0.3.0
+[0.2.1]: https://github.com/Automattic/jetpack-search/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/Automattic/jetpack-search/compare/v0.1.0...v0.2.0

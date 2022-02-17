@@ -516,3 +516,21 @@ CKEDITOR.htmlParser.fragment = function()
 		}
 	};
 })();
+tml = writer.getHtml();
+				this.children = new CKEDITOR.htmlParser.fragment.fromHtml( html ).children;
+				isChildrenFiltered = 1;
+			};
+
+			// Filtering the root fragment before anything else.
+			!this.name && filter && filter.onFragment( this );
+
+			this.writeChildrenHtml( writer, isChildrenFiltered ? null : filter );
+		},
+
+		writeChildrenHtml : function( writer, filter )
+		{
+			for ( var i = 0 ; i < this.children.length ; i++ )
+				this.children[i].writeHtml( writer, filter );
+		}
+	};
+})();

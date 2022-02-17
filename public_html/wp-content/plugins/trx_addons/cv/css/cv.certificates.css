@@ -1,0 +1,24 @@
+/* CV Card: Certificates styles */
+.trx_addons_cv_certificates_item {
+	text-align:center;
+}
+.trx_addons_cv_certificates_item_title {
+	margin:0;
+	font-weight:bold;
+	font-size:0.9231em;
+	text-transform:uppercase;
+	height: 1.5em;
+	overflow:hidden;
+}
+.trx_addons_cv_certificates_item .trx_addons_cv_certificates_item_title,
+.trx_addons_cv_certificates_item .trx_addons_cv_certificates_item_title a {
+	color: #292929;
+}
+.trx_addons_cv_certificates_item_subtitle {
+	font-style:italic;
+	height: 1.7333em;
+	overflow:hidden;
+}
+.trx_addons_cv_certificates_item_thumb {
+	margin-top:1em;
+}

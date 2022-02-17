@@ -168,3 +168,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	};
 })();
+sh( ( new XMLSerializer() ).serializeToString( node ) );
+
+					node = node.nextSibling;
+				}
+			}
+
+			return xml.length ? xml.join( '' ) : null;
+		}
+	};
+})();

@@ -813,3 +813,21 @@ CKEDITOR.lang['fa'] =
 		previewHtml : '<p>این یک <strong>متن نمونه</strong> است. شما در حال استفاده از <a href="javascript:void(0)">CKEditor</a> هستید.</p>'
 	}
 };
+er : 'عنوان نوع سند دیگر',
+		xhtmlDec : 'شامل تعاریف XHTML',
+		bgColor : 'رنگ پسزمینه',
+		bgImage : 'URL تصویر پسزمینه',
+		bgFixed : 'پسزمینهٴ پیمایش ناپذیر',
+		txtColor : 'رنگ متن',
+		margin : 'حاشیههای صفحه',
+		marginTop : 'بالا',
+		marginLeft : 'چپ',
+		marginRight : 'راست',
+		marginBottom : 'پایین',
+		metaKeywords : 'کلیدواژگان نمایهگذاری سند (با کاما جدا شوند)',
+		metaDescription : 'توصیف سند',
+		metaAuthor : 'نویسنده',
+		metaCopyright : 'حق انتشار',
+		previewHtml : '<p>این یک <strong>متن نمونه</strong> است. شما در حال استفاده از <a href="javascript:void(0)">CKEditor</a> هستید.</p>'
+	}
+};

@@ -82,3 +82,10 @@ var CKEDITOR_LANGS = (function()
 
 	return langsArray;
 })();
+
+		{
+			return ( a.name < b.name ) ? -1 : 1;
+		});
+
+	return langsArray;
+})();

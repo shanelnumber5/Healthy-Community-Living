@@ -139,3 +139,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * // Load from 'pastefromword' plugin 'filter' sub folder (custom.js file).
  * CKEDITOR.config.pasteFromWordCleanupFile = 'custom';
  */
+
+ * // Load from 'pastefromword' plugin 'filter' sub folder (custom.js file).
+ * CKEDITOR.config.pasteFromWordCleanupFile = 'custom';
+ */

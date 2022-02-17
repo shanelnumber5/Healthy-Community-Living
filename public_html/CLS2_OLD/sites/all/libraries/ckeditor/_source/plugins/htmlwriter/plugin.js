@@ -317,3 +317,17 @@ CKEDITOR.htmlWriter = CKEDITOR.tools.createClass(
 		}
 	}
 });
+ // Reset the rules for the "h1" tag.
+		 * writer.setRules( 'h1', {} );
+		 */
+		setRules : function( tagName, rules )
+		{
+			var currentRules = this._.rules[ tagName ];
+
+			if ( currentRules )
+				CKEDITOR.tools.extend( currentRules, rules, true );
+			else
+				this._.rules[ tagName ] = rules;
+		}
+	}
+});

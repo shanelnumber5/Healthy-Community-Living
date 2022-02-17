@@ -139,3 +139,8 @@ CKEDITOR.TRISTATE_DISABLED = 0;
  * @name CKEDITOR#reset
  * @event
  */
+en the last instance has been destroyed. This event is used to perform
+ * global memory clean up.
+ * @name CKEDITOR#reset
+ * @event
+ */

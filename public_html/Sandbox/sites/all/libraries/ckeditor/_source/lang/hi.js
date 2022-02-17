@@ -813,3 +813,18 @@ CKEDITOR.lang['hi'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+RL',
+		bgFixed : 'स्क्रॉल न करने वाला बैक्ग्राउन्ड',
+		txtColor : 'टेक्स्ट रंग',
+		margin : 'पेज मार्जिन',
+		marginTop : 'ऊपर',
+		marginLeft : 'बायें',
+		marginRight : 'दायें',
+		marginBottom : 'नीचे',
+		metaKeywords : 'डॉक्युमॅन्ट इन्डेक्स संकेतशब्द (अल्पविराम से अलग करें)',
+		metaDescription : 'डॉक्यूमॅन्ट करॅक्टरन',
+		metaAuthor : 'लेखक',
+		metaCopyright : 'कॉपीराइट',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

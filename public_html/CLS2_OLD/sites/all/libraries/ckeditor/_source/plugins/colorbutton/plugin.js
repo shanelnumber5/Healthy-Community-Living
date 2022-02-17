@@ -299,3 +299,15 @@ CKEDITOR.config.colorButton_backStyle =
 		element		: 'span',
 		styles		: { 'background-color' : '#(color)' }
 	};
+is actually the default value.
+ * config.colorButton_backStyle =
+ *     {
+ *         element : 'span',
+ *         styles : { 'background-color' : '#(color)' }
+ *     };
+ */
+CKEDITOR.config.colorButton_backStyle =
+	{
+		element		: 'span',
+		styles		: { 'background-color' : '#(color)' }
+	};

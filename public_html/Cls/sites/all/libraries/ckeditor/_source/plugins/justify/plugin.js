@@ -251,3 +251,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * // Use the classes 'AlignLeft', 'AlignCenter', 'AlignRight', 'AlignJustify'
  * config.justifyClasses = [ 'AlignLeft', 'AlignCenter', 'AlignRight', 'AlignJustify' ];
  */
+KEDITOR.config.justifyClasses
+ * @type Array
+ * @default null
+ * @example
+ * // Use the classes 'AlignLeft', 'AlignCenter', 'AlignRight', 'AlignJustify'
+ * config.justifyClasses = [ 'AlignLeft', 'AlignCenter', 'AlignRight', 'AlignJustify' ];
+ */

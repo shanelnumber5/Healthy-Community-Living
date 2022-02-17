@@ -47,3 +47,7 @@ class Initial_State {
 	}
 
 }
+Component("' . rawurlencode( wp_json_encode( self::get_data() ) ) . '"));';
+	}
+
+}

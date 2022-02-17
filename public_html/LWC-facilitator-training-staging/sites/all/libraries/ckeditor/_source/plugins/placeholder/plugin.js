@@ -169,3 +169,9 @@ CKEDITOR.plugins.placeholder =
 		return node;
 	}
 };
+ range.startContainer;
+		while( node && !( node.type == CKEDITOR.NODE_ELEMENT && node.data( 'cke-placeholder' ) ) )
+			node = node.getParent();
+		return node;
+	}
+};

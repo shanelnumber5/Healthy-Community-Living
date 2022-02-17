@@ -340,3 +340,15 @@ if ( !CKEDITOR.event )
 		};
 	})();
 }
+stener );
+			 * alert( someObject.<b>hasListeners( 'someEvent' )</b> );  // "true"
+			 * alert( someObject.<b>hasListeners( 'noEvent' )</b> );    // "false"
+			 */
+			hasListeners : function( eventName )
+			{
+				var event = getPrivate( this )[ eventName ];
+				return ( event && event.listeners.length > 0 ) ;
+			}
+		};
+	})();
+}

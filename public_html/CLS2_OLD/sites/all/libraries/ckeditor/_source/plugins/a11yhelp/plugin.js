@@ -45,3 +45,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
+ + 'dialogs/a11yhelp.js' );
+		}
+	});
+})();

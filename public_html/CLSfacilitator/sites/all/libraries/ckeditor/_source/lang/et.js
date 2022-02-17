@@ -813,3 +813,26 @@ CKEDITOR.lang['et'] =
 		previewHtml : '<p>See on <strong>näidistekst</strong>. Sa kasutad <a href="javascript:void(0)">CKEditori</a>.</p>'
 	}
 };
+ea',
+		charsetTR : 'Türgi',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Lääne-Euroopa',
+		docType : 'Dokumendi tüüppäis',
+		docTypeOther : 'Teised dokumendi tüüppäised',
+		xhtmlDec : 'Arva kaasa XHTML deklaratsioonid',
+		bgColor : 'Taustavärv',
+		bgImage : 'Taustapildi URL',
+		bgFixed : 'Mittekeritav tagataust',
+		txtColor : 'Teksti värv',
+		margin : 'Lehekülje äärised',
+		marginTop : 'Ülaserv',
+		marginLeft : 'Vasakserv',
+		marginRight : 'Paremserv',
+		marginBottom : 'Alaserv',
+		metaKeywords : 'Dokumendi võtmesõnad (eraldatud komadega)',
+		metaDescription : 'Dokumendi kirjeldus',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Autoriõigus',
+		previewHtml : '<p>See on <strong>näidistekst</strong>. Sa kasutad <a href="javascript:void(0)">CKEditori</a>.</p>'
+	}
+};

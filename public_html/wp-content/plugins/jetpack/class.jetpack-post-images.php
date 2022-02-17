@@ -915,3 +915,51 @@ class Jetpack_PostImages {
 		return false;
 	}
 }
+mpty( $block['attrs']['mediaId'] )
+		) {
+			$images[] = self::get_attachment_data( $block['attrs']['mediaId'], $html_info['post_url'], $width, $height );
+		} elseif (
+			/**
+			 * Parse content from Core Gallery blocks as well from Jetpack's Tiled Gallery and Slideshow blocks.
+			 * Gallery blocks include the ID of each one of the images in the gallery.
+			 */
+			in_array( $block['blockName'], array( 'core/gallery', 'jetpack/tiled-gallery', 'jetpack/slideshow' ), true )
+			&& ! empty( $block['attrs']['ids'] )
+		) {
+			foreach ( $block['attrs']['ids'] as $img_id ) {
+				$images[] = self::get_attachment_data( $img_id, $html_info['post_url'], $width, $height );
+			}
+		} elseif (
+			/**
+			 * Parse content from Jetpack's Story block.
+			 */
+			'jetpack/story' === $block['blockName']
+			&& ! empty( $block['attrs']['mediaFiles'] )
+		) {
+			foreach ( $block['attrs']['mediaFiles'] as $media_file ) {
+				if ( ! empty( $media_file['id'] ) ) {
+					$images[] = self::get_attachment_data( $media_file['id'], $html_info['post_url'], $width, $height );
+				}
+			}
+		}
+
+		return $images;
+	}
+
+	/**
+	 * Check if a block has inner blocks.
+	 *
+	 * @since 7.8.0
+	 *
+	 * @param array $block Block and its attributes.
+	 *
+	 * @return bool
+	 */
+	private static function is_nested_block( $block ) {
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			return true;
+		}
+
+		return false;
+	}
+}

@@ -236,3 +236,14 @@ if ( CKEDITOR.status == 'unloaded' )
 		CKEDITOR.status = 'basic_loaded';
 	})();
 }
+			};
+
+			if ( window.addEventListener )
+				window.addEventListener( 'load', onload, false );
+			else if ( window.attachEvent )
+				window.attachEvent( 'onload', onload );
+		})();
+
+		CKEDITOR.status = 'basic_loaded';
+	})();
+}

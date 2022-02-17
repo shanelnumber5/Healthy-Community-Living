@@ -812,3 +812,25 @@ CKEDITOR.lang['tr'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+tTR : 'Türkçe',
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Batı Avrupa',
+		docType : 'Belge Türü Başlığı',
+		docTypeOther : 'Diğer Belge Türü Başlığı',
+		xhtmlDec : 'XHTML Bildirimlerini Dahil Et',
+		bgColor : 'Arka Plan Rengi',
+		bgImage : 'Arka Plan Resim URLsi',
+		bgFixed : 'Sabit Arka Plan',
+		txtColor : 'Yazı Rengi',
+		margin : 'Kenar Boşlukları',
+		marginTop : 'Tepe',
+		marginLeft : 'Sol',
+		marginRight : 'Sağ',
+		marginBottom : 'Alt',
+		metaKeywords : 'Belge Dizinleme Anahtar Kelimeleri (virgülle ayrılmış)',
+		metaDescription : 'Belge Tanımı',
+		metaAuthor : 'Yazar',
+		metaCopyright : 'Telif',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

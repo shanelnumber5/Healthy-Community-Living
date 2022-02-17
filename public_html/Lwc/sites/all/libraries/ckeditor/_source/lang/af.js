@@ -813,3 +813,25 @@ CKEDITOR.lang['af'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+setTR : 'Turks',
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Western European', // MISSING
+		docType : 'Dokument Opskrif Soort',
+		docTypeOther : 'Ander Dokument Opskrif Soort',
+		xhtmlDec : 'Voeg XHTML verklaring by',
+		bgColor : 'Agtergrond kleur',
+		bgImage : 'Agtergrond Beeld URL',
+		bgFixed : 'Vasgeklemde Agtergrond',
+		txtColor : 'Tekskleur',
+		margin : 'Bladsy Rante',
+		marginTop : 'Bo',
+		marginLeft : 'Links',
+		marginRight : 'Regs',
+		marginBottom : 'Onder',
+		metaKeywords : 'Dokument Index Sleutelwoorde(comma verdeelt)',
+		metaDescription : 'Dokument Beskrywing',
+		metaAuthor : 'Skrywer',
+		metaCopyright : 'Kopiereg',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

@@ -96,3 +96,11 @@ CKEDITOR.UI_MENUBUTTON = 'menubutton';
 		}
 	});
 })();
+n )
+				{
+					return new CKEDITOR.ui.menuButton( definition );
+				}
+			}
+		}
+	});
+})();

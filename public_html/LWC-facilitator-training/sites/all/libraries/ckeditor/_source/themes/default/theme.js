@@ -405,3 +405,20 @@ CKEDITOR.editor.prototype.getResizable = function( forContents )
  * @name CKEDITOR.editor#resize
  * @event
  */
+anotherId'
+ * };
+ * @example
+ * // Place the toolbar inside the element with ID "someElementId". The
+ * // elements path will remain attached to the editor UI.
+ * config.sharedSpaces =
+ * {
+ *     top : 'someElementId'
+ * };
+ */
+
+/**
+ * Fired after the editor instance is resized through
+ * the {@link CKEDITOR.editor.prototype.resize} method.
+ * @name CKEDITOR.editor#resize
+ * @event
+ */

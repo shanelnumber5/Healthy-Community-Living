@@ -1,0 +1,220 @@
+/* WP Editor styles
+-----------------------------------------------------------------*/
+
+/* Accent */
+.trx_addons_accent {
+	color: #efa758;
+}
+.trx_addons_accent_bg {
+	color: #fff;
+	background-color: #efa758;
+	padding: 0 0.4em;
+	display:inline-block;
+}
+.trx_addons_hover {
+	color: #b88144;
+}
+
+/* Inverse */
+.trx_addons_inverse {
+	color: #fff;
+	background-color: #000;
+	padding: 0 0.4em;
+	display:inline-block;
+}
+
+/* Dark text */
+.trx_addons_dark {
+	color: #000;
+}
+
+/* Tiny text */
+.trx_addons_tiny_text {
+	font-size:11px;
+	line-height:1.3em;
+	text-transform:uppercase;
+	font-weight:700;
+	letter-spacing:1px;
+}
+
+/* Dropcap */
+.trx_addons_dropcap {
+	float: left;
+	display:block;
+	font-size: 2em;
+	line-height: 2.2em;
+	width: 2.2em;
+	height:2.2em;
+	text-align:center;
+	overflow:hidden;
+	margin:0.4em 0.8em 0.5em 0;
+	color: #fff;
+	background-color: #000;
+}
+.trx_addons_dropcap_style_2 {
+	background-color: #efa758;
+}
+
+/* Tooltip */
+.trx_addons_tooltip {
+	color: #efa758;
+	border-bottom: 1px dashed #efa758;
+	position:relative;
+	cursor: default;
+}
+.trx_addons_tooltip:before {
+	content:attr(data-tooltip);
+	pointer-events: none;
+	display:inline-block;
+	white-space: nowrap;
+	padding:0.1em 1em;
+	background-color: #efa758;
+	color: #fff;
+	font-size: 0.8em;
+	position:absolute;
+	z-index:1;
+	left: 50%;
+	bottom: 150%;
+	opacity: 0;
+	border:none;
+	-webkit-transform:translateX(-70%);
+	    -ms-transform:translateX(-70%);
+	        transform:translateX(-70%);
+	-webkit-transition: all ease-out 0.1s;
+	    -ms-transition: all ease-out 0.1s;
+	        transition: all ease-out 0.1s;
+	-webkit-border-radius: 2px;
+	    -ms-border-radius: 2px;
+			border-radius: 2px;
+}
+.trx_addons_tooltip:after {
+	content: ' ';
+	pointer-events: none;
+	display:block;
+	font-size: 0.8em;
+	width:0;
+	height:0;
+	border: 4px solid transparent;
+	border-top-color: #efa758;
+	position:absolute;
+	z-index:2;
+	left: 50%;
+	bottom:150%;
+	opacity: 0;
+	margin-bottom:-4px;
+	-webkit-transition: all ease-out 0.1s;
+	    -ms-transition: all ease-out 0.1s;
+	        transition: all ease-out 0.1s;
+	-webkit-transform:rotate(135deg);
+	    -ms-transform:rotate(135deg);
+	        transform:rotate(135deg);
+}
+.trx_addons_tooltip:hover:before,
+.trx_addons_tooltip:hover:after {
+	bottom:115%;
+	opacity: 1;
+}
+
+
+/* Strike */
+del {
+	color: #ddd;
+	text-decoration:line-through;
+}
+
+/* No margin */
+.trx_addons_no_margin {
+	margin:0;
+}
+
+/* List styles */
+ul[class*="trx_addons_list"] {
+	list-style-type:none;
+	padding-left:1.2em;
+}
+ul[class*="trx_addons_list"] > li {
+	position:relative;
+}
+ul[class*="trx_addons_list"] > li:before {
+	font-family: 'trx_addons_icons';
+	display:inline-block;
+	position:absolute;
+	top: 0;
+	left: -0.8em;
+	line-height:inherit;
+}
+ul.trx_addons_list_success,
+ul.trx_addons_list_error,
+ul.trx_addons_list_plus,
+ul.trx_addons_list_minus {
+	padding-left: 1.5em;
+}
+ul.trx_addons_list_success > li:before,
+ul.trx_addons_list_error > li:before,
+ul.trx_addons_list_plus > li:before,
+ul.trx_addons_list_minus > li:before {
+	left: -1.3em;
+}
+ul[class*="trx_addons_list"]>li:before {
+    font-size: 1.5em;
+}
+ul[class*="trx_addons_list_dot"] > li:before {		content:'\e8b6'; }
+ul[class*="trx_addons_list_custom"] > li:before {	content:'\e884'; }
+ul[class*="trx_addons_list_success"] > li:before {	content:'\e878'; }
+ul[class*="trx_addons_list_error"] > li:before {	content:'\e875'; }
+ul[class*="trx_addons_list_info"] > li:before {		content:'\e87f'; }
+ul[class*="trx_addons_list_plus"] > li:before {		content:'\e876'; }
+ul[class*="trx_addons_list_minus"] > li:before {	content:'\e877'; }
+ul[class*="trx_addons_list_help"] > li:before {		content:'\e87c'; }
+ul[class*="trx_addons_list_attention"] > li:before {content:'\e880'; }
+
+ul[class*="trx_addons_list"][class*="_circled"] {
+	padding-left: 1.8em;
+}
+ul[class*="trx_addons_list"][class*="_circled"] > li:before {
+	font-size:10px;
+	left: -2.4em;
+	top: 0.4em;
+	width: 1.6em;
+	height: 1.6em;
+	line-height:1.6em;
+	text-align:center;
+	display:inline-block;
+	-webkit-border-radius: 50%;
+	    -ms-border-radius: 50%;
+			border-radius: 50%;
+	color: #fff;
+	background-color:#efa758;
+}
+
+ul.trx_addons_list_parameters {
+	padding-left:0 !important;
+}
+ul.trx_addons_list_parameters > li:before {
+	display:none;
+}
+ul.trx_addons_list_parameters > li + li {
+	padding-top: 0.2em;
+	margin-top: 0.2em;
+	border-top: 1px solid #ddd;
+}
+.trx_addons_list_parameters > li {
+	white-space:nowrap;
+}
+.trx_addons_list_parameters > li > strong {
+	display:inline-block;
+	width:75%;
+	text-align:left;
+	font-weight:inherit;
+	white-space: normal;
+	vertical-align:top;
+}
+.trx_addons_list_parameters > li > em {
+	display:inline-block;
+	width:25%;
+	text-align:left;
+	font-style:normal;
+	font-weight:inherit;
+	white-space: normal;
+	vertical-align:top;
+}

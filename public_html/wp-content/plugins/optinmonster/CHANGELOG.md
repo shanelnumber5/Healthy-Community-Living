@@ -635,4 +635,10 @@ All notable changes to the OptinMonster plugin will be documented in this file.
 * Added extra XSS security checks with `esc_url_raw`.
 * Added version number beside plugin header title for easy version checking.
 
-###
+###security checks with `esc_url_raw`.
+* Added version number beside plugin header title for easy version checking.
+
+### 1.0.0
+* Fixed bug with exclusive/never settings not showing previously selected pages.
+* Fixed bug with API script and loading social services for specific popup types.
+* Removed unused

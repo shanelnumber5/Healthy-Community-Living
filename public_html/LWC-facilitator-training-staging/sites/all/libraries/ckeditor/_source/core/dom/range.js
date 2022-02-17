@@ -2052,3 +2052,69 @@ CKEDITOR.STARTEND = 3;
 // @see CKEDITOR.dom.range.prototype.shrink
 CKEDITOR.SHRINK_ELEMENT = 1;
 CKEDITOR.SHRINK_TEXT = 2;
+ the range if there's one.
+		 */
+		getEnclosedNode : function()
+		{
+			var walkerRange = this.clone();
+
+			// Optimize and analyze the range to avoid DOM destructive nature of walker. (#5780)
+			walkerRange.optimize();
+			if ( walkerRange.startContainer.type != CKEDITOR.NODE_ELEMENT
+					|| walkerRange.endContainer.type != CKEDITOR.NODE_ELEMENT )
+				return null;
+
+			var walker = new CKEDITOR.dom.walker( walkerRange ),
+				isNotBookmarks = CKEDITOR.dom.walker.bookmark( true ),
+				isNotWhitespaces = CKEDITOR.dom.walker.whitespaces( true ),
+				evaluator = function( node )
+				{
+					return isNotWhitespaces( node ) && isNotBookmarks( node );
+				};
+			walkerRange.evaluator = evaluator;
+			var node = walker.next();
+			walker.reset();
+			return node && node.equals( walker.previous() ) ? node : null;
+		},
+
+		getTouchedStartNode : function()
+		{
+			var container = this.startContainer ;
+
+			if ( this.collapsed || container.type != CKEDITOR.NODE_ELEMENT )
+				return container ;
+
+			return container.getChild( this.startOffset ) || container ;
+		},
+
+		getTouchedEndNode : function()
+		{
+			var container = this.endContainer ;
+
+			if ( this.collapsed || container.type != CKEDITOR.NODE_ELEMENT )
+				return container ;
+
+			return container.getChild( this.endOffset - 1 ) || container ;
+		}
+	};
+})();
+
+CKEDITOR.POSITION_AFTER_START	= 1;	// <element>^contents</element>		"^text"
+CKEDITOR.POSITION_BEFORE_END	= 2;	// <element>contents^</element>		"text^"
+CKEDITOR.POSITION_BEFORE_START	= 3;	// ^<element>contents</element>		^"text"
+CKEDITOR.POSITION_AFTER_END		= 4;	// <element>contents</element>^		"text"
+
+CKEDITOR.ENLARGE_ELEMENT = 1;
+CKEDITOR.ENLARGE_BLOCK_CONTENTS = 2;
+CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS = 3;
+
+// Check boundary types.
+// @see CKEDITOR.dom.range.prototype.checkBoundaryOfElement
+CKEDITOR.START = 1;
+CKEDITOR.END = 2;
+CKEDITOR.STARTEND = 3;
+
+// Shrink range types.
+// @see CKEDITOR.dom.range.prototype.shrink
+CKEDITOR.SHRINK_ELEMENT = 1;
+CKEDITOR.SHRINK_TEXT = 2;

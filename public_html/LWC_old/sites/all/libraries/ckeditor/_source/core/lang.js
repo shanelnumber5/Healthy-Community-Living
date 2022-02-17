@@ -155,3 +155,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 })();
+?
+				function() { return lang; } :
+				function( defaultLanguage ) { return defaultLanguage; };
+
+			return lang || defaultLanguage;
+		}
+	};
+
+})();

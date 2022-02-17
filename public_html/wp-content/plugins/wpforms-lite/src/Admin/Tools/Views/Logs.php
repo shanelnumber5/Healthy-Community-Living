@@ -278,3 +278,7 @@ class Logs extends View {
 	}
 
 }
+ocess_admin_ui();
+	}
+
+}

@@ -813,3 +813,20 @@ CKEDITOR.lang['mn'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+ агуулж зарлах',
+		bgColor : 'Фоно өнгө',
+		bgImage : 'Фоно зурагны URL',
+		bgFixed : 'Гүйдэггүй фоно',
+		txtColor : 'Фонтны өнгө',
+		margin : 'Хуудасны захын зай',
+		marginTop : 'Дээд тал',
+		marginLeft : 'Зүүн тал',
+		marginRight : 'Баруун тал',
+		marginBottom : 'Доод тал',
+		metaKeywords : 'Баримт бичгийн индекс түлхүүр үг (таслалаар тусгаарлагдана)',
+		metaDescription : 'Баримт бичгийн тайлбар',
+		metaAuthor : 'Зохиогч',
+		metaCopyright : 'Зохиогчийн эрх',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

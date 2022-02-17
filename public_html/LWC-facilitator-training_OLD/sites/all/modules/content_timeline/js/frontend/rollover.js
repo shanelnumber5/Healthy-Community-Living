@@ -38,4 +38,9 @@ $.fn.timelineRollover = function(type) {
 	
 } 
 
+})(jQuery);adeOut(200);
+	});
+	
+} 
+
 })(jQuery);

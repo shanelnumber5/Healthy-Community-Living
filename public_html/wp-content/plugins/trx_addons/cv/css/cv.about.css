@@ -1,0 +1,14 @@
+/* CV Card: About Me styles */
+.trx_addons_cv_about_page .trx_addons_cv_single_header,
+.trx_addons_cv_about_page .trx_addons_cv_single_content {
+	padding: 0 3em;
+}
+.trx_addons_cv_about_page .trx_addons_cv_single_title {
+	margin:0 0 1em;
+	font-size:3.0769em;
+	text-align:left;
+	color: #292929;
+}
+.trx_addons_cv_about_page .trx_addons_cv_single_thumb {
+	margin-bottom:4em;
+}

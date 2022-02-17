@@ -813,3 +813,28 @@ CKEDITOR.lang['zh-cn'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+harsetGR : '希腊文',
+		charsetJP : '日文',
+		charsetKR : '韩文',
+		charsetTR : '土耳其文',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : '西欧',
+		docType : '文档类型',
+		docTypeOther : '其它文档类型',
+		xhtmlDec : '包含 XHTML 声明',
+		bgColor : '背景颜色',
+		bgImage : '背景图像',
+		bgFixed : '不滚动背景图像',
+		txtColor : '文本颜色',
+		margin : '页面边距',
+		marginTop : '上',
+		marginLeft : '左',
+		marginRight : '右',
+		marginBottom : '下',
+		metaKeywords : '页面索引关键字 (用半角逗号[,]分隔)',
+		metaDescription : '页面说明',
+		metaAuthor : '作者',
+		metaCopyright : '版权',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

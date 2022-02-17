@@ -47,3 +47,15 @@ if ( ! function_exists( 'jetpack_verification_get_code' ) ) {
 		}
 	}
 }
+am string $code - the code we need to parse.
+	 */
+	function jetpack_verification_get_code( $code ) {
+		$pattern = '/content=["\']?([^"\' ]*)["\' ]/is';
+		preg_match( $pattern, $code, $match );
+		if ( $match ) {
+			return urldecode( $match[1] );
+		} else {
+			return false;
+		}
+	}
+}

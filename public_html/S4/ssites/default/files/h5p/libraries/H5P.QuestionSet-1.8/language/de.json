@@ -1,0 +1,199 @@
+{
+  "semantics": [
+    {
+      "label": "Quiz Einführung",
+      "fields": [
+        {
+          "label": "Zeige Einführung"
+        },
+        {
+          "label": "Titel",
+          "description": "Dieser Titel wird über dem Einführungstext angezeigt."
+        },
+        {
+          "label": "Einführungstext",
+          "description": "Dieser Text wird angezeigt, bevor das Quiz anfängt."
+        },
+        {
+          "label": "Start Button Text",
+          "default": "Starte Quiz"
+        },
+        {
+          "label": "Hintergrundbild",
+          "description": "Ein optionales Hintergrundbild für die Einführung."
+        }
+      ]
+    },
+    {
+      "label": "Hintergrundbild",
+      "description": "Ein optionales Hintergrundbild für das Frage Set."
+    },
+    {
+      "label": "Fortschrittsanzeige",
+      "description": "Anzeigestil für die Fortschrittsanzeige des Frage Sets.",
+      "options": [
+        {
+          "label": "Text"
+        },
+        {
+          "label": "Punkte"
+        }
+      ]
+    },
+    {
+      "label": "Prozent bearbeitet",
+      "description": "Prozent der Gesamtpunkte sind notwendig um das Quiz zu bestehen."
+    },
+    {
+      "label": "Fragen",
+      "widgets": [
+        {
+          "label": "Vorgabe"
+        },
+        {
+          "label": "Text"
+        }
+      ],
+      "entity": "Frage",
+      "field": {
+        "label": "Fragentyp",
+        "description": "Bibliothek für diese Frage."
+      }
+    },
+    {
+      "label": "Anzeigetexte im Quiz",
+      "fields": [
+        {
+          "label": "Rückwärts Button",
+          "default": "vorherige"
+        },
+        {
+          "label": "Weiter Button",
+          "default": "weiter"
+        },
+        {
+          "label": "Ende Button",
+          "default": "beenden"
+        },
+        {
+          "label": "Fortschrittstext",
+          "description": "Verwendeter Text wenn Text Fortschrittsanzeige gewählt wurde.",
+          "default": "Aktuelle Frage: @current von @total Fragen"
+        },
+        {
+          "label": "Label for jumping to a certain question",
+          "description": "You must use the placeholder '%d' instead of the question number.",
+          "default": "Jump to question %d"
+        },
+        {
+          "label": "Copyright dialog question label",
+          "default": "Question"
+        }
+      ]
+    },
+    {
+      "label": "Quiz beendet",
+      "fields": [
+        {
+          "label": "Ergebnisanzeige"
+        },
+        {
+          "label": "No results message",
+          "description": "Text displayed on end page when \"Display results\" is disabled",
+          "default": "Finished"
+        },
+        {
+          "label": "Kopfzeile Feedback",
+          "default": "Dein Ergebnis:",
+          "description": "diese Kopfzeile wird am Ende des Quiz angezeigt, wenn der Benutzer alle Fragen beantwortet hat."
+        },
+        {
+          "label": "Punkt Anzeige Text",
+          "description": "Dieser Text wird verwendet um die Gesamtpunkte des Benutzers anzuzeigen. \"@score\" wird durch die errechneten Punkte ersetzt, \"@total\" wird durch die maximal erreichbaren Punkte ersetzt.",
+          "default": "Du hast @score Punkte von @total möglichen."
+        },
+        {
+          "label": "Quiz bestanden Mitteilung",
+          "default": "Gratulation!",
+          "description": "Dieser Text wird oberhalb der Punkte angezeigt, wenn der Benutzer das Quiz erfolgreich abgeschlossen hat."
+        },
+        {
+          "label": "Bestanden Kommentar",
+          "default": "Gut gemacht!",
+          "description": "dieser Kommentar wird nach den Punkten angezeigt, wenn der Benutzer das Quiz erfolgreich bestanden hat."
+        },
+        {
+          "label": "Quiz nicht bestanden Titel",
+          "default": "Diese Mal hast du nicht bestanden.",
+          "description": "dieser Text wird oberhalb der Punkte angezeigt, wenn der Benutzer das Quiz nicht bestanden hat."
+        },
+        {
+          "label": "Nicht bestanden Kommentar",
+          "default": "Versuche es noch einmal!",
+          "description": "Dieser Kommentar wird nach den Punkten angezeigt, wenn der Benutzer das Quiz nicht bestanden hat."
+        },
+        {
+          "label": "Lösungs Button Beschriftung",
+          "default": "Zeige die Lösung",
+          "description": "Text für den Lösungs Button."
+        },
+        {
+          "label": "Wiederholen Button Beschriftung",
+          "default": "Versuch es nochmal",
+          "description": "Text für den Wiederholen Button."
+        },
+        {
+          "label": "Beende Button Text",
+          "default": "Beenden"
+        },
+        {
+          "label": "Zeige Video vor den Quizergebnissen"
+        },
+        {
+          "label": "Aktiviere Skip Video Button"
+        },
+        {
+          "label": "Skip Video Button Beschriftung",
+          "default": "Überspringe Video"
+        },
+        {
+          "label": "Bestanden Video",
+          "description": "Dieses Video wird angezeigt, wenn der Benutzer das Quiz erfolgreich bestanden hat."
+        },
+        {
+          "label": "Nicht bestanden Video",
+          "description": "Dieses Video wird angezeigt, wenn der Benutzer das Quiz nicht bestanden hat."
+        }
+      ]
+    },
+    {
+      "label": "Einstellungen für \"Zeige die Lösung\" Button und \"Nochmal\".",
+      "fields": [
+        {
+          "label": "Override \"Show Solution\" button",
+          "description": "This option determines if the \"Show Solution\" button will be shown for all questions, disabled for all or configured for each question individually.",
+          "options": [
+            {
+              "label": "Enabled"
+            },
+            {
+              "label": "Disabled"
+            }
+          ]
+        },
+        {
+          "label": "Override \"Retry\" button",
+          "description": "This option determines if the \"Retry\" button will be shown for all questions, disabled for all or configured for each question individually.",
+          "options": [
+            {
+              "label": "Enabled"
+            },
+            {
+              "label": "Disabled"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

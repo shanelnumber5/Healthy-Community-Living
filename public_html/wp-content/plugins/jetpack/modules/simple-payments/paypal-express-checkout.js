@@ -244,3 +244,7 @@ var PaypalExpressCheckout = {
 		);
 	},
 };
+	buttonDomId
+		);
+	},
+};

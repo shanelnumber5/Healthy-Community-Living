@@ -761,3 +761,37 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 })();
 
 // PACKAGER_RENAME( CKEDITOR.tools )
+xecuted function's return value that
+		 * doesn't throw any exception.
+		 */
+		tryThese : function()
+		{
+			var returnValue;
+			for ( var i = 0, length = arguments.length; i < length; i++ )
+			{
+				var lambda = arguments[i];
+				try
+				{
+					returnValue = lambda();
+					break;
+				}
+				catch (e) {}
+			}
+			return returnValue;
+		},
+
+		/**
+		 * Generate a combined key from a series of params.
+		 * @param {String} subKey One or more string used as sub keys.
+		 * @example
+		 * var key = CKEDITOR.tools.genKey( 'key1', 'key2', 'key3' );
+		 * alert( key );		// "key1-key2-key3".
+		 */
+		genKey : function()
+		{
+			return Array.prototype.slice.call( arguments ).join( '-' );
+		}
+	};
+})();
+
+// PACKAGER_RENAME( CKEDITOR.tools )

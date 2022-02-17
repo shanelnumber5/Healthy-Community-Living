@@ -31,3 +31,4 @@ CKEDITOR.plugins.add( 'wsc',
 
 CKEDITOR.config.wsc_customerId			= CKEDITOR.config.wsc_customerId || '1:ua3xw1-2XyGJ3-GWruD3-6OFNT1-oXcuB1-nR6Bp4-hgQHc-EcYng3-sdRXG3-NOfFk' ;
 CKEDITOR.config.wsc_customLoaderScript	= CKEDITOR.config.wsc_customLoaderScript || null;
+wsc_customLoaderScript || null;

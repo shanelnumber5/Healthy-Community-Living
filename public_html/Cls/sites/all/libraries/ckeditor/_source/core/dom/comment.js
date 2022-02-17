@@ -30,3 +30,7 @@ CKEDITOR.dom.comment = CKEDITOR.tools.createClass(
 		}
 	}
 });
+deValue + '-->';
+		}
+	}
+});

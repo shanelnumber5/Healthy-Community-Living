@@ -813,3 +813,24 @@ CKEDITOR.lang['eu'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+nicode (UTF-8)', // MISSING
+		charsetWE : 'Mendebaldeko Europakoa',
+		docType : 'Document Type Goiburua',
+		docTypeOther : 'Beste Document Type Goiburua',
+		xhtmlDec : 'XHTML Ezarpenak',
+		bgColor : 'Atzeko Kolorea',
+		bgImage : 'Atzeko Irudiaren URL-a',
+		bgFixed : 'Korritze gabeko Atzealdea',
+		txtColor : 'Testu Kolorea',
+		margin : 'Orrialdearen marjinak',
+		marginTop : 'Goian',
+		marginLeft : 'Ezkerrean',
+		marginRight : 'Eskuman',
+		marginBottom : 'Behean',
+		metaKeywords : 'Dokumentuaren Gako-hitzak (komarekin bananduta)',
+		metaDescription : 'Dokumentuaren Deskribapena',
+		metaAuthor : 'Egilea',
+		metaCopyright : 'Copyright', // MISSING
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

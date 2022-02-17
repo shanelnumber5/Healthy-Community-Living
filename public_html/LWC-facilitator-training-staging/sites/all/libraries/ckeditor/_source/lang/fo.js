@@ -813,3 +813,24 @@ CKEDITOR.lang['fo'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+N : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Vestureuropa',
+		docType : 'Dokumentslag yvirskrift',
+		docTypeOther : 'Annað dokumentslag yvirskrift',
+		xhtmlDec : 'Viðfest XHTML deklaratiónir',
+		bgColor : 'Bakgrundslitur',
+		bgImage : 'Leið til bakgrundsmynd (URL)',
+		bgFixed : 'Læst bakgrund (rullar ikki)',
+		txtColor : 'Tekstlitur',
+		margin : 'Síðubreddar',
+		marginTop : 'Ovast',
+		marginLeft : 'Vinstra',
+		marginRight : 'Høgra',
+		marginBottom : 'Niðast',
+		metaKeywords : 'Dokument index lyklaorð (sundurbýtt við komma)',
+		metaDescription : 'Dokumentlýsing',
+		metaAuthor : 'Høvundur',
+		metaCopyright : 'Upphavsrættindi',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

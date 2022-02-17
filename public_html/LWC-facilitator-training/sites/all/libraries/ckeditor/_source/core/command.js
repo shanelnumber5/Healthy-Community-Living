@@ -207,3 +207,13 @@ CKEDITOR.event.implementOn( CKEDITOR.command.prototype, true );
  *         alert( this.state );
  *     });
  */
+anges.
+ * @name CKEDITOR.command#state
+ * @event
+ * @example
+ * command.on( <b>'state'</b> , function( e )
+ *     {
+ *         // Alerts the new state.
+ *         alert( this.state );
+ *     });
+ */

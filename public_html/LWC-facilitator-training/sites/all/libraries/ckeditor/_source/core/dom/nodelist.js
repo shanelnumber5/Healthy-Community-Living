@@ -24,3 +24,6 @@ CKEDITOR.dom.nodeList.prototype =
 		return $node ? new CKEDITOR.dom.node( $node ) : null;
 	}
 };
+ $node ) : null;
+	}
+};

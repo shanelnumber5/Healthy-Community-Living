@@ -1757,3 +1757,20 @@
     "dev": false,
     "dev-package-names": []
 }
+twitter-text-php",
+            "keywords": [
+                "autolink",
+                "extract",
+                "text",
+                "twitter"
+            ],
+            "support": {
+                "issues": "https://github.com/nojimage/twitter-text-php/issues",
+                "source": "https://github.com/nojimage/twitter-text-php/tree/v3.1.2"
+            },
+            "install-path": "../nojimage/twitter-text-php"
+        }
+    ],
+    "dev": false,
+    "dev-package-names": []
+}

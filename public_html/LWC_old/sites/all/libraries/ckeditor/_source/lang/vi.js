@@ -813,3 +813,23 @@ CKEDITOR.lang['vi'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+harsetWE : 'Tây Âu',
+		docType : 'Kiểu Đề mục Tài liệu',
+		docTypeOther : 'Kiểu Đề mục Tài liệu khác',
+		xhtmlDec : 'Bao gồm cả định nghĩa XHTML',
+		bgColor : 'Màu nền',
+		bgImage : 'URL của Hình ảnh nền',
+		bgFixed : 'Không cuộn nền',
+		txtColor : 'Màu chữ',
+		margin : 'Đường biên của Trang',
+		marginTop : 'Trên',
+		marginLeft : 'Trái',
+		marginRight : 'Phải',
+		marginBottom : 'Dưới',
+		metaKeywords : 'Các từ khóa chỉ mục tài liệu (phân cách bởi dấu phẩy)',
+		metaDescription : 'Mô tả tài liệu',
+		metaAuthor : 'Tác giả',
+		metaCopyright : 'Bản quyền',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

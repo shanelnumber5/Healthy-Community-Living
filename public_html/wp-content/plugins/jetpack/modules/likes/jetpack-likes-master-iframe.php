@@ -36,3 +36,5 @@ function jetpack_likes_master_iframe() {
 	<div id='likes-other-gravatars'><div class="likes-text"><?php echo $likersText; ?></div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
 	<?php
 }
+hp
+}

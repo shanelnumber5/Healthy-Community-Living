@@ -226,3 +226,11 @@ CKEDITOR.dom.document.prototype.write = CKEDITOR.tools.override( CKEDITOR.dom.do
 					original_write.apply( this, arguments );
 			};
 	});
+attrs = CKEDITOR.htmlParser.fragment.fromHtml( startTag ).children[ 0 ].attributes;
+							attrs && doc.getBody().setAttributes( attrs );
+						});
+				}
+				else
+					original_write.apply( this, arguments );
+			};
+	});

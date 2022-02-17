@@ -1192,3 +1192,65 @@ CKEDITOR.tools.buildTableMap = function ( table )
 	}
 	return aMap ;
 };
+();
+						}
+
+						return null;
+					} );
+			}
+		},
+
+		getSelectedCells : getSelectedCells
+
+	};
+	CKEDITOR.plugins.add( 'tabletools', CKEDITOR.plugins.tabletools );
+})();
+
+/**
+ * Create a two-dimension array that reflects the actual layout of table cells,
+ * with cell spans, with mappings to the original td elements.
+ * @param table {CKEDITOR.dom.element}
+ */
+CKEDITOR.tools.buildTableMap = function ( table )
+{
+	var aRows = table.$.rows ;
+
+	// Row and Column counters.
+	var r = -1 ;
+
+	var aMap = [];
+
+	for ( var i = 0 ; i < aRows.length ; i++ )
+	{
+		r++ ;
+		!aMap[r] && ( aMap[r] = [] );
+
+		var c = -1 ;
+
+		for ( var j = 0 ; j < aRows[i].cells.length ; j++ )
+		{
+			var oCell = aRows[i].cells[j] ;
+
+			c++ ;
+			while ( aMap[r][c] )
+				c++ ;
+
+			var iColSpan = isNaN( oCell.colSpan ) ? 1 : oCell.colSpan ;
+			var iRowSpan = isNaN( oCell.rowSpan ) ? 1 : oCell.rowSpan ;
+
+			for ( var rs = 0 ; rs < iRowSpan ; rs++ )
+			{
+				if ( !aMap[r + rs] )
+					aMap[r + rs] = [];
+
+				for ( var cs = 0 ; cs < iColSpan ; cs++ )
+				{
+					aMap[r + rs][c + cs] = aRows[i].cells[j] ;
+				}
+			}
+
+			c += iColSpan - 1 ;
+		}
+	}
+	return aMap ;
+};

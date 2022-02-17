@@ -92,3 +92,9 @@ CKEDITOR.config.smiley_descriptions =
  * @example
  * config.smiley_columns = 6;
  */
+type Number
+ * @default 8
+ * @since 3.3.2
+ * @example
+ * config.smiley_columns = 6;
+ */

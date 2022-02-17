@@ -75,3 +75,17 @@ function jetpack_verification_print_meta() {
 	}
 }
 add_action( 'wp_head', 'jetpack_verification_print_meta', 1 );
+
+				 *
+				 * @since 3.0.0
+				 *
+				 * @param string $ver_tag Verification Tool meta tag.
+				 */
+				$ver_output .= apply_filters( 'jetpack_site_verification_output', $ver_tag );
+				$ver_output .= "\n";
+			}
+		}
+		echo $ver_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+}
+add_action( 'wp_head', 'jetpack_verification_print_meta', 1 );

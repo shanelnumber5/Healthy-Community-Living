@@ -114,3 +114,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.1]: https://github.com/Automattic/jetpack-device-detection/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Automattic/jetpack-device-detection/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Automattic/jetpack-device-detection/compare/v1.0.0...v1.1.0
+//github.com/Automattic/jetpack-device-detection/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/Automattic/jetpack-device-detection/compare/v1.0.0...v1.1.0

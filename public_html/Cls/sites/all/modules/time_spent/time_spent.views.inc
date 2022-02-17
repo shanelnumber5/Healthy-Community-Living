@@ -71,3 +71,10 @@ function time_spent_views_data() {
 
   return $data;
 }
+',
+      'click sortable' => TRUE,
+    ),
+  );
+
+  return $data;
+}

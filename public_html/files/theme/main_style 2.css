@@ -767,4 +767,47 @@ blockquote {
 
 .wsite-button-highlight .wsite-button-inner {
 	background:none;
+    }  
+.wsite-button-large:active {
+	background:#ccc;
+    }
+
+
+.wsite-button-large .wsite-button-inner {
+    height: 35px;
+    line-height: 35px;
+    padding: 0;
+	background:none;
+    }
+
+.wsite-button-large:hover .wsite-button-inner {
+	background:none;
+    }
+
+.wsite-button-large:active .wsite-button-inner {
+	background:none;
+    }
+
+    
+
+/* highlight */
+
+.wsite-button-large.wsite-button-highlight {
+    background: #b44ad2 ;
+}
+    
+.wsite-button-large.wsite-button-highlight .wsite-button-inner {
+	background:none;
+    }
+
+.wsite-button-highlight {
+    background: #b44ad2 ;
+	color:#fff !important;
+}
+	.wsite-button-highlight:hover{
+		background: #b22ad2;
+	}
+
+.wsite-button-highlight .wsite-button-inner {
+	background:none;
     }

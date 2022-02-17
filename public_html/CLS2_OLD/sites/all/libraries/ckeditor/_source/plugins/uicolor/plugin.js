@@ -35,3 +35,7 @@ CKEDITOR.plugins.add( 'uicolor',
 		));
 	}
 } );
+ui/assets/yui.css'
+		));
+	}
+} );

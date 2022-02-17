@@ -1,0 +1,24 @@
+/* Tribe Events Calendar styles with images.
+   Attention! Must be in the /css folder
+----------------------------------------------------------------- */
+.tribe-bar-views-list span[class^='tribe-icon-'] {		background-image: url(../plugins/the-events-calendar/images/events-bar/icon-month.png); }
+.tribe-bar-views-list span.tribe-icon-list,
+.tribe-bar-view-list span[class^='tribe-icon-'] {		background-image: url(../plugins/the-events-calendar/images/events-bar/icon-list.png); }
+.tribe-bar-views-list span.tribe-icon-month,
+.tribe-bar-view-list a.tribe-icon-month {				background-image: url(../plugins/the-events-calendar/images/events-bar/icon-month.png); }
+.tribe-bar-views-list span.tribe-icon-week {			background-image: url(../plugins/the-events-calendar/images/events-bar/icon-week.png); }
+.tribe-bar-views-list span.tribe-icon-day {				background-image: url(../plugins/the-events-calendar/images/events-bar/icon-day.png); }
+.tribe-bar-views-list span.tribe-icon-photo {			background-image: url(../plugins/the-events-calendar/images/events-bar/icon-photo.png); }
+.tribe-bar-views-list span.tribe-icon-map {				background-image: url(../plugins/the-events-calendar/images/events-bar/icon-map.png); }
+@media (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+	.tribe-bar-views-list span[class^='tribe-icon-'],
+	.tribe-bar-view-list a[class^='tribe-icon-'] {		background-image: url(../plugins/the-events-calendar/images/events-bar/icon-month@2x.png); }
+	.tribe-bar-views-list span.tribe-icon-list,
+	.tribe-bar-view-list span[class^='tribe-icon-'] {	background-image: url(../plugins/the-events-calendar/images/events-bar/icon-list@2x.png); }
+	.tribe-bar-views-list span.tribe-icon-month,
+	.tribe-bar-view-list a.tribe-icon-month {			background-image: url(../plugins/the-events-calendar/images/events-bar/icon-month@2x.png); }
+	.tribe-bar-views-list span.tribe-icon-week {		background-image: url(../plugins/the-events-calendar/images/events-bar/icon-week@2x.png); }
+	.tribe-bar-views-list span.tribe-icon-day {			background-image: url(../plugins/the-events-calendar/images/events-bar/icon-day@2x.png); }
+	.tribe-bar-views-list span.tribe-icon-photo {		background-image: url(../plugins/the-events-calendar/images/events-bar/icon-photo@2x.png); }
+	.tribe-bar-views-list span.tribe-icon-map {			background-image: url(../plugins/the-events-calendar/images/events-bar/icon-map@2x.png); }
+}

@@ -813,3 +813,22 @@ CKEDITOR.lang['ro'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+g', // MISSING
+		docTypeOther : 'Alt Document Type Heading',
+		xhtmlDec : 'Include declaraţii XHTML',
+		bgColor : 'Culoarea fundalului (Background Color)',
+		bgImage : 'URL-ul imaginii din fundal (Background Image URL)',
+		bgFixed : 'Fundal neflotant, fix (Non-scrolling Background)',
+		txtColor : 'Culoarea textului',
+		margin : 'Marginile paginii',
+		marginTop : 'Sus',
+		marginLeft : 'Stânga',
+		marginRight : 'Dreapta',
+		marginBottom : 'Jos',
+		metaKeywords : 'Cuvinte cheie după care se va indexa documentul (separate prin virgulă)',
+		metaDescription : 'Descrierea documentului',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Drepturi de autor',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

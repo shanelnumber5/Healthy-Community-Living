@@ -303,3 +303,19 @@ if ( !CKEDITOR.env )
 
 // PACKAGER_RENAME( CKEDITOR.env )
 // PACKAGER_RENAME( CKEDITOR.env.ie )
+ )
+				env.cssClass += ' cke_browser_iequirks';
+		}
+
+		if ( env.gecko && version < 10900 )
+			env.cssClass += ' cke_browser_gecko18';
+
+		if ( env.air )
+			env.cssClass += ' cke_browser_air';
+
+		return env;
+	})();
+}
+
+// PACKAGER_RENAME( CKEDITOR.env )
+// PACKAGER_RENAME( CKEDITOR.env.ie )

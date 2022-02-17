@@ -12,4 +12,5 @@ jQuery.extend(jQuery.colorbox.settings, {
 	imgError: "Neuspješno učitavanje slike.",
 	slideshowStart: "Pokreni slideshow",
 	slideshowStop: "Zaustavi slideshow"
+});lideshow"
 });

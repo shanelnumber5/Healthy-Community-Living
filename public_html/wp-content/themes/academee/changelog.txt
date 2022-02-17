@@ -1,0 +1,45 @@
+Version 1.1.2
+	Added:
+		- WP 5.6.1 compatibility
+		- PHP 7.4 compatibility
+		- ThemeREX Updater plugin
+		- elegro Crypto Payment plugin
+
+	Fixed:
+		- Update plugins to their latest versions
+
+	Changed:
+		- Update demo data
+
+Version 1.1.1
+	Added:
+		- Compatibility with WP 5.1.1
+		- Compatibility with PHP7.3
+		- Compatibility with WP GDPR Compliance
+		- Contact Form 7
+		- Alert to Demo data installation
+		- Privacy Policy page
+
+	Fixed:
+		- Compatibility with Gutenberg
+		- Update plugins to their latest versions
+		- Improve theme styles
+		- Update scripts  libraries
+		- Fixed datepicker calendar in plugin trx_addons
+		- Responsive fixed
+		- Translation fixed, update pot file in plugin ThemeREX Addons and in theme
+		- Courses Month translation fixed
+		- Fixed vc_row fluid in boxed version (_init.js, trx_addons.front.js)
+
+
+	Changed:
+		- Update default contact forms to make them GDPR-compliant
+		- Update demo data
+
+Version 1.1
+	Plugins updated
+	Documentation updated
+	Dummy data import fixed
+
+Version 1.0
+	Release

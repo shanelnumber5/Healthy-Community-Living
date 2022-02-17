@@ -96,3 +96,28 @@ class Jetpack_Client_Server {
 		exit;
 	}
 }
+
+		return 0;
+	}
+
+	/**
+	 * Get the Jetpack instance.
+	 *
+	 * @deprecated since Jetpack 9.5.0
+	 * @see Jetpack::init()
+	 */
+	public function get_jetpack() {
+		_deprecated_function( __METHOD__, 'jetpack-9.5.0', 'Jetpack::init' );
+		return Jetpack::init();
+	}
+
+	/**
+	 * No longer used.
+	 *
+	 * @deprecated since Jetpack 9.5.0
+	 */
+	public function do_exit() {
+		_deprecated_function( __METHOD__, 'jetpack-9.5.0' );
+		exit;
+	}
+}

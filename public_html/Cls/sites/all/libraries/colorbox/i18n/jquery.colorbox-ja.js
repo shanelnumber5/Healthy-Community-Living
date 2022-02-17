@@ -13,3 +13,5 @@ jQuery.extend(jQuery.colorbox.settings, {
 	slideshowStart: "スライドショー開始",
 	slideshowStop: "スライドショー終了"
 });
+�終了"
+});

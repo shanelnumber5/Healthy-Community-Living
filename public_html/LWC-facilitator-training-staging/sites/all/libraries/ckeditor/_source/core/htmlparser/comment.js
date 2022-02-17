@@ -58,3 +58,10 @@ CKEDITOR.htmlParser.comment.prototype =
 		writer.comment( comment );
 	}
 };
+return;
+			}
+		}
+
+		writer.comment( comment );
+	}
+};

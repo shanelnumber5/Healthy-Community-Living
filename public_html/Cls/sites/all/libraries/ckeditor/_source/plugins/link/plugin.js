@@ -372,3 +372,23 @@ CKEDITOR.tools.extend( CKEDITOR.config,
 	linkShowAdvancedTab : true,
 	linkShowTargetTab : true
 } );
+
+			{
+				if ( anchor.hasAttribute( 'href' ) )
+				{
+					anchor.removeAttributes( { name : 1, 'data-cke-saved-name' : 1 } );
+					anchor.removeClass( 'cke_anchor' );
+				}
+				else
+					anchor.remove( 1 );
+			}
+		}
+		sel.selectBookmarks( bms );
+	}
+};
+
+CKEDITOR.tools.extend( CKEDITOR.config,
+{
+	linkShowAdvancedTab : true,
+	linkShowTargetTab : true
+} );

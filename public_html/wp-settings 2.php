@@ -607,3 +607,30 @@ if ( is_multisite() ) {
  * @since 3.0.0
  */
 do_action( 'wp_loaded' );
+g an action once WP is loaded, use the {@see 'wp_loaded'} hook below.
+ *
+ * @since 1.5.0
+ */
+do_action( 'init' );
+
+// Check site status.
+if ( is_multisite() ) {
+	$file = ms_site_check();
+	if ( true !== $file ) {
+		require $file;
+		die();
+	}
+	unset( $file );
+}
+
+/**
+ * This hook is fired once WP, all plugins, and the theme are fully loaded and instantiated.
+ *
+ * Ajax requests should use wp-admin/admin-ajax.php. admin-ajax.php can handle requests for
+ * users not logged in.
+ *
+ * @link https://codex.wordpress.org/AJAX_in_Plugins
+ *
+ * @since 3.0.0
+ */
+do_action( 'wp_loaded' );

@@ -286,3 +286,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	}
 };
 */
+.
+				if ( typeof ret != 'string' )
+					return ret;
+			}
+
+			ret != undefined && ( currentEntry = ret );
+		}
+
+		return currentEntry;
+	}
+})();
+
+// "entities" plugin
+/*
+{
+	text : function( text )
+	{
+		// TODO : Process entities.
+		return text.toUpperCase();
+	}
+};
+*/

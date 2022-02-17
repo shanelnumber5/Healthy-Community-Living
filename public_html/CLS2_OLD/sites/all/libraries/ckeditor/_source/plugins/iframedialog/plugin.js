@@ -186,3 +186,13 @@ CKEDITOR.plugins.add( 'iframedialog',
 		})();
 	}
 } );
+me',
+				{
+					build : function( dialog, elementDefinition, output )
+					{
+						return new iframeElement( dialog, elementDefinition, output );
+					}
+				} );
+		})();
+	}
+} );

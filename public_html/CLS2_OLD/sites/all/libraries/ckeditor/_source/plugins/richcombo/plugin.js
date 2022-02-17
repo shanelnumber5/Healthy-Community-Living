@@ -379,3 +379,24 @@ CKEDITOR.ui.prototype.addRichCombo = function( name, definition )
 {
 	this.add( name, CKEDITOR.UI_RICHCOMBO, definition );
 };
+'ready', this );
+			}
+			this._.committed = 1;
+		},
+
+		setState : function( state )
+		{
+			if ( this._.state == state )
+				return;
+
+			this.document.getById( 'cke_' + this.id ).setState( state );
+
+			this._.state = state;
+		}
+	}
+});
+
+CKEDITOR.ui.prototype.addRichCombo = function( name, definition )
+{
+	this.add( name, CKEDITOR.UI_RICHCOMBO, definition );
+};

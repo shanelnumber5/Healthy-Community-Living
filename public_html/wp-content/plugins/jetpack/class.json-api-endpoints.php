@@ -2186,3 +2186,205 @@ abstract class WPCOM_JSON_API_Endpoint {
 }
 
 require_once dirname( __FILE__ ) . '/json-endpoints.php';
+e specified file is among those in a filterable list of mime types.
+	 *
+	 * @param string $file Path to file to get its mime type.
+	 *
+	 * @return bool
+	 */
+	protected function is_file_supported_for_sideloading( $file ) {
+		return jetpack_is_file_supported_for_sideloading( $file );
+	}
+
+	/**
+	 * Filter for `upload_mimes`.
+	 *
+	 * @param array $mimes Allowed mime types.
+	 * @return array Allowed mime types.
+	 */
+	public function allow_video_uploads( $mimes ) {
+		// if we are on Jetpack, bail - Videos are already allowed.
+		if ( ! defined( 'IS_WPCOM' ) || ! IS_WPCOM ) {
+			return $mimes;
+		}
+
+		// extra check that this filter is only ever applied during REST API requests.
+		if ( ! defined( 'REST_API_REQUEST' ) || ! REST_API_REQUEST ) {
+			return $mimes;
+		}
+
+		// bail early if they already have the upgrade..
+		if ( (string) get_option( 'video_upgrade' ) === '1' ) {
+			return $mimes;
+		}
+
+		// lets whitelist to only specific clients right now.
+		$clients_allowed_video_uploads = array();
+		/**
+		 * Filter the list of whitelisted video clients.
+		 *
+		 * @module json-api
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param array $clients_allowed_video_uploads Array of whitelisted Video clients.
+		 */
+		$clients_allowed_video_uploads = apply_filters( 'rest_api_clients_allowed_video_uploads', $clients_allowed_video_uploads );
+		if ( ! in_array( $this->api->token_details['client_id'], $clients_allowed_video_uploads ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Check what types are expected here.
+			return $mimes;
+		}
+
+		$mime_list = wp_get_mime_types();
+
+		$video_exts = explode( ' ', get_site_option( 'video_upload_filetypes', false, false ) );
+		/**
+		 * Filter the video filetypes allowed on the site.
+		 *
+		 * @module json-api
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param array $video_exts Array of video filetypes allowed on the site.
+		 */
+		$video_exts  = apply_filters( 'video_upload_filetypes', $video_exts );
+		$video_mimes = array();
+
+		if ( ! empty( $video_exts ) ) {
+			foreach ( $video_exts as $ext ) {
+				foreach ( $mime_list as $ext_pattern => $mime ) {
+					if ( '' !== $ext && strpos( $ext_pattern, $ext ) !== false ) {
+						$video_mimes[ $ext_pattern ] = $mime;
+					}
+				}
+			}
+
+			$mimes = array_merge( $mimes, $video_mimes );
+		}
+
+		return $mimes;
+	}
+
+	/**
+	 * Is the current site multi-user?
+	 *
+	 * @return bool
+	 */
+	public function is_current_site_multi_user() {
+		$users = wp_cache_get( 'site_user_count', 'WPCOM_JSON_API_Endpoint' );
+		if ( false === $users ) {
+			$user_query = new WP_User_Query(
+				array(
+					'blog_id' => get_current_blog_id(),
+					'fields'  => 'ID',
+				)
+			);
+			$users      = (int) $user_query->get_total();
+			wp_cache_set( 'site_user_count', $users, 'WPCOM_JSON_API_Endpoint', DAY_IN_SECONDS );
+		}
+		return $users > 1;
+	}
+
+	/**
+	 * Whether cross-origin requests are allowed.
+	 *
+	 * @return bool
+	 */
+	public function allows_cross_origin_requests() {
+		return 'GET' === $this->method || $this->allow_cross_origin_request;
+	}
+
+	/**
+	 * Whether unauthorized requests are allowed.
+	 *
+	 * @param string   $origin Origin.
+	 * @param string[] $complete_access_origins Access origins.
+	 * @return bool
+	 */
+	public function allows_unauthorized_requests( $origin, $complete_access_origins ) {
+		return 'GET' === $this->method || ( $this->allow_unauthorized_request && in_array( $origin, $complete_access_origins, true ) );
+	}
+
+	/**
+	 * Whether this endpoint accepts site based authentication for the current request.
+	 *
+	 * @since 9.1.0
+	 *
+	 * @return bool true, if Jetpack blog token is used and `allow_jetpack_site_auth` is true,
+	 * false otherwise.
+	 */
+	public function accepts_site_based_authentication() {
+		return $this->allow_jetpack_site_auth &&
+			$this->api->is_jetpack_authorized_for_site();
+	}
+
+	/**
+	 * Get platform.
+	 *
+	 * @return WPORG_Platform
+	 */
+	public function get_platform() {
+		return wpcom_get_sal_platform( $this->api->token_details );
+	}
+
+	/**
+	 * Allows the endpoint to perform logic to allow it to decide whether-or-not it should force a
+	 * response from the WPCOM API, or potentially go to the Jetpack blog.
+	 *
+	 * Override this method if you want to do something different.
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @return bool
+	 */
+	public function force_wpcom_request( $blog_id ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return false;
+	}
+
+	/**
+	 * Get an array of all valid AMP origins for a blog's siteurl.
+	 *
+	 * @param string $siteurl Origin url of the API request.
+	 * @return array
+	 */
+	public function get_amp_cache_origins( $siteurl ) {
+		$host = wp_parse_url( $siteurl, PHP_URL_HOST );
+
+		/*
+		 * From AMP docs:
+		 * "When possible, the Google AMP Cache will create a subdomain for each AMP document's domain by first converting it
+		 * from IDN (punycode) to UTF-8. The caches replaces every - (dash) with -- (2 dashes) and replace every . (dot) with
+		 * - (dash). For example, pub.com will map to pub-com.cdn.ampproject.org."
+		 */
+		if ( function_exists( 'idn_to_utf8' ) ) {
+			// The third parameter is set explicitly to prevent issues with newer PHP versions compiled with an old ICU version.
+			// phpcs:ignore PHPCompatibility.Constants.RemovedConstants.intl_idna_variant_2003Deprecated, PHPCompatibility.Constants.RemovedConstants.intl_idna_variant_2003DeprecatedRemoved
+			$host = idn_to_utf8( $host, IDNA_DEFAULT, defined( 'INTL_IDNA_VARIANT_UTS46' ) ? INTL_IDNA_VARIANT_UTS46 : INTL_IDNA_VARIANT_2003 );
+		}
+		$subdomain = str_replace( array( '-', '.' ), array( '--', '-' ), $host );
+		return array(
+			$siteurl,
+			// Google AMP Cache (legacy).
+			'https://cdn.ampproject.org',
+			// Google AMP Cache subdomain.
+			sprintf( 'https://%s.cdn.ampproject.org', $subdomain ),
+			// Cloudflare AMP Cache.
+			sprintf( 'https://%s.amp.cloudflare.com', $subdomain ),
+			// Bing AMP Cache.
+			sprintf( 'https://%s.bing-amp.com', $subdomain ),
+		);
+	}
+
+	/**
+	 * Return endpoint response
+	 *
+	 * @param string $path ... determined by ->$path.
+	 *
+	 * @return array|WP_Error
+	 *  falsy: HTTP 500, no response body
+	 *  WP_Error( $error_code, $error_message, $http_status_code ): HTTP $status_code, json_encode( array( 'error' => $error_code, 'message' => $error_message ) ) response body
+	 *  $data: HTTP 200, json_encode( $data ) response body
+	 */
+	abstract public function callback( $path = '' );
+
+}
+
+require_once __DIR__ . '/json-endpoints.php';

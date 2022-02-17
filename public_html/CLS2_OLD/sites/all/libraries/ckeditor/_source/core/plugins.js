@@ -101,3 +101,8 @@ CKEDITOR.plugins.setLang = function( pluginName, languageCode, languageEntries )
 
 	pluginLangEntries[ languageCode ] = languageEntries;
 };
+-1 )
+		pluginLang.push( languageCode );
+
+	pluginLangEntries[ languageCode ] = languageEntries;
+};

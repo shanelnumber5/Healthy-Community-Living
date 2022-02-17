@@ -869,3 +869,309 @@ class WPCOM_JSON_API {
 		}
 	}
 }
+nt) get_option( 'blog_public' ) &&
+			! current_user_can( 'read' ) &&
+			! $this->endpoint->accepts_site_based_authentication()
+		) {
+			return new WP_Error( 'unauthorized', 'User cannot access this private blog.', 403 );
+		}
+
+		return $blog_id;
+	}
+
+	/**
+	 * Returns true if the specified blog ID is a restricted blog
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @return bool
+	 */
+	public function is_restricted_blog( $blog_id ) {
+		/**
+		 * Filters all REST API access and return a 403 unauthorized response for all Restricted blog IDs.
+		 *
+		 * @module json-api
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array $array Array of Blog IDs.
+		 */
+		$restricted_blog_ids = apply_filters( 'wpcom_json_api_restricted_blog_ids', array() );
+		return true === in_array( $blog_id, $restricted_blog_ids ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- I don't trust filters to return the right types.
+	}
+
+	/**
+	 * Post like count.
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @param int $post_id Post ID.
+	 * @return int
+	 */
+	public function post_like_count( $blog_id, $post_id ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return 0;
+	}
+
+	/**
+	 * Is liked?
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @param int $post_id Post ID.
+	 * @return bool
+	 */
+	public function is_liked( $blog_id, $post_id ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return false;
+	}
+
+	/**
+	 * Is reblogged?
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @param int $post_id Post ID.
+	 * @return bool
+	 */
+	public function is_reblogged( $blog_id, $post_id ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return false;
+	}
+
+	/**
+	 * Is following?
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @return bool
+	 */
+	public function is_following( $blog_id ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return false;
+	}
+
+	/**
+	 * Add global ID.
+	 *
+	 * @param int $blog_id Blog ID.
+	 * @param int $post_id Post ID.
+	 * @return string
+	 */
+	public function add_global_ID( $blog_id, $post_id ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable, WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+		return '';
+	}
+
+	/**
+	 * Get avatar URL.
+	 *
+	 * @param string $email Email.
+	 * @param array  $avatar_size Args for `get_avatar_url()`.
+	 * @return string|false
+	 */
+	public function get_avatar_url( $email, $avatar_size = null ) {
+		if ( function_exists( 'wpcom_get_avatar_url' ) ) {
+			return null === $avatar_size
+				? wpcom_get_avatar_url( $email )
+				: wpcom_get_avatar_url( $email, $avatar_size );
+		} else {
+			return null === $avatar_size
+				? get_avatar_url( $email )
+				: get_avatar_url( $email, $avatar_size );
+		}
+	}
+
+	/**
+	 * Counts the number of comments on a site, excluding certain comment types.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return array Array of counts, matching the output of https://developer.wordpress.org/reference/functions/get_comment_count/.
+	 */
+	public function wp_count_comments( $post_id ) {
+		global $wpdb;
+		if ( 0 !== $post_id ) {
+			return wp_count_comments( $post_id );
+		}
+
+		$counts = array(
+			'total_comments' => 0,
+			'all'            => 0,
+		);
+
+		/**
+		 * Exclude certain comment types from comment counts in the REST API.
+		 *
+		 * @since 6.9.0
+		 * @module json-api
+		 *
+		 * @param array Array of comment types to exclude (default: 'order_note', 'webhook_delivery', 'review', 'action_log')
+		 */
+		$exclude = apply_filters(
+			'jetpack_api_exclude_comment_types_count',
+			array( 'order_note', 'webhook_delivery', 'review', 'action_log' )
+		);
+
+		if ( empty( $exclude ) ) {
+			return wp_count_comments( $post_id );
+		}
+
+		array_walk( $exclude, 'esc_sql' );
+		$where = sprintf(
+			"WHERE comment_type NOT IN ( '%s' )",
+			implode( "','", $exclude )
+		);
+
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- `$where` is built with escaping just above.
+		$count = $wpdb->get_results(
+			"SELECT comment_approved, COUNT(*) AS num_comments
+				FROM $wpdb->comments
+				{$where}
+				GROUP BY comment_approved
+			"
+		);
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		$approved = array(
+			'0'            => 'moderated',
+			'1'            => 'approved',
+			'spam'         => 'spam',
+			'trash'        => 'trash',
+			'post-trashed' => 'post-trashed',
+		);
+
+		// <https://developer.wordpress.org/reference/functions/get_comment_count/#source>
+		foreach ( $count as $row ) {
+			if ( ! in_array( $row->comment_approved, array( 'post-trashed', 'trash', 'spam' ), true ) ) {
+				$counts['all']            += $row->num_comments;
+				$counts['total_comments'] += $row->num_comments;
+			} elseif ( ! in_array( $row->comment_approved, array( 'post-trashed', 'trash' ), true ) ) {
+				$counts['total_comments'] += $row->num_comments;
+			}
+			if ( isset( $approved[ $row->comment_approved ] ) ) {
+				$counts[ $approved[ $row->comment_approved ] ] = $row->num_comments;
+			}
+		}
+
+		foreach ( $approved as $key ) {
+			if ( empty( $counts[ $key ] ) ) {
+				$counts[ $key ] = 0;
+			}
+		}
+
+		$counts = (object) $counts;
+
+		return $counts;
+	}
+
+	/**
+	 * Traps `wp_die()` calls and outputs a JSON response instead.
+	 * The result is always output, never returned.
+	 *
+	 * @param string|null $error_code  Call with string to start the trapping.  Call with null to stop.
+	 * @param int         $http_status  HTTP status code, 400 by default.
+	 */
+	public function trap_wp_die( $error_code = null, $http_status = 400 ) {
+		// Determine the filter name; based on the conditionals inside the wp_die function.
+		if ( wp_is_json_request() ) {
+			$die_handler = 'wp_die_json_handler';
+		} elseif ( wp_is_jsonp_request() ) {
+			$die_handler = 'wp_die_jsonp_handler';
+		} elseif ( wp_is_xml_request() ) {
+			$die_handler = 'wp_die_xml_handler';
+		} else {
+			$die_handler = 'wp_die_handler';
+		}
+
+		if ( is_null( $error_code ) ) {
+			$this->trapped_error = null;
+			// Stop trapping.
+			remove_filter( $die_handler, array( $this, 'wp_die_handler_callback' ) );
+			return;
+		}
+
+		// If API called via PHP, bail: don't do our custom wp_die().  Do the normal wp_die().
+		if ( defined( 'IS_WPCOM' ) && IS_WPCOM ) {
+			if ( ! defined( 'REST_API_REQUEST' ) || ! REST_API_REQUEST ) {
+				return;
+			}
+		} else {
+			if ( ! defined( 'XMLRPC_REQUEST' ) || ! XMLRPC_REQUEST ) {
+				return;
+			}
+		}
+
+		$this->trapped_error = array(
+			'status'  => $http_status,
+			'code'    => $error_code,
+			'message' => '',
+		);
+		// Start trapping.
+		add_filter( $die_handler, array( $this, 'wp_die_handler_callback' ) );
+	}
+
+	/**
+	 * Filter function for `wp_die_handler` and similar filters.
+	 *
+	 * @return callable
+	 */
+	public function wp_die_handler_callback() {
+		return array( $this, 'wp_die_handler' );
+	}
+
+	/**
+	 * Handler for `wp_die` calls.
+	 *
+	 * @param string|WP_Error  $message As for `wp_die()`.
+	 * @param string|int       $title As for `wp_die()`.
+	 * @param string|array|int $args As for `wp_die()`.
+	 */
+	public function wp_die_handler( $message, $title = '', $args = array() ) {
+		// Allow wp_die calls to override HTTP status code...
+		$args = wp_parse_args(
+			$args,
+			array(
+				'response' => $this->trapped_error['status'],
+			)
+		);
+
+		// ... unless it's 500
+		if ( 500 !== (int) $args['response'] ) {
+			$this->trapped_error['status'] = $args['response'];
+		}
+
+		if ( $title ) {
+			$message = "$title: $message";
+		}
+
+		$this->trapped_error['message'] = wp_kses( $message, array() );
+
+		switch ( $this->trapped_error['code'] ) {
+			case 'comment_failure':
+				if ( did_action( 'comment_duplicate_trigger' ) ) {
+					$this->trapped_error['code'] = 'comment_duplicate';
+				} elseif ( did_action( 'comment_flood_trigger' ) ) {
+					$this->trapped_error['code'] = 'comment_flood';
+				}
+				break;
+		}
+
+		// We still want to exit so that code execution stops where it should.
+		// Attach the JSON output to the WordPress shutdown handler.
+		add_action( 'shutdown', array( $this, 'output_trapped_error' ), 0 );
+		exit;
+	}
+
+	/**
+	 * Output the trapped error.
+	 */
+	public function output_trapped_error() {
+		$this->exit = false; // We're already exiting once.  Don't do it twice.
+		$this->output(
+			$this->trapped_error['status'],
+			(object) array(
+				'error'   => $this->trapped_error['code'],
+				'message' => $this->trapped_error['message'],
+			)
+		);
+	}
+
+	/**
+	 * Finish the request.
+	 */
+	public function finish_request() {
+		if ( function_exists( 'fastcgi_finish_request' ) ) {
+			return fastcgi_finish_request();
+		}
+	}
+}

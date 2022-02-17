@@ -813,3 +813,25 @@ CKEDITOR.lang['sk'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Západná európa',
+		docType : 'Typ záhlavia dokumentu',
+		docTypeOther : 'Iný typ záhlavia dokumentu',
+		xhtmlDec : 'Obsahuje deklarácie XHTML',
+		bgColor : 'Farba pozadia',
+		bgImage : 'URL adresa obrázku na pozadí',
+		bgFixed : 'Fixné pozadie',
+		txtColor : 'Farba textu',
+		margin : 'Okraje stránky',
+		marginTop : 'Horný',
+		marginLeft : 'Ľavý',
+		marginRight : 'Pravý',
+		marginBottom : 'Dolný',
+		metaKeywords : 'Kľúčové slová pre indexovanie (oddelené čiarkou)',
+		metaDescription : 'Popis stránky',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Autorské práva',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

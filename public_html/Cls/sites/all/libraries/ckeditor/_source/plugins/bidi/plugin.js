@@ -332,3 +332,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @event
  * @param {String} eventData The direction in the current position.
  */
+Object} eventData.node The element that is being changed.
+ * @param {String} eventData.dir The new direction.
+ */
+
+/**
+ * Fired when the language direction in the specific cursor position is changed
+ * @name CKEDITOR.editor#contentDirChanged
+ * @event
+ * @param {String} eventData The direction in the current position.
+ */

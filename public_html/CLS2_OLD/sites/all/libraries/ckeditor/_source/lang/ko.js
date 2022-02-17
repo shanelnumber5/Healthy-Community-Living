@@ -813,3 +813,25 @@ CKEDITOR.lang['ko'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+etTR : 'Turkish', // MISSING
+		charsetUN : 'Unicode (UTF-8)', // MISSING
+		charsetWE : 'Western European', // MISSING
+		docType : '문서 헤드',
+		docTypeOther : '다른 문서헤드',
+		xhtmlDec : 'XHTML 문서정의 포함',
+		bgColor : '배경색상',
+		bgImage : '배경이미지 URL',
+		bgFixed : '스크롤되지않는 배경',
+		txtColor : '글자 색상',
+		margin : '페이지 여백',
+		marginTop : '위',
+		marginLeft : '왼쪽',
+		marginRight : '오른쪽',
+		marginBottom : '아래',
+		metaKeywords : '문서 키워드 (콤마로 구분)',
+		metaDescription : '문서 설명',
+		metaAuthor : '작성자',
+		metaCopyright : '저작권',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

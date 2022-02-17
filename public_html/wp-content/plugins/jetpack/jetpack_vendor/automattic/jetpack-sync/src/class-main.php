@@ -101,3 +101,8 @@ class Main {
 	}
 
 }
+have loaded.
+		Health::init();
+	}
+
+}

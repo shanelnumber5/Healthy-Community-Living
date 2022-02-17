@@ -150,3 +150,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	})();
 
 })();
+
+			 *     } );
+			 */
+			loadXml : function( url, callback )
+			{
+				return load( url, callback, getResponseXml );
+			}
+		};
+	})();
+
+})();

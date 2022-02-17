@@ -156,3 +156,51 @@ class Jetpack_Network_Sites_List_Table extends WP_List_Table {
 		}
 	}
 } // end h
+c_html__( 'Disconnect', 'jetpack' ),
+		);
+
+		return $actions;
+	}
+
+	/**
+	 * Column checkbox.
+	 *
+	 * @param object|array $item Item.
+	 * @return string HTML.
+	 */
+	public function column_cb( $item ) {
+			return sprintf(
+				'<input type="checkbox" name="bulk[]" value="%s" />',
+				$item->blog_id
+			);
+	}
+
+	/**
+	 * Process bulk actions.
+	 */
+	public function process_bulk_action() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Check if we have anything to do before checking the nonce.
+		if ( ! isset( $_POST['bulk'] ) || empty( $_POST['bulk'] ) ) {
+			return; // Thou shall not pass! There is nothing to do.
+		}
+
+		check_admin_referer( 'bulk-toplevel_page_jetpack-network' );
+
+		$jpms = Jetpack_Network::init();
+
+		$action = $this->current_action();
+		switch ( $action ) {
+
+			case 'connect':
+				foreach ( $_POST['bulk'] as $site ) {
+					$jpms->do_subsiteregister( $site );
+				}
+				break;
+			case 'disconnect':
+				foreach ( $_POST['bulk'] as $site ) {
+					$jpms->do_subsitedisconnect( $site );
+				}
+				break;
+		}
+	}
+} // end h

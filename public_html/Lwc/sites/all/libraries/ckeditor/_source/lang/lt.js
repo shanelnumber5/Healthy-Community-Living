@@ -813,3 +813,24 @@ CKEDITOR.lang['lt'] =
 		previewHtml : '<p>Tai yra <strong>pavyzdinis tekstas</strong>. Jūs naudojate <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };
+8)',
+		charsetWE : 'Vakarų Europos',
+		docType : 'Dokumento tipo antraštė',
+		docTypeOther : 'Kita dokumento tipo antraštė',
+		xhtmlDec : 'Įtraukti XHTML deklaracijas',
+		bgColor : 'Fono spalva',
+		bgImage : 'Fono paveikslėlio nuoroda (URL)',
+		bgFixed : 'Neslenkantis fonas',
+		txtColor : 'Teksto spalva',
+		margin : 'Puslapio kraštinės',
+		marginTop : 'Viršuje',
+		marginLeft : 'Kairėje',
+		marginRight : 'Dešinėje',
+		marginBottom : 'Apačioje',
+		metaKeywords : 'Dokumento indeksavimo raktiniai žodžiai (atskirti kableliais)',
+		metaDescription : 'Dokumento apibūdinimas',
+		metaAuthor : 'Autorius',
+		metaCopyright : 'Autorinės teisės',
+		previewHtml : '<p>Tai yra <strong>pavyzdinis tekstas</strong>. Jūs naudojate <a href="javascript:void(0)">CKEditor</a>.</p>'
+	}
+};

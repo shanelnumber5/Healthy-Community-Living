@@ -288,3 +288,15 @@ CKEDITOR.ui.prototype.addButton = function( name, definition )
 {
 	this.add( name, CKEDITOR.UI_BUTTON, definition );
 };
+The button definition.
+ * @example
+ * editorInstance.ui.addButton( 'MyBold',
+ *     {
+ *         label : 'My Bold',
+ *         command : 'bold'
+ *     });
+ */
+CKEDITOR.ui.prototype.addButton = function( name, definition )
+{
+	this.add( name, CKEDITOR.UI_BUTTON, definition );
+};

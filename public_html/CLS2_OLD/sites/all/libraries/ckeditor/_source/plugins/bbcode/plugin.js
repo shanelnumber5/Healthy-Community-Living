@@ -929,3 +929,35 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	  } );
 
 })();
+ from displaying, e.g body and p.
+				  if ( ( filters = editor._.elementsPath.filters ) )
+					filters.push( function( element )
+						{
+							var htmlName = element.getName(),
+								name = tagnameMap[ htmlName ] || false;
+
+							// Specialized anchor presents as email.
+							if ( name == 'link' && element.getAttribute( 'href' ).indexOf( 'mailto:' ) === 0 )
+								name = 'email';
+							// Styled span could be either size or color.
+							else if ( htmlName == 'span' )
+							{
+								if ( element.getStyle( 'font-size' ) )
+									name = 'size';
+								else if ( element.getStyle( 'color' ) )
+									name = 'color';
+							}
+							else if ( name == 'img' )
+							{
+								var src = element.data( 'cke-saved-src' );
+								if ( src && src.indexOf( editor.config.smiley_path ) === 0 )
+									name = 'smiley';
+							}
+
+							return name;
+						});
+			  }
+		  }
+	  } );
+
+})();

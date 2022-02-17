@@ -40,3 +40,5 @@ CKEDITOR.plugins.print =
 	readOnly : 1,
 	modes : { wysiwyg : !( CKEDITOR.env.opera ) }		// It is imposible to print the inner document in Opera.
 };
+o print the inner document in Opera.
+};

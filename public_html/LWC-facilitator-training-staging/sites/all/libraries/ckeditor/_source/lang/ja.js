@@ -813,3 +813,24 @@ CKEDITOR.lang['ja'] =
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };
+(UTF-8)', // MISSING
+		charsetWE : 'Western European',
+		docType : '文書タイプヘッダー',
+		docTypeOther : 'その他文書タイプヘッダー',
+		xhtmlDec : 'XHTML宣言をインクルード',
+		bgColor : '背景色',
+		bgImage : '背景画像 URL',
+		bgFixed : 'スクロールしない背景',
+		txtColor : 'テキスト色',
+		margin : 'ページ・マージン',
+		marginTop : '上部',
+		marginLeft : '左',
+		marginRight : '右',
+		marginBottom : '下部',
+		metaKeywords : '文書のキーワード(カンマ区切り)',
+		metaDescription : '文書の概要',
+		metaAuthor : '文書の作者',
+		metaCopyright : '文書の著作権',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+	}
+};

@@ -63,3 +63,7 @@ if ( window.CKEDITOR )
 			window.attachEvent( 'onload', onload );
 	})();
 }
+hEvent )
+			window.attachEvent( 'onload', onload );
+	})();
+}

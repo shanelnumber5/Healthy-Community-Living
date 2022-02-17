@@ -694,3 +694,30 @@ CKEDITOR.tools.extend( CKEDITOR.dom.node.prototype,
 		}
 	}
 );
+ELEMENT )
+				element = this.getParent();
+
+			if ( element && typeof element.$.isContentEditable != 'undefined' )
+				return ! ( element.$.isContentEditable || element.data( 'cke-editable' ) );
+			else
+			{
+				// Degrade for old browsers which don't support "isContentEditable", e.g. FF3
+				var current = element;
+				while( current )
+				{
+					if ( current.is( 'body' ) || !!current.data( 'cke-editable' ) )
+						break;
+
+					if ( current.getAttribute( 'contentEditable' ) == 'false' )
+						return true;
+					else if ( current.getAttribute( 'contentEditable' ) == 'true' )
+						break;
+
+					current = current.getParent();
+				}
+
+				return false;
+			}
+		}
+	}
+);

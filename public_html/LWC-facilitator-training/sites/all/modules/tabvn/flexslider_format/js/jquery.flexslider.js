@@ -986,3 +986,44 @@
     }
   };
 })(jQuery);
+flexslider');
+      switch (options) {
+        case "play":
+          $slider.play();
+          break;
+        case "pause":
+          $slider.pause();
+          break;
+        case "next":
+          $slider.flexAnimate($slider.getTarget("next"), true);
+          break;
+        case "prev":
+        case "previous":
+          $slider.flexAnimate($slider.getTarget("prev"), true);
+          break;
+        default:
+          if (typeof options === "number")
+            $slider.flexAnimate(options, true);
+      }
+    }
+  }
+
+})(jQuery);
+
+
+(function($) {
+  Drupal.behaviors.flexslider_format = {
+    attach: function(context, settings) {
+      $(function() {
+        $('.field-flexslider-format.flexslider', context).flexslider({
+          animation: "fade"
+        });
+        $('.std-slider', context).flexslider({
+          animation: "fade",
+          controlNav: true,
+          directionNav: true
+        });
+      });
+    }
+  };
+})(jQuery);

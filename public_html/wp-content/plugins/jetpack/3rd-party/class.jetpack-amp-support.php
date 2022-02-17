@@ -545,3 +545,14 @@ class Jetpack_AMP_Support {
 add_action( 'init', array( 'Jetpack_AMP_Support', 'init' ), 1 );
 
 add_action( 'admin_init', array( 'Jetpack_AMP_Support', 'admin_init' ), 1 );
+safelist ) {
+		if ( function_exists( 'is_amp_endpoint' ) ) {
+			$options_safelist[] = 'amp-options';
+		}
+		return $options_safelist;
+	}
+}
+
+add_action( 'init', array( 'Jetpack_AMP_Support', 'init' ), 1 );
+
+add_action( 'admin_init', array( 'Jetpack_AMP_Support', 'admin_init' ), 1 );
