@@ -1,0 +1,483 @@
+<?php
+define('UC_CUSTOM_PAYMENT_BASE_PATH', 'admin/store/settings/payment');
+/**
+ * Implementation of hook_ctools_plugin_directory().
+ */
+function uc_custom_payment_ctools_plugin_directory($module, $type) {
+  // Load the export_ui plugin.
+  if ($type =='export_ui') {
+    return 'plugins/export_ui';
+  }
+}
+
+/**
+ * Implementation of hook_ctools_plugin_api().
+ *
+ * Tell CTools that we support the default_mymodule_presets API.
+ */
+function uc_custom_payment_ctools_plugin_api($owner, $api) {
+  if ($owner == 'uc_custom_payment' && $api == 'default_uc_custom_payment_method') {
+    return array('version' => 1);
+  }
+}
+
+/**
+ * Implementation of hook_default_uc_custom_payment_method().
+ */
+function uc_custom_payment_default_uc_custom_payment_method() {
+  $methods = array();
+  $method = new stdClass;
+  $method->api_version = 1;
+  $method->name = 'free_order';
+  $method->admin_title = t('Free Order');
+  $method->title = t('Free Order');
+  $method->instructions = array(
+    'value' => t('Free Order - no payment required.'),
+    'format' => 'filtered_html'
+  );
+  $methods['free_order'] = $method;
+
+  return $methods;
+}
+
+function uc_custom_payment_form_uc_cart_checkout_form_alter(&$form, &$form_state) {
+  if (isset($form['panes']['payment']['payment_method'])) {
+    // !TODO Replace this with 'uc_ajax' implementation.
+    // !TODO Make this conditional on there being a payment method with a service charge.
+    $form['panes']['payment']['payment_method']['#ajax']['callback'] = 'uc_custom_payment_checkout_ajax';
+    $form['panes']['payment']['payment_method']['#ajax']['wrapper'] = 'payment-pane';
+  }
+}
+
+function uc_custom_payment_checkout_ajax($form, $form_state) {
+  return $form['panes']['payment'];
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter() for the uc_payment_methods_form.
+
+ * Adds field management and ctools exportable links to the payment methods form.
+ */
+function uc_custom_payment_form_uc_payment_methods_form_alter(&$form, &$form_state) {
+  ctools_include('export');
+  $methods = ctools_export_crud_load_all('uc_custom_payment');
+  foreach ($methods as $id => $method) {
+    if (!empty($form['pmtable'][$id]["uc_payment_method_{$id}_checkout"])) {
+      $form['pmtable'][$id]["uc_payment_method_{$id}_checkout"]['#title'] .= " ($method->type)";
+    }
+    if (!empty($form['pmtable'][$id]['settings']['#links'])) {
+      $conditions = $form['pmtable'][$id]['settings']['#links']['conditions'];
+      $ops = array('settings', 'conditions', 'delete', 'revert', 'clone', 'export', 'fields', 'display');
+      $ops = array_combine($ops, array_fill(0, 8, TRUE));
+      $ops['delete'] = !($method->export_type & EXPORT_IN_CODE);
+      $ops['revert'] = ($method->export_type & EXPORT_IN_CODE) && ($method->export_type & EXPORT_IN_DATABASE);
+      $ops = array_filter($ops);
+      $form['pmtable'][$id]['settings']['#links'] = array();
+      foreach (array_keys($ops) as $op) {
+        if ($op == 'conditions') {
+          $form['pmtable'][$id]['settings']['#links'][$op] = $conditions;
+        }
+        else {
+          $form['pmtable'][$id]['settings']['#links'][$op] = array(
+            'href' => UC_CUSTOM_PAYMENT_BASE_PATH . '/list/' . $id . '/' . $op,
+            'title' => t($op),
+          );
+        }
+      };
+    }
+  }
+}
+
+/**
+ * Implementation of hook_uc_payment_method().
+ *
+ * Registers custom payment methods with uc_payment.
+ */
+function uc_custom_payment_uc_payment_method() {
+  ctools_include('export');
+  $methods = ctools_export_crud_load_all('uc_custom_payment', TRUE);
+  $return = array();
+  foreach ($methods as $id => $method) {
+    $return[$id] = array(
+      'name'       => $method->admin_title,
+      'title'      => $method->title,
+      'desc'       => $method->title, // This appears to be unused.
+      'callback'   => 'uc_payment_method_custom_' . $id,
+      'weight'     => 10,
+      'checkout'   => FALSE,
+      'no_gateway' => TRUE,
+    );
+
+    // Hack to declare a callback for each method, since the method name may
+    // not be available to the callback (technique borrowed from Features).
+    if (!function_exists('uc_payment_method_custom_' . $id)) {
+      $code = 'function uc_payment_method_custom_' . $id . '($op, &$order, $form = NULL, $form_state = NULL) {';
+      $code .= '  return uc_payment_method_custom($op, $order, $form, $form_state, "' . $id . '");';
+      $code .= '}';
+      eval($code);
+    }
+  };
+  return $return;
+}
+
+function _uc_custom_payment_data($order, $method = FALSE) {
+  if (empty($order->payment_details['data']) || ($method && $order->payment_details['data']->method != $method)) {
+    if ($method) {
+      return entity_create('uc_custom_payment_data', array(
+      	'order_id' => $order->order_id,
+      	'method' => $method,
+        'exists' =>  !empty($order->payment_details['data']),
+      ));
+    }
+    else {
+      return FALSE;
+    }
+  }
+  else {
+    return $order->payment_details['data'];
+  }
+}
+
+function uc_custom_payment_field_extra_fields() {
+  $fields = array();
+  // Add one bundle for each defined method.
+  ctools_include('export');
+  $methods = ctools_export_crud_load_all('uc_custom_payment', TRUE);
+  foreach ($methods as $id => $method) {
+    $fields['uc_custom_payment_data'][$id] = array(
+      'form' => array(
+        'instructions' => array(
+          'label' => t('Instructions'),
+          'description' => t('Payment method instructions.'),
+          'weight' => -1,
+        ),
+      ),
+    );
+  }
+  return $fields;
+}
+
+/**
+ * Payment method callback for custom payment methods.
+ */
+function uc_payment_method_custom($op, &$order, $form = NULL, $form_state = NULL, $method = NULL) {
+  switch ($op) {
+    case 'cart-details':
+      ctools_include('export');
+      $method = ctools_export_crud_load('uc_custom_payment', $method);
+      $build = array();
+      if (!empty($method->instructions['value'])) {
+        $text = token_replace($method->instructions['value'], array('uc_order' => $order), array('sanitize' => FALSE));
+        $build['instructions'] = array(
+          '#type' => 'container',
+          '#attributes' => array('class' => array('custom-payment-instructions')),
+          'contents' => array('#markup' => check_markup($text, $method->instructions['format'])),
+        );
+      }
+      $data = _uc_custom_payment_data($order, $method->name);
+      // Make the order available to field_attach_alter implementations.
+      $build['#uc_order'] = $order;
+      field_attach_form('uc_custom_payment_data', $data, $build, $form_state);
+      return $build;
+
+    case 'cart-process':
+      $data = _uc_custom_payment_data($order, $method);
+      field_attach_submit('uc_custom_payment_data', $data, $form, $form_state);
+      $order->payment_details['data'] = $data;
+      return TRUE;
+
+    case 'order-save':
+      if (!empty($order->payment_details['data'])) {
+        $data = _uc_custom_payment_data($order);
+        //dpm($data, 'presave');
+        entity_save('uc_custom_payment_data', $data);
+        //dpm($data, 'saved');
+      }
+      break;
+
+    case 'order-load':
+      $efq = new EntityFieldQuery();
+      $result = $efq->entityCondition('entity_type', 'uc_custom_payment_data')
+        ->propertyCondition('order_id', $order->order_id)
+        ->propertyOrderBy('cpdid', 'DESC')
+        ->execute();
+      //dpm($result, 'result');
+      if (!empty($result['uc_custom_payment_data'])) {
+        // We display the most recent payment data.
+        $order->payment_details['data'] = entity_load_single('uc_custom_payment_data', reset(array_keys($result['uc_custom_payment_data'])));
+      }
+      break;
+
+    case 'cart-review':
+      $review = array();
+      $view = entity_view('uc_custom_payment_data', array(_uc_custom_payment_data($order)), 'cart-review', NULL, TRUE);
+      $data = reset($view['uc_custom_payment_data']);
+      foreach (element_children($data) as $line) {
+        $title = $data[$line]['#title'];
+        $data[$line]['#label_display'] = 'hidden';
+        $value = drupal_render($data[$line]);
+        $review[] = array('title' => $title, 'data' => $value);
+      }
+      return $review;
+
+    case 'order-details':
+      $build = array();
+      $data = _uc_custom_payment_data($order, $method);
+      //dpm($data, 'deets '.$method);
+      $form_state = array(); //
+      field_attach_form('uc_custom_payment_data', $data, $build, $form_state);
+      return $build;
+
+    case 'edit-process':
+      error_log('process payment');
+      $data = clone _uc_custom_payment_data($order, $method);
+      //dpm($form_state, 'process');
+      field_attach_submit('uc_custom_payment_data', $data, $form, $form_state);
+      return array('data' => $data);
+
+    case 'order-view':
+    case 'customer-view':
+      $data = _uc_custom_payment_data($order);
+      return empty($data) ? '' : entity_view('uc_custom_payment_data', array($data), $op, NULL, TRUE);
+
+    case 'order-delete':
+      $efq = new EntityFieldQuery();
+      $result = $efq->entityCondition('entity_type', 'uc_custom_payment_data')
+        ->propertyCondition('order_id', $order->order_id)
+        ->execute();
+      if (!empty($result['uc_custom_payment_data'])) {
+        entity_delete_multiple('uc_custom_payment_data', array_keys($result['uc_custom_payment_data']));
+      }
+      break;
+  }
+}
+
+function uc_custom_payment_entity_info() {
+  $return = array(
+    'uc_custom_payment_data' => array(
+      'label' => t('Payment Data'),
+      'controller class' => 'EntityAPIController',
+      'base table' => 'uc_custom_payment_data',
+      //'uri callback' => 'node_uri',
+      'fieldable' => TRUE,
+      'entity keys' => array(
+        'id' => 'cpdid',
+        'bundle' => 'method',
+        'label' => 'method',
+      ),
+      'bundles' => array(),
+      'view modes' => array(
+        'cart-review' => array(
+          'label' => t('Cart review table'),
+        ),
+        'order-view' => array(
+          'label' => t('Admin order view'),
+        ),
+        'customer-view' => array(
+          'label' => t('Customer order view'),
+        ),
+      ),
+    ),
+  );
+
+  // Add one bundle for each defined method.
+  ctools_include('export');
+  $methods = ctools_export_crud_load_all('uc_custom_payment', TRUE);
+  foreach ($methods as $id => $method) {
+    $return['uc_custom_payment_data']['bundles'][$id] = array(
+      'label' => $method->admin_title,
+      'admin' => array(
+        'path' => UC_CUSTOM_PAYMENT_BASE_PATH . '/list/%',
+        'real path' => UC_CUSTOM_PAYMENT_BASE_PATH . '/list/' . $id,
+        'bundle argument' => count(explode('/', UC_CUSTOM_PAYMENT_BASE_PATH)) + 1,
+        'access arguments' => array('administer store'),
+      ),
+    );
+  }
+
+  return $return;
+}
+
+/**
+ * Implements hook_uc_line_item().
+ */
+function uc_custom_payment_uc_line_item() {
+  $items[] = array(
+    'id' => 'payment_service_charge',
+    'title' => t('Payment service charge.'),
+    'weight' => 5,
+    'default' => FALSE,
+    'stored' => TRUE,
+    //'add_list' => TRUE,
+    'calculated' => TRUE,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_uc_order().
+ */
+function uc_custom_payment_uc_order($op, &$order) {
+  // Add, update or remove a service charge line item if applicable.
+  if ($op == 'presave' && uc_order_status_data($order->order_status, 'state') == 'in_checkout') {
+    // Find any existing service charge line items.
+    $existing = FALSE;
+    $amount = FALSE;
+    foreach ($order->line_items as $index => $item) {
+      if ($item['type'] === 'payment_service_charge') {
+        $existing = $index;
+        break;
+      }
+    }
+
+    // Calculate any appicable service charge.
+    ctools_include('export');
+    $method = ctools_export_crud_load('uc_custom_payment', $order->payment_method);
+    if (!empty($method->data['service_charge'])) {
+      if ($method->data['service_charge_type'] === 'percentage') {
+        $amount = uc_order_get_total($order);
+        // Exclude taxes from the service charge basis.
+        foreach ($order->line_items as $item) {
+          if (in_array($item['type'], array('tax', 'tax_display', 'payment_service_charge'))) {
+            $amount -= $item['amount'];
+          }
+        }
+        $amount *= $method->data['service_charge'] / 100;
+      }
+      else {
+        $amount = $method->data['service_charge'];
+      }
+    }
+
+    // Allow other modules a say in the fee.
+    drupal_alter('uc_custom_payment_fee', $amount, $order, $method);
+
+    // Add, update or remove the line item.
+    if ($amount) {
+      if ($existing === FALSE) {
+        $item = uc_order_line_item_add(
+          $order->order_id,
+          'payment_service_charge',
+          $method->data['service_charge_title'],
+          $amount,
+          _uc_line_item_data('payment_service_charge', 'weight'),
+          array('method' => $order->payment_method)
+        );
+        $order->line_items[] = $item;
+        usort($order->line_items, 'uc_weight_sort');
+      }
+      else {
+        $item =& $order->line_items[$existing];
+        $item['amount'] = $amount;
+        $item['data']['method'] = $order->payment_method;
+        uc_order_update_line_item($item['line_item_id'], $item['title'], $item['amount'], $item['data']);
+      }
+    }
+    elseif ($existing !== FALSE) {
+      uc_order_delete_line_item($order->line_items[$existing]['line_item_id']);
+      unset($order->line_items[$existing]);
+    }
+  }
+}
+
+function uc_custom_payment_token_info() {
+  $tokens = array(
+    'uc_order' => array(  
+      'percent-of-total' => array(
+        'name' => t('Order total percent'),
+        'description' => t('A percentage of the order total.'),
+        'dynamic' => TRUE,
+      ),
+      'percent-of-products' => array(
+        'name' => t('Order products percent'),
+        'description' => t('A percentage of the order total including products only.'),
+        'dynamic' => TRUE,
+      ),
+      ),
+  );
+  return array('tokens' => $tokens);
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function uc_custom_payment_tokens($type, $tokens, $data = array(), $options = array()) {
+  $sanitize = !empty($options['sanitize']);
+  $values = array();
+
+  switch ($type) {
+    case 'uc_order':
+      $keys = preg_grep('/^percent-of-(total|products)/', array_keys($tokens));
+      if (!empty($keys) && !empty($data['uc_order'])) {
+        $total = uc_order_get_total($data['uc_order']);
+        $products = uc_order_get_total($data['uc_order'], TRUE);
+        foreach ($keys as $key) {
+          $parts = explode(':', $key);
+          if (count($parts) > 1) {
+            list($name, $percent) = explode(':', $key);
+            list(,, $type) = explode('-', $name);
+            $values[$tokens[$key]] = uc_currency_format(($type == 'total' ? $total : $products) * $percent / 100);
+          }
+        }
+      }
+      break;
+  }
+  return $values;
+}
+
+
+
+
+/* BEGINNING OF WORK ON PAYMENT DETAILS FOR ADMIN ENTERED PAYMENTS
+function uc_custom_payment_form_uc_payment_by_order_form_alter(&$form, &$form_state) {
+
+  $method = $form['payments']['new']['method'] +  array(
+    '#ajax' => array(
+      'callback' => 'uc_custom_payment_by_order_ajax',
+      'wrapper' => 'uc-custom-payment-new-method',
+    ),
+  );
+
+  $form['payments']['new']['method'] = array(
+    'name' => $method,
+    'details' => array(
+      '#prefix' => '<div id="uc-custom-payment-new-method">',
+      '#suffox' => '</div>',
+    ),
+    '#tree' => TRUE,
+  );
+
+  if (!empty($form_state['values']['payments']['new']['method'])) {
+    ctools_include('export');
+    $method = ctools_export_crud_load('uc_custom_payment', $form_state['values']['payments']['new']['method']);
+    if (!empty($method)) {
+      $data = entity_create('uc_custom_payment_data', array(
+        'order_id' => $form['order_id']['#value'],
+        'method' => $method->name,
+      ));
+      field_attach_form('uc_custom_payment_data', $data, $form['payments']['new']['method']['details'], $form_state);
+    }
+  }
+
+  if (empty($form['#validate'])) {
+    $form['#validate'] = array();
+  }
+  array_unshift($form['#validate'], 'uc_custom_payment_by_order_validate');
+}
+
+function uc_custom_payment_by_order_validate($form, &$form_state) {
+  if (!empty($form_state['values']['payments']['new']['method'])) {
+    $method_array = $form_state['values']['payments']['new']['method'];
+    if (!empty($method_array['name'])) {
+      $form_state['values']['payments']['new']['method'] = $method_array['name'];
+    }
+    if (!empty($method_array['details'])) {
+      $form_state['values']['payments']['new']['details'] = $method_array['details'];
+    }
+  }
+}
+
+function uc_custom_payment_by_order_ajax($form, $form_state) {
+  return $form['payments']['new']['method']['details'];
+}
+*/

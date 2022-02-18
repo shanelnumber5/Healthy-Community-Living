@@ -1,0 +1,10 @@
+name = Script filter
+description = Enables to insert script html tags into the content.
+core = 7.x
+
+; Information added by  packaging script on 2013-11-11
+version = "7.x-1.0"
+core = "7.x"
+project = "script_filter"
+datestamp = "1384186106"
+

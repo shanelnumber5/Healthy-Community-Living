@@ -1,0 +1,17 @@
+name = Track da files 
+description = Track datas about displayed files. 
+
+core = 7.x
+
+dependencies[] = field
+dependencies[] = file
+dependencies[] = browscap
+
+configure = admin/config/media/track_da_files
+
+; Information added by Drupal.org packaging script on 2016-11-03
+version = "7.x-1.9"
+core = "7.x"
+project = "track_da_files"
+datestamp = "1478187860"
+

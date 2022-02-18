@@ -1,0 +1,12 @@
+name = Ubercart Register Invoice Templates
+description = Find and register Ubercart order invoice template files.
+core = 7.x
+dependencies[] = uc_order
+package = Ubercart - extra
+
+; Information added by drupal.org packaging script on 2012-12-14
+version = "7.x-1.0"
+core = "7.x"
+project = "uc_register_invoice"
+datestamp = "1355519067"
+
