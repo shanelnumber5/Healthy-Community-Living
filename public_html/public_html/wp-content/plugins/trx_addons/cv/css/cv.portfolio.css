@@ -1,0 +1,41 @@
+/* CV Card: Portfolio styles */
+
+.trx_addons_cv_navi_buttons .trx_addons_cv_section_portfolio .trx_addons_cv_section_title {
+	display:none !important;
+}
+.trx_addons_cv_navi_buttons .trx_addons_cv_section_portfolio .trx_addons_cv_section_content {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+/* Style 1 */
+.trx_addons_cv_portfolio_style_1 .trx_addons_cv_portfolio_item_title {
+	margin:1em 0 0;
+	font-size:0.8462em;
+	text-transform:uppercase;
+	font-weight:bold;
+	text-align:left;
+}
+.trx_addons_cv_portfolio_item .trx_addons_cv_portfolio_item_title,
+.trx_addons_cv_portfolio_item .trx_addons_cv_portfolio_item_title a {
+	color: #292929;
+}
+
+/* Style 2 - Classic */
+.trx_addons_cv_portfolio_style_2 .trx_addons_cv_portfolio_columns {
+	margin: 0 -1px 0 0 !important;
+}
+.trx_addons_cv_portfolio_style_2 .trx_addons_cv_portfolio_column {
+	padding: 0 1px 1px 0 !important;
+}
+
+/* Style 3 - Masonry */
+.trx_addons_cv_portfolio_style_3 .trx_addons_cv_portfolio_columns {
+	margin: 0 -20px 0 0 !important;
+}
+.trx_addons_cv_portfolio_style_3 .trx_addons_cv_portfolio_column {
+	padding: 0 20px 20px 0 !important;
+}
+.trx_addons_cv_portfolio_style_3 .trx_addons_cv_portfolio_item + .trx_addons_cv_portfolio_item {
+	margin-top: 20px;
+}

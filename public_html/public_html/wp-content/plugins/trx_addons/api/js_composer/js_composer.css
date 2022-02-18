@@ -1,0 +1,10 @@
+/* Move container controls to the right side */
+.compose-mode .vc_controls-container > div.vc_controls-out-tl {
+	left: auto;
+	right: 0;
+}
+
+/* Hide 'Add' button on the some shortcodes */
+.compose-mode .sc_widget_slider.vc_empty-element:after {
+	display: none !important;
+}

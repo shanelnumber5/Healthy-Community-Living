@@ -1,0 +1,10 @@
+Installing uc_addresses
+-----------------------
+
+Installation is standard:
+
+  * Unpack the files into your modules directory, usually
+    sites/all/modules.
+  * Enable it in Administer > Site building > Modules
+
+The module will add the table "uc_addresses".

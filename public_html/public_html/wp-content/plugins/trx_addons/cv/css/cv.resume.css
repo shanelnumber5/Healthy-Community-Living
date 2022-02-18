@@ -1,0 +1,281 @@
+/* CV Card: Resume styles */
+.trx_addons_tabs_content.trx_addons_tabs_content_narrow {
+	padding: 0 20%;
+}
+
+.trx_addons_cv_resume_item {
+	position:relative;
+	-webkit-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns .trx_addons_cv_resume_item {
+	padding: 2em 3em;
+	border-color: #e8e8e8;
+}
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_2 .trx_addons_cv_resume_column:nth-child(2n+2) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_3 .trx_addons_cv_resume_column:nth-child(3n+2) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_3 .trx_addons_cv_resume_column:nth-child(3n+3) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_4 .trx_addons_cv_resume_column:nth-child(4n+2) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_4 .trx_addons_cv_resume_column:nth-child(4n+3) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_4 .trx_addons_cv_resume_column:nth-child(4n+4) .trx_addons_cv_resume_item {
+	border-left: 1px solid #e8e8e8;
+}
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_2 .trx_addons_cv_resume_column:nth-child(2n+3) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_2 .trx_addons_cv_resume_column:nth-child(2n+4) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_3 .trx_addons_cv_resume_column:nth-child(3n+4) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_3 .trx_addons_cv_resume_column:nth-child(3n+5) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_3 .trx_addons_cv_resume_column:nth-child(3n+6) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_4 .trx_addons_cv_resume_column:nth-child(4n+5) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_4 .trx_addons_cv_resume_column:nth-child(4n+6) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_4 .trx_addons_cv_resume_column:nth-child(4n+7) .trx_addons_cv_resume_item,
+.trx_addons_tabs_content_delimiter .trx_addons_cv_resume_columns_4 .trx_addons_cv_resume_column:nth-child(4n+8) .trx_addons_cv_resume_item {
+	border-top: 1px solid #e8e8e8;
+}
+
+
+.trx_addons_cv_resume_item_meta {
+	margin-top: 1.5em;
+	font-size:0.8462em;
+	line-height:1.5em;
+	text-transform:uppercase;
+	font-weight:bold;
+	color: #292929;
+}
+.trx_addons_cv_resume_item .trx_addons_cv_resume_item_title {
+	margin:0;
+	font-weight:bold;
+	font-size: 1.2308em;
+}
+.trx_addons_cv_resume_item .trx_addons_cv_resume_item_title,
+.trx_addons_cv_resume_item .trx_addons_cv_resume_item_title a {
+	color: #292929;
+}
+.trx_addons_cv_resume_item_subtitle {
+	font-weight:bold;
+	font-size: 0.8462em;
+	text-transform:uppercase;
+	color: #b7b7b7;
+}
+.trx_addons_cv_resume_item_text {
+	line-height:1.5em;
+}
+.trx_addons_cv_resume_item_text p {
+	margin:0;
+}
+.trx_addons_cv_resume_item_text p+p {
+	margin-top:1em;;
+}
+.trx_addons_cv_resume_item_link {
+	display:block;
+	position:absolute;
+	left:0;
+	top:0;
+	right:0;
+	bottom:0;
+	z-index:1;
+}
+
+/* Skills */
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item {
+	text-align:center;
+	margin: 0 1em 2em;
+	-webkit-transition: all ease .3s;
+	    -ms-transition: all ease .3s;
+	        transition: all ease .3s;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:after {
+	border: 7px solid #f4d85a;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:nth-child(4n+2),
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+2) .trx_addons_cv_resume_item,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+2) .trx_addons_cv_resume_item,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:nth-child(4n+2):after,
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+2) .trx_addons_cv_resume_item:after,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+2) .trx_addons_cv_resume_item:after {
+	border-color: #03a9b7;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:nth-child(4n+3),
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+3) .trx_addons_cv_resume_item,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+3) .trx_addons_cv_resume_item,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:nth-child(4n+3):after,
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+3) .trx_addons_cv_resume_item:after,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+3) .trx_addons_cv_resume_item:after {
+	border-color: #fe7f2e;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:nth-child(4n+4),
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+4) .trx_addons_cv_resume_item,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+4) .trx_addons_cv_resume_item,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:nth-child(4n+4):after,
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+4) .trx_addons_cv_resume_item:after,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+4) .trx_addons_cv_resume_item:after {
+	border-color: #00a169;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:after {
+    content: " ";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+	opacity: 0;
+	-webkit-transition: all ease .3s;
+	    -ms-transition: all ease .3s;
+	        transition: all ease .3s;
+}
+/* Hover: Shift border */
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_hover_shift:after {
+	margin: -7px 0 0 -7px;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_hover_shift:hover:after {
+	opacity: 1;
+	margin: -8px 0 0 -8px;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_hover_shift:hover {
+	border-color: #80712f;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_hover_shift:nth-child(4n+2):hover,
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+2) .trx_addons_cv_resume_item_hover_shift:hover,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+2) .trx_addons_cv_resume_item_hover_shift:hover {
+	border-color: #02545c;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_hover_shift:nth-child(4n+3):hover,
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+3) .trx_addons_cv_resume_item_hover_shift:hover,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+3) .trx_addons_cv_resume_item_hover_shift:hover {
+	border-color: #803f17;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_hover_shift:nth-child(4n+4):hover,
+.trx_addons_cv_resume_style_skills .swiper-slide:nth-child(4n+4) .trx_addons_cv_resume_item_hover_shift:hover,
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_column:nth-child(4n+4) .trx_addons_cv_resume_item_hover_shift:hover {
+	border-color: #004d32;
+}
+
+/* Hover: Flash border */
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_hover_flash:after {
+	margin: -7px 0 0 -7px;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_hover_flash:hover:after {
+	animation: flash .3s;
+}
+
+
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item:before{
+    content:' ';
+    padding-top:100%; /* Hack: vertical value as 100% equals width */
+    display:inline-block;
+	vertical-align:middle;
+	width:0;
+	margin-left:-4px;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_skills {
+	display:inline-block;
+	vertical-align:middle;
+	color: #292929;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_skill {
+	display:inline-block;
+	font-weight: bold;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_skill:after {
+	content: ' ';
+	display:block;
+	width: 100%;
+	height: 0;
+	border-top: 1px solid #292929;
+	margin:1em 0 1.2em;
+}
+.trx_addons_cv_resume_style_skills .trx_addons_cv_resume_item_title {
+	font-size:0.9231em;
+	font-weight: bold;
+	text-transform:uppercase;
+	letter-spacing:1px;
+}
+
+/* Work Experience */
+.trx_addons_tabs_content_work.trx_addons_tabs_content_narrow {
+	padding: 0 6%;
+}
+.trx_addons_cv_resume_style_work .trx_addons_cv_resume_item_header {
+	height: 4em;
+}
+.trx_addons_cv_resume_style_work .trx_addons_cv_resume_item_title {
+	margin-top:1em;
+	text-align:left;
+}
+.trx_addons_cv_resume_style_work .trx_addons_cv_resume_item_subtitle {
+	margin-top:0.25em;
+	line-height:1.5em;
+}
+.trx_addons_cv_resume_style_work .trx_addons_cv_resume_item_text {
+	margin-top:1.5em;
+}
+
+/* Education */
+.trx_addons_tabs_content_education.trx_addons_tabs_content_narrow {
+	padding: 0 8%;
+}
+.trx_addons_cv_resume_style_education .trx_addons_cv_resume_item {
+	padding-left: 2.5em;
+	padding-right: 2.5em;
+}
+.trx_addons_cv_resume_style_education .trx_addons_cv_resume_item_number {
+	font-size:3em;
+	line-height: 1.5em;
+	font-weight:bold;
+	color: #b7b7b7;
+}
+.trx_addons_cv_resume_style_education .trx_addons_cv_resume_item_title {
+	font-size:2.5em;
+	font-weight:bold;
+	margin-top:0.5em;
+	text-align:left;
+}
+.trx_addons_cv_resume_style_education .trx_addons_cv_resume_item_subtitle {
+	margin-top:1em;
+	line-height: 1.5em;
+}
+.trx_addons_cv_resume_style_education .trx_addons_cv_resume_item_text {
+	margin-top:1.5em;
+}
+
+/* Services */
+.trx_addons_tabs_content_services.trx_addons_tabs_content_narrow {
+	padding: 0 8%;
+}
+.trx_addons_cv_resume_style_services .trx_addons_cv_resume_item {
+	text-align:center;
+	padding-left: 2.5em;
+	padding-right:2.5em;
+}
+.trx_addons_cv_resume_style_services .trx_addons_cv_resume_item_icon {
+	font-size:3.5em;
+	line-height:1em;
+	color: #292929;
+}
+.trx_addons_cv_resume_style_services .trx_addons_cv_resume_item_title {
+	font-size:0.9231em;
+	margin-top:1em;
+	text-transform: uppercase;
+}
+.trx_addons_cv_resume_style_services .trx_addons_cv_resume_item_title > a {
+	display:block;
+}
+.trx_addons_cv_resume_style_services .trx_addons_cv_resume_item_title > a:after {
+	content:' ';
+	display:block;
+	width: 3em;
+	height:0;
+	border-top: 1px solid #292929;
+	margin:1em auto 0;
+}
+.trx_addons_cv_resume_style_services .trx_addons_cv_resume_item_text {
+	margin-top:1em;
+}
+.trx_addons_cv_resume_style_services .trx_addons_cv_resume_item_text a {
+	text-decoration:underline;
+	color: #292929;
+}
+.trx_addons_cv_resume_style_services .trx_addons_cv_resume_item_text a:hover {
+	text-decoration:none;
+}

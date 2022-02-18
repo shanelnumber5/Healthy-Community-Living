@@ -1,0 +1,22 @@
+/* Widget: About me */
+.widget_aboutme .aboutme_avatar {
+	overflow:hidden;
+	text-align:center;
+}
+.widget_aboutme .aboutme_username {
+	text-align:center;
+	font-size:1.5385em;
+	font-weight:400;
+	text-transform:none;
+	margin: 0;
+}
+.widget_aboutme .aboutme_avatar + .aboutme_username {
+	margin-top: 1em;
+}
+.widget_aboutme .aboutme_description {
+	text-align:center;
+}
+.widget_aboutme .aboutme_avatar + .aboutme_description,
+.widget_aboutme .aboutme_username + .aboutme_description {
+	margin-top:0.75em;
+}

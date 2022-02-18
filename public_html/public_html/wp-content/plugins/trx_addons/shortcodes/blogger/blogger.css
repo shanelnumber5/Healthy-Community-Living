@@ -1,0 +1,104 @@
+.sc_blogger .sc_blogger_slider.slider_outer_pagination_pos_bottom {
+	padding-bottom: 3em;
+}
+
+.sc_blogger {
+	position: relative;	
+	padding-top: 0.0001px;
+}
+.sc_blogger .sc_blogger_item .sc_blogger_item_title {
+	margin:0;
+}
+.sc_blogger .sc_blogger_item .sc_blogger_item_featured {
+	margin-bottom:0;
+}
+.sc_blogger .sc_blogger_item .sc_blogger_item_featured img {
+	width:100%;
+	height: auto;
+}
+
+/* Style Default */
+.sc_blogger_default .sc_blogger_item {
+	background-color: #f7f7f7;
+	padding: 2em;
+	overflow:hidden;
+	position:relative;
+}
+.sc_blogger_default .sc_blogger_item + .sc_blogger_item {
+	margin-top: 2em;
+}
+.sc_blogger_default.slider_swiper .sc_blogger_item + .sc_blogger_item {
+	margin-top: 0;
+}
+.sc_blogger_default .sc_blogger_item_featured {
+	width:40%;
+	-webkit-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.sc_blogger_default .sc_blogger_item_content {
+	width:50%;
+	position:absolute;
+	z-index:1;
+	top:50%;
+	left:50%;
+	padding-right: 2em;
+	-webkit-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+	-webkit-transform: translateY(-50%);
+	    -ms-transform: translateY(-50%);
+	        transform: translateY(-50%);
+}
+.sc_blogger_default .sc_blogger_post_meta {
+	margin-top: 1em;
+	font-size: 0.9286em;
+}
+.sc_blogger_default .sc_blogger_item_excerpt {
+	margin-top: 1em;
+}
+
+.sc_blogger_default .sc_blogger_button {
+	text-align:center;
+}
+
+/* Style Classic */
+.sc_blogger_classic .sc_blogger_item {
+	background-color: #f7f7f7;
+	text-align:center;
+}
+.sc_blogger_classic .sc_blogger_item_content {
+	padding:2em;
+}
+.sc_blogger_classic .sc_blogger_post_meta {
+	margin-top: 0.5em;
+	font-size: 0.9286em;
+}
+.sc_blogger_classic .sc_blogger_item_excerpt {
+	margin-top: 1.5em;
+}
+.sc_blogger_classic .sc_blogger_item_excerpt_text {
+	max-height: 8em;
+	overflow:hidden;
+}
+.sc_blogger_classic .sc_blogger_item.post_format_quote .sc_blogger_item_excerpt_text {
+	max-height: none;
+}
+.sc_blogger_classic .sc_blogger_item_excerpt_text + p,
+.sc_blogger_classic .sc_blogger_item_excerpt_text + a {
+	margin:2em 0 0;
+}
+
+/* Style Plain */
+.sc_blogger_plain .sc_blogger_item {
+	background-color: #f7f7f7;
+	text-align:center;
+	padding: 1em;
+	margin-bottom: 2px;
+}
+.sc_blogger_plain .sc_blogger_post_meta {
+	margin:0;
+}
+.sc_blogger_plain .sc_blogger_item .sc_blogger_item_title {
+	margin: 0.4em 0 0.6em;
+}

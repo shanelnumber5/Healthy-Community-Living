@@ -1,0 +1,269 @@
+/* CV Card: Print styles */
+
+/* Hide elements */
+.trx_addons_profiler,
+.trx_addons_scroll_to_top {
+	display:none !important;
+	visibility:hidden !important;
+}
+	
+/* Print settings */
+* {
+	-webkit-print-color-adjust: exact;
+}
+
+/* Common styles */
+html.no-js, html.js, body.trx_addons_cv_prn {
+	background: none !important;
+	margin: 0 !important;
+}
+.trx_addons_cv_prn_body_wrap {
+	background: none !important;
+	width: 650px;
+	margin:2em auto;
+	font-size: 13px;
+	line-height: 1.5em;
+	color: #000 !important;
+}
+.trx_addons_cv_prn_body_wrap h1,
+.trx_addons_cv_prn_body_wrap h2,
+.trx_addons_cv_prn_body_wrap h3,
+.trx_addons_cv_prn_body_wrap h4,
+.trx_addons_cv_prn_body_wrap h5,
+.trx_addons_cv_prn_body_wrap h6 {
+	text-align:left;
+	margin:0;
+	color: #000 !important;
+}
+.trx_addons_cv_prn_body_wrap a,
+.trx_addons_cv_prn_body_wrap a:hover,
+.trx_addons_cv_prn_body_wrap h1 > a,
+.trx_addons_cv_prn_body_wrap h2 > a,
+.trx_addons_cv_prn_body_wrap h3 > a,
+.trx_addons_cv_prn_body_wrap h4 > a,
+.trx_addons_cv_prn_body_wrap h5 > a,
+.trx_addons_cv_prn_body_wrap h6 > a,
+.trx_addons_cv_prn_body_wrap h1 > a:hover,
+.trx_addons_cv_prn_body_wrap h2 > a:hover,
+.trx_addons_cv_prn_body_wrap h3 > a:hover,
+.trx_addons_cv_prn_body_wrap h4 > a:hover,
+.trx_addons_cv_prn_body_wrap h5 > a:hover,
+.trx_addons_cv_prn_body_wrap h6 > a:hover {
+	color:#000 !important;
+}
+
+/* Header
+----------------------------------------------- */
+.trx_addons_cv_prn_header {
+	overflow:hidden;
+	background:none !important;
+}
+
+.trx_addons_cv_prn_header_left {
+	float: left;
+	width: 47%;
+	overflow:hidden;
+	padding: 0 0 2px 0;
+}
+.trx_addons_cv_prn_header .trx_addons_cv_prn_photo {
+	width: 30%;
+	float:left;
+}
+.trx_addons_cv_prn_header .trx_addons_cv_prn_photo img {
+	width:100%;
+	height:auto;
+}
+.trx_addons_cv_prn_header .trx_addons_cv_prn_title {
+	float:left;
+	width:70%;
+	padding-left:1.5em;
+	-webkit-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.trx_addons_cv_prn_header .trx_addons_cv_prn_name {
+	font-size:2.8em;
+	margin:0 0 0.2em;
+	line-height:1.1em;
+	text-transform:uppercase;
+	color:#000 !important;
+}
+.trx_addons_cv_prn_header .trx_addons_cv_prn_position {
+	font-size:1.2em;
+	font-weight:normal;
+	margin:0;
+	color:#4fa6d1 !important;
+}
+
+.trx_addons_cv_prn_header_right {
+	float: right;
+	width: 50%;
+	font-size: 0.9231em;
+}
+.trx_addons_cv_prn_header .trx_addons_cv_prn_info_row+.trx_addons_cv_prn_info_row {
+	margin-top:0.6em;
+}
+.trx_addons_cv_prn_header .trx_addons_cv_prn_info_label {
+	display:inline-block;
+	width: 30%;
+	padding-right:1em;
+	text-align:right;
+	font-weight:bold;
+}
+
+.trx_addons_cv_prn_header .trx_addons_cv_prn_header_description {
+	clear:both;
+	padding-top:1.5em;
+}
+
+/* Sections
+----------------------------------------------- */
+.trx_addons_cv_prn_section + .trx_addons_cv_prn_section {
+	margin-top: 4.5em;
+	padding-top:4.5em;
+	border-top: 2px solid #e0e0e0 !important;
+}
+.trx_addons_cv_prn_section_title {
+	font-size: 1.6em;
+	text-transform:uppercase;
+	margin-bottom: 1.2em !important;
+	color: #000 !important;
+}
+.trx_addons_cv_prn_resume_item {
+	margin-top:2em;
+	overflow:hidden;
+}
+.trx_addons_cv_prn_resume_columns {
+	margin:0 !important;	
+}
+.trx_addons_cv_prn_resume_item_text p {
+	margin:0;
+}
+.trx_addons_cv_prn_resume_item_text p + p {
+	margin-top:0.5em;
+}
+
+/* Skills */
+.trx_addons_cv_prn_resume_item_skills {
+	color: #000 !important;
+}
+.trx_addons_cv_prn_resume_item_skill {
+	background-color:#e0e0e0 !important;
+}
+.trx_addons_sc_skills_total {
+	background-color:#333 !important;
+	text-align:right;
+}
+.trx_addons_sc_skills_total span {
+	display:inline-block;
+	margin-right:1em;
+	font-weight:bold;
+	color: #fff !important;
+	font-size:0.8em;
+	line-height:2em;
+}
+.trx_addons_cv_prn_resume_item_skills .trx_addons_cv_prn_resume_item_title {
+	text-transform:none;
+	font-size:1.2em;
+	margin-bottom:0.2em;
+	color: #333 !important;
+}
+.trx_addons_cv_prn_resume_item_skills .trx_addons_cv_prn_resume_item_text {
+	margin-top:0.4em;
+}
+
+/* Work */
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item {
+	overflow:hidden;
+	position:relative;
+}
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item + .trx_addons_cv_prn_resume_item {
+	margin-top:1.5em;
+	padding-top:2.4em;
+	border-top: 1px dashed #e0e0e0 !important;
+}
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item_thumb {
+	float:left;
+	width: 20%;
+	margin: 0 2em 1em 0;
+}
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item_header {
+	margin-bottom:1.5em;
+}
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item_title {
+	font-size:1.4em;
+}
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item_title,
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item_title a {
+	color: #000 !important;
+}
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item_subtitle {
+	color:#4fa6d1 !important;
+}
+.trx_addons_cv_prn_resume_style_work .trx_addons_cv_prn_resume_item_meta {
+	display:inline-block;
+	float:right;
+	margin: 0 0 0.6em 1em;
+	font-size:1.4em;
+	color:#aaa !important;
+}
+
+/* Education */
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item + .trx_addons_cv_prn_resume_item {
+	margin-top:2em;
+	padding-top:2em;
+	border-top: 1px dashed #e0e0e0 !important;
+}
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item_number,
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item_header {
+	display: inline-block;
+	vertical-align:top;
+}
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item_number {
+	font-size:3.5em;
+	font-weight:bold;
+	line-height:0.9em;
+	margin-right: 0.3em;
+	color: #bbb !important;	
+}
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item_title {
+	font-size:1.4em;
+}
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item_title,
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item_title a {
+	color: #000 !important;
+}
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item_subtitle {
+	color:#4fa6d1 !important;
+}
+.trx_addons_cv_prn_resume_style_education .trx_addons_cv_prn_resume_item_header {
+	margin-bottom:1.5em;
+}
+
+/* Services */
+.trx_addons_cv_prn_resume_style_services .trx_addons_cv_prn_resume_item + .trx_addons_cv_prn_resume_item {
+	margin-top:2em;
+	padding-top:2em;
+	border-top: 1px dashed #e0e0e0 !important;
+}
+.trx_addons_cv_prn_resume_style_services .trx_addons_cv_prn_resume_item_icon,
+.trx_addons_cv_prn_resume_style_services .trx_addons_cv_prn_resume_item_title {
+	display:inline-block;
+	vertical-align:middle;
+}
+.trx_addons_cv_prn_resume_style_services .trx_addons_cv_prn_resume_item_title,
+.trx_addons_cv_prn_resume_style_services .trx_addons_cv_prn_resume_item_title a {
+	color: #000 !important;
+}
+.trx_addons_cv_prn_resume_style_services .trx_addons_cv_prn_resume_item_icon {
+	font-size:2em;
+	line-height:1em;
+	margin-right: 0.1em;
+	color: #aaa !important;	
+}
+.trx_addons_cv_prn_resume_style_services .trx_addons_cv_prn_resume_item_title {
+	font-size:1.4em;
+}
+.trx_addons_cv_prn_resume_style_services .trx_addons_cv_prn_resume_item_text {
+	margin-top:1.5em;
+}

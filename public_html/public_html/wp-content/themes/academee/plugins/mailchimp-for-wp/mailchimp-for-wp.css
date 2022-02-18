@@ -1,0 +1,42 @@
+/* MailChimp for WP styles
+----------------------------------------------------------------- */
+.mc4wp-form {
+	position:relative;
+	padding-right: 10em;
+}
+.mc4wp-form .mc4wp-form-fields input[type="email"] {
+	padding:1.45em 2.5em;
+	width: 100%;
+	vertical-align:top;
+    -webkit-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+            box-sizing: border-box;
+    border-radius: 5em;
+    border:none;
+    font-size: 14px;
+}
+.mc4wp-form .mc4wp-form-fields input[type="submit"] {
+	position: absolute;
+	z-index:1;
+	right: 0;
+    font-weight: 900;
+	top: 0;
+	vertical-align:top;
+	padding: 1.418em 2.1em;
+    border-radius: 5em;
+    font-size: 14px;
+    border:none;
+}
+
+.mc4wp-form .mc4wp-alert {
+	margin: 1.5em 0;
+	padding: 1em;
+	line-height:1.5em;
+}
+
+.mc4wp-form input[name="AGREE_TO_TERMS"]{
+	display: inline-block;
+	position: relative;
+	top: 1px;
+	margin-right: 0.25em;
+}

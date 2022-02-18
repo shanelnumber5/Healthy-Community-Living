@@ -1,0 +1,107 @@
+/* Video player's styles */
+.trx_addons_video_player.with_cover {
+	position:relative;
+	overflow: hidden;
+}
+.trx_addons_video_player.with_cover .video_embed {
+	position: absolute;
+	z-index:1;
+	left:0;
+	top:0;
+	width:100%;
+	height: 100%;
+	opacity:0;
+	overflow:hidden;
+	-webkit-transition: all ease .3s;
+	    -ms-transition: all ease .3s;
+	        transition: all ease .3s;
+}
+.trx_addons_video_player.with_cover .video_embed:before {
+	content:' ';
+	display:inline-block;
+	padding-top:55%;
+	width:0;
+	height:0;
+}
+.trx_addons_video_player.with_cover img {
+	position:relative;
+	z-index:2;
+	width: 100%;
+	height: auto;
+}
+.trx_addons_video_player.with_cover .video_mask {
+	position: absolute;
+	z-index:3;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	background-color: rgba(0,0,0,0.5);
+	opacity:0;
+	-webkit-transition: all ease .3s;
+	    -ms-transition: all ease .3s;
+	        transition: all ease .3s;
+}
+.trx_addons_video_player.with_cover:hover .video_mask {
+	opacity:1;
+}
+.trx_addons_video_player.with_cover .video_hover {
+	position: absolute;
+	z-index:4;
+	left: 50%;
+	top: 50%;
+	font-size:3em;
+	width: 2em;
+	height: 2em;
+	line-height: 2em;
+	text-align:center;
+	cursor: pointer;
+	overflow:hidden;
+	-webkit-border-radius: 50%;
+	    -ms-border-radius: 50%;
+			border-radius: 50%;
+	-webkit-transform:translateX(-50%) translateY(-50%);
+	    -ms-transform:translateX(-50%) translateY(-50%);
+	        transform:translateX(-50%) translateY(-50%);
+	-webkit-transition: all ease .3s;
+	    -ms-transition: all ease .3s;
+	        transition: all ease .3s;
+	margin-top: 2em;
+	background-color: rgba(0,0,0,0.5);
+	color: #fff;
+	opacity: 0;
+}
+.trx_addons_video_player.with_cover .video_hover:before {
+	content: '\e888';
+	font-family:'trx_addons_icons';
+	margin:0;
+}
+.trx_addons_video_player.with_cover .video_hover:hover {
+	background-color: rgba(0,0,0,0.5);
+}
+.trx_addons_video_player.with_cover:hover .video_hover {
+	opacity: 1;
+	margin-top: 0;
+}
+
+/* 'Play' state */
+.trx_addons_video_player.video_play .video_mask {
+	opacity: 1;
+	background-color:#000;
+}
+.trx_addons_video_player.video_play .video_embed {
+	opacity:1;
+	z-index:10;
+}
+.trx_addons_video_player.video_play .video_embed > * {
+	position:absolute;
+	z-index:1;
+	left: 50%;
+	top: 50%;
+	-webkit-transform:translateX(-50%) translateY(-50%);
+	    -ms-transform:translateX(-50%) translateY(-50%);
+	        transform:translateX(-50%) translateY(-50%);
+}
+.trx_addons_video_player.video_play .video_hover {
+	display:none;
+}

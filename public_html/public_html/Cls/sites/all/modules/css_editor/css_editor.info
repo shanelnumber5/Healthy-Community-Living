@@ -1,0 +1,12 @@
+name = CSS Editor
+description = Customize your CSS directly from the browser.
+package = CSS Editor
+core = 7.x
+configure = admin/config/user-interface/css-editor
+
+; Information added by Drupal.org packaging script on 2014-10-21
+version = "7.x-1.0"
+core = "7.x"
+project = "css_editor"
+datestamp = "1413931433"
+

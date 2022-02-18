@@ -1,0 +1,893 @@
+<?php
+/**
+ *  Implements hook_node_info().
+ */
+function content_timeline_node_info() {
+  return array(
+    'timeline' => array(
+      'name' => t('Timeline'),
+      'base' => 'content_timeline',
+      'description' => t('Content type for timeline module'),
+      'has_title' => TRUE,
+      'title_label' => t('Title')
+    )
+  );
+}
+/**
+ * Implement hook_form()
+ */
+function content_timeline_form($node, $form_state) {
+  return node_content_form($node, $form_state);
+}
+/**
+ *  Implements hook_views_api().
+ */
+function content_timeline_views_api() {
+  return array(
+    // Which version of the Views API you are using. For Views 7.x-3.x, use 3.
+    'api' => 3,
+    // Where your additional Views directory is.
+    'path' => drupal_get_path('module', 'content_timeline') . '/views',
+  );
+}
+
+function template_preprocess_views_view__content_timeline(&$vars) {
+  $view = $vars['view'];
+  $options = $vars['options'];
+  $row_options = isset($view->style_plugin->row_plugin->options) ? $view->style_plugin->row_plugin->options : '';
+
+  $vars['view_id'] = 'tl' . $view->vid . '_' .   str_replace('-', '_',  drupal_clean_css_identifier($view->current_display));
+
+  //Style Options - General Options
+  $vars['go_scroll_speed'] = isset($options['general_options_scroll_speed']) ? $options['general_options_scroll_speed'] : '';
+  $vars['go_easing'] = isset($options['general_options_easing']) ? $options['general_options_easing'] : '';
+  $vars['go_close_item_on_transition'] = !empty($options['general_options_close_item_on_transition']) ? 'true' : 'false';
+  $vars['go_hide_years'] = !empty($options['general_options_hide_years']) ? 'false' : 'true';
+  $vars['go_start_item'] = isset($options['general_options_start_item']) ? $options['general_options_start_item'] : '';
+
+  if(!is_numeric($vars['go_start_item']) && $vars['go_start_item'] !== 'last' && $vars['go_start_item'] !== 'first'){
+      drupal_set_message($vars['go_start_item'] . " is not a valid value in -> general options -> start item. Valid values are 'first', 'last' or an node id", 'warning');
+  } elseif(is_numeric($vars['go_start_item'])){
+      $node = node_load($vars['go_start_item']);
+      if(empty($node)){
+        drupal_set_message($vars['go_start_item'] . " is not a valid node id in -> general options -> start item. Valid values are 'first', 'last' or a node id", 'warning');
+      } else {
+        $vars['go_start_item'] = gmdate("d/m/Y", $node->created);
+      }
+  }
+
+  //Style Options - Glodbal Styling Options
+  $vars['gso_timeline_width'] = isset($options['global_styling_options_timeline_width']) ? $options['global_styling_options_timeline_width'] : '';
+  $vars['gso_item_margin'] = isset($options['global_styling_options_item_margin']) ? $options['global_styling_options_item_margin'] : '';
+  $vars['gso_item_height'] = isset($options['global_styling_options_item_height']) ? $options['global_styling_options_item_height'] : '';
+  $vars['gso_read_more'] = isset($options['global_styling_options_read_more']) ? $options['global_styling_options_read_more'] : '';
+  $vars['gso_node_description_color'] = isset($options['global_styling_options_node_description_color']) ? $options['global_styling_options_node_description_color'] : '';
+  $vars['gso_hide_timeline'] = !empty($options['global_styling_options_hide_timeline']) ? 'true' : 'false';
+
+  if(isset($options['global_styling_options_line_style'])) {
+    if($options['global_styling_options_line_style'] !== 'light') {
+      $vars['gso_line_style'] = $options['global_styling_options_line_style'];
+    } else {
+      $vars['gso_line_style'] = '';
+    }
+  } else {
+    $vars['gso_line_style'] = '';
+  }
+
+  $vars['gso_hide_navigation'] = !empty($options['global_styling_options_hide_navigation']) ? 'true' : 'false';
+
+  if(isset($options['global_styling_options_nav_style'])) {
+    if($options['global_styling_options_nav_style'] !== 'light') {
+      $vars['gso_nav_style'] = $options['global_styling_options_nav_style'];
+    } else {
+      $vars['gso_nav_style'] = '';
+    }
+  } else {
+    $vars['gso_nav_style'] = '';
+  }
+
+  $vars['gso_shadow'] = isset($options['global_styling_options_shadow']) ? $options['global_styling_options_shadow'] : '';
+
+  //Row Style Options - Button Styling Options
+  if(isset($row_options['button_styling_options_button_type'])) {
+    if($row_options['button_styling_options_button_type'] !== 'sharp') {
+      $vars['bso_button_type'] = $row_options['button_styling_options_button_type'];
+    } else {
+      $vars['bso_button_type'] = '';
+    }
+  } else {
+    $vars['bso_button_type'] = '';
+  }
+
+  $vars['bso_read_more_button_text'] = isset($row_options['button_styling_options_read_more_button_text']) ? $row_options['button_styling_options_read_more_button_text'] : '';
+  $vars['bso_close_button_text'] = isset($row_options['button_styling_options_close_button_text']) ? $row_options['button_styling_options_close_button_text'] : '';
+  $vars['bso_button_color'] = isset($row_options['button_styling_options_button_color']) ? $row_options['button_styling_options_button_color'] : '';
+  $vars['bso_button_hover_color'] = isset($row_options['button_styling_options_button_hover_color']) ? $row_options['button_styling_options_button_hover_color'] : '';
+
+  //Row Style Options - Item Styling Options
+  $vars['iso_width'] = isset($row_options['item_styling_options_width']) ? $row_options['item_styling_options_width'] : '';
+  $vars['iso_content_padding'] = isset($row_options['item_styling_options_content_padding']) ? $row_options['item_styling_options_content_padding'] : '';
+  $vars['iso_image_border_width'] = isset($row_options['item_styling_options_image_border_width']) ? $row_options['item_styling_options_image_border_width'] : '';
+  $vars['iso_show_date'] = isset($row_options['item_styling_options_show_date']) ? $row_options['item_styling_options_show_date'] : '';
+  $vars['iso_image_border_color'] = isset($row_options['item_styling_options_image_border_color']) ? $row_options['item_styling_options_image_border_color'] : '';
+  $vars['iso_title_line_height'] = isset($row_options['item_styling_options_title_line_height']) ? $row_options['item_styling_options_title_line_height'] : '';
+  $vars['iso_title_font_size'] = isset($row_options['item_styling_options_title_font_size']) ? $row_options['item_styling_options_title_font_size'] : '';
+  $vars['iso_title_font_type'] = isset($row_options['item_styling_options_title_font_type']) ? $row_options['item_styling_options_title_font_type'] : '';
+  $vars['iso_title_color'] = isset($row_options['item_styling_options_title_color']) ? $row_options['item_styling_options_title_color'] : '';
+  $vars['iso_text_line_height'] = isset($row_options['item_styling_options_text_line_height']) ? $row_options['item_styling_options_text_line_height'] : '';
+  $vars['iso_text_font_size'] = isset($row_options['item_styling_options_text_font_size']) ? $row_options['item_styling_options_text_font_size'] : '';
+  $vars['iso_text_alignment'] = isset($row_options['item_styling_options_text_alignment']) ? $row_options['item_styling_options_text_alignment'] : '';
+  $vars['iso_text_font_type'] = isset($row_options['item_styling_options_text_font_type']) ? $row_options['item_styling_options_text_font_type'] : '';
+  $vars['iso_text_color'] = isset($row_options['item_styling_options_text_color']) ? $row_options['item_styling_options_text_color'] : '';
+  $vars['iso_background_color'] = isset($row_options['item_styling_options_background_color']) ? $row_options['item_styling_options_background_color'] : '';
+
+  //Row Style Options - Item Open Styling Options
+  $vars['ioso_width'] = isset($row_options['item_open_styling_options_width']) ? $row_options['item_open_styling_options_width'] : '';
+  $vars['ioso_content_padding'] = isset($row_options['item_open_styling_options_content_padding']) ? $row_options['item_open_styling_options_content_padding'] : '';
+  $vars['ioso_image_border_width'] = isset($row_options['item_open_styling_options_image_border_width']) ? $row_options['item_open_styling_options_image_border_width'] : '';
+  $vars['ioso_image_border_color'] = isset($row_options['item_open_styling_options_image_border_color']) ? $row_options['item_open_styling_options_image_border_color'] : '';
+  $vars['ioso_title_line_height'] = isset($row_options['item_open_styling_options_title_line_height']) ? $row_options['item_open_styling_options_title_line_height'] : '';
+  $vars['ioso_title_font_size'] = isset($row_options['item_open_styling_options_title_font_size']) ? $row_options['item_open_styling_options_title_font_size'] : '';
+  $vars['ioso_title_font_type'] = isset($row_options['item_open_styling_options_title_font_type']) ? $row_options['item_open_styling_options_title_font_type'] : '';
+  $vars['ioso_title_color'] = isset($row_options['item_open_styling_options_title_color']) ? $row_options['item_open_styling_options_title_color'] : '';
+  $vars['ioso_text_line_height'] = isset($row_options['item_open_styling_options_text_line_height']) ? $row_options['item_open_styling_options_text_line_height'] : '';
+  $vars['ioso_text_font_size'] = isset($row_options['item_open_styling_options_text_font_size']) ? $row_options['item_open_styling_options_text_font_size'] : '';
+  $vars['ioso_text_font_type'] = isset($row_options['item_open_styling_options_text_font_type']) ? $row_options['item_open_styling_options_text_font_type'] : '';
+  $vars['ioso_text_color'] = isset($row_options['item_open_styling_options_text_color']) ? $row_options['item_open_styling_options_text_color'] : '';
+  $vars['ioso_background_color'] = isset($row_options['item_open_styling_options_background_color']) ? $row_options['item_open_styling_options_background_color'] : '';
+
+  $vars['to_granularity'] = isset($options['timeline_options_granularity']) ? $options['timeline_options_granularity'] : '';
+  //$vars['timeline_options_hide_date_on_dots'] = isset($options['timeline_options_hide_date_on_dots']) ? $options['timeline_options_hide_date_on_dots'] : '';
+  //$vars['timeline_options_date_on_dot_hover'] = isset($options['timeline_options_date_on_dot_hover']) ? $options['timeline_options_date_on_dot_hover'] : '';
+  $vars['timeline_categories'] = '';
+  $vars['timeline_number_of_segmets'] = '';
+
+  if($vars['to_granularity'] == 'years'){
+    $vars['go_hide_years'] = 'false';
+    $categories = [];
+    $number_of_segments = [];
+
+    foreach($vars['view']->result as $key => $node) {
+      $year = date('Y', $node->node_created);
+      if(!in_array($year, $categories)){
+        $categories[] = $year;
+      }
+    }
+    sort($categories, SORT_NUMERIC);
+    foreach($categories as $year){
+      $number_of_segments[] = date("z", mktime(0,0,0,12,31,$year)) + 1;
+
+    }
+    $last_category = end($categories);
+    $i = 0;
+    foreach($categories as $category){
+      if (count($categories) !== 1) {
+        if ($i == 0) {
+          $vars['timeline_categories'] = '\'categories\' : [\'' . $category . '\', ';
+        }
+        elseif ($category == $last_category) {
+          $vars['timeline_categories'] .= '\'' . $category . '\'],';
+        }
+        else {
+          $vars['timeline_categories'] .= '\'' . $category . '\', ';
+        }
+      } else {
+        $vars['timeline_categories'] = '\'categories\' : [\'' . $category . '\'], ';
+      }
+      ++$i;
+    }
+    $count = count($number_of_segments);
+    $i = 0;
+    foreach($number_of_segments as $segment){
+      if (count($number_of_segments) !== 1) {
+        if ($i == 0) {
+          $vars['timeline_number_of_segmets'] = '\'nuberOfSegments\' : [' . $segment . ', ';
+        }
+        elseif ($i == $count - 1) {
+          $vars['timeline_number_of_segmets'] .= $segment . '],';
+        }
+        else {
+          $vars['timeline_number_of_segmets'] .= '' . $segment . ', ';
+        }
+      }
+      else {
+        $vars['timeline_number_of_segmets'] = '\'nuberOfSegments\' : [' . $segment . '], ';
+      }
+      ++$i;
+    }
+  }
+
+  if(!empty($vars['rows'])){
+    //dpm("not empty");
+
+    //$vars['image_height'] = 128;
+
+    drupal_add_css(drupal_get_path('module', 'content_timeline') . '/css/frontend/timeline.css');
+    drupal_add_css(drupal_get_path('module', 'content_timeline') . '/css/frontend/jquery.mCustomScrollbar.css');
+    //drupal_add_css(drupal_get_path('module', 'content_timeline') . '/css/frontend/prettyPhoto.css');
+
+    drupal_add_css(dynamic_css($vars), 'inline');
+
+    drupal_add_js(drupal_get_path('module', 'content_timeline') . '/js/frontend/jquery.easing.1.3.js');
+    drupal_add_js(drupal_get_path('module', 'content_timeline') . '/js/frontend/jquery.timeline.min.js');
+    drupal_add_js(drupal_get_path('module', 'content_timeline') . '/js/frontend/jquery.mousewheel.min.js');
+    drupal_add_js(drupal_get_path('module', 'content_timeline') . '/js/frontend/jquery.mCustomScrollbar.min.js');
+    drupal_add_js(drupal_get_path('module', 'content_timeline') . '/js/frontend/rollover.js');
+    //drupal_add_js(drupal_get_path('module', 'content_timeline') . '/js/frontend/jquery.prettyPhoto.js');
+
+    drupal_add_js('(function ($) {
+    Drupal.behaviors.contentTimelineModuleMCustomScrollbar = {
+      attach: function (context, settings) {
+        $(".scrollable-content").mCustomScrollbar();
+      }
+    };
+})(jQuery);', 'inline');
+
+  }
+  //dpm($vars);
+}
+function template_preprocess_views_view_row_content_timeline(&$vars) {
+
+  $view = $vars['view'];
+  $style_options = $view->style_options;
+
+  $vars['gso_read_more'] = isset($style_options['global_styling_options_read_more']) ? $style_options['global_styling_options_read_more'] : '';
+  $vars['bso_read_more_button_text'] = isset($vars['options']['button_styling_options_read_more_button_text']) ? $vars['options']['button_styling_options_read_more_button_text'] : '';
+  $vars['gso_item_height'] = isset($style_options['global_styling_options_item_height']) ? $style_options['global_styling_options_item_height'] : '';
+  $vars['ioso_content_padding'] = isset($vars['options']['item_open_styling_options_content_padding']) ? $vars['options']['item_open_styling_options_content_padding'] : '';
+  $vars['ioso_image_border_width'] = isset($vars['options']['item_open_styling_options_image_border_width']) ? $vars['options']['item_open_styling_options_image_border_width'] : '';
+  $vars['ioso_title_line_height'] = isset($vars['options']['item_open_styling_options_title_line_height']) ? $vars['options']['item_open_styling_options_title_line_height'] : '';
+  $vars['ioso_width'] = isset($vars['options']['item_open_styling_options_width']) ? $vars['options']['item_open_styling_options_width'] : '';
+
+
+    //prepare fields options
+  //isset($view->field['timeline_item_image']) ? $view->field['timeline_item_image']->options['element_type'] = 'div' : '';
+  //isset($view->field['timeline_item_image']) ? $view->field['timeline_item_image']->options['element_class'] = 'timeline_rollover_bottom con_borderImage' : '';
+
+  //preparing added fields from views
+  prepare_fields($vars);
+
+
+  //dpm($vars['row']->node_title);
+  //dpm($vars);
+
+  /**
+   * preprocess fields from view for timeline if available
+   * item fields
+   */
+  isset($vars['row']->node_title) ? $vars['node_title'] = $vars['row']->node_title : $vars['node_title'] = '';
+  isset($vars['row']->node_created) ? $vars['node_created'] = gmdate("d/m/Y", $vars['row']->node_created) : $vars['node_created'] = '';
+  isset($vars['fields']['timeline_item_image']) ? $vars['item_image'] = $vars['fields']['timeline_item_image']->content : $vars['item_image'] = '';
+  if($vars['options']['item_styling_options_show_date'] == true){
+    $node_crated_day = gmdate("d", $vars['row']->node_created);
+    $node_crated_month = strtoupper (gmdate("M", $vars['row']->node_created));
+    $vars['show_date'] = '<div class="post_date">'.$node_crated_day.'<span>'.$node_crated_month.'</span></div>';
+  } else {
+    $vars['show_date'] = '';
+  }
+
+  isset($vars['fields']['timeline_item_title']) ? $vars['item_title'] = $vars['fields']['timeline_item_title']->content : $vars['item_title'] = '';
+  isset($vars['fields']['timeline_item_text']) ? $vars['item_text'] = $vars['fields']['timeline_item_text']->content : $vars['item_text'] = '';
+
+  /**
+   * item open fields
+   */
+  isset($vars['fields']['timeline_o_item_image']) ? $vars['item_o_image'] = $vars['fields']['timeline_o_item_image']->content : $vars['item_o_image'] = '';
+  $vars['open_item_title'] = isset($vars['fields']['timeline_o_item_title']) ? $vars['fields']['timeline_o_item_title']->content : '';
+  $vars['open_item_text'] = isset($vars['fields']['timeline_o_item_text']) ? $vars['fields']['timeline_o_item_text']->content : '';
+
+
+  $vars['gso_read_more'] = isset($style_options['global_styling_options_read_more']) ? $style_options['global_styling_options_read_more'] : '';
+  $vars['bso_read_more_button_text'] = isset($vars['options']['button_styling_options_read_more_button_text']) ? $vars['options']['button_styling_options_read_more_button_text'] : '';
+
+
+
+  if(isset($vars['gso_read_more']) && $vars['gso_read_more'] == '.read_more'){
+    if(!empty($vars['fields']['timeline_read_more_link']->content)){
+      $vars['read_more'] = '<a class="read_more" href="'. $vars['fields']['timeline_read_more_link']->content .'">'. $vars['bso_read_more_button_text'] .'</a>';
+    } else {
+      $vars['read_more'] = '<div class="read_more" data-id="'. $vars['node_created'] .'">'. $vars['bso_read_more_button_text'] .'</div>';
+    }
+  }else{
+    $vars['read_more'] = '';
+  }
+
+  if(isset($vars['fields']['timeline_o_item_image'])) {
+    if(isset($vars['row']->field_timeline_o_item_image[0]['raw']['height'])){
+      $open_image_height = _get_image_height($vars['row']->field_timeline_o_item_image[0]['rendered']['#image_style'], $vars['row']->field_timeline_o_item_image[0]['rendered']['#item']['uri']);
+      $vars['open_content_height'] = (int)$vars['gso_item_height'] - (int)$open_image_height - (int)$vars['ioso_title_line_height'] - (int)$vars['ioso_image_border_width'] - (2 * (int)$vars['ioso_content_padding']);
+      //dpm($open_image_height);
+      //dpm('ubaceno je polje i item ima sliku');
+    } else {
+      $vars['open_content_height'] = (int)$vars['gso_item_height']  - (int)$vars['ioso_title_line_height'] - (2 * (int)$vars['ioso_content_padding']);
+      //dpm('ubaceno je polje i item nema sliku');
+    }
+  }else{
+    $vars['open_content_height'] = (int)$vars['gso_item_height']  - (int)$vars['ioso_title_line_height'] - (2 * (int)$vars['ioso_content_padding']);
+    //dpm('nije ubaceno polje');
+  }
+
+  $height_image = get_string_between($vars['item_image'], 'height="', '"');
+  $height_open_image = get_string_between($vars['item_o_image'], 'height="', '"');
+
+  if(isset($vars['fields']['timeline_item_image'])){
+    if(substr($vars['fields']['timeline_item_image']->content, 0, 4 ) === "<img"){
+      $vars['item_image_pre'] = str_replace('<img', '<a class="con_borderImage" style="display:block;height:'. $height_image .'px"><img', $vars['fields']['timeline_item_image']->content);
+
+      $vars['item_image'] = str_replace('alt="" />', 'alt="" /></a>', $vars['item_image_pre']);
+    } else {
+      $vars['item_image'] = str_replace('<a ', '<a class="con_borderImage timeline_rollover_bottom" ', $vars['fields']['timeline_item_image']->content);
+    }
+  }
+
+  if(isset($vars['fields']['timeline_o_item_image'])){
+    if(substr($vars['fields']['timeline_o_item_image']->content, 0, 4 ) === "<img"){
+      $vars['item_o_image_pre'] = str_replace('<img', '<a class="con_borderImage" style="display:block;height:'. $height_open_image .'px"> <img', $vars['fields']['timeline_o_item_image']->content);
+
+      $vars['item_o_image'] = str_replace('alt="" />', 'alt="" /></a>', $vars['item_o_image_pre']);
+    } else {
+      $vars['item_o_image'] = str_replace('<a ', '<a class="con_borderImage timeline_rollover_bottom" ', $vars['fields']['timeline_o_item_image']->content);
+    }
+  }
+
+
+
+  $vars['data_name'] = '';
+  $style_options['timeline_options_granularity'] = isset($style_options['timeline_options_granularity']) ? $style_options['timeline_options_granularity'] : '';
+  $style_options['timeline_options_hide_date_on_dots'] = isset($style_options['timeline_options_hide_date_on_dots']) ? $style_options['timeline_options_hide_date_on_dots'] : '';
+  $style_options['timeline_options_date_on_dot_hover'] = isset($style_options['timeline_options_date_on_dot_hover']) ? $style_options['timeline_options_date_on_dot_hover'] : '';
+
+  global $language;
+
+  $month = t(date('M', $vars['row']->node_created));
+  $dayNum = date('j', $vars['row']->node_created);
+
+  $output = t('@month @dayNum', array(
+    '@month' => $month,
+    '@dayNum' => $dayNum,
+  ));
+
+  if($style_options['timeline_options_granularity'] == 'years'){
+    $vars['node_created'] = gmdate("d/Y", $vars['row']->node_created);
+
+    global $language;
+
+    $month = t(date('M', $vars['row']->node_created));
+    $dayNum = date('j', $vars['row']->node_created);
+
+    $output = t('@month @dayNum', array(
+      '@month' => $month,
+      '@dayNum' => $dayNum,
+    ));
+    $vars['data_name'] = 'data-name="' . $output . '"';
+
+
+  }
+  if($style_options['timeline_options_hide_date_on_dots'] == 1){
+    $vars['data_name'] = 'data-name=""';
+  }
+  if($style_options['timeline_options_date_on_dot_hover'] == 1){
+    isset($vars['row']->node_title) ? $vars['node_title'] = $vars['row']->node_title . " - " . $output : $vars['node_title'] = '';
+  }
+
+  //dpm($langcode);
+}
+/**
+ * Used code from sites/all/modules/views/theme/theme.inc - template_preprocess_views_view_fields
+ */
+function prepare_fields(&$vars){
+  $view = $vars['view'];
+
+  // Loop through the fields for this view.
+  $previous_inline = FALSE;
+  $vars['fields'] = array(); // ensure it's at least an empty array.
+  foreach ($view->field as $id => $field) {
+    // render this even if set to exclude so it can be used elsewhere.
+    $field_output = $view->style_plugin->get_field($view->row_index, $id);
+    $empty = $field->is_value_empty($field_output, $field->options['empty_zero']);
+
+    if (empty($field->options['exclude']) && (!$empty || (empty($field->options['hide_empty']) && empty($vars['options']['hide_empty'])))) {
+      $object = new stdClass();
+      $object->handler = &$view->field[$id];
+      $object->inline = !empty($vars['options']['inline'][$id]);
+
+      $object->element_type = $object->handler->element_type(TRUE, !isset($vars['options']['default_field_elements']), $object->inline);
+      if ($object->element_type) {
+        $class = '';
+        if ($classes = $object->handler->element_classes($view->row_index)) {
+          if ($class) {
+            $class .= ' ';
+          }
+          $class .=  $classes;
+        }
+
+        $pre = '<' . $object->element_type;
+        if ($class) {
+          $pre .= ' class="' . $class . '"';
+        }
+        $field_output = $pre . '>' . $field_output . '</' . $object->element_type . '>';
+      }
+
+      // Protect ourself somewhat for backward compatibility. This will prevent
+      // old templates from producing invalid HTML when no element type is selected.
+      if (empty($object->element_type)) {
+        $object->element_type = 'span';
+      }
+
+      $object->content = $field_output;
+      if (isset($view->field[$id]->field_alias) && isset($vars['row']->{$view->field[$id]->field_alias})) {
+        $object->raw = $vars['row']->{$view->field[$id]->field_alias};
+      }
+      else {
+        $object->raw = NULL; // make sure it exists to reduce NOTICE
+      }
+
+      if (!empty($vars['options']['separator']) && $previous_inline && $object->inline && $object->content) {
+        $object->separator = filter_xss_admin($vars['options']['separator']);
+      }
+
+      $object->class = drupal_clean_css_identifier($id);
+
+      $previous_inline = $object->inline;
+      $object->inline_html = $object->handler->element_wrapper_type(TRUE, TRUE);
+      if ($object->inline_html === '' && isset($vars['options']['default_field_elements'])) {
+        $object->inline_html = $object->inline ? 'span' : 'div';
+      }
+
+      // Set up the wrapper HTML.
+      $object->wrapper_prefix = '';
+      $object->wrapper_suffix = '';
+
+      if ($object->inline_html) {
+        $class = '';
+        if ($object->handler->options['element_default_classes']) {
+          $class = "views-field views-field-" . $object->class;
+        }
+
+        if ($classes = $object->handler->element_wrapper_classes($view->row_index)) {
+          if ($class) {
+            $class .= ' ';
+          }
+          $class .= $classes;
+        }
+
+        $object->wrapper_prefix = '<' . $object->inline_html;
+        if ($class) {
+          $object->wrapper_prefix .= ' class="' . $class . '"';
+        }
+        $object->wrapper_prefix .= '>';
+        $object->wrapper_suffix = '</' . $object->inline_html . '>';
+      }
+
+      // Set up the label for the value and the HTML to make it easier
+      // on the template.
+      $object->label = check_plain($view->field[$id]->label());
+      $object->label_html = '';
+      if ($object->label) {
+        $object->label_html .= $object->label;
+        if ($object->handler->options['element_label_colon']) {
+          $object->label_html .= ': ';
+        }
+
+        $object->element_label_type = $object->handler->element_label_type(TRUE, !isset($vars['options']['default_field_elements']));
+        if ($object->element_label_type) {
+          $class = '';
+          if ($object->handler->options['element_default_classes']) {
+            $class = 'views-label views-label-' . $object->class;
+          }
+
+          $element_label_class = $object->handler->element_label_classes($view->row_index);
+          if ($element_label_class) {
+            if ($class) {
+              $class .= ' ';
+            }
+
+            $class .= $element_label_class;
+          }
+
+          $pre = '<' . $object->element_label_type;
+          if ($class) {
+            $pre .= ' class="' . $class . '"';
+          }
+          $pre .= '>';
+
+          $object->label_html = $pre . $object->label_html . '</' . $object->element_label_type . '>';
+        }
+      }
+
+      $vars['fields'][$id] = $object;
+    }
+  }
+}
+function dynamic_css($options){
+  $id = $options['view_id'];
+  $gso_timeline_width = $options['gso_timeline_width'];
+  $gso_nav_style = $options['gso_nav_style'];
+  $gso_node_description_color = $options['gso_node_description_color'];
+  $iso_title_font_size = $options['iso_title_font_size'];
+  $iso_title_color = $options['iso_title_color'];
+  $iso_text_alignment = $options['iso_text_alignment'];
+  $iso_title_line_height = $options['iso_title_line_height'];
+  $iso_content_padding = $options['iso_content_padding'];
+  $iso_title_font_type = $options['iso_title_font_type'];
+  $iso_width = $options['iso_width'];
+  $gso_item_height = $options['gso_item_height'];
+  $iso_background_color = $options['iso_background_color'];
+  $iso_text_font_size = $options['iso_text_font_size'];
+  $iso_text_color = $options['iso_text_color'];
+  $iso_text_line_height = $options['iso_text_line_height'];
+  $iso_text_font_type = $options['iso_text_font_type'];
+  $gso_shadow = $options['gso_shadow'];
+  $ioso_title_font_size = $options['ioso_title_font_size'];
+  $ioso_title_color = $options['ioso_title_color'];
+  $ioso_title_line_height = $options['ioso_title_line_height'];
+  $ioso_title_font_type = $options['ioso_title_font_type'];
+  $ioso_width = $options['ioso_width'];
+  $ioso_background_color = $options['ioso_background_color'];
+  $ioso_text_font_size = $options['ioso_text_font_size'];
+  $ioso_text_color = $options['ioso_text_color'];
+  $ioso_text_line_height = $options['ioso_text_line_height'];
+  $ioso_text_font_type = $options['ioso_text_font_type'];
+  $iso_image_border_width = $options['iso_image_border_width'];
+  $iso_image_border_color = $options['iso_image_border_color'];
+  $ioso_image_border_width = $options['ioso_image_border_width'];
+  $ioso_image_border_color = $options['ioso_image_border_color'];
+  $bso_button_hover_color = $options['bso_button_hover_color'];
+  $bso_button_color = $options['bso_button_color'];
+  $ioso_content_padding = $options['ioso_content_padding'];
+  //$image_height = $options['image_height'];
+
+  $css =
+    "#$id .timeline_line,
+    #content #$id .timeline_line{
+ 	  width: ".$gso_timeline_width."px;
+    }
+    #$id .t_line_view,
+    #content #$id .t_line_view {
+ 	  width: ".$gso_timeline_width."px;
+    }
+    #$id .t_line_m,
+    #content #$id .t_line_m {
+	width: ".(((int)$gso_timeline_width)/2-2)."px;
+    }
+    #$id .t_line_m.right,
+    #content #$id .t_line_m.right {
+      left: ".(((int)$gso_timeline_width)/2-1)."px;
+      width: ".(((int)$gso_timeline_width)/2-1)."px;
+    }";
+  if($gso_nav_style != 'flatNav'){
+    $css .=
+      "#$id .t_node_desc,
+        #content #$id .t_node_desc {
+        background: $gso_node_description_color;
+        }";
+  } else {
+    $css .=
+      "#$id .t_node_desc span,
+        #content #$id .t_node_desc span {
+	    background: $gso_node_description_color;
+        }
+        #$id .t_node_desc span:after,
+        #content #$id .t_node_desc span:after {
+	    border-top-color: $gso_node_description_color;
+        }
+        #$id .t_line_node,
+        #content #$id .t_line_node {
+	    color: $gso_node_description_color;
+        }
+        #$id .t_line_node:after,
+        #content #$id .t_line_node:after {
+	    background: $gso_node_description_color;
+        }
+        #$id .t_line_node:after,
+        #content #$id .t_line_node:after {
+	    background: $gso_node_description_color;
+        }
+        #$id .item.item_node_hover:before,
+        #content #$id .item.item_node_hover:before {
+	    background: $gso_node_description_color;
+        }
+        #$id .item.item_node_hover:after,
+        #content #$id .item.item_node_hover:after {
+	    border-top-color: $gso_node_description_color;
+        }
+        #$id #t_line_right:hover,
+        #content #$id #t_line_right:hover,
+        #$id #t_line_left:hover,
+        #content #$id #t_line_left:hover {
+	    color: $gso_node_description_color;
+        }";
+  }
+  $css .=
+    "#$id .item h2,
+    #content #$id .item h2 {
+	font-size: ".$iso_title_font_size."px;
+	color: ".$iso_title_color.";
+ 	text-align: ".$iso_text_alignment.";
+	line-height: ".$iso_title_line_height."px;
+ 	margin-left: ".$iso_content_padding."px;
+ 	margin-right: ".$iso_content_padding."px;
+ 	margin-top: ".$iso_content_padding."px;
+    ";
+  switch($iso_title_font_type) {
+    case 'regular' : $css .= '
+	font-weight:normal;
+	font-style:normal;'; break;
+
+    case 'thick' : $css .= '
+	font-weight:100;
+	font-style:normal;'; break;
+
+    case 'bold' : $css .= '
+	font-weight:bold;
+	font-style:normal;'; break;
+
+    case 'bold_italic' : $css .= '
+	font-weight:bold;
+	font-style:italic;'; break;
+
+    case 'italic' : $css .= '
+	font-weight:normal;
+	font-style:italic;'; break;
+  }
+  $css .="}";
+  $css .=
+    "#$id .item span,
+    #content #$id .item span {
+    text-align: ".$iso_text_alignment.";
+ 	margin-bottom: ".$iso_content_padding."px;
+ 	margin-left: ".$iso_content_padding."px;
+ 	margin-right: ".$iso_content_padding."px;
+    }
+    #$id .item,
+    #content #$id .item {
+ 	width: ".$iso_width."px;
+	height: ".$gso_item_height."px;
+	background:".$iso_background_color." url('') repeat;
+	font-size: ".$iso_text_font_size."px;
+	color: ".$iso_text_color.";
+	line-height: ".$iso_text_line_height."px;";
+
+  switch($iso_text_font_type) {
+    case 'regular' : $css .= "
+	font-weight:normal;
+	font-style:normal;"; break;
+
+    case 'thick' : $css .= "
+	font-weight:100;
+	font-style:normal;"; break;
+
+    case 'bold' : $css .= "
+	font-weight:bold;
+	font-style:normal;"; break;
+
+    case 'bold_italic' : $css .= "
+	font-weight:bold;
+	font-style:italic;"; break;
+
+    case 'italic' : $css .= "
+	font-weight:normal;
+	font-style:italic;"; break;
+  }
+  if($gso_shadow == 'shadow_show') {
+    $css.= "
+	-moz-box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+	box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+
+	zoom: 1;
+	filter: progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=0, Direction=0),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=5, Direction=90),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=5, Direction=180),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=0, Direction=270);
+
+	}";
+  }
+  else {
+    $css.= "
+	-moz-box-shadow: 0 0 0 #000000;
+	-webkit-box-shadow: 0 0 0 #000000;
+	box-shadow: 0 0 0 #000000;}";
+  }
+  if($gso_shadow == 'shadow_on_hover') {
+    $css.= "
+    #$id .item:hover,
+    #content #$id .item:hover {
+	-moz-box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+	box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+
+	zoom: 1;
+	filter: progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=0, Direction=0),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=5, Direction=90),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=5, Direction=180),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=0, Direction=270);
+
+
+    }";
+  }
+  $css.= "
+    #$id .item_open h2,
+    #content #$id .item_open h2 {
+	font-size: ".$ioso_title_font_size."px;
+	color: ".$ioso_title_color.";
+	line-height: ".$ioso_title_line_height."px;";
+
+  switch($ioso_title_font_type) {
+    case 'regular' : $css .= "
+	font-weight:normal;
+	font-style:normal;}"; break;
+
+    case 'thick' : $css .= "
+	font-weight:100;
+	font-style:normal;}"; break;
+
+    case 'bold' : $css .= "
+	font-weight:bold;
+	font-style:normal;}"; break;
+
+    case 'bold_italic' : $css .= "
+	font-weight:bold;
+	font-style:italic;}"; break;
+
+    case 'italic' : $css .= "
+	font-weight:normal;
+	font-style:italic;}"; break;
+  }
+  $css .=
+    "#$id .item_open,
+    #content #$id .item_open{
+ 	width: ".$ioso_width."px;
+	height: ".$gso_item_height."px;
+	background: ".$ioso_background_color." url('') repeat;
+	font-size: ".$ioso_text_font_size."px;
+	color: ".$ioso_text_color.";
+	line-height: ".$ioso_text_line_height."px;";
+
+  switch($ioso_text_font_type) {
+    case 'regular' : $css .= "
+	font-weight:normal;
+	font-style:normal;"; break;
+
+    case 'thick' : $css .= "
+	font-weight:100;
+	font-style:normal;"; break;
+
+    case 'bold' : $css .= "
+	font-weight:bold;
+	font-style:normal;"; break;
+
+    case 'bold_italic' : $css .= "
+	font-weight:bold;
+	font-style:italic;"; break;
+
+    case 'italic' : $css .= "
+	font-weight:normal;
+	font-style:italic;"; break;
+  }
+
+  if($gso_shadow == 'shadow_show' || $gso_shadow == 'shadow_on_hover') {
+    $css.= "
+	-moz-box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+	box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+
+	zoom: 1;
+	filter: progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=0, Direction=0),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=5, Direction=90),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=5, Direction=180),
+		progid:DXImageTransform.Microsoft.Shadow(Color=#888888, Strength=0, Direction=270);
+
+	";
+  }
+  else {
+    $css.= "
+	-moz-box-shadow: 0 0 0 #000000;
+	-webkit-box-shadow: 0 0 0 #000000;
+	box-shadow: 0 0 0 #000000;";
+  }
+  $css.= "
+  }";
+  //TODO height: ".$image_height."px; removed from next selector and needs testing(drupal thing)
+  $css.=
+    "#$id .item .con_borderImage,
+    #content #$id .item .con_borderImage {
+ 	border:0px;
+ 	border-bottom: ".$iso_image_border_width."px solid ".$iso_image_border_color." ;
+    }
+    #$id .item .post_date,
+    #content #$id .item .post_date {
+ 	border:0px;
+ 	background: ".$iso_image_border_color.";
+    }
+
+    #$id .item_open .con_borderImage,
+    #content #$id .item_open .con_borderImage {
+ 	border-bottom: ".$ioso_image_border_width ."px solid ".$ioso_image_border_color." ;
+    }
+
+    #content #$id .item_open_cwrapper,
+    #content #$id .item_open .con_borderImage {
+ 	width: ".$ioso_width."px;
+    }
+
+    #$id .item_open .t_close:hover,
+    #content #$id .item_open .t_close:hover{
+	background: ".$bso_button_hover_color.";
+    }
+    #".$id.".flatButton .item .read_more,
+    #".$id.".flatWideButton .item .read_more,
+    #content #".$id.".flatButton .item .read_more,
+    #content #".$id.".flatWideButton .item .read_more {
+	background: ".$bso_button_color .";
+	margin: ".$iso_content_padding."px;
+    }
+
+    #".$id.".flatButton .mCS-light-thin > .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar,
+    #".$id.".flatWideButton .mCS-light-thin > .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar,
+    #content #".$id.".flatButton .mCS-light-thin > .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar,
+    #content #".$id.".flatWideButton .mCS-light-thin > .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+	background: ".$bso_button_color.";
+    }
+
+    #$id .item .read_more:hover,
+    #content #$id .item .read_more:hover{
+	background: ".$bso_button_hover_color.";
+    }
+
+    #$id.flatButton .item_open.item_open_noImg .t_close,
+    #$id.flatWideButton .item_open.item_open_noImg .t_close,
+    #content #$id.flatButton .item_open.item_open_noImg .t_close,
+    #content #$id.flatWideButton .item_open.item_open_noImg .t_close {
+	color: ".$bso_button_color ." !important;
+    }
+
+    #$id.flatButton .item_open.item_open_noImg .t_close:hover,
+    #$id.flatWideButton .item_open.item_open_noImg .t_close:hover,
+    #content #$id.flatButton .item_open.item_open_noImg .t_close:hover,
+    #content #$id.flatWideButton .item_open.item_open_noImg .t_close:hover {
+	color: ".$bso_button_hover_color." !important;
+      }
+
+    #$id .item .read_more,
+    #content #$id .item .read_more,
+    #$id .item_open .t_close,
+    #content #$id .item_open .t_close {
+
+	/* transparent background */
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#44000000', endColorstr='#44000000');
+    }
+
+    #$id .t_node_desc,
+    #content #$id .t_node_desc {
+
+	/* IE transparent background */
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#cc1a86ac', endColorstr='#cc1a86ac');
+    }
+
+    #$id .timeline_open_content,
+    #content #$id .timeline_open_content {
+    padding: ".$ioso_content_padding."px;
+    }
+    #$id .item_open_cwrapper{
+    width: ".$ioso_width."px;
+    }";
+  return $css;
+}
+function _get_image_height($style, $uri){
+  $path = image_style_path($style, $uri);
+  if (empty($style)) {
+    $height = image_get_info($uri);
+    return $height['height'];
+  }
+  $image_info = image_get_info($path);
+  return $image_info['height'];
+}
+function get_string_between($string, $start, $end){
+  $string = " ".$string;
+  $ini = strpos($string,$start);
+  if ($ini == 0) return "";
+  $ini += strlen($start);
+  $len = strpos($string,$end,$ini) - $ini;
+  return substr($string,$ini,$len);
+}

@@ -1,0 +1,39 @@
+<?php
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * 
+ */
+ 
+function MY_MODULE_form_user_login_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  global $language;
+  
+  $conditions = legal_get_conditions($language->language);
+
+  // Do nothing if there's no Terms and Conditions text set.
+  if (empty($conditions['conditions'])) {
+    return;
+  }
+
+  $form = array_merge($form, legal_display_fields($conditions));
+
+  // Disable checkbox if:
+  //  - user is already registered (administer users);
+  //  - users with 'administer users' can access registration on admin/user/user/create.
+  if (!empty($user->uid)) {
+    $form['legal']['legal_accept']['#attributes'] = array('disabled' => 'disabled');
+    $form['legal']['legal_accept']['#required']   = FALSE;
+
+    if (is_array($conditions['extras'])) {
+      foreach ($conditions['extras'] as $key => $label) {
+        if (!empty($label)) {
+          $form['legal'][$key]['#attributes'] = array('disabled' => 'disabled');
+          $form['legal'][$key]['#required']   = FALSE;
+        }
+      }
+    }
+  }
+
+  return theme('legal_display', array('form' => $form));
+}
+?>

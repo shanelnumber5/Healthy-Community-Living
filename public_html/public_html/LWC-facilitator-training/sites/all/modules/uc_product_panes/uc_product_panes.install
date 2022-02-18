@@ -1,0 +1,83 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the uc_product_panes module.
+ *
+ */
+
+
+/**
+ * Implements hook_schema().
+ */
+function uc_product_panes_schema() {
+  $schema['uc_product_panes'] = array(
+    'fields' => array(
+      'ppid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'pfid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'model' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'pane_id' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'enabled' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('ppid'),
+    'indexes' => array(
+      'ucpp' => array('nid', 'model'),
+      'pfid' => array('pfid'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function uc_product_panes_uninstall() {
+  // Delete all uc_product_panes features
+  db_query("DELETE FROM {uc_product_features} WHERE fid = 'panes'");
+
+  // Delete all class-based variables.
+  $types = node_type_get_names();
+  $panes = _uc_checkout_pane_list();
+  foreach ($types as $typeid => $typename) {
+    foreach ($panes as $pane) {
+      variable_del('ucpp_class_' . $typeid . '_pane_' . $pane['id'] . '_enabled');
+    }
+  }
+}
+
+/**
+ * Implements hook_update().
+ *
+ * Add a serial id and a 'model' field.
+ */
+function uc_product_panes_update_6001() {
+  db_drop_primary_key('uc_product_panes');
+  db_query("ALTER TABLE {uc_product_panes} ADD COLUMN ppid INT(10) AUTO_INCREMENT NOT NULL FIRST, ADD PRIMARY KEY (ppid)");
+  db_add_field('uc_product_panes', 'model', array('type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => ''));
+  db_add_index('uc_product_panes', 'ucpp', array('nid', 'model'));
+  db_add_index('uc_product_panes', 'pfid', array('pfid'));
+}

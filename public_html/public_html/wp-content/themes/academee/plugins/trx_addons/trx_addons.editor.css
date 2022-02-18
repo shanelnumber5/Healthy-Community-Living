@@ -1,0 +1,49 @@
+/* Tooltips */
+.trx_addons_tooltip {
+	border-bottom-style: solid;
+}
+.trx_addons_tooltip:before {
+	font-size:1em;
+	line-height:1.3em;
+	padding: 0.6em 1em;
+	-webkit-transform:translateX(-50%);
+	    -ms-transform:translateX(-50%);
+	        transform:translateX(-50%);
+	-webkit-border-radius: 0 !important;
+	    -ms-border-radius: 0 !important;
+			border-radius: 0 !important;
+}
+.trx_addons_tooltip:after {
+	margin-bottom:-8px;
+	-webkit-transform:none;
+	    -ms-transform:none;
+	        transform:none;
+}
+
+
+/* Dropcaps */
+.trx_addons_dropcap {
+	font-size:2.667em;
+	padding: 0;
+	margin: 0.15em 0.35em 0 0;
+	width:1.65em;
+	height: 1.65em;
+	line-height: 1.5em;
+	-webkit-border-radius: 50%;
+	    -ms-border-radius: 50%;
+			border-radius: 50%;
+}
+
+/* Tiny text */
+.trx_addons_tiny_text {
+	letter-spacing:2px;
+}
+
+/* Lists */
+.trx_addons_list_parameters > li > strong,
+.trx_addons_list_parameters > li > em {
+	color:inherit;
+}
+.trx_addons_list_parameters > li > em {
+	font-family:inherit;
+}

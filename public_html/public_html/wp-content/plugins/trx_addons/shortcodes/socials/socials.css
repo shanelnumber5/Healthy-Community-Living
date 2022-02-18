@@ -1,0 +1,60 @@
+/* Social Icons - styles moved into trx_addons.front to share them with theme */
+.sc_socials {
+	position: relative;	
+	padding-top: 0.0001px;
+}
+.socials_wrap {
+	display:block;
+	vertical-align:middle;
+	white-space:nowrap;
+	margin:-8px -8px 0 0;
+}
+.socials_wrap .social_item {
+	display: inline-block;
+	line-height:inherit;
+	vertical-align: top;
+	text-align: center;
+	margin: 8px 8px 0 0;
+}
+.socials_wrap .social_item_style_bg {
+	overflow:hidden;
+}
+.socials_wrap .social_item .social_icon {
+	position:relative;
+	display: block;
+	width: 3em;
+	height: 3em;
+	line-height:3em;
+	text-align:center;
+	background-size:100%;
+	background-position:top center;
+	-webkit-border-radius: 50%;
+	    -ms-border-radius: 50%;
+			border-radius: 50%;
+	overflow: hidden;
+}
+.socials_wrap .social_item .social_icon,
+.socials_wrap .social_item .social_name {
+	-webkit-transition: all .3s ease;
+	    -ms-transition: all .3s ease;
+	        transition: all .3s ease;
+}
+.socials_wrap .social_item_type_icons_names .social_icon {
+	margin: 0 auto;
+}
+.socials_wrap .social_item .social_icon .social_hover {
+	position:absolute;
+	background-size:100%;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	background-position:bottom center;
+	-webkit-transition: opacity .3s ease;
+	    -ms-transition: opacity .3s ease;
+	        transition: opacity .3s ease;
+}
+.socials_wrap .social_item .social_icon:hover .social_hover {
+	opacity: 1;
+}

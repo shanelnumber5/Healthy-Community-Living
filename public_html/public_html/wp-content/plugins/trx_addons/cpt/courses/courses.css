@@ -1,0 +1,109 @@
+.sc_courses .sc_courses_slider.slider_outer_pagination_pos_bottom {
+	padding-bottom: 3em;
+}
+
+.sc_courses_default .sc_courses_title,
+.sc_courses_default .sc_courses_subtitle,
+.sc_courses_default .sc_courses_descr,
+.sc_courses_default .sc_courses_button {
+	text-align:center;
+}
+.sc_courses_default .sc_courses_item {
+	background-color:#fafafa;
+}
+.sc_courses_default .sc_courses_item_thumb {
+	position:relative;
+}
+.sc_courses_default .sc_courses_item_thumb img {
+	width: 100%;
+}
+.sc_courses_default .sc_courses_item_categories {
+	position:absolute;
+	z-index:1;
+	top: 2em;
+	left: 2em;
+	display:inline-block;
+	background-color: #292929;
+	font-size: 0.9286em;
+	line-height:2em;
+	padding: 0 0.7em;
+	text-transform:uppercase;
+}
+.sc_courses_default .sc_courses_item_categories a {
+	color: #fff;
+}
+.sc_courses_default .sc_courses_item_categories a:hover {
+	color: #efa758;
+}
+.sc_courses_default .sc_courses_item_info {
+	padding: 2em 3em;
+}
+.sc_courses_default .sc_courses_item_header {
+	min-height:6em;
+}
+.sc_courses_default .sc_courses_item_title {
+	margin: 0;
+}
+.sc_courses_default .sc_courses_item_title {
+	margin: 0;
+}
+.sc_courses_default .sc_courses_item_meta {
+	font-size: 0.9286em;
+	line-height:1.5em;
+	margin-top: 0.5em;
+}
+.sc_courses_default .sc_courses_item_meta_item + .sc_courses_item_meta_item:before {
+	content: '*';
+	margin:0 0.3em;
+}
+.sc_courses_default .sc_courses_item_price {
+	font-size:2em;
+	line-height:1em;
+	margin-top: 0.5em;
+	color: #efa758;
+}
+.sc_courses_default .sc_courses_item_period {
+	font-size:0.4em;
+	color: #888;
+	text-transform:uppercase;
+}
+.sc_courses_default .sc_courses_item_period:before {
+	content: '/';
+	margin: 0 0.5em;
+}
+
+
+/* Single page */
+.courses_single .courses_page_header {
+	margin-bottom: 2em;
+}
+.courses_single .courses_page_meta {
+	position:relative;
+	top: -1.5em;
+	color: #888;
+}
+.courses_single .courses_page_meta_item + .courses_page_meta_item:before {
+	content: '*';
+	margin:0 0.3em;
+}
+.courses_single .courses_page_meta_item_date {
+	color: #333;
+}
+.courses_single .courses_page_title {
+	position:relative;
+	padding-right:25%
+}
+.courses_single .courses_page_price {
+	position:absolute;
+	z-index:1;
+	right: 0;
+	top: 0;
+}
+.courses_single .courses_page_period {
+	font-size:0.5em;
+	color: #888;
+}
+.courses_single .courses_page_period:before {
+	content: '/';
+	margin: 0 0.5em;
+}

@@ -1,0 +1,116 @@
+Extra Fields Pane 7.x-1.x, xxxx-xx-xx
+------------------------------
+- #1926200 by MegaChriz: specified field data types.
+- #1635168 by MegaChriz: added/ported i18n integration.
+- #2019955 by MegaChriz: fixed documentation error in README.txt.
+
+Extra Fields Pane 7.x-1.0-alpha3, 2013-01-29
+------------------------------
+- by MegaChriz: fixed issue where values for field types "Select list"
+  and "Constant" were not sanitized.
+- #1830996 by MegaChriz: added documentation to the README.txt for how to
+  use field values in the invoice template.
+- #1872200 by MegaChriz: populate extra fields from previous orders.
+
+Extra Fields Pane 7.x-1.0-alpha2, 2012-10-12
+------------------------------
+- #1659486 by MegaChriz: fixed bug of UCXF_Value's db_name being empty
+  which could result into a UcAddressesInvalidFieldException error when the
+  UCXF_Value was "loaded" just after it was saved in the same request.
+- #1700492 by MegaChriz: adjusted automated tests 'checkout' to be
+  consistent with Ubercart's checkout test.
+- #1713254 by MegaChriz: fixed automated tests by resetting the static
+  variable "uc_addresses_get_address_fields" when the tests are in the
+  setup phase.
+- #1635164 by MegaChriz: ported Views integration.
+- #1697988 by MegaChriz: fixed address fields setting admin screen that got
+  screwed up with Ubercart 7.x-3.2 or later.
+
+Extra Fields Pane 7.x-1.0-alpha1, 2012-06-14
+------------------------------
+- #1222342 by MegaChriz: ported subset of Extra Fields Pane 6.x-2.x
+  to Drupal 7:
+  - Extra Fields Pane now depends on Ubercart Addresses.
+  - The extra information pane is dropped.
+  - Integration code for modules views and i18n is not yet ported.
+
+Extra Fields Pane 6.x-2.0-beta2, 2012-06-14
+------------------------------
+- #1376298 by MegaChriz, maknet: fixed sorting error in extra
+  information pane.
+- #1376430 by MegaChriz: fixed extra information pane tokens bug
+  + added automated tests for tokens.
+- #1400910 by ivan.vujovic: fixed delivery extra fields not available
+  in Views.
+- by MegaChriz: little fixes for the automated tests.
+- by MegaChriz: fixed bug that occurred when i18nstrings was enabled:
+  an error message about the deprecated
+  uc_extra_fields_pane_create_field() function was displayed.
+- #1436506 by MegaChriz: fixed SQL query that caused an "ambiguous"
+  warning on some systems.
+- #1454288 by MegaChriz: added UPGRADE.txt to instruct developers
+  about the API changes in Extra Fields Pane since the release
+  of 6.x-2.0-alpha1.
+- #1461168 by MegaChriz: respect field's pane types setting also
+  when Ubercart Addresses 6.x-2.x is enabled.
+- #1545328 by valderama, MegaChriz: fixed query in which table names
+  were not wrapped in curly brackets. In includes/address_select.inc.
+- #1396532 by igor.ro, MegaChriz: added features integration.
+- by MegaChriz: made fields "Constant" and "PHP String" editable on
+  the order edit form also when Ubercart Addresses 6.x-2.x is enabled.
+- #1606708 by MegaChriz: Fixed bug where a textfield with a default value
+  kept overwriting saved value when Ubercart Addresses 6.x-2.x was enabled.
+- #1603826 by MegaChriz: Fixed array_merge() error when saving an order on
+  the order edit page that occurred when no extra address fields were
+  defined.
+- #1606708 by MegaChriz: Extra fields with a specified default value were
+  not having a default value when creating a new order (and without
+  Ubercart Addresses 6.x-2.x enabled).
+- #1616732 by MegaChriz: Fixed bug where the weight of address fields were
+  ignored when displayed in address listings.
+- #1620184 by MegaChriz: Fixed address fields getting hidden on the address
+  field settings page when some address fields have the same weight.
+
+Extra Fields Pane 6.x-2.0-beta1, 2011-12-16
+------------------------------
+by MegaChriz:
+- Moved class files from 'includes' to 'class'.
+- Introduced classes UCXF_Pane and UCXF_AddressPane.
+  These classes replaces the following functions:
+  - uc_extra_fields_pane_load_pane_type();
+  - uc_extra_fields_pane_uc_checkout_pane_address();
+  - uc_extra_fields_pane_order_handler().
+  These classes are used for checkout and order panes.
+- Introduced class UCXF_FieldList which will replace the following
+  functions:
+  - uc_extra_fields_pane_create_field().
+  - uc_extra_fields_pane_load_fields_from_db().
+  This class is used to keep track of all loaded fields in one request.
+- Introduced class UCXF_Value. This class is used to keep track of all
+  field values (entered by customers) currently loaded.
+- Implemented autoload function (for automatically loading of classes).
+
+by MegaChriz: added Ubercart Addresses 6.x-2.x integration code.
+
+by MegaChriz: added permission "use php fields".
+
+by MegaChriz: renamed docs/hooks.php to uc_extra_fields_pane.api.php
+
+by MegaChriz: added tests for SimpleTest.
+
+Extra Fields Pane 6.x-2.0-alpha1, 2011-10-16
+------------------------------
+New features since 6.x-1.0:
+- Address fields appear in original delivery and/or billing panes.
+- Support of the field types textfield, select list, checkbox,
+  constant, php string and php select list.
+- Integration with Ubercart Addresses 6.x-1.0 (for a part).
+- Ability to change the order (weight) of address fields.
+- Availability of an extra information pane.
+- Integration with i18n (for field label and description).
+- Normalized uc_extra_fields_values table: Extra Fields Pane will
+  no longer add columns when adding fields.
+
+Bugfixes:
+- Issue #1278348 by MegaChriz: field db_name now has a max length of
+  32 characters.

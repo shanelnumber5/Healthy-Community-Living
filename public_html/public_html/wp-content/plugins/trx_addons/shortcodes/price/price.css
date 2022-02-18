@@ -1,0 +1,101 @@
+.sc_price {
+	background-color:#f7f7f7;
+	padding: 1px;
+	overflow:hidden;
+	position:relative;
+}
+.sc_price_image {
+	display:block;
+	width: 100%;
+	text-align:center;
+}
+.sc_price_image img {
+	max-width:100%;
+	height: auto;
+	margin:0 auto;
+}
+.sc_price_icon {
+	font-size: 5.5em;
+	line-height: 1em;
+	display:block;
+	text-align:center;
+	margin-top: 0.6em;
+}
+
+.sc_price_label {
+	position:absolute;
+	z-index:1;
+	font-size:11px;
+	text-transform: uppercase;
+	left: -3em;
+	top: 2em;
+	width: 12em;
+	height: 2em;
+	line-height:2em;
+	background-color: #efa758;
+	color: #fff;
+	text-align:center;
+	-webkit-transform:rotate(-45deg);
+	    -ms-transform:rotate(-45deg);
+	        transform:rotate(-45deg);
+	-webkit-transition: background-color .3s ease;
+	    -ms-transition: background-color .3s ease;
+	        transition: background-color .3s ease;
+}
+
+.sc_price_info {
+	padding: 3.5em 3em;
+}
+.sc_price_subtitle {
+	font-size: 1em;
+	line-height:1.25em;
+	text-transform:uppercase;
+}
+.sc_price_title {
+	font-size: 2em;
+	line-height:1.25em;
+}
+.sc_price_description {
+	font-size: 1em;
+	line-height:1.4em;
+	font-style:italic;
+}
+.sc_price_price {
+	font-size:4em;
+	font-weight:400;
+	line-height:1.6em;
+	color: red;
+}
+.sc_price_decimals {
+	font-size: 0.4em;
+	line-height: 2.8em;
+	margin-left: 0.2em;
+	text-decoration: underline;
+	vertical-align: top;
+}
+.sc_price_details {
+	margin-top:1em;
+/* Uncomment this if you want make all price blocks equal height
+	overflow:hidden;
+	min-height: 12.5em;
+*/
+}
+.sc_price_details p,
+.sc_price_details ul,
+.sc_price_details ol {
+	margin-bottom: 0;
+}
+.sc_price_details p + p,
+.sc_price_details ul.trx_addons_list > li + li {
+	margin-top:0.2em;
+}
+.sc_price_link {
+	margin-top: 2em;
+	padding: 2em 3em;
+	background-color:#000;
+	color: #fff;
+}
+.sc_price_link:hover {
+	background-color:#ff0000;
+	color: #fff;
+}

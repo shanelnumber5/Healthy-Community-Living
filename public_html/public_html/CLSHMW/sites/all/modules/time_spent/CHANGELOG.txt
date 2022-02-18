@@ -1,0 +1,6 @@
+CHANGELOG Time Spent
+
+Time Spent 7.x-2.0 (Oct 06, 2011)
+----------------------------------
+o Added first release
+    
