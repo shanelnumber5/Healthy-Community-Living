@@ -1,0 +1,31 @@
+/*
+*  Widget-style
+*/
+#modal {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 2000;
+    overflow: auto;
+    padding: 20px;
+}
+
+#payment li.payment_method_elegro label[for*="elegro"] img {
+    max-width: 4em;
+}
+
+#btn-buy {
+    padding: 10px 20px;
+    background-color: #3498db;
+    -webkit-transition: all ease .3s;
+    -o-transition: all ease .3s;
+    -moz-transition: all ease .3s;
+    transition: all ease .3s;
+    text-decoration: none;
+    color: #fff;
+}
+
+#btn-buy:hover {
+    background-color: #2980b9;
+}

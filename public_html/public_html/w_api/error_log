@@ -1,0 +1,7 @@
+[[08-Jan-2022 23:54:32 America/Boise] PHP Fatal error:  Uncaught Exception: Could not expand our origin object in /home4/ealtibj2/public_html/w_api/OriginRequest.php:216
+Stack trace:
+#0 /home4/ealtibj2/public_html/w_api/OriginRequest.php(65): OriginRequest::expandObject(9250)
+#1 /home4/ealtibj2/public_html/w_api/Handler.php(119): OriginRequest::getObject(Array)
+#2 /home4/ealtibj2/public_html/w_api/Handler.php(436): Handler->__construct(Array)
+#3 {main}
+  thrown in /home4/ealtibj2/public_html/w_api/OriginRequest.php on line 216

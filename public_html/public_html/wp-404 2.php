@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Healthy Community Living - Home</title><meta property="og:site_name" content="Healthy Community Living" />
+<meta property="og:title" content="Healthy Community Living" />
+<meta property="og:description" content="The Healthy Community Living (HCL) project is about all people having opportunities to live well and participate fully in their communities." />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/editor/hcl-homepage-illustration.png?1506558605" />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/editor/ken-close-2.jpg?1596564391" />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/hcllogo75px_orig.jpg" />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/facebook-icon-copy_1.png" />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/twitter-icon-copy_1.png" />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/flickr-icon-copy_1.png" />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/youtube-icon.png" />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/mail-icon-copy_1.png" />
+<meta property="og:image" content="http://healthycommunityliving.com/uploads/3/6/1/9/36198542/published/text-logo.png?1502766977" />
+<meta property="og:url" content="http://healthycommunityliving.com/" />
+
+<meta name="description" content="The Healthy Community Living (HCL) project is about all people having opportunities to live well and participate fully in their communities." />
+<meta name="keywords" content="healthy, community, living, disability, rural institute, RTC, riic, disability, inclusion, photo, photography, project, class, classes, curriculum, independent, living" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0;">
+
+		<!DOCTYPE html>
+<html>
+<head>
+<style>
+h1.hidden {
+    visibility: hidden;
+}
+</style>
+</head>
+		<link id="wsite-base-style" rel="stylesheet" type="text/css" href="//cdn2.editmysite.com/css/sites.css?buildTime=1603474513" />
+<link rel="stylesheet" type="text/css" href="//cdn2.editmysite.com/css/old/fancybox.css?1601575060" />
+<link rel="stylesheet" type="text/css" href="//cdn2.editmysite.com/css/social-icons.css?buildtime=1601575060" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="/files/main_style.css?1601670605" title="wsite-theme-css" />
+<link href='//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+
+<link href='//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+<link href='//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+<link href='//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+<link href='//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+<link href='//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+<link href='//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+<link href='//fonts.googleapis.com/css?family=Lato:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+<link href='//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+<style type='text/css'>
+.wsite-elements.wsite-not-footer:not(.wsite-header-elements) div.paragraph, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) p, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-block .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-description, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .wsite-form-field label, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .wsite-form-field label, #wsite-content div.paragraph, #wsite-content p, #wsite-content .product-block .product-title, #wsite-content .product-description, #wsite-content .wsite-form-field label, #wsite-content .wsite-form-field label, .blog-sidebar div.paragraph, .blog-sidebar p, .blog-sidebar .wsite-form-field label, .blog-sidebar .wsite-form-field label {font-family:"Roboto" !important;font-weight:300 !important;}
+#wsite-content div.paragraph, #wsite-content p, #wsite-content .product-block .product-title, #wsite-content .product-description, #wsite-content .wsite-form-field label, #wsite-content .wsite-form-field label, .blog-sidebar div.paragraph, .blog-sidebar p, .blog-sidebar .wsite-form-field label, .blog-sidebar .wsite-form-field label {color:#000 !important;}
+.wsite-elements.wsite-footer div.paragraph, .wsite-elements.wsite-footer p, .wsite-elements.wsite-footer .product-block .product-title, .wsite-elements.wsite-footer .product-description, .wsite-elements.wsite-footer .wsite-form-field label, .wsite-elements.wsite-footer .wsite-form-field label{font-family:"Roboto" !important;}
+.wsite-elements.wsite-not-footer:not(.wsite-header-elements) h2, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-long .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-large .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-small .product-title, #wsite-content h2, #wsite-content .product-long .product-title, #wsite-content .product-large .product-title, #wsite-content .product-small .product-title, .blog-sidebar h2 {font-family:"Roboto" !important;text-transform:  uppercase !important;}
+#wsite-content h2, #wsite-content .product-long .product-title, #wsite-content .product-large .product-title, #wsite-content .product-small .product-title, .blog-sidebar h2 {color:#000 !important;}
+.wsite-elements.wsite-footer h2, .wsite-elements.wsite-footer .product-long .product-title, .wsite-elements.wsite-footer .product-large .product-title, .wsite-elements.wsite-footer .product-small .product-title{font-family:"Roboto" !important;color:#2a2a2a !important;text-transform:  uppercase !important;letter-spacing: 5px !important;}
+#wsite-title {font-family:"Roboto" !important;font-weight:400 !important;color:#2a2a2a !important;text-transform:  none !important;letter-spacing: 2px !important;}
+.wsite-not-footer h2.wsite-content-title a, .wsite-not-footer .paragraph a, .wsite-not-footer blockquote a, #blogTable .blog-sidebar a, #blogTable .blog-comments a, #blogTable .blog-comments-bottom a, #wsite-com-store a, #wsite-com-product-gen a {color:#d26d25 !important;}
+.wsite-menu-default a {font-weight:700 !important;font-style:normal !important;}
+.wsite-menu a {font-family:"Roboto" !important;}
+.wsite-image div, .wsite-caption {}
+.galleryCaptionInnerText {}
+.fancybox-title {}
+.wslide-caption-text {}
+.wsite-phone {}
+.wsite-headline,.wsite-header-section .wsite-content-title {font-weight:400 !important;font-style:normal !important;text-transform:  uppercase !important;letter-spacing: 5px !important;}
+.wsite-headline-paragraph,.wsite-header-section .paragraph {font-family:"Lato" !important;font-weight:700 !important;text-transform:  uppercase !important;letter-spacing: 5px !important;}
+.wsite-button-inner {font-family:"Roboto" !important;font-weight:400 !important;text-transform:  uppercase !important;letter-spacing: 1px !important;}
+.wsite-not-footer blockquote {color:#cc5c0c !important;letter-spacing: 0px !important;}
+.wsite-footer blockquote {}
+.blog-header h2 a {}
+#wsite-content h2.wsite-product-title {}
+.wsite-product .wsite-product-price a {}
+.wsite-not-footer h2.wsite-content-title a:hover, .wsite-not-footer .paragraph a:hover, .wsite-not-footer blockquote a:hover, #blogTable .blog-sidebar a:hover, #blogTable .blog-comments a:hover, #blogTable .blog-comments-bottom a:hover, #wsite-com-store a:hover, #wsite-com-product-gen a:hover {color:#994c14 !important;}
+.wsite-button-large .wsite-button-inner {font-size:20px !important;}
+@media screen and (min-width: 767px) {.wsite-elements.wsite-not-footer:not(.wsite-header-elements) div.paragraph, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) p, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-block .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-description, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .wsite-form-field label, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .wsite-form-field label, #wsite-content div.paragraph, #wsite-content p, #wsite-content .product-block .product-title, #wsite-content .product-description, #wsite-content .wsite-form-field label, #wsite-content .wsite-form-field label, .blog-sidebar div.paragraph, .blog-sidebar p, .blog-sidebar .wsite-form-field label, .blog-sidebar .wsite-form-field label {font-size:21px !important;line-height:24px !important;}
+#wsite-content div.paragraph, #wsite-content p, #wsite-content .product-block .product-title, #wsite-content .product-description, #wsite-content .wsite-form-field label, #wsite-content .wsite-form-field label, .blog-sidebar div.paragraph, .blog-sidebar p, .blog-sidebar .wsite-form-field label, .blog-sidebar .wsite-form-field label {}
+.wsite-elements.wsite-footer div.paragraph, .wsite-elements.wsite-footer p, .wsite-elements.wsite-footer .product-block .product-title, .wsite-elements.wsite-footer .product-description, .wsite-elements.wsite-footer .wsite-form-field label, .wsite-elements.wsite-footer .wsite-form-field label{font-size:18px !important;}
+.wsite-elements.wsite-not-footer:not(.wsite-header-elements) h2, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-long .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-large .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-small .product-title, #wsite-content h2, #wsite-content .product-long .product-title, #wsite-content .product-large .product-title, #wsite-content .product-small .product-title, .blog-sidebar h2 {font-size:39px !important;}
+#wsite-content h2, #wsite-content .product-long .product-title, #wsite-content .product-large .product-title, #wsite-content .product-small .product-title, .blog-sidebar h2 {}
+.wsite-elements.wsite-footer h2, .wsite-elements.wsite-footer .product-long .product-title, .wsite-elements.wsite-footer .product-large .product-title, .wsite-elements.wsite-footer .product-small .product-title{font-size:25px !important;}
+#wsite-title {font-size:20px !important;}
+.wsite-menu-default a {}
+.wsite-menu a {}
+.wsite-image div, .wsite-caption {}
+.galleryCaptionInnerText {}
+.fancybox-title {}
+.wslide-caption-text {}
+.wsite-phone {}
+.wsite-headline,.wsite-header-section .wsite-content-title {font-size:40px !important;}
+.wsite-headline-paragraph,.wsite-header-section .paragraph {font-size:16px !important;}
+.wsite-button-inner {}
+.wsite-not-footer blockquote {}
+.wsite-footer blockquote {}
+.blog-header h2 a {}
+#wsite-content h2.wsite-product-title {}
+.wsite-product .wsite-product-price a {}
+}</style>
+<style>
+.wsite-background {background-image: url("/uploads/3/6/1/9/36198542/background-images/1955191062.png") !important;background-repeat: no-repeat !important;background-position: 50.00% 76.08% !important;background-size: 100% !important;background-color: transparent !important;}
+body.wsite-background {background-attachment: fixed !important;}.wsite-background.wsite-custom-background{ background-size: cover !important}
+</style>
+		<script src='/files/templateArtifacts.js?1601670605'></script>
+<script>
+var STATIC_BASE = '//cdn1.editmysite.com/';
+var ASSETS_BASE = '//cdn2.editmysite.com/';
+var STYLE_PREFIX = 'wsite';
+</script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
+
+<script type="text/javascript" src="//cdn2.editmysite.com/js/lang/en/stl.js?buildTime=1601575060&"></script>
+<script src="//cdn2.editmysite.com/js/site/main.js?buildTime=1603474513"></script><script type="text/javascript">
+		function initCustomerAccountsModels() {
+					(function(){_W.setup_rpc({"url":"\/ajax\/api\/JsonRPC\/CustomerAccounts\/","actions":{"CustomerAccounts":[{"name":"login","len":2,"multiple":false,"standalone":false},{"name":"logout","len":0,"multiple":false,"standalone":false},{"name":"getSessionDetails","len":0,"multiple":false,"standalone":false},{"name":"getAccountDetails","len":0,"multiple":false,"standalone":false},{"name":"getOrders","len":0,"multiple":false,"standalone":false},{"name":"register","len":4,"multiple":false,"standalone":false},{"name":"emailExists","len":1,"multiple":false,"standalone":false},{"name":"passwordReset","len":1,"multiple":false,"standalone":false},{"name":"passwordUpdate","len":3,"multiple":false,"standalone":false},{"name":"validateSession","len":1,"multiple":false,"standalone":false}]},"namespace":"_W.CustomerAccounts.RPC"});
+_W.setup_model_rpc({"rpc_namespace":"_W.CustomerAccounts.RPC","model_namespace":"_W.CustomerAccounts.BackboneModelData","collection_namespace":"_W.CustomerAccounts.BackboneCollectionData","bootstrap_namespace":"_W.CustomerAccounts.BackboneBootstrap","models":{"CustomerAccounts":{"_class":"CustomerAccounts.Model.CustomerAccounts","defaults":null,"validation":null,"types":null,"idAttribute":null,"keydefs":null}},"collections":{"CustomerAccounts":{"_class":"CustomerAccounts.Collection.CustomerAccounts"}},"bootstrap":[]});
+})();
+		}
+		if(document.createEvent && document.addEventListener) {
+			var initEvt = document.createEvent('Event');
+			initEvt.initEvent('customerAccountsModelsInitialized', true, false);
+			document.dispatchEvent(initEvt);
+		} else if(document.documentElement.initCustomerAccountsModels === 0){
+			document.documentElement.initCustomerAccountsModels++
+		}
+		</script>
+		<script type="text/javascript"> _W = _W || {}; _W.securePrefix='healthycommunityliving.com'; </script><script>_W = _W || {};
+			_W.customerLocale = "en_US";
+			_W.storeName = null;
+			_W.isCheckoutReskin = false;
+			_W.storeCountry = "US";
+			_W.storeCurrency = "USD";
+			_W.storeEuPrivacyPolicyUrl = "";
+			com_currentSite = "340659377631111019";
+			com_userID = "36198542";</script><script type="text/javascript">_W.resellerSite = true;</script><script type="text/javascript">_W.configDomain = "www.weebly.com";</script><script>_W.relinquish && _W.relinquish()</script>
+<script type="text/javascript" src="//cdn2.editmysite.com/js/lang/en/stl.js?buildTime=1603474513&"></script><script> _W.themePlugins = [];</script><script type="text/javascript"> _W.recaptchaUrl = "https://www.google.com/recaptcha/api.js"; </script><script type="text/javascript"><!--
+	
+	
+	function initFlyouts(){
+		initPublishedFlyoutMenus(
+			[{"id":"441747196519716252","title":"Home","url":"index.html","target":"","nav_menu":false,"nonclickable":false},{"id":"872131122548705123","title":"About Workshops","url":"about-workshops.html","target":"","nav_menu":false,"nonclickable":false},{"id":"305214955717119454","title":"Program History","url":"program-history.html","target":"","nav_menu":false,"nonclickable":false},{"id":"326416465970293474","title":"Program Licensing","url":"program-subscription.html","target":"","nav_menu":false,"nonclickable":false},{"id":"319176297241811249","title":"Facilitator Login","url":"facilitator-login.html","target":"","nav_menu":false,"nonclickable":false},{"id":"759217131384797375","title":"Online Facilitation","url":"online-facilitation.html","target":"","nav_menu":false,"nonclickable":false},{"id":"403994939776143387","title":"FAQ","url":"faq.html","target":"","nav_menu":false,"nonclickable":false},{"id":"552008476679191160","title":"Site Map","url":"site-map.html","target":"","nav_menu":false,"nonclickable":false}],
+			"441747196519716252",
+			'',
+			'active',
+			false,
+			{"navigation\/item":"<li {{#id}}id=\"{{id}}\"{{\/id}} class=\"wsite-menu-item-wrap\">\n\t<a\n\t\t{{^nonclickable}}\n\t\t\t{{^nav_menu}}\n\t\t\t\thref=\"{{url}}\"\n\t\t\t{{\/nav_menu}}\n\t\t{{\/nonclickable}}\n\t\t{{#target}}\n\t\t\ttarget=\"{{target}}\"\n\t\t{{\/target}}\n\t\t{{#membership_required}}\n\t\t\tdata-membership-required=\"{{.}}\"\n\t\t{{\/membership_required}}\n\t\tclass=\"wsite-menu-item\"\n\t\t>\n\t\t{{{title_html}}}\n\t<\/a>\n\t{{#has_children}}{{> navigation\/flyout\/list}}{{\/has_children}}\n<\/li>\n","navigation\/flyout\/list":"<div class=\"wsite-menu-wrap\" style=\"display:none\">\n\t<ul class=\"wsite-menu\">\n\t\t{{#children}}{{> navigation\/flyout\/item}}{{\/children}}\n\t<\/ul>\n<\/div>\n","navigation\/flyout\/item":"<li {{#id}}id=\"{{id}}\"{{\/id}}\n\tclass=\"wsite-menu-subitem-wrap {{#is_current}}wsite-nav-current{{\/is_current}}\"\n\t>\n\t<a\n\t\t{{^nonclickable}}\n\t\t\t{{^nav_menu}}\n\t\t\t\thref=\"{{url}}\"\n\t\t\t{{\/nav_menu}}\n\t\t{{\/nonclickable}}\n\t\t{{#target}}\n\t\t\ttarget=\"{{target}}\"\n\t\t{{\/target}}\n\t\tclass=\"wsite-menu-subitem\"\n\t\t>\n\t\t<span class=\"wsite-menu-title\">\n\t\t\t{{{title_html}}}\n\t\t<\/span>{{#has_children}}<span class=\"wsite-menu-arrow\">&gt;<\/span>{{\/has_children}}\n\t<\/a>\n\t{{#has_children}}{{> navigation\/flyout\/list}}{{\/has_children}}\n<\/li>\n"},
+			{}
+		)
+	}
+//-->
+</script>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109216409-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109216409-1');
+</script>
+
+		
+	</head>
+	<body class="header-page  wsite-theme-light  wsite-page-index full-width-on "><div id="banner-wrap">
+		<div id="header-wrap">
+			<div id="header" class="container">
+				<label id="nav-trigger" class="hamburger" for="mobile-input"><span></span></label>
+				<h1 id="logo"><span class="wsite-logo">
+
+	<a href="/">
+		<img src="/uploads/3/6/1/9/36198542/published/text-logo.png?1502766977" alt="Healthy Community Living" />
+	</a>
+
+</span></h1>
+				<div id="nav"><ul class="wsite-menu-default">
+		<li id="active" class="wsite-menu-item-wrap">
+			<a
+						href="/"
+				class="wsite-menu-item"
+				>
+				Home
+			</a>
+			
+		</li>
+		<li id="pg872131122548705123" class="wsite-menu-item-wrap">
+			<a
+						href="/about-workshops.html"
+				class="wsite-menu-item"
+				>
+				About Workshops
+			</a>
+			
+		</li>
+		<li id="pg305214955717119454" class="wsite-menu-item-wrap">
+			<a
+						href="/program-history.html"
+				class="wsite-menu-item"
+				>
+				Program History
+			</a>
+			
+		</li>
+		<li id="pg326416465970293474" class="wsite-menu-item-wrap">
+			<a
+						href="/program-subscription.html"
+				class="wsite-menu-item"
+				>
+				Program Licensing
+			</a>
+			
+		</li>
+		<li id="pg319176297241811249" class="wsite-menu-item-wrap">
+			<a
+						href="/facilitator-login.html"
+				class="wsite-menu-item"
+				>
+				Facilitator Login
+			</a>
+			
+		</li>
+		<li id="pg759217131384797375" class="wsite-menu-item-wrap">
+			<a
+						href="/online-facilitation.html"
+				class="wsite-menu-item"
+				>
+				Online Facilitation
+			</a>
+			
+		</li>
+		<li id="pg403994939776143387" class="wsite-menu-item-wrap">
+			<a
+						href="/faq.html"
+				class="wsite-menu-item"
+				>
+				FAQ
+			</a>
+			
+		</li>
+		<li id="pg552008476679191160" class="wsite-menu-item-wrap">
+			<a
+						href="/site-map.html"
+				class="wsite-menu-item"
+				>
+				Site Map
+			</a>
+			
+		</li>
+</ul>
+</div>
+			</div>
+			<div id="mobile-nav" class="container">
+				<ul class="wsite-menu-default">
+						<li id="active" class="wsite-menu-item-wrap">
+							<a
+										href="/"
+								class="wsite-menu-item"
+								>
+								Home
+							</a>
+							
+						</li>
+						<li id="pg872131122548705123" class="wsite-menu-item-wrap">
+							<a
+										href="/about-workshops.html"
+								class="wsite-menu-item"
+								>
+								About Workshops
+							</a>
+							
+						</li>
+						<li id="pg305214955717119454" class="wsite-menu-item-wrap">
+							<a
+										href="/program-history.html"
+								class="wsite-menu-item"
+								>
+								Program History
+							</a>
+							
+						</li>
+						<li id="pg326416465970293474" class="wsite-menu-item-wrap">
+							<a
+										href="/program-subscription.html"
+								class="wsite-menu-item"
+								>
+								Program Licensing
+							</a>
+							
+						</li>
+						<li id="pg319176297241811249" class="wsite-menu-item-wrap">
+							<a
+										href="/facilitator-login.html"
+								class="wsite-menu-item"
+								>
+								Facilitator Login
+							</a>
+							
+						</li>
+						<li id="pg759217131384797375" class="wsite-menu-item-wrap">
+							<a
+										href="/online-facilitation.html"
+								class="wsite-menu-item"
+								>
+								Online Facilitation
+							</a>
+							
+						</li>
+						<li id="pg403994939776143387" class="wsite-menu-item-wrap">
+							<a
+										href="/faq.html"
+								class="wsite-menu-item"
+								>
+								FAQ
+							</a>
+							
+						</li>
+						<li id="pg552008476679191160" class="wsite-menu-item-wrap">
+							<a
+										href="/site-map.html"
+								class="wsite-menu-item"
+								>
+								Site Map
+							</a>
+							
+						</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="wsite-elements wsite-not-footer wsite-header-elements">
+	<div class="wsite-section-wrap">
+	<div  class="wsite-section wsite-header-section wsite-section-bg-image wsite-section-effect-reveal" style="height: auto;vertical-align: middle;background-image: url(&quot;/uploads/3/6/1/9/36198542/background-images/811665655.jpg&quot;) ;background-repeat: no-repeat ;background-position: NaN% NaN% ;background-size: 100% ;background-color: transparent ;background-size: cover;" >
+		<div class="wsite-section-content">
+			
+			<div id="banner" class="container">
+				<div class="wsite-section-elements">
+					<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0px;margin-right:0px;text-align:inherit">
+<a>
+<img src="/uploads/3/6/1/9/36198542/editor/hcl-homepage-illustration.png?1506558605" alt="Graphic illustration of a group of people with different abilities" style="width:auto;max-width:100%" />
+</a>
+<div style="display:block;font-size:90%"></div>
+</div></div>
+
+<div><div id="211827667987165816" align="center" style="width: 100%; overflow-y: hidden;" class="wcustomhtml"><h1 style="color: #fff; text-transform: uppercase; letter-spacing: 5px; font-weight: normal; font-size: 200%;text-shadow: 2px 2px 5px rgba(0,0,0,.7);"> Healthy Community Living</h1></div>
+
+
+
+</div>
+
+<div class="wsite-spacer" style="height:10px;"></div>
+				</div>
+			</div>
+		
+		</div>
+		<div class=""></div>
+	</div>
+</div>
+
+</div>
+
+	</div>
+
+	<div id="main-wrap">
+		<div id="wsite-content" class="wsite-elements wsite-not-footer">
+	<div class="wsite-section-wrap">
+	<div class="wsite-section wsite-body-section wsite-background-12 wsite-custom-background" style="height: auto;" >
+		<div class="wsite-section-content">
+			<div class="container">
+			<div class="wsite-section-elements">
+				<div><div id="349033933625007080" align="left" style="width: 100%; overflow-y: hidden;" class="wcustomhtml"><h2 style="text-transform: uppercase; letter-spacing: 2px; font-weight: light; font-size: 1.8em;"> Welcome!</h2></div>
+
+
+
+</div>
+
+<div class="paragraph"><font size="5">The Healthy Community Living (HCL) program is about all people having opportunities to live well and participate fully in their communities.<br /><br /><a href="http://healthycommunityliving.com/program-subscription.html">Purchasing an HCL License</a> gives access to both Independent Living skills workshops for consumers and facilitator training for staff.</font><br /><br /><br /></div>
+
+<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
+	<table class="wsite-multicol-table">
+		<tbody class="wsite-multicol-tbody">
+			<tr class="wsite-multicol-tr">
+				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<div class="paragraph" style="text-align:center;"><strong>Consumer Workshops</strong><br /><br />Community Living Skills - 10 weeks<br />&nbsp;- <a href="http://healthycommunityliving.com/community-living-skills.html">Read about the Sessions included in CLS</a><br /><br />Living Well in the Community - 10 weeks<br />&#8203;- <a href="http://healthycommunityliving.com/living-well-in-the-community.html">Read about the Sessions included in LWC</a></div>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<div class="paragraph" style="text-align:center;"><strong>Facilitator Trainings</strong><br /><br />Community Living Skills Facilitator Training<br /><br />Living Well in the Community Facilitator Training<br /><br />&#8203;Facilitating Groups Training</div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+
+<div class="wsite-spacer" style="height:50px;"></div>
+
+<div><div style="height: 20px; overflow: hidden; width: 100%;"></div>
+<hr class="styled-hr" style="width:100%;"></hr>
+<div style="height: 20px; overflow: hidden; width: 100%;"></div></div>
+
+<div><div id="707826817528523171" align="left" style="width: 100%; overflow-y: hidden;" class="wcustomhtml"><h2 style="text-transform: uppercase; letter-spacing: 2px; font-weight: light; font-size: 1.8em;">Newsletter Sign-Up</h2></div>
+
+
+
+</div>
+
+<div class="paragraph"><br /><strong style="color:rgb(0, 0, 0)">&#8203;Thank you for your interest in Healthy Community Living!</strong><br /><br /><span style="color:rgb(0, 0, 0)">For program updates and announcements, sign up for our newsletter:</span></div>
+
+<div><div id="629383069350963268" align="left" style="width: 100%; overflow-y: hidden;" class="wcustomhtml"><link rel='stylesheet' id='mailster-form-default-css'  href='http://ri.umt.edu/news/wp-content/plugins/mailster/assets/css/form-default-style.min.css?ver=2.4.14' media='all' />
+<style type="text/css" media="screen" class="mailster-custom-form-css">
+.mailster-form-4 .mailster-firstname-wrapper label{}
+</style>
+<form action="http://ri.umt.edu/news/mailster/subscribe" method="post" class="mailster-form mailster-form-submit extern mailster-form-4" novalidate><input name="_action" type="hidden" value="subscribe">
+<input name="_referer" type="hidden" value="extern">
+<input name="_nonce" type="hidden" value="f9c16df9cd">
+<input name="formid" type="hidden" value="4">
+<div class="mailster-form-fields">
+<div class="mailster-wrapper mailster-email-wrapper"><label for="mailster-email-4">Email <span class="mailster-required">*</span></label><input id="mailster-email-4" name="email" type="email" value="" class="input mailster-email mailster-required" aria-required="true" aria-label="Email" spellcheck="false"></div>
+<div class="mailster-wrapper mailster-firstname-wrapper"><label for="mailster-firstname-4">First Name <span class="mailster-required">*</span></label><input id="mailster-firstname-4" name="firstname" type="text" value="" class="input mailster-firstname mailster-required" aria-required="true" aria-label="First Name"></div>
+<div class="mailster-wrapper mailster-lastname-wrapper"><label for="mailster-lastname-4">Last Name <span class="mailster-required">*</span></label><input id="mailster-lastname-4" name="lastname" type="text" value="" class="input mailster-lastname mailster-required" aria-required="true" aria-label="Last Name"></div>
+<div class="mailster-wrapper mailster-agency1-wrapper"><label for="mailster-agency1-4">Agency1</label><input id="mailster-agency1-4" name="agency1" type="text" value="" class="input mailster-agency1" aria-required="false" aria-label="Agency1"></div>
+<div class="mailster-wrapper mailster-agency2-wrapper"><label for="mailster-agency2-4">Agency2</label><input id="mailster-agency2-4" name="agency2" type="text" value="" class="input mailster-agency2" aria-required="false" aria-label="Agency2"></div>
+<div class="mailster-wrapper mailster-city-wrapper"><label for="mailster-city-4">City</label><input id="mailster-city-4" name="city" type="text" value="" class="input mailster-city" aria-required="false" aria-label="City"></div>
+<div class="mailster-wrapper mailster-state-wrapper"><label for="mailster-state-4">State</label><input id="mailster-state-4" name="state" type="text" value="" class="input mailster-state" aria-required="false" aria-label="State"></div>
+<div class="mailster-wrapper mailster-zip-wrapper"><label for="mailster-zip-4">Zip</label><input id="mailster-zip-4" name="zip" type="text" value="" class="input mailster-zip" aria-required="false" aria-label="Zip"></div>
+<div class="mailster-wrapper mailster-_recaptcha-wrapper"><input name="g-recaptcha-response" type="hidden" id="mailster-_recaptcha-4-5f7376c96964f"></div>
+<div class="mailster-wrapper mailster-submit-wrapper form-submit"><input name="submit" type="submit" value="Subscribe" class="submit-button button" aria-label="Subscribe"></div>
+</div>
+</form>
+</div>
+
+
+
+</div>
+
+<div class="wsite-spacer" style="height:50px;"></div>
+
+<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
+	<table class="wsite-multicol-table">
+		<tbody class="wsite-multicol-tbody">
+			<tr class="wsite-multicol-tr">
+				<td class="wsite-multicol-col" style="width:15.555555555556%; padding:0 15px;">
+					
+						
+
+<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0px;margin-right:0px;text-align:center">
+<a>
+<img src="/uploads/3/6/1/9/36198542/editor/ken-close-2.jpg?1596564391" alt="Ken Mitchell" style="width:192;max-width:100%" />
+</a>
+<div style="display:block;font-size:90%"></div>
+</div></div>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:84.444444444444%; padding:0 15px;">
+					
+						
+
+<div class="paragraph"><span style="color:rgb(0, 0, 0)"><strong>"[HCL is] making people aware of healthy lifestyles, not just food or exercise, but mental health and stress management as well." </strong><br /><br />~ Ken Mitchell, disABILITY LINK</span></div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+			</div>
+		</div>
+		</div>
+
+	</div>
+</div>
+
+</div>
+
+	</div>
+
+	<div id="footer-wrap">
+		<div class="container"><div class='wsite-elements wsite-footer'>
+<h2 class="wsite-content-title" style="text-align:center;"><span><font size="6">Contact Us<br />&#8203;</font></span></h2>
+
+<div class="paragraph" style="text-align:center;"><font size="5"><strong>Healthy Community Living<br /></strong>Rural Institute<br />University of Montana<br />035 N. Corbin Hall<br />Missoula, MT 59812-7056</font><br /><font size="5"><br /><strong>Questions or Comments? Please contact us!&nbsp;</strong><br /><br /><a href="tel:18882682743">(888) 268-2743</a><br /><font color="#c2743b"><a href="mailto:healthycommunityliving@mso.umt.edu">healthycommunityliving@mso.umt.edu&#8203;</a></font></font></div>
+
+<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0px;margin-right:0px;text-align:center">
+<a href='http://www.healthycommunityliving.com'>
+<img src="/uploads/3/6/1/9/36198542/hcllogo75px_orig.jpg" alt="Healthy Community Living logo" style="width:auto;max-width:100%" />
+</a>
+<div style="display:block;font-size:90%"></div>
+</div></div>
+
+<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
+	<table class="wsite-multicol-table">
+		<tbody class="wsite-multicol-tbody">
+			<tr class="wsite-multicol-tr">
+				<td class="wsite-multicol-col" style="width:25.757575757576%; padding:0 15px;">
+					
+						
+
+<div class="wsite-spacer" style="height:50px;"></div>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:48.484848484848%; padding:0 15px;">
+					
+						
+
+<div><div style="height: 0px; overflow: hidden;"></div>
+				<div id='242840467680435098-gallery' class='imageGallery' style='line-height: 0px; padding: 0; margin: 0'>
+<div id='242840467680435098-imageContainer0' style='float:left;width:19.95%;margin:0;'><div id='242840467680435098-insideImageContainer0' style='position:relative;margin:10px;'><div class='galleryImageHolder' style='position:relative; width:100%; padding:0 0 100%;overflow:hidden;'><div class='galleryInnerImageHolder'><a href='https://www.facebook.com/HealthyCommunityLiving' target='_blank' title='Facebook Button'><img src='/uploads/3/6/1/9/36198542/facebook-icon-copy_1.png' class='galleryImage' _width='106' _height='106' alt='Facebook Icon' style='position:absolute;border:0;width:100%;top:-0%;left:0%' /></a></div></div></div></div><div id='242840467680435098-imageContainer1' style='float:left;width:19.95%;margin:0;'><div id='242840467680435098-insideImageContainer1' style='position:relative;margin:10px;'><div class='galleryImageHolder' style='position:relative; width:100%; padding:0 0 100%;overflow:hidden;'><div class='galleryInnerImageHolder'><a href='https://twitter.com/WeAreHCL' target='_blank' title='Twitter button'><img src='/uploads/3/6/1/9/36198542/twitter-icon-copy_1.png' class='galleryImage' _width='106' _height='106' alt='Twitter button' style='position:absolute;border:0;width:100%;top:-0%;left:0%' /></a></div></div></div></div><div id='242840467680435098-imageContainer2' style='float:left;width:19.95%;margin:0;'><div id='242840467680435098-insideImageContainer2' style='position:relative;margin:10px;'><div class='galleryImageHolder' style='position:relative; width:100%; padding:0 0 100%;overflow:hidden;'><div class='galleryInnerImageHolder'><a href='http://www.flickr.com/groups/healthycommunityliving' target='_blank' title='Flickr Button'><img src='/uploads/3/6/1/9/36198542/flickr-icon-copy_1.png' class='galleryImage' _width='106' _height='106' alt='Flickr Icon' style='position:absolute;border:0;width:100%;top:-0%;left:0%' /></a></div></div></div></div><div id='242840467680435098-imageContainer3' style='float:left;width:19.95%;margin:0;'><div id='242840467680435098-insideImageContainer3' style='position:relative;margin:10px;'><div class='galleryImageHolder' style='position:relative; width:100%; padding:0 0 100%;overflow:hidden;'><div class='galleryInnerImageHolder'><a href='https://www.youtube.com/channel/UCVu6D_eCN5aRQ6tYueCyecg' target='_blank' title='YouTube Button'><img src='/uploads/3/6/1/9/36198542/youtube-icon.png' class='galleryImage' _width='106' _height='106' alt='YouTube Icon' style='position:absolute;border:0;width:100%;top:-0%;left:0%' /></a></div></div></div></div><div id='242840467680435098-imageContainer4' style='float:left;width:19.95%;margin:0;'><div id='242840467680435098-insideImageContainer4' style='position:relative;margin:10px;'><div class='galleryImageHolder' style='position:relative; width:100%; padding:0 0 100%;overflow:hidden;'><div class='galleryInnerImageHolder'><a href='mailto:healthycommunityliving@mso.umt.edu' title='Mail Button'><img src='/uploads/3/6/1/9/36198542/mail-icon-copy_1.png' class='galleryImage' _width='106' _height='106' alt='Email Icon' style='position:absolute;border:0;width:100%;top:-0%;left:0%' /></a></div></div></div></div><span style='display: block; clear: both; height: 0px; overflow: hidden;'></span>
+</div>
+
+				<div style="height: 10px; overflow: hidden;"></div></div>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:25.757575757576%; padding:0 15px;">
+					
+						
+
+<div class="wsite-spacer" style="height:50px;"></div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+
+<div class="paragraph" style="text-align:center;"><font size="2">&copy; 2020<a href="http://rtc.ruralinstitute.umt.edu/" target="_blank">&nbsp;<font color="#c2743b">RTC: Rural</font></a>. This project is supported by grant #90DP0073 from the <a href="https://www.acl.gov/about-acl/about-national-institute-disability-independent-living-and-rehabilitation-research" target="_blank"><font color="#c2743b">National Institute on Disability, Independent Living, and Rehabilitation Research within the Administration on Community Living</font></a>, U.S. Department of Health and Human Services. The contents and opinions expressed reflect those of the author(s), are not necessarily those of the funding agency, and should not assume endorsement by the Federal Government.</font></div></div></div>
+	</div>
+
+	<script type="text/javascript" src="/files/theme/plugins.js?1506571892"></script>
+	<script type="text/javascript" src="/files/theme/custom.js?1506571892"></script>
+
+    <div id="customer-accounts-app"></div>
+    <script src="//cdn2.editmysite.com/js/site/main-customer-accounts-site.js?buildTime=1603474513"></script>
+
+		<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-7870337-1']);
+	_gaq.push(['_setDomainName', 'none']);
+	_gaq.push(['_setAllowLinker', true]);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+
+	_W.Analytics = _W.Analytics || {'trackers': {}};
+	_W.Analytics.trackers.wGA = '_gaq';
+</script>
+
+<script type="text/javascript" async=1>
+	;(function(p,l,o,w,i,n,g){if(!p[i]){p.GlobalSnowplowNamespace=p.GlobalSnowplowNamespace||[];
+			p.GlobalSnowplowNamespace.push(i);p[i]=function(){(p[i].q=p[i].q||[]).push(arguments)
+			};p[i].q=p[i].q||[];n=l.createElement(o);g=l.getElementsByTagName(o)[0];n.async=1;
+			n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,'script','//cdn2.editmysite.com/js/wsnbn/snowday262.js','snowday'));
+
+	var r = [99, 104, 101, 99, 107, 111, 117, 116, 46, 40, 119, 101, 101, 98, 108, 121, 124, 101, 100, 105, 116, 109, 121, 115, 105, 116, 101, 41, 46, 99, 111, 109];
+	var snPlObR = function(arr) {
+		var s = '';
+		for (var i = 0 ; i < arr.length ; i++){
+			s = s + String.fromCharCode(arr[i]);
+		}
+		return s;
+	};
+	var s = snPlObR(r);
+
+	var regEx = new RegExp(s);
+
+	_W.Analytics = _W.Analytics || {'trackers': {}};
+	_W.Analytics.trackers.wSP = 'snowday';
+	_W.Analytics.user_id = '36198542';
+	_W.Analytics.site_id = '340659377631111019';
+
+	// Setting do not track if the GDPR cookie is not present. This is then checked by the snowday initializer
+	// to set tracking decisions. https://github.com/snowplow/snowplow-javascript-tracker/blob/2.6.2/src/js/tracker.js#L1509
+	window.doNotTrack = document.cookie.indexOf('gdpr-kb') === -1 ? 'yes' : null;
+
+	var drSegmentsTag = document.getElementById('drSegments');
+	if (drSegmentsTag) {
+		_W.Analytics.spContexts = _W.Analytics.spContexts || [];
+
+		var segmentData = JSON.parse(drSegmentsTag.innerText);
+		segmentData.forEach(function(test) {
+			_W.Analytics.spContexts.push({
+				schema: "iglu:com.weebly/context_ab_segment/jsonschema/1-0-0",
+				data: {
+					test_id: test.name,
+					segment: test.variant,
+				}
+			});
+		});
+	}
+
+
+	(function(app_id, ec_hostname, discover_root_domain) {
+		var track = window[_W.Analytics.trackers.wSP];
+		if (!track) return;
+		track('newTracker', app_id, ec_hostname, {
+			appId: app_id,
+			post: true,
+			platform: 'web',
+			discoverRootDomain: discover_root_domain,
+			cookieName: '_snow_',
+			contexts: {
+				webPage: true,
+				performanceTiming: true,
+				gaCookies: true
+			},
+			crossDomainLinker: function (linkElement) {
+				return regEx.test(linkElement.href);
+			},
+			respectDoNotTrack: document.cookie.indexOf('gdpr-kb') === -1
+		});
+		track('trackPageView', _W.Analytics.user_id+':'+_W.Analytics.site_id, _W.Analytics.spContexts);
+		track('crossDomainLinker', function (linkElement) {
+			return regEx.test(linkElement.href);
+		});
+	})(
+		'_wn',
+		'ec.editmysite.com',
+		true
+	);
+</script>
+
+
+
+
+
+<script>
+	(function(jQuery) {
+		try {
+			if (jQuery) {
+				jQuery('div.blog-social div.fb-like').attr('class', 'blog-social-item blog-fb-like');
+				var $commentFrame = jQuery('#commentArea iframe');
+				if ($commentFrame.length > 0) {
+					var frameHeight = jQuery($commentFrame[0].contentWindow.document).height() + 50;
+					$commentFrame.css('min-height', frameHeight + 'px');
+				}
+				if (jQuery('.product-button').length > 0){
+					jQuery(document).ready(function(){
+						jQuery('.product-button').parent().each(function(index, product){
+							if(jQuery(product).attr('target') == 'paypal'){
+								if (!jQuery(product).find('> [name="bn"]').length){
+									jQuery('<input>').attr({
+										type: 'hidden',
+										name: 'bn',
+										value: 'DragAndDropBuil_SP_EC'
+									}).appendTo(product);
+								}
+							}
+						});
+					});
+				}
+			}
+			else {
+				// Prototype
+				$$('div.blog-social div.fb-like').each(function(div) {
+					div.className = 'blog-social-item blog-fb-like';
+				});
+				$$('#commentArea iframe').each(function(iframe) {
+					iframe.style.minHeight = '410px';
+				});
+			}
+		}
+		catch(ex) {}
+	})(window._W && _W.jQuery);
+</script>
+
+<script>
+	window._W.isEUUser = false;
+	window._W.showCookieToAll = "";
+</script>
+
+
+	</body>
+</html>
+find('> [name="bn"]').length){
+									jQuery('<input>').attr({
+										type: 'hidden',
+										name: 'bn',
+										value: 'DragAndDropBuil_SP_EC'
+									}).appendTo(product);
+								}
+							}
+						});
+					});
+				}
+			}
+			else {
+				// Prototype
+				$$('div.blog-social div.fb-like').each(function(div) {
+					div.className = 'blog-social-item blog-fb-like';
+				});
+				$$('#commentArea iframe').each(function(iframe) {
+					iframe.style.minHeight = '410px';
+				});
+			}
+		}
+		catch(ex) {}
+	})(window._W && _W.jQuery);
+</script>
+
+<script>
+	window._W.isEUUser = false;
+	window._W.showCookieToAll = "";
+</script>
+
+
+	</body>
+</html>

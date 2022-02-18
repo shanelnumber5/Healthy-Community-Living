@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]]
+
+<IfModule mime_module>
+ AddHandler application/x-httpd-ea-php73 .php .php7 .phtml
+</IfModule>

@@ -1,0 +1,90 @@
+2022-02-11T02:19:48+00:00 ERROR Spec is invalid because the locale could not be retrieved in feed
+2022-02-11T02:19:48+00:00 ERROR stdClass Object
+(
+    [slug] => lead_gen_existing_customers_1
+    [type] => marketing
+    [status] => unactioned
+    [is_snoozable] => 0
+    [source] => woocommerce.com
+    [locales] => Array
+        (
+            [0] => stdClass Object
+                (
+                    [locale] => 
+                    [title] => Talk to a consultant
+                    [content] => As your business grows, you want to optimize costs, streamline operations, and sell more. We can help. Talk to us about how you can get the most out of WooCommerce.
+                )
+
+        )
+
+    [actions] => Array
+        (
+            [0] => stdClass Object
+                (
+                    [name] => lead_gen_existing_customers_1
+                    [locales] => Array
+                        (
+                            [0] => stdClass Object
+                                (
+                                    [locale] => en_US
+                                    [label] => Yes, please
+                                )
+
+                        )
+
+                    [url] => https://woocommerce.com/take-your-business-to-the-next-level/
+                    [url_is_admin_query] => 
+                    [is_primary] => 
+                    [status] => actioned
+                )
+
+        )
+
+    [rules] => Array
+        (
+            [0] => stdClass Object
+                (
+                    [type] => publish_after_time
+                    [publish_after] => 2022-02-10 18:10:54
+                )
+
+            [1] => stdClass Object
+                (
+                    [type] => publish_before_time
+                    [publish_before] => 2022-02-13 23:59:00
+                )
+
+            [2] => stdClass Object
+                (
+                    [type] => or
+                    [operands] => Array
+                        (
+                            [0] => stdClass Object
+                                (
+                                    [type] => base_location_country
+                                    [operation] => =
+                                    [value] => US
+                                )
+
+                            [1] => stdClass Object
+                                (
+                                    [type] => base_location_country
+                                    [operation] => =
+                                    [value] => CA
+                                )
+
+                            [2] => stdClass Object
+                                (
+                                    [type] => base_location_country
+                                    [operation] => =
+                                    [value] => ZA
+                                )
+
+                        )
+
+                )
+
+        )
+
+)
+

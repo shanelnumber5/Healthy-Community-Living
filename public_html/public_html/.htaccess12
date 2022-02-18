@@ -1,0 +1,58 @@
+# Use PHP5.6 as default
+# AddHandler application/x-httpd-ea-php56 .php
+RewriteCond %{HTTP_HOST} ^healthycommunityliving\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.healthycommunityliving\.com$
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteRule ^cls$ "http\:\/\/healthycommunityliving\.com\/CLS" [R=301,L]
+RewriteCond %{HTTP_HOST} ^healthycommunityliving\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.healthycommunityliving\.com$
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteRule ^Cls$ "http\:\/\/healthycommunityliving\.com\/CLS" [R=301,L]
+RewriteCond %{HTTP_HOST} ^healthycommunityliving\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.healthycommunityliving\.com$
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteRule ^lwc$ "http\:\/\/healthycommunityliving\.com\/LWC" [R=301,L]
+RewriteCond %{HTTP_HOST} ^healthycommunityliving\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.healthycommunityliving\.com$
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteRule ^Lwc$ "http\:\/\/healthycommunityliving\.com\/LWC" [R=301,L]
+RewriteCond %{HTTP_HOST} ^healthycommunityliving\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.healthycommunityliving\.com$
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteRule ^lwc\-facilitator\-training$ "http\:\/\/healthycommunityliving\.com\/LWC\-facilitator\-training" [R=301,L]
+RewriteCond %{HTTP_HOST} ^healthycommunityliving\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.healthycommunityliving\.com$
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteRule ^lwcfacilitatortraining$ "http\:\/\/healthycommunityliving\.com\/LWC\-facilitator\-training" [R=301,L]
+RewriteCond %{HTTP_HOST} ^healthycommunityliving\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.healthycommunityliving\.com$
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteRule ^LWC\-Facilitator\-Training$ "http\:\/\/healthycommunityliving\.com\/LWC\-facilitator\-training" [R=301,L]
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php73” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php73 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

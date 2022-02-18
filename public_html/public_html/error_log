@@ -1,0 +1,85 @@
+[[12-May-2021 16:34:09 America/Boise] PHP Warning:  file_get_contents(userid.txt): failed to open stream: No such file or directory in /home4/ealtibj2/public_html/404.php on line 41
+[16-May-2021 03:02:25 America/Boise] PHP Warning:  file_get_contents(userid.txt): failed to open stream: No such file or directory in /home4/ealtibj2/public_html/404.php on line 41
+[22-May-2021 15:48:25 America/Boise] PHP Warning:  file_get_contents(userid.txt): failed to open stream: No such file or directory in /home4/ealtibj2/public_html/404.php on line 41
+[24-May-2021 11:33:40 America/Boise] PHP Warning:  file_get_contents(userid.txt): failed to open stream: No such file or directory in /home4/ealtibj2/public_html/404.php on line 41
+[24-May-2021 11:33:46 America/Boise] PHP Warning:  file_get_contents(userid.txt): failed to open stream: No such file or directory in /home4/ealtibj2/public_html/404.php on line 41
+[28-Jun-2021 11:11:53 America/Boise] PHP Warning:  file_get_contents(userid.txt): failed to open stream: No such file or directory in /home4/ealtibj2/public_html/404.php on line 41
+[05-Aug-2021 23:45:46 America/Boise] PHP Warning:  file_get_contents(userid.txt): failed to open stream: No such file or directory in /home4/ealtibj2/public_html/404.php on line 41
+[20-Jan-2022 21:26:56 UTC] PHP Fatal error:  Uncaught Error: Call to a member function update() on null in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php:203
+Stack trace:
+#0 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI_Actions->check_upgrade_routines('')
+#1 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters('', Array)
+#2 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#3 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(429): do_action('optin_monster_a...')
+#4 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(354): OMAPI->load_global()
+#5 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI->init('')
+#6 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#7 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#8 /home4/ealtibj2/public_html/wp-settings.php(578): do_ac in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203
+[20-Jan-2022 21:28:12 UTC] PHP Fatal error:  Uncaught Error: Call to a member function update() on null in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php:203
+Stack trace:
+#0 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI_Actions->check_upgrade_routines('')
+#1 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters('', Array)
+#2 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#3 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(429): do_action('optin_monster_a...')
+#4 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(354): OMAPI->load_global()
+#5 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI->init('')
+#6 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#7 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#8 /home4/ealtibj2/public_html/wp-settings.php(578): do_ac in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203
+[20-Jan-2022 21:32:22 UTC] PHP Fatal error:  Uncaught Error: Call to a member function update() on null in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php:203
+Stack trace:
+#0 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI_Actions->check_upgrade_routines('')
+#1 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters('', Array)
+#2 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#3 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(429): do_action('optin_monster_a...')
+#4 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(354): OMAPI->load_global()
+#5 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI->init('')
+#6 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#7 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#8 /home4/ealtibj2/public_html/wp-settings.php(578): do_ac in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203
+[20-Jan-2022 21:33:45 UTC] PHP Fatal error:  Uncaught Error: Call to a member function update() on null in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php:203
+Stack trace:
+#0 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI_Actions->check_upgrade_routines('')
+#1 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters('', Array)
+#2 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#3 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(429): do_action('optin_monster_a...')
+#4 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(354): OMAPI->load_global()
+#5 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI->init('')
+#6 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#7 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#8 /home4/ealtibj2/public_html/wp-settings.php(578): do_ac in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203
+[20-Jan-2022 21:37:49 UTC] PHP Fatal error:  Uncaught Error: Call to a member function update() on null in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php:203
+Stack trace:
+#0 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI_Actions->check_upgrade_routines('')
+#1 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters('', Array)
+#2 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#3 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(429): do_action('optin_monster_a...')
+#4 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(354): OMAPI->load_global()
+#5 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(303): OMAPI->init('')
+#6 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#7 /home4/ealtibj2/public_html/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#8 /home4/ealtibj2/public_html/wp-settings.php(578): do_ac in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203
+[28-Jan-2022 14:54:04 UTC] PHP Fatal error:  Uncaught Error: Call to a member function update() on null in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php:203
+Stack trace:
+#0 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(307): OMAPI_Actions->check_upgrade_routines('')
+#1 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(331): WP_Hook->apply_filters('', Array)
+#2 /home4/ealtibj2/public_html/wp-includes/plugin.php(474): WP_Hook->do_action(Array)
+#3 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(429): do_action('optin_monster_a...')
+#4 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(354): OMAPI->load_global()
+#5 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(307): OMAPI->init('')
+#6 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(331): WP_Hook->apply_filters(NULL, Array)
+#7 /home4/ealtibj2/public_html/wp-includes/plugin.php(474): WP_Hook->do_action(Array)
+#8 /home4/ealtibj2/public_html/wp-settings.php(587): do_ac in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203
+[28-Jan-2022 14:55:40 UTC] PHP Fatal error:  Uncaught Error: Call to a member function update() on null in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php:203
+Stack trace:
+#0 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(307): OMAPI_Actions->check_upgrade_routines('')
+#1 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(331): WP_Hook->apply_filters('', Array)
+#2 /home4/ealtibj2/public_html/wp-includes/plugin.php(474): WP_Hook->do_action(Array)
+#3 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(429): do_action('optin_monster_a...')
+#4 /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/optin-monster-wp-api.php(354): OMAPI->load_global()
+#5 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(307): OMAPI->init('')
+#6 /home4/ealtibj2/public_html/wp-includes/class-wp-hook.php(331): WP_Hook->apply_filters(NULL, Array)
+#7 /home4/ealtibj2/public_html/wp-includes/plugin.php(474): WP_Hook->do_action(Array)
+#8 /home4/ealtibj2/public_html/wp-settings.php(587): do_ac in /home4/ealtibj2/public_html/wp-content/plugins/optinmonster/OMAPI/Actions.php on line 203
+[01-Feb-2022 21:20:56 UTC] WordPress database error You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') AND meta_key LIKE 'attribute\\_%'' at line 1 for query SELECT post_id as variation_id, meta_key as attribute_key, meta_value as attribute_value FROM wpkr_postmeta WHERE post_id IN () AND meta_key LIKE 'attribute\\_%' made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, WP_REST_Server->serve_request, WP_REST_Server->dispatch, WP_REST_Server->respond_to_request, WP_REST_Autosaves_Controller->create_item, WP_REST_Autosaves_Controller->prepare_item_for_response, WP_REST_Revisions_Controller->prepare_item_for_response, apply_filters('the_content'), WP_Hook->apply_filters, do_blocks, render_block, WP_Block->render, Automattic\WooCommerce\Blocks\BlockTypes\AbstractBlock->render_callback, Automattic\WooCommerce\Blocks\BlockTypes\AbstractProductGrid->render, Automattic\WooCommerce\Blocks\BlockTypes\AbstractProductGrid->get_products, Automattic\WooCommerce\Blocks\BlockTypes\AbstractProductGrid->prime_product_variations

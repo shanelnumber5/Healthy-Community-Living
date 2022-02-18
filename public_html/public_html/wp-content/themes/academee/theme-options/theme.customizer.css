@@ -1,0 +1,109 @@
+/* Theme Customizer styles */
+
+#customize-header-actions .button {
+	padding: 0 5px;
+	font-size: 12px;
+}
+#customize-header-actions .customize-action-reset {
+	float: right;
+	margin: 0 0 0 6px;
+	max-width: 50px;
+}
+
+#customize-header-actions .customize-action-refresh {
+	position: absolute;
+	z-index:1000;
+	left: 60px;
+	top: 10px;
+	max-width: 30px;
+}
+#customize-header-actions .customize-action-refresh:before {
+	margin: 0;
+}
+
+.customize-section-description-container > p {
+	font-style:italic;
+}
+
+div.customize-section-description,
+.customize-control-description {
+	font-size: 12px;
+	line-height: 18px;
+}
+.customize-control-info > label {
+	font-style:italic;
+	padding:1em;
+	background-color:#e0e0e0;
+}
+.customize-control-field-wrap {
+	display: block;
+	position:relative;
+}
+
+#customize-theme-controls li > label {
+	display:block;
+	margin-top: 1.2em;
+}
+
+#customize-theme-controls li:not(.customize-section-description-container):not(.customize-control-info) + li > label {
+	padding-top:0.8em;
+	border-top: 1px dotted #ddd;
+}
+
+.customize-control > label > label {
+	display:inline-block;
+	margin:0 1em 0 0;
+	padding:0;
+	border:none;
+}
+
+.customize-control-background img,
+.customize-control-cropped_image img,
+.customize-control-header img,
+.customize-control-image img,
+.customize-control-media img,
+.customize-control-upload img {
+	width: auto;
+}
+
+#customize-control-header_image .customize-control-description {
+	display:none;
+}
+
+/* Color scheme editor */
+.customize-control-scheme_editor .academee_scheme_editor_selector {
+	margin-bottom: 10px;
+}
+.customize-control-scheme_editor .academee_scheme_editor_header {
+	padding: 3px 0;
+	border-top: 1px dashed #ddd;
+	border-bottom: 1px dashed #ddd;
+}
+.customize-control-scheme_editor .academee_scheme_editor_header_cell,
+.customize-control-scheme_editor .academee_scheme_editor_row_cell {
+	display:inline-block;
+	vertical-align:top;
+	width: 17%;
+}
+.customize-control-scheme_editor .academee_scheme_editor_header_cell:first-child,
+.customize-control-scheme_editor .academee_scheme_editor_row_cell:first-child {
+	width: 15%;
+}
+.customize-control-scheme_editor .academee_scheme_editor_header_cell + .academee_scheme_editor_header_cell,
+.customize-control-scheme_editor .academee_scheme_editor_row_cell + .academee_scheme_editor_row_cell {
+	margin-left:0;
+}
+.customize-control-scheme_editor .academee_scheme_editor_header_cell {
+	font-size: 10px;
+	font-weight: bold;
+	text-align:center;
+}
+.customize-control-scheme_editor .academee_scheme_editor_row {
+	padding: 3px 0;
+	border-bottom: 1px dotted #ddd;
+}
+.customize-control-scheme_editor .academee_scheme_editor_row_cell,
+.customize-control-scheme_editor .academee_scheme_editor_row_cell input {
+	font-size: 9px;
+	line-height:13px;
+}
