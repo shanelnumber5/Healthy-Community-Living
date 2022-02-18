@@ -1,0 +1,6 @@
+name = Flexslider Format
+description = Add custom image formatter as flexslider 
+core = 7.x
+package = Tabvn
+
+files[] = plugins/flexslider/flexslider_format_plugin_style.inc

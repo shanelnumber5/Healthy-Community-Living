@@ -1,0 +1,12 @@
+name = Ubercart Custom Payment
+description = Custom payment methods for Ubercart
+package = Administration
+core = 7.x
+dependencies[] = uc_payment
+
+; Information added by drupal.org packaging script on 2013-10-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "uc_custom_payment"
+datestamp = "1382149012"
+

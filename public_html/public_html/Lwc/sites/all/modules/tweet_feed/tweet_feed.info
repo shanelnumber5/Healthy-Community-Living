@@ -1,0 +1,17 @@
+name = Tweet Feed
+description = Views implementation of Twitter Feeds
+package = Other
+core = 7.x
+
+dependencies[] = views
+dependencies[] = oauth_common
+dependencies[] = ctools
+
+configure = admin/config/services/tweet_feed
+
+; Information added by Drupal.org packaging script on 2016-03-05
+version = "7.x-1.15"
+core = "7.x"
+project = "tweet_feed"
+datestamp = "1457168340"
+

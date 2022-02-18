@@ -1,0 +1,89 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function css_editor_init() {
+  global $theme;
+  $enabled_themes = variable_get('css_editor_enabled_themes', array());
+  if (isset($enabled_themes[$theme]) && $enabled_themes[$theme] && !isset($_REQUEST['theme'])) {
+    drupal_add_css(theme_get_setting('css', $theme),
+    array('type' => 'inline', 'weight' => 9999, 'group' => CSS_THEME));
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function css_editor_menu() {
+  $items = array();
+  $items['admin/config/user-interface/css-editor'] = array(
+    'title' => t('CSS Editor'),
+    'description' => t('General settings for custom CSS per theme.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('css_editor_admin_settings'),
+    'access arguments' => array('administer site configuration'), 
+  );
+  return $items;
+}
+
+/**
+ * Form function for item `admin/config/user-interface/css`.
+ */
+function css_editor_admin_settings() {
+  $themes = array();
+  foreach(list_themes(TRUE) as $name => $theme) {
+    if ($theme->status) {
+      $themes[$name] = $name;
+    }
+  }
+  $form['css_editor_enabled_themes'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Enabled themes'),
+    '#description' => t('Choose which themes can use the custom CSS feature.'),
+    '#options' => $themes,
+    '#default_value' => variable_get('css_editor_enabled_themes', array()),
+  );
+  $form = system_settings_form($form);
+  return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for `system_theme_settings`.
+ */
+function css_editor_form_system_theme_settings_alter(&$form, &$form_state, $form_id) {
+  $theme = arg(3);
+  $enabled_themes = variable_get('css_editor_enabled_themes', array());
+  if (isset($enabled_themes[$theme]) && $enabled_themes[$theme]) {
+    $form['css'] = array(
+      '#title' => t('Custom CSS'),
+      '#type' => 'textarea',
+      '#prefix' => '<div id="css-editor-field">',
+      '#description' => t('Type custom CSS code for this theme, above. If enabled, preview is displayed below.'),
+      '#default_value' => theme_get_setting('css', $theme),
+      '#attributes' => array('id' => 'css-editor-textarea'),
+      '#suffix' => '</div>',
+    );
+    $preview_url = url('<front>', array('absolute' => TRUE, 'query' => array('theme' => $theme)));
+    $form['css_preview'] = array(
+      '#markup' => '<iframe src="' . $preview_url . '" id="css-editor-preview">' . t('Frames are not supported.') . '</iframe>',
+    );
+    drupal_add_js(drupal_get_path('module', 'css_editor') . '/lib/codemirror-3.11/lib/codemirror.js');
+    drupal_add_css(drupal_get_path('module', 'css_editor') . '/lib/codemirror-3.11/lib/codemirror.css');
+    drupal_add_js(drupal_get_path('module', 'css_editor') . '/lib/codemirror-3.11/mode/css/css.js');
+    drupal_add_js(drupal_get_path('module', 'css_editor') . '/js/css_editor.js');
+    drupal_add_css(drupal_get_path('module', 'css_editor') . '/css/css_editor.css');
+    drupal_add_js(array('CSSEditor' => array('frontPage' => $preview_url)), 'setting');
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function css_editor_custom_theme() {
+  if (isset($_REQUEST['theme']) &&
+      isset($_SERVER['HTTP_REFERER']) &&
+      $_SERVER['HTTP_REFERER'] == url('admin/appearance/settings/' . $_REQUEST['theme'], array('absolute' => TRUE))) {
+    return $_REQUEST['theme'];
+  }
+}
