@@ -1,0 +1,34 @@
+name = Extra Fields Pane
+description = Extends Ubercart with extra address fields.
+dependencies[] = uc_addresses
+dependencies[] = uc_cart
+dependencies[] = uc_store
+package = "Ubercart - extra"
+configure = admin/store/settings/countries/fields
+core = 7.x
+php = 5.2
+
+; Classes
+files[] = class/Exceptions.inc
+files[] = class/UCXF_Field.class.php
+files[] = class/UCXF_FieldList.class.php
+files[] = class/UCXF_AddressField.class.php
+files[] = class/UCXF_Value.class.php
+
+; Ubercart Addresses handlers
+files[] = includes/uc_addresses.handlers.inc
+
+; Views handlers
+files[] = views/uc_extra_fields_pane_handler_field_selection.inc
+files[] = views/uc_extra_fields_pane_handler_filter_selection.inc
+
+; Automated tests
+files[] = uc_extra_fields_pane.test
+test_dependencies[] = uc_addresses (7.x-1.x-dev)
+
+; Information added by Drupal.org packaging script on 2015-10-27
+version = "7.x-1.0-alpha3+10-dev"
+core = "7.x"
+project = "uc_extra_fields_pane"
+datestamp = "1445957345"
+

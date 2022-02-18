@@ -1,0 +1,955 @@
+<?php
+/**
+ * @file
+ * Automated tests for Extra Fields Pane
+ */
+
+/**
+ * Base class for all Extra Fields Pane test cases.
+ */
+abstract class UCXFTestCase extends UbercartTestHelper {
+  // -----------------------------------------------------------------------------
+  // PROPERTIES
+  // -----------------------------------------------------------------------------
+
+  // Address fields
+
+  /**
+   * A field of type UCXF_WIDGET_TYPE_TEXTFIELD.
+   */
+  protected $textField;
+
+  /**
+   * A field of type UCXF_WIDGET_TYPE_SELECT.
+   */
+  protected $selectField;
+
+  /**
+   * A field of type UCXF_WIDGET_TYPE_CONSTANT.
+   */
+  protected $constantField;
+
+  /**
+   * A field of type UCXF_WIDGET_TYPE_CHECKBOX.
+   */
+  protected $checkboxField;
+
+  /**
+   * A field of type UCXF_WIDGET_TYPE_PHP.
+   */
+  protected $phpField;
+
+  /**
+   * A field of type UCXF_WIDGET_TYPE_PHP_SELECT.
+   */
+  protected $phpSelectField;
+
+  /**
+   * A field of type UCXF_WIDGET_TYPE_CONSTANT
+   * that is not displayed at checkout.
+   */
+  protected $hiddenConstantField;
+
+  /**
+   * A field of type UCXF_WIDGET_TYPE_PHP
+   * that is not displayed at checkout.
+   */
+  protected $hiddenPhpField;
+
+  // -----------------------------------------------------------------------------
+  // CONSTRUCT
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Install users and modules needed for all tests.
+   *
+   * @param $modules
+   *   Optional list of extra modules to install.
+   * @param $permissions
+   *   Optional list of extra permissions for $this->adminUser.
+   *
+   * @return void
+   */
+  public function setUp($modules = array(), $permissions = array()) {
+    $modules = array_merge(array('uc_addresses', 'uc_extra_fields_pane'), $modules);
+    $permissions = array_merge(array('use php fields'), $permissions);
+    parent::setUp($modules, $permissions);
+
+    // Reset the registered address fields. The hook hook_uc_addresses_fields()
+    // can be called before Extra Fields Pane is installed, which can result
+    // into an UcAddressesInvalidFieldException in these automated tests.
+    drupal_static_reset('uc_addresses_get_address_fields');
+
+    // Clear the field list cache.
+    UCXF_FieldList::reset();
+  }
+
+  /**
+   * Create default fields
+   *
+   * @return void
+   */
+  public function setupFields() {
+    // Login as admin
+    $this->drupalLogin($this->adminUser);
+
+    // Create address fields
+    $this->textField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_TEXTFIELD);
+    $this->selectField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_SELECT);
+    $this->assertNoText(t('In this example the key of the first item is just a single space.'), t('The select field was saved without problems.'));
+    $this->constantField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_CONSTANT);
+    $this->checkboxField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_CHECKBOX);
+    $this->phpField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_PHP);
+    $this->phpSelectField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_PHP_SELECT);
+    $this->assertNoText(t('In this example the key of the first item is an empty string.'), t('The php select field was saved without problems.'));
+    // A "hidden" constant field.
+    $this->hiddenConstantField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_CONSTANT, array(
+      'ucxf[display_settings][checkout]' => FALSE,
+      'ucxf[value]' => 'hidden constant',
+    ));
+    // A "hidden" PHP field.
+    $this->hiddenPhpField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_PHP, array(
+      'ucxf[display_settings][checkout]' => FALSE,
+      'ucxf[value]' => '<?php return "hidden string"; ?>',
+    ));
+  }
+
+  // -----------------------------------------------------------------------------
+  // UCXF CRUD
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Create a new address field
+   *
+   * @param int $type
+   * @param array $edit
+   *
+   * @return string
+   *   The name of the field
+   */
+  protected function createAddressField($type, $edit = array()) {
+    // Go the address fields page and click link.
+    $this->drupalGet('admin/store/settings/countries/fields');
+    $this->clickLink(t('Add an address field'));
+    $this->assertTitle(t('Add an address field') . ' | Drupal', t('The page for adding an address field is displayed.'));
+
+    $edit += array(
+      'ucxf[panes][extra_delivery]' => 1,
+      'ucxf[panes][extra_billing]' => 1,
+    );
+    return $this->createFieldHelper($type, $edit);
+  }
+
+  /**
+   * Create a new field
+   *
+   * @param int $type
+   * @param array $edit
+   *
+   * @return string
+   *   The name of the field
+   */
+  private function createFieldHelper($type, $edit) {
+    global $db_prefix;
+    $edit += array(
+      'ucxf[label]' => $this->randomName(10),
+      'ucxf[db_name]' => drupal_strtolower($this->randomName(32 - 5 - drupal_strlen($db_prefix) - 1)),
+      'ucxf[description]' => $this->randomString(10),
+      'ucxf[value_type]' => $type,
+      'ucxf[required]' => TRUE,
+    );
+
+    switch ($type) {
+      case UCXF_Field::UCXF_WIDGET_TYPE_SELECT:
+        $edit += array(
+          'ucxf[value]' => " |Please select\noption1|Option 1\noption2|Option 2",
+        );
+        break;
+      case UCXF_Field::UCXF_WIDGET_TYPE_CONSTANT:
+        $edit += array(
+          'ucxf[value]' => 'A constant, ' . $this->randomString(10),
+        );
+        break;
+      case UCXF_Field::UCXF_WIDGET_TYPE_PHP:
+        $edit += array(
+          'ucxf[value]' => '<?php return "A string"; ?>',
+        );
+        break;
+      case UCXF_Field::UCXF_WIDGET_TYPE_PHP_SELECT:
+        $edit += array(
+          'ucxf[value]' => '<?php return array("" => "Please select", "option1" => "PHP Option 1", "option2" => "PHP Option 2"); ?>',
+        );
+        break;
+      default:
+        $edit += array(
+          'ucxf[value]' => '',
+        );
+        break;
+    }
+
+    // Post the form at the current path.
+    $this->drupalPost(NULL, $edit, t('Save'));
+    $this->assertText(t('Field saved'), t('The field is saved.'));
+
+    // Return machine name of field.
+    return 'ucxf_' . $edit['ucxf[db_name]'];
+  }
+
+  // -----------------------------------------------------------------------------
+  // HELPER FUNCTIONS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Generates an array of values to post into an address form
+   *
+   * @param array $fields
+   *   An array of UCXF_Field objects.
+   * @param array $parents
+   *   The parent form elements.
+   * @param array $values
+   *   (Some of) the values to use in the address form.
+   * @param string $prefix
+   *   Optionally prefixes every field name.
+   *
+   * @return array
+   *   An array with for each field a value.
+   */
+  protected function getEditValues($fields, $parents = array(), $values = array(), $prefix = '') {
+    // Initialize values array
+    $form_values = array();
+    $extra_values = array();
+
+    // Calculate parent string if needed.
+    $parent_string = '';
+    if (count($parents) > 0) {
+      foreach ($parents as $parent) {
+        if ($parent_string) {
+          $parent_string = $parent_string . '[' . $parent . ']';
+        }
+        else {
+          $parent_string = $parent;
+        }
+      }
+    }
+
+    // Fill in value for every field
+    foreach ($fields as $field) {
+      if (isset($values[$field->db_name])) {
+        // The value is already set. Do not override it.
+        continue;
+      }
+      $default = $this->generateDefaultValue($field);
+      if (!is_null($default)) {
+        $values[$field->db_name] = $this->generateDefaultValue($field);
+      }
+      elseif ($field->value_type == UCXF_Field::UCXF_WIDGET_TYPE_CONSTANT || $field->value_type == UCXF_Field::UCXF_WIDGET_TYPE_PHP) {
+        switch ($field->db_name) {
+          case $this->hiddenConstantField:
+            $extra_values[$field->db_name] = 'hidden constant';
+            break;
+          case $this->hiddenPhpField:
+            $extra_values[$field->db_name] = 'hidden string';
+            break;
+          default:
+            $extra_values[$field->db_name] = $field->generate_value();
+            break;
+        }
+      }
+    }
+
+    // Prefix values and add parents
+    foreach ($values as $fieldname => $value) {
+      // Set in parents if needed
+      $formfieldname = $prefix . $fieldname;
+      if ($parent_string) {
+        $formfieldname = $parent_string . '[' . $formfieldname . ']';
+      }
+      $form_values[$formfieldname] = $value;
+    }
+
+    return array(
+      'form_values' => $form_values,
+      'values' => array_merge($values, $extra_values),
+    );
+  }
+
+  /**
+   * Generates a default value for field $field.
+   *
+   * @param UCXF_Field $field
+   *
+   * @return string
+   */
+  protected function generateDefaultValue($field) {
+    switch ($field->value_type) {
+      case UCXF_Field::UCXF_WIDGET_TYPE_CONSTANT:
+      case UCXF_Field::UCXF_WIDGET_TYPE_PHP:
+        return NULL;
+      case UCXF_Field::UCXF_WIDGET_TYPE_CHECKBOX:
+        return 1;
+      case UCXF_Field::UCXF_WIDGET_TYPE_TEXTFIELD:
+        return $this->randomString(12);
+      case UCXF_Field::UCXF_WIDGET_TYPE_SELECT:
+      case UCXF_Field::UCXF_WIDGET_TYPE_PHP_SELECT:
+        return 'option2';
+    }
+  }
+
+  /**
+   * Test if these values appear in the database.
+   *
+   * @param array $values
+   *   An array of ucxf values, grouped by field name.
+   * @param int $order_id
+   *   The Ubercart order ID
+   * @param int $type
+   *   The value element type
+   *
+   * @return void
+   */
+  protected function checkValuesInDatabase($values, $order_id, $type) {
+    $saved_values = UCXF_Value::load_list($order_id, $type);
+    foreach ($values as $db_name => $value) {
+      $field_id = UCXF_FieldList::getFieldByName($db_name)->id;
+      $value_type = UCXF_FieldList::getFieldByName($db_name)->get_value_type();
+      $message = t('Value for field %field correctly saved with value %value', array('%field' => $this->getFieldname($db_name), '%value' => $value));
+      if (!isset($saved_values[$field_id])) {
+        $this->fail($message);
+      }
+      else {
+        $this->assertEqual($saved_values[$field_id]->getValue(), $value, $message . ' (' . check_plain($saved_values[$field_id]->getValue()) . ')');
+      }
+    }
+  }
+
+  /**
+   * Test if tokens are properly generated.
+   *
+   * @param array $values
+   *   An array of ucxf values, grouped by field name.
+   * @param int $order_id
+   *   The Ubercart order ID
+   * @param int $type
+   *   The value element type
+   *
+   * @return void
+   */
+  protected function checkTokens($values, $order_id, $type) {
+    $order = uc_order_load($order_id);
+    foreach ($values as $db_name => $value) {
+      $field = UCXF_FieldList::getFieldByName($db_name);
+
+      // Generate token name.
+      $token_name = '';
+      switch ($type) {
+        case UCXF_Value::UCXF_VALUE_ORDER_DELIVERY:
+          $token_name = 'uc_order:uc-addresses-shipping-address:' . $field->db_name;
+          break;
+        case UCXF_Value::UCXF_VALUE_ORDER_BILLING:
+          $token_name = 'uc_order:uc-addresses-billing-address:' . $field->db_name;
+          break;
+      }
+
+      // Test if generated token value is equal to expected output.
+      $text = '[' . $token_name . ']';
+      $token_value = token_replace($text, array('uc_order' => $order));
+      $this->assertEqual($field->output_value($value), $token_value, t('The token for %field is properly generated.', array('%field' => $field->db_name)));
+    }
+  }
+
+  /**
+   * Overrides UbercartTestHelper::checkout().
+   *
+   * @return object
+   *   An Ubercart order object, if checkout succeeded.
+   *   False otherwise.
+   */
+  public function checkout($edit = array()) {
+    $all_fields = UCXF_FieldList::getAllFields();
+    $address_fields = UCXF_FieldList::getAllAddressFields();
+    $values = array();
+
+    $this->drupalPost('cart', array(), 'Checkout');
+
+    // Check if all address fields are available on the page
+    foreach ($all_fields as $field) {
+      switch ($field->db_name) {
+        case $this->hiddenConstantField:
+        case $this->hiddenPhpField:
+          break;
+        default:
+          $this->assertText($field->output('label'), t('Field %field found on the page.', array('%field' => $this->getFieldname($field->db_name))));
+          break;
+      }
+    }
+
+    // Check if constant and php-string are present on the page.
+    $this->assertText('A constant, ', t('The field %field is correctly displayed on the page.', array('%field' => $this->getFieldname($this->constantField))));
+    $this->assertText('A string', t('The field %field is correctly displayed on the page.', array('%field' => $this->getFieldname($this->phpField))));
+
+    // Ensure hidden constant/php-string fields are NOT present on the page.
+    $this->assertNoText('hidden constant', t('The field %field is correctly hidden from the page.', array('%field' => $this->getFieldname($this->hiddenConstantField))));
+    $this->assertNoText('hidden string', t('The field %field is correctly hidden from the page.', array('%field' => $this->getFieldname($this->hiddenPhpField))));
+
+    // Fill in value for every field
+    $delivery_values = $this->getEditValues($address_fields, array('panes', 'delivery', 'address'), array(), 'delivery_');
+    $billing_values = $this->getEditValues($address_fields, array('panes', 'billing', 'address'), array(), 'billing_');
+
+    $edit = array_merge($delivery_values['form_values'], $billing_values['form_values'], $edit);
+    // Follow the logics of standard Ubercart checkout.
+    $order = $this->UbercartCheckout($edit);
+
+    // Check if every value is saved correctly.
+    $this->checkValuesInDatabase($delivery_values['values'], $order->order_id, UCXF_Value::UCXF_VALUE_ORDER_DELIVERY);
+    $this->checkValuesInDatabase($billing_values['values'], $order->order_id, UCXF_Value::UCXF_VALUE_ORDER_BILLING);
+
+    // Check if token values are properly generated.
+    $this->checkTokens($delivery_values['values'], $order->order_id, UCXF_Value::UCXF_VALUE_ORDER_DELIVERY);
+    $this->checkTokens($billing_values['values'], $order->order_id, UCXF_Value::UCXF_VALUE_ORDER_BILLING);
+
+    return $order;
+  }
+
+  /**
+   * Similar to UbercartTestHelper::checkout().
+   *
+   * @return object
+   *   An Ubercart order object, if checkout succeeded.
+   *   False otherwise.
+   */
+  public function UbercartCheckout($edit = array()) {
+    $this->drupalPost('cart', array(), 'Checkout');
+
+    $edit = $this->populateCheckoutForm($edit);
+
+    // Submit the checkout page.
+    $this->drupalPost('cart/checkout', $edit, t('Review order'));
+    $this->assertRaw(t('Your order is almost complete.'));
+
+    // Complete the review page.
+    $this->drupalPost(NULL, array(), t('Submit order'));
+
+    $order_id = db_query("SELECT order_id FROM {uc_orders} WHERE delivery_first_name = :name", array(':name' => $edit['panes[delivery][address][delivery_first_name]']))->fetchField();
+    if ($order_id) {
+      $this->pass(
+        t('Order %order_id has been created', array('%order_id' => $order_id))
+      );
+      $order = uc_order_load($order_id);
+    }
+    else {
+      $this->fail(t('An order was created.'));
+      $order = FALSE;
+    }
+
+    return $order;
+  }
+
+  /**
+   * Override of UbercartTestHelper::populateCheckoutForm().
+   *
+   * With Ubercart Addresses, address fields on checkout have a bit different name.
+   * Example:
+   * Instead of "panes[delivery][delivery_first_name]",
+   * Ubercart Addresses uses "panes[delivery][address][delivery_first_name]".
+   * This is done to fix issues with the zone field.
+   *
+   * @param $edit
+   *   The form-values array to which to add required fields.
+   */
+  function populateCheckoutForm($edit = array()) {
+    foreach (array('billing', 'delivery') as $pane) {
+      $prefix = 'panes[' . $pane . '][address][' . $pane;
+      $key =  $prefix . '_country]';
+      $country = empty($edit[$key]) ? variable_get('uc_store_country', 840) : $edit[$key];
+      $zone_id = db_query_range('SELECT zone_id FROM {uc_zones} WHERE zone_country_id = :country ORDER BY rand()', 0, 1, array('country' => $country))->fetchField();
+      $edit += array(
+        $prefix . '_first_name]' => $this->randomName(10),
+        $prefix . '_last_name]' => $this->randomName(10),
+        $prefix . '_street1]' => $this->randomName(10),
+        $prefix . '_city]' => $this->randomName(10),
+        $prefix . '_zone]' => $zone_id,
+        $prefix . '_postal_code]' => mt_rand(10000, 99999),
+      );
+    }
+
+    // If the email address has not been set, and the user has not logged in,
+    // add a primary email address.
+    if (!isset($edit['panes[customer][primary_email]']) && !$this->loggedInUser) {
+      $edit['panes[customer][primary_email]'] = $this->randomName(8) . '@example.com';
+    }
+
+    return $edit;
+  }
+
+  /**
+   * Returns fieldname with value type
+   *
+   * @param string $db_name
+   *
+   * @return string
+   */
+  protected function getFieldname($db_name) {
+    $value_type = UCXF_FieldList::getFieldByName($db_name)->get_value_type();
+    return $db_name . ' (' . $value_type . ')';
+  }
+}
+
+/**
+ * API Test
+ */
+class UCXFApiTestCase extends UCXFTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Unit testing',
+      'description' => 'Ensure that the API behaves as expected.',
+      'group' => 'Extra Fields Pane',
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // HELPERS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Creates a field through the API and sets default values.
+   *
+   * @param string $pane_type
+   *   The pane the field must go into. Can be multiple panes.
+   * @param array $values
+   *   (optional) a list of values to set.
+   *
+   * @return UCXF_Field
+   */
+  protected function createFieldThroughAPI($pane_type, $values = array()) {
+    $field = UCXF_FieldList::createField($pane_type);
+    $field->pane_type = $pane_type;
+    $field->db_name = 'ucxf_' . drupal_strtolower($this->randomName());
+    $field->label = $this->randomName();
+    $field->from_array($values);
+    return $field;
+  }
+
+  /**
+   * Checks how many elements from $array2 appear in $array1.
+   *
+   * @param array $array1
+   * @param array $array2
+   */
+  protected function arrayMatch($array1, $array2) {
+    $found = 0;
+    foreach ($array1 as $element) {
+      foreach ($array2 as $array2_element) {
+        if ($element === $array2_element) {
+          $found++;
+        }
+      }
+    }
+    return $found;
+  }
+
+  // -----------------------------------------------------------------------------
+  // TESTS
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Test if UCXF_FieldList behaves as excepted.
+   */
+  public function testUCXF_FieldList() {
+    // Create an address field for delivery pane.
+    $delivery_db_name_without_prefix = drupal_strtolower($this->randomName(12));
+    $delivery_address_values = array(
+      'db_name' => 'ucxf_' . $delivery_db_name_without_prefix,
+      'label' => $this->randomName(12),
+    );
+    $delivery_address_field = $this->createFieldThroughAPI('extra_delivery', $delivery_address_values);
+    $delivery_address_field->save();
+
+    // Test if the field is correctly saved to the database.
+    $result = db_select('uc_extra_fields')
+      ->fields('uc_extra_fields', array('field_id'))
+      ->condition('db_name', $delivery_address_values['db_name'])
+      ->condition('label', $delivery_address_values['label'])
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    $this->assertEqual($result, 1, t('The field %field is correctly saved to the database.', array('%field' => $delivery_address_field->db_name)));
+
+    // Create a few other fields.
+    $billing_address_field = $this->createFieldThroughAPI('extra_billing');
+    $address_field = $this->createFieldThroughAPI('extra_delivery|extra_billing');
+    $billing_address_field->save();
+    $address_field->save();
+
+    // Test if we have four fields in the database.
+    $result = db_select('uc_extra_fields')
+      ->fields('uc_extra_fields', array('field_id'))
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    $this->assertEqual($result, 3, t('%number fields have been saved in the database.', array('%number' => 3)));
+
+    // Reset the field list so we are sure no fields are loaded.
+    UCXF_FieldList::reset();
+
+    // Try to load the delivery field through the API.
+    $field1 = UCXF_FieldList::getFieldByID($delivery_address_field->id);
+    // Ensure both fields have the same db_name
+    $this->assertEqual($field1->db_name, $delivery_address_field->db_name, t('The field %field is correctly loaded.', array('%field' => $delivery_address_field->db_name)));
+    // Try to load the same field, but now by name
+    $field2 = UCXF_FieldList::getFieldByName($delivery_address_field->db_name);
+    // Ensure $field1 and $field2 are 100% equal
+    $this->assertTrue($field1 === $field2, t('The field %field has been found by name and by ID.', array('%field' => $delivery_address_field->db_name)));
+
+    // Reset the field list again.
+    UCXF_FieldList::reset();
+
+    // Get all address fields (should be three)
+    $address_fields = UCXF_FieldList::getAllAddressFields();
+    $this->assertEqual(count($address_fields), 3, t('There are %number address fields loaded.', array('%number' => 3)));
+    // Get all delivery fields (should be two)
+    $delivery_fields = UCXF_FieldList::getFieldsFromPane('extra_delivery');
+    $this->assertEqual(count($delivery_fields), 2, t('There are %number delivery fields loaded.', array('%number' => 2)));
+    // Get all billing fields (should be two)
+    $billing_fields = UCXF_FieldList::getFieldsFromPane('extra_billing');
+    $this->assertEqual(count($billing_fields), 2, t('There are %number billing fields loaded.', array('%number' => 2)));
+
+    // Get all fields and ensure it matches the rest of the fields that are loaded.
+    $fields = UCXF_FieldList::getAllFields();
+    $this->assertEqual($this->arrayMatch($fields, $address_fields), 3, t('The address fields are not loaded again.'));
+    $this->assertEqual($this->arrayMatch($fields, $delivery_fields), 2, t('The delivery fields are not loaded again.'));
+    $this->assertEqual($this->arrayMatch($fields, $billing_fields), 2, t('The billing fields are not loaded again.'));
+
+    // Reset the field list again.
+    UCXF_FieldList::reset();
+
+    // First, try to delete a field that does not exists.
+    $this->assertFalse(UCXF_FieldList::deleteFieldById(5), t("Field %id does not exists and thus can't be deleted.", array('%id' => 5)));
+    // Try to delete an other field that does not exists.
+    $this->assertFalse(UCXF_FieldList::deleteFieldByName($delivery_db_name_without_prefix), t("Field %name does not exists and thus can't be deleted.", array('%name' => $delivery_db_name_without_prefix)));
+    // Try to delete the delivery field through the API.
+    UCXF_FieldList::deleteFieldById($delivery_address_field->id);
+    // Ensure the field no longer exists in the database.
+    $result = db_select('uc_extra_fields')
+      ->fields('uc_extra_fields', array('field_id'))
+      ->condition('field_id', $delivery_address_field->id)
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    $this->assertEqual($result, 0, t('The field has been deleted.'));
+    // Try to delete the billing field by name.
+    UCXF_FieldList::deleteFieldByName($billing_address_field->db_name);
+    // Ensure the field no longer exists in the database.
+    $result = db_select('uc_extra_fields')
+      ->fields('uc_extra_fields', array('field_id'))
+      ->condition('field_id', $billing_address_field->id)
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    $this->assertEqual($result, 0, t('The field has been deleted.'));
+  }
+
+  /**
+   * Test if UCXF_Value behaves as excepted.
+   */
+  public function testUCXF_Value() {
+    // Setup default fields.
+    $this->setupFields();
+
+    // Ensure the uc_extra_fields_values table is empty.
+    // @todo Rewrite using query builder.
+    db_query("TRUNCATE TABLE {uc_extra_fields_values}");
+
+    // Save a value for the select field
+    $field = UCXF_FieldList::getFieldByName($this->selectField);
+    $oValue = UCXF_Value::load(1, UCXF_Value::UCXF_VALUE_ORDER_DELIVERY, $field->id);
+    $oValue->setValue('option1');
+    $oValue->save();
+
+    // Check if the value is correctly saved to the database.
+    $result = db_select('uc_extra_fields_values', 'ucxfv')
+      ->fields('ucxfv', array('element_id'))
+      ->condition('value', 'option1')
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    $this->assertEqual($result, 1, t('The value is correctly saved to the database.'));
+
+    // Check if output != value (value should be "safe" key, output be the "readable" part)
+    $this->assertNotEqual($oValue->getValue(), $oValue->output(), t('The output value is different from the saved value.'));
+
+    // Check if the field that can be get through UCXF_Value is equal to that of the field gotten earlier.
+    $this->assertTrue($field === $oValue->getField());
+
+    // Insert a few values directly to the database
+    $value1 = array(
+      'element_id' => 1,
+      'element_type' => UCXF_Value::UCXF_VALUE_ORDER_DELIVERY,
+      'field_id' => UCXF_FieldList::getFieldByName($this->textField)->id,
+      'value' => $this->randomName(),
+    );
+    drupal_write_record('uc_extra_fields_values', $value1);
+    $value2 = array(
+      'element_id' => 1,
+      'element_type' => UCXF_Value::UCXF_VALUE_ORDER_DELIVERY,
+      'field_id' => UCXF_FieldList::getFieldByName($this->constantField)->id,
+      'value' => $this->randomName(),
+    );
+    drupal_write_record('uc_extra_fields_values', $value2);
+
+    // Load one value through the API
+    $oValue1 = UCXF_Value::load(1, UCXF_Value::UCXF_VALUE_ORDER_DELIVERY, UCXF_FieldList::getFieldByName($this->textField)->id);
+    // Check if this value has the expected value
+    $this->assertEqual($value1['value'], $oValue1->getValue(), t('The value is correctly loaded from the database.'));
+    // Set an unexpected value and check if the output is sanitized
+    $oValue1->setValue('<script language="javascript">alert(\'hello\');</script>');
+    $this->assertNotEqual($oValue1->getValue(), $oValue1->output(), t('The output value is different from the saved value.'));
+    // Set a simple value and check if the output value is equal
+    $oValue1->setValue("value that does not need to be sanitized");
+    $this->verbose($oValue1->getValue() . '<br />' . $oValue1->output());
+    $this->assertEqual($oValue1->getValue(), $oValue1->output(), t('The output value is the same as the saved value.'));
+
+    // Load a list of values through the API
+    $values = UCXF_Value::load_list(1, UCXF_Value::UCXF_VALUE_ORDER_DELIVERY);
+    $this->assertEqual(count($values), 3, t('%number values are loaded.', array('%number' => 3)));
+    // Check if $oValue and $oValue1 exists in the list.
+    $this->assertEqual($this->arrayMatch($values, array($oValue1)), 1, t('The first loaded value is not loaded again.'));
+    $this->assertEqual($this->arrayMatch($values, array($oValue)), 1, t('The first created value is not loaded again.'));
+
+    // Delete value
+    $oValue->delete();
+    // Ensure that the value no longer exists in the database.
+    $result = db_select('uc_extra_fields_values', 'ucxfv')
+      ->fields('ucxfv', array('element_id'))
+      ->condition('value', 'option1')
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    $this->assertEqual($result, 0, t('The value is correctly deleted from the database.'));
+  }
+}
+
+/**
+ * Checkout testcase
+ */
+class UCXFCheckoutTestCase extends UCXFTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Checkout',
+      'description' => 'Ensures that extra fields behave as expected during the checkout process.',
+      'group' => 'Extra Fields Pane',
+    );
+  }
+
+  /**
+   * Install payment modules
+   *
+   * @param $modules
+   *   Optional list of extra modules to install.
+   * @param $permissions
+   *   Optional list of extra permissions for $this->adminUser.
+   *
+   * @return void
+   */
+  public function setUp($modules = array(), $permissions = array()) {
+    $modules = array_merge(array('uc_payment', 'uc_payment_pack'), $modules);
+    parent::setUp($modules, $permissions);
+  }
+
+  /**
+   * Test if checkout works as expected.
+   */
+  public function testCheckout() {
+    // Setup default fields.
+    $this->setupFields();
+
+    // Test as anonymous user.
+    $this->drupalLogout();
+    $this->drupalPost('node/' . $this->product->nid, array(), t('Add to cart'));
+    $this->checkout();
+    $this->assertRaw('Your order is complete!');
+
+    // Test as authenticated user.
+    $this->drupalLogin($this->customer);
+    $this->drupalPost('node/' . $this->product->nid, array(), t('Add to cart'));
+    $this->checkout();
+    $this->assertRaw('Your order is complete!');
+    $this->drupalLogout();
+  }
+
+  /**
+   * Test if field values are properly sanitized.
+   */
+  public function testSanitizing() {
+    // Login as admin.
+    $this->drupalLogin($this->adminUser);
+
+    // Create address fields.
+    $textfield_edit = array(
+      'ucxf[label]' => '<em>textField</em>',
+      'ucxf[db_name]' => 'ucxf_textfield',
+      'ucxf[description]' => '<script>/*textField*/</script>',
+      'ucxf[value]' => "<em>default</em>\n",
+    );
+    $selectfield_edit = array(
+      'ucxf[label]' => '<em>selectField</em>',
+      'ucxf[db_name]' => 'ucxf_selectfield',
+      'ucxf[description]' => '<script>/*selectField*/</script>',
+      'ucxf[value]' => "<script>/*selectFieldOptionKey*/</script>|<em>selectFieldOptionLabel</em>\n",
+    );
+    $constantfield_edit = array(
+      'ucxf[label]' => '<em>constantField</em>',
+      'ucxf[db_name]' => 'ucxf_constantfield',
+      'ucxf[description]' => '<script>/*constantField*/</script>',
+      'ucxf[value]' => '<em>constantFieldValue</em>',
+    );
+    $checkbox_edit = array(
+      'ucxf[label]' => '<em>checkboxField</em>',
+      'ucxf[db_name]' => 'ucxf_checkboxfield',
+      'ucxf[description]' => '<script>/*checkboxField*/</script>',
+    );
+
+    $this->textField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_TEXTFIELD, $textfield_edit);
+    $this->selectField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_SELECT, $selectfield_edit);
+    $this->constantField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_CONSTANT, $constantfield_edit);
+    $this->checkboxField = $this->createAddressField(UCXF_Field::UCXF_WIDGET_TYPE_CHECKBOX, $checkbox_edit);
+
+    // Go to checkout as anonymous user.
+    $this->drupalLogout();
+    $this->drupalPost('node/' . $this->product->nid, array(), t('Add to cart'));
+    $all_fields = UCXF_FieldList::getAllFields();
+    $address_fields = UCXF_FieldList::getAllAddressFields();
+    $this->drupalPost('cart', array(), 'Checkout');
+
+    // Ensure all output is properly sanitized.
+    // Field labels.
+    $this->assertNoRaw('<em>textField</em>');
+    $this->assertNoRaw('<em>selectField</em>');
+    $this->assertNoRaw('<em>constantField</em>');
+    $this->assertNoRaw('<em>checkboxField</em>');
+    // Field descriptions.
+    $this->assertNoRaw('<script>/*textField*/</script>');
+    $this->assertNoRaw('<script>/*selectField*/</script>');
+    $this->assertNoRaw('<script>/*constantField*/</script>');
+    $this->assertNoRaw('<script>/*checkboxField*/</script>');
+    // Constant value.
+    $this->assertNoRaw('<em>constantFieldValue</em>');
+
+    // Generate value for the text and select field.
+    $values = array(
+      'ucxf_textfield' => '<em>default</em>',
+      'ucxf_selectfield' => '<script>/*selectFieldOptionKey*/</script>',
+    );
+
+    // Fill in checkout form.
+    $delivery_values = $this->getEditValues($address_fields, array('panes', 'delivery', 'address'), $values, 'delivery_');
+    $billing_values = $this->getEditValues($address_fields, array('panes', 'billing', 'address'), $values, 'billing_');
+    $edit = array_merge($delivery_values['form_values'], $billing_values['form_values']);
+
+    $edit = $this->populateCheckoutForm($edit);
+    $this->drupalPost('cart/checkout', $edit, t('Review order'));
+
+    // Ensure all output is properly sanitized.
+    // Field labels.
+    $this->assertNoRaw('<em>textField</em>');
+    $this->assertNoRaw('<em>selectField</em>');
+    $this->assertNoRaw('<em>constantField</em>');
+    $this->assertNoRaw('<em>checkboxField</em>');
+    // Values.
+    $this->assertNoRaw('<em>default</em>');
+    $this->assertNoRaw('<em>selectFieldOptionLabel</em>');
+    $this->assertNoRaw('<em>constantFieldValue</em>');
+  }
+}
+
+/**
+ * Order testcase
+ */
+class UCXFOrderTestCase extends UCXFTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Orders',
+      'description' => 'Ensures that extra fields behave as expected when editing orders.',
+      'group' => 'Extra Fields Pane',
+    );
+  }
+
+  /**
+   * Test the order administration.
+   */
+  public function testOrder() {
+    // Setup default fields
+    $this->setupFields();
+
+    $address_fields = UCXF_FieldList::getAllAddressFields();
+    $edit = array();
+    $values = array();
+
+    // Create a new order.
+    $order = uc_order_new($this->customer->uid);
+    uc_order_comment_save($order->order_id, 0, t('Order created programmatically.'), 'admin');
+
+    // Login as admin
+    $this->drupalLogin($this->adminUser);
+
+    // Go to the order edit page.
+    $this->drupalGet('admin/store/orders/' . $order->order_id . '/edit');
+
+    // Check if all address fields are available on the page.
+    foreach ($address_fields as $field) {
+      $this->assertText($field->output('label'), t('Field %field found on the page.', array('%field' => $this->getFieldname($field->db_name))));
+    }
+    // Check if constant fields and php fields are now a textfield.
+    $fields = array(
+      'constant' => $this->constantField,
+      'php' => $this->phpField,
+      'hidden constant' => $this->hiddenConstantField,
+      'hidden php' => $this->hiddenPhpField,
+    );
+    foreach ($fields as $type => $fieldname) {
+      $field = UCXF_FieldList::getFieldByName($fieldname);
+      if ($field->in_pane('extra_delivery')) {
+        $formfieldname = 'ship_to[address][delivery_' . $field->db_name . ']';
+        $this->assertFieldByName($formfieldname, '', t('Field %field of type %type is a textfield', array('%field' => $field->label, '%type' => $type)));
+      }
+      if ($field->in_pane('extra_billing')) {
+        $formfieldname = 'bill_to[address][billing_' . $field->db_name . ']';
+        $this->assertFieldByName($formfieldname, '', t('Field %field of type %type is a textfield', array('%field' => $field->label, '%type' => $type)));
+      }
+    }
+
+    // Fill in value for every field.
+    $extra_values = array(
+      $this->constantField => $this->randomString(8),
+      $this->phpField => $this->randomString(8),
+      $this->hiddenConstantField => $this->randomString(8),
+    );
+    $delivery_values = $this->getEditValues($address_fields, array('ship_to', 'address'), $extra_values, 'delivery_');
+    $billing_values = $this->getEditValues($address_fields, array('bill_to', 'address'), $extra_values, 'billing_');
+    $extra_values = array(
+      $this->hiddenPhpField => $this->randomString(8),
+    );
+    $edit = array_merge($delivery_values['form_values'], $billing_values['form_values'], $edit);
+    // Post the values.
+    $this->drupalPost('admin/store/orders/' . $order->order_id . '/edit', $edit, t('Submit changes'));
+    $this->assertText(t('Order changes saved.'));
+
+    // Check if the values are correctly saved to the database.
+    $this->checkValuesInDatabase($delivery_values['values'], $order->order_id, UCXF_Value::UCXF_VALUE_ORDER_DELIVERY);
+    $this->checkValuesInDatabase($billing_values['values'], $order->order_id, UCXF_Value::UCXF_VALUE_ORDER_BILLING);
+  }
+}
