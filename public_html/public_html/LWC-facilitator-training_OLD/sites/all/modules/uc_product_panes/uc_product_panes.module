@@ -1,0 +1,350 @@
+<?php
+
+/**
+ * @file uc_product_panes.module
+ * Ubercart Product Checkout Panes.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function uc_product_panes_form_alter(&$form, &$form_state, $form_id) {
+  // Add default Panes settings to the product class form
+  if ($form_id == 'uc_product_class_form') {
+    $pcid = isset($form['pcid']['#value']) ? $form['pcid']['#value'] : '';
+
+    // Build the core fieldset
+    $form['ucpp'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Default Product Panes'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#weight' => 7,
+    );
+    $form['ucpp']['default_ucpp'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Check this box to set the default panes for every product of this class.'),
+      '#default_value' => variable_get('ucpp_class_' . $pcid, 0),
+    );
+
+    // Get the panes and build the table display
+    $panes = _uc_checkout_pane_list();
+    $form['ucpp']['panes'] = array(
+      '#theme' => 'uc_pane_sort_table',
+      '#pane_prefix' => 'uc_pane',
+    );
+
+    // Set the default values for each pane
+    foreach ($panes as $pane) {
+      $form['ucpp']['panes'][$pane['id']]['uc_pane_' . $pane['id'] . '_enabled'] = array(
+        '#type' => 'checkbox',
+        '#title' => $pane['title'],
+        '#default_value' => variable_get('ucpp_class_' . $pcid . '_pane_' . $pane['id'] . '_enabled', variable_get('uc_pane_' . $pane['id'] . '_enabled', TRUE)),
+      );
+      $form['ucpp']['panes'][$pane['id']]['uc_pane_' . $pane['id'] . '_weight'] = array(
+        '#markup' => variable_get('uc_pane_' . $pane['id'] . '_weight', 0),
+      );
+    }
+
+    $form['#submit'][] = 'uc_product_panes_product_class_submit';
+
+    $form['submit']['#weight'] = 10;
+  }
+}
+
+/**
+ * Submit handler for the product class default Panes form.
+ */
+function uc_product_panes_product_class_submit($form, &$form_state) {
+  $pcid = $form_state['values']['pcid'];
+
+  if ($form_state['values']['default_ucpp']) {
+    // Enable the feature for the class
+    variable_set('ucpp_class_' . $pcid, 1);
+
+    // Save the individual pane settings
+    foreach (element_children($form['ucpp']['panes']) as $pane_id) {
+      variable_set('ucpp_class_' . $pcid . '_pane_' . $pane_id . '_enabled', $form_state['values']['uc_pane_' . $pane_id . '_enabled']);
+    }
+  }
+  else {
+    // Disable the feature for the given class
+    variable_del('ucpp_class_' . $pcid);
+
+    // Clear the individual pane settings
+    foreach (element_children($form['panes']) as $pane_id) {
+      variable_del('ucpp_class_' . $pcid . '_pane_' . $pane_id . '_enabled');
+    }
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function uc_product_panes_node_insert($node) {
+  // Create a default product feature automatically from the default setting
+  if (uc_product_is_product($node)) {
+    // If the product class has default checkout panes set
+    if (variable_get('ucpp_class_' . $node->type, 0)) {
+      // Prepare the data as if it were from a form submission.
+      $data = array();
+      $data['nid'] = $node->nid;
+      $data['pfid'] = '';
+      $data['class'] = $node->type;
+      $form_state = array('values' => $data);
+
+      // Also fake the form so that the panes can be retrieved
+      $panes = _uc_checkout_pane_list();
+      foreach ($panes as $pane) {
+        $form_panes[$pane['id']] = $pane['id'];
+      }
+      $form = array('panes' => $form_panes);
+
+      // Add the feature to the product by spoofing the normal form submission.
+      uc_product_panes_feature_form_submit($form, $form_state);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function uc_product_panes_node_delete($node) {
+  // Remove all ucpp settings for the deleted node
+  if (uc_product_is_product($node)) {
+    db_delete('uc_product_panes')
+      ->condition('nid', $node->nid)
+      ->execute();
+  }
+}
+
+/**
+ * Implements hook_uc_product_feature().
+ */
+function uc_product_panes_uc_product_feature() {
+  $features[] = array(
+    'id' => 'panes',
+    'title' => t('Product Panes'),
+    'callback' => 'uc_product_panes_feature_form',
+    'delete' => 'uc_product_panes_feature_delete',
+  );
+  return $features;
+}
+
+/**
+ * This form gets displayed when a product feature is added or edited for this product feature type.
+ */
+function uc_product_panes_feature_form($form, &$form_state, $node, $feature) {
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+
+  // Get the panes and the saved settings
+  if (!empty($feature) && $feature['pfid']) {
+    $ppanes = uc_product_panes_values_load($feature['pfid']);
+    $default_model = uc_product_panes_get_model($feature['pfid']);
+  }
+
+  // Get the different SKU's of the product.
+  $models = uc_product_get_models($node->nid);
+  $form['model'] = array(
+    '#type' => 'select',
+    '#title' => t('SKU'),
+    '#default_value' => isset($default_model) ? $default_model : '',
+    '#description' => t('This is the SKU of the product that show these panes.'),
+    '#options' => $models,
+  );
+
+  // Build the table display
+  $panes = _uc_checkout_pane_list();
+  $form['panes'] = array(
+    '#theme' => 'uc_pane_sort_table',
+    '#pane_prefix' => 'uc_pane',
+  );
+
+  // Set the default values for each pane
+  foreach ($panes as $pane) {
+    $form['panes'][$pane['id']]['uc_pane_' . $pane['id'] . '_enabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => $pane['title'],
+      '#default_value' => isset($ppanes[$pane['id']]['enabled']) ? $ppanes[$pane['id']]['enabled'] : $pane['enabled'],
+    );
+    $form['panes'][$pane['id']]['uc_pane_' . $pane['id'] . '_weight'] = array(
+      '#markup' => $pane['weight'],
+    );
+  }
+  return uc_product_feature_form($form, $form_state, $node, $feature);
+}
+
+/**
+ * Validation function for the ucpp feature form.
+ */
+function uc_product_panes_feature_form_validate($form, &$form_state) {
+  // Check if a feature has already been added for the SKU
+  if (!isset($form_state['values']['pfid']) && $product_roles = db_query("SELECT pfid FROM {uc_product_panes} WHERE nid = :nid AND model = :model", array(':nid' => $form_state['values']['nid'], ':model' => $form_state['values']['model']))->fetchField()) {
+    form_set_error('model', t('The product panes feature is already set for this model of the product.'));
+  }
+}
+
+/**
+ * Submission function for the ucpp feature form.
+ */
+function uc_product_panes_feature_form_submit($form, &$form_state) {
+  // Use the form specified pfid if available.
+  $pfid = isset($form_state['values']['pfid']) ? $form_state['values']['pfid'] : NULL;
+
+  $description =  t('Custom checkout panes for the product.<br />');
+  $description .= (!isset($form_state['values']['model']) || $form_state['values']['model'] == '') ? t('<strong>SKU:</strong> Any - This will NOT override the model-specific features.<br />') : t('<strong>SKU:</strong> !sku<br />', array('!sku' => $form_state['values']['model']));
+  $data = array(
+    'pfid' => $pfid,
+    'nid' => $form_state['values']['nid'],
+    'fid' => 'panes',
+    'description' => $description,
+  );
+
+  // Save the product feature and store the returned URL as our redirect.
+  $form_state['redirect'] = uc_product_feature_save($data);
+
+  // Get the panes settings
+  $panes = array();
+  foreach (element_children($form['panes']) as $pane_id) {
+    $pane = new stdClass();
+    $pane->pane_id = $pane_id;
+    $pane->enabled = isset($form_state['values']['class']) ? variable_get('ucpp_class_' . $form_state['values']['class'] . '_pane_' . $pane_id . '_enabled', TRUE) : $form_state['values']['uc_pane_' . $pane_id . '_enabled'];
+    $panes[] = $pane;
+  }
+
+  if (!$pfid) {
+    $pfid = db_query("SELECT MAX(pfid) FROM {uc_product_features} WHERE nid = :nid AND fid = 'panes'", array(':nid' => $form_state['values']['nid']))->fetchField();
+  }
+
+  // Save the feature settings for this particular product
+  $pp = new stdClass();
+  $pp->pfid = $pfid;
+  $pp->nid = $form_state['values']['nid'];
+  $pp->model = isset($form_state['values']['model']) ? $form_state['values']['model'] : '';
+  $pp->panes = $panes;
+  uc_product_panes_values_save($pp);
+}
+
+/**
+ * This function gets called when a feature of this type is deleted.
+ */
+function uc_product_panes_feature_delete($pfid) {
+  db_delete('uc_product_panes')
+    ->condition('pfid', $pfid)
+    ->execute();
+}
+
+/**
+ * Loads feature configuration values for the product.
+ */
+function uc_product_panes_values_load($pfid) {
+  $rs = db_select('uc_product_panes')
+    ->fields('uc_product_panes', array('pane_id', 'enabled'))
+    ->condition('pfid', $pfid)
+    ->execute();
+
+  $ppanes = array();
+  foreach ($rs as $row) {
+    $ppanes[$row->pane_id] = get_object_vars($row);
+  }
+
+  return $ppanes;
+}
+
+/**
+ * Saves feature configuration values for the product.
+ *
+ * @param $pp
+ *   The product panes configuration object.
+ */
+function uc_product_panes_values_save($pp) {
+  db_delete('uc_product_panes')
+    ->condition('pfid', $pp->pfid)
+    ->execute();
+
+  foreach ($pp->panes as $pane) {
+    $pane->pfid = $pp->pfid;
+    $pane->nid = $pp->nid;
+    $pane->model = $pp->model;
+    drupal_write_record('uc_product_panes', $pane);
+  }
+}
+
+/**
+ * Get product panes feature id for a specific node.
+ */
+function uc_product_panes_get_pfid($nid, $model) {
+  $model_pfid = db_query("SELECT pfid FROM {uc_product_features} NATURAL JOIN {uc_product_panes} WHERE nid = :nid AND model = :model AND fid = :fid", array(':nid' => $nid, ':model' => $model, ':fid' => 'panes'))->fetchField();
+  if ($model_pfid) {
+    return $model_pfid;
+  }
+  else {
+    return db_query("SELECT pfid FROM {uc_product_features} NATURAL JOIN {uc_product_panes} WHERE nid = :nid AND model = :model AND fid = :fid", array(':nid' => $nid, ':model' => '', ':fid' => 'panes'))->fetchField();
+  }
+}
+
+/**
+ * Get product panes model for the given node and feature id.
+ */
+function uc_product_panes_get_model($pfid) {
+  return db_query("SELECT model FROM {uc_product_panes} WHERE pfid = :pfid", array(':pfid' => $pfid))->fetchField();
+}
+
+/**
+ * Implementation of drupal_alter('uc_checkout_pane', $panes).
+ */
+function uc_product_panes_uc_checkout_pane_alter(&$panes) {
+  $items = uc_cart_get_contents();
+
+  // If this is node feature form, create a fake items array to get the correct class
+  $menu_item = menu_get_item();
+  if ($menu_item['page_callback'] == 'uc_product_features' && $menu_item['page_arguments'][1] == 'panes') {
+    $item = new stdClass();
+    $item->nid = $menu_item['page_arguments'][0]->nid;
+    $items = array($item);
+  }
+
+  // Disable all panes first
+  foreach ($panes as $pid => $pvalues) {
+    $panes[$pid]['enabled'] = 0;
+  }
+
+  // Re-enable based on either product-specific feature, class-specific settings, or default settings otherwise
+  foreach ($items as $item) {
+    // If the product is not a real node, but a meta-object like a coupon, just move on
+    if (!$item->nid) {
+      continue;
+    }
+
+    // Load the product-specific feature, if set
+    $ppanes = array();
+    $node = node_load($item->nid);
+    $pfid = uc_product_panes_get_pfid($item->nid, $item->model);
+    if ($pfid) {
+      $ppanes = uc_product_panes_values_load($pfid);
+    }
+
+    // Re-configure each pane using our settings
+    foreach ($panes as $pid => $pane) {
+      // Enable the pane if any of the global, class or product settings is selected
+      if ($ppanes) {
+        if (isset($ppanes[$pane['id']]) && $ppanes[$pane['id']]['enabled']) {
+          $panes[$pid]['enabled'] = 1;
+        }
+      }
+      elseif (variable_get('ucpp_class_' . $node->type, 0)) {
+        if (variable_get('ucpp_class_' . $node->type . '_pane_' . $pane['id'] . '_enabled', 0)) {
+          $panes[$pid]['enabled'] = 1;
+        }
+      }
+      else {
+        if (variable_get('uc_pane_' . $pane['id'] . '_enabled', TRUE)) {
+          $panes[$pid]['enabled'] = 1;
+        }
+      }
+    }
+  }
+}

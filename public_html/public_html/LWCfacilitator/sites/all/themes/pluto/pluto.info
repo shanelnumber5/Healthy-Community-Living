@@ -1,0 +1,53 @@
+name = Pluto
+description = Pluto Powerful Drupal Boostrap theme. Developed by <a href="http://tabvn.com">Tabvn.com</a>.
+core = 7.x
+
+stylesheets[all][] = css/animate.css
+stylesheets[all][] = css/bootstrap.css
+stylesheets[all][] = css/style.css
+stylesheets[all][] = css/pluto.css
+
+scripts[] = js/modernizr.custom.js
+scripts[] = bootstrap/js/bootstrap.min.js
+scripts[] = js/detectmobilebrowser.js
+scripts[] = js/jquery.fitvids.js
+scripts[] = js/retina-1.1.0.min.js
+scripts[] = js/wow.js
+scripts[] = js/gmap3.min.js
+scripts[] = js/jquery.appear.js
+scripts[] = js/jquery.countTo.js
+scripts[] = js/jquery.easing.1.3.min.js
+scripts[] = js/jquery.magnific-popup.min.js
+scripts[] = js/pluto.js
+
+regions[sidebar_first]  = Left sidebar
+regions[sidebar_second] = Right sidebar
+regions[navigation] = Main navigation
+regions[custom_breadcrumb] = Custom breadcrumb
+regions[slider] = Main slider
+regions[content] = Content
+regions[header] = Header
+regions[footer] = Footer
+regions[highlighted] = Highlighted
+regions[help] = Help
+regions[page_top] = Page Top
+regions[page_bottom] = Page Bottom
+
+regions[footer_left] = Footer Top Left
+regions[footer_right] = Footer Top Right
+regions[footer_first] = Footer first column
+regions[footer_second] = Footer second column
+regions[footer_third] = Footer third column
+regions[footer_fourth] = Footer fourth column
+
+
+settings[enable_navigation_search] = 1
+settings[nagivation_search_placeholder] = Type to search...
+settings[use_default_breadcrumb] = 1
+settings[use_frontpage_title] = 0
+
+; form elements tooltip
+settings[pluto_tooltip_enabled] = 1
+settings[pluto_tooltip_descriptions] = 1
+
+settings[theme_color] = #EA623D

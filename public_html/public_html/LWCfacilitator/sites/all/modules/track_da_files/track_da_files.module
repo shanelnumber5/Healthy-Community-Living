@@ -1,0 +1,711 @@
+<?php
+
+/**
+ * @file
+ * This file contains Track da files main functions.
+ */
+
+
+/**
+ * Implements hook_help().
+ */
+function track_da_files_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#track_da_files':
+      return '<p>' . t('Gives the possibility to track da files. Select appropriate displays in the content type interface for the file fields to be tracked. You can also custom links to files to be tracked: follow indications in readme file located in module directory.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function track_da_files_menu() {
+
+  $items = array();
+  // Menu item which calls the tracking function for public files.
+  $items['system/tdf'] = array(
+    'page callback' => 'track_da_files_tracking',
+    'page arguments' => array('public'),
+    'access callback' => TRUE,
+  );
+
+  // General Report.
+  $items['admin/reports/track_da_files'] = array(
+    'title' => 'Track da files',
+    'description' => 'Tracked files reports',
+    'page callback' => 'track_da_files_table',
+    'access arguments' => array('access site reports'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/track_da_files.admin.inc',
+  );
+
+  // Report for specific file.
+  $items['admin/reports/track_da_files/file_report/%/%'] = array(
+    'title' => 'File specific report',
+    'description' => 'Allow users to see tracking datas for a specific file',
+    'page callback' => 'track_da_files_table',
+    'page arguments' => array(4, 5),
+    'access arguments' => array('access site reports'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/track_da_files.admin.inc',
+  );
+
+  // Report for specific user.
+  $items['admin/reports/track_da_files/user_report/%'] = array(
+    'title' => 'User specific report',
+    'description' => 'Allow users to see tracking datas for a specific user',
+    'page callback' => 'track_da_files_table_user_report',
+    'page arguments' => array(4),
+    'access arguments' => array('access site reports'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/track_da_files.admin.inc',
+  );
+
+  // Module configuration.
+  $items['admin/config/media/track_da_files'] = array(
+    'title' => 'Track da files',
+    'description' => 'Provides tracking of displayed files.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('track_da_files_config_form'),
+    'access arguments' => array('administer track da files'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/track_da_files.admin.inc',
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function track_da_files_permission() {
+  $permissions = array(
+    'administer track da files' => array(
+      'title' => 'Administer track da files',
+      'description' => t('Allow users to configure track da files module.'),
+    ),
+    'initialize tracked files displays datas' => array(
+      'title' => 'Initialize tracked files displays datas',
+      'description' => t('Allow users to reset reports datas.'),
+    ),
+    'view tracked files displays datas' => array(
+      'title' => 'View tracked files displays datas',
+      'description' => t('Allow users to view the displays counter near from files links.'),
+    ),
+  );
+  return $permissions;
+}
+
+/**
+ * This function returns TRUE if role should be tracked.
+ */
+function track_da_files_roles($user) {
+
+  $track = variable_get('track_da_files_roles', 0);
+  $enabled = $track;
+  $roles = variable_get('track_da_files_specific_roles', array());
+
+  if (array_sum($roles) > 0) {
+    // One or more roles are selected.
+    foreach (array_keys($user->roles) as $rid) {
+      // Is the current user a member of one of these roles?
+      if (isset($roles[$rid]) && $rid == $roles[$rid]) {
+        // User has a role that should be tracked/excluded from tracking.
+        $enabled = !$track;
+        break;
+      }
+    }
+  }
+  else {
+    // No role is selected for tracking, therefore all roles should be tracked.
+    $enabled = TRUE;
+  }
+  return $enabled;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function track_da_files_theme() {
+
+  $theme = array();
+
+  // File field formatters.
+  $theme['track_da_files_file_link'] = array(
+    'variables' => array(
+      'file' => NULL,
+      'icon_directory' => NULL,
+    ),
+    'file' => 'includes/track_da_files_formatter.inc',
+  );
+
+  $theme['track_da_files_url_plain'] = array(
+    'variables' => array(
+      'file' => NULL,
+    ),
+    'file' => 'includes/track_da_files_formatter.inc',
+  );
+
+  $theme['track_da_files_file_formatter_table'] = array(
+    'variables' => array('items' => NULL),
+    'file' => 'includes/track_da_files_formatter.inc',
+  );
+
+  return $theme;
+}
+
+
+/**
+ * Implements hook_field_formatter_info().
+ *
+ * Add Track da files formatters to file/image fields.
+ */
+function track_da_files_field_formatter_info() {
+
+  $formatters = array();
+  $track_da_files_colorbox_enabled = variable_get('track_da_files_colorbox_enabled', 0);
+
+  // Handle file field files.
+  $formatters['track_da_files_file_default'] = array(
+    'label' => t('tdf: Generic file'),
+    'field types' => array('file'),
+    'settings' => array('force_download' => ''),
+  );
+
+  $formatters['track_da_files_url_plain'] = array(
+    'label' => t('tdf: URL to file'),
+    'field types' => array('file'),
+  );
+
+  $formatters['track_da_files_file_table'] = array(
+    'label' => t('tdf: Table of files'),
+    'field types' => array('file'),
+    'settings' => array('force_download' => ''),
+  );
+
+  // Handle image field files.
+  $formatters['track_da_files_image'] = array(
+    'label' => t('tdf: Image'),
+    'field types' => array('image'),
+    'settings' => array('image_style' => '', 'force_download' => ''),
+  );
+
+  // Handle image colorbox field files.
+  if ($track_da_files_colorbox_enabled == 1) {
+    $formatters['track_da_files_colorbox_image'] = array(
+      'label' => t('tdf: Colorbox image'),
+      'field types' => array('image'),
+      'settings' => array('image_style' => ''),
+    );
+  }
+
+  return $formatters;
+}
+
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function track_da_files_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $separator = variable_get('clean_url', FALSE) ? '?' : '&';
+  $track_da_files_file_field_links_show_enabled = variable_get('track_da_files_file_field_links_show_enabled', 1);
+  $track_da_files_colorbox_enabled = variable_get('track_da_files_colorbox_enabled', 0);
+
+  switch ($display['type']) {
+    case 'track_da_files_file_default':
+      foreach ($items as $delta => $item) {
+
+        $access = user_access('view tracked files displays datas');
+        if ($access && (isset($track_da_files_file_field_links_show_enabled) && $track_da_files_file_field_links_show_enabled)) {
+
+          $query = "SELECT t.pid FROM {track_da_files_paths} t " .
+                   "WHERE t.fid = :fid AND t.path = :uri ";
+
+          $result = db_query($query, array(':fid' => $item['fid'], ':uri' => $item['uri']))->fetch();
+          if (!empty($result)) {
+            $pid = $result->pid;
+
+            $query2 = "SELECT COUNT(t.recid) counter FROM {track_da_files} t " .
+                      "WHERE t.pid = :pid GROUP BY t.pid ";
+            $result2 = db_query($query2, array(':pid' => $pid))->fetch();
+
+            if (!empty($result2)) {
+              $item['displays'] = $result2->counter;
+            }
+          }
+        }
+
+        // Register into file object entity id and type.
+        if (isset($entity_type)) {
+          $entity_info = entity_get_info($entity_type);
+          $item['type'] = $entity_type;
+          $item['id'] = $entity->{$entity_info['entity keys']['id']};
+
+          if(isset($display['settings']['force_download'])) {
+             $item['force_download'] = $display['settings']['force_download'];
+          }
+        }
+
+        $element[$delta] = array(
+          '#theme' => 'track_da_files_file_link',
+          '#file' => (object) $item,
+        );
+
+      }
+      break;
+
+    case 'track_da_files_url_plain':
+      foreach ($items as $delta => $item) {
+        // Register into file object entity id and type.
+        if (isset($entity_type)) {
+          $entity_info = entity_get_info($entity_type);
+          $item['type'] = $entity_type;
+          $item['id'] = $entity->{$entity_info['entity keys']['id']};
+        }
+
+        $element[$delta] = array(
+          '#theme' => 'track_da_files_url_plain',
+          '#file' => (object) $item,
+        );
+      }
+      break;
+
+    case 'track_da_files_file_table':
+      if (!empty($items)) {
+
+        // Display all values in a single element.
+        $element[0] = array(
+          '#theme' => 'track_da_files_file_formatter_table',
+          '#items' => $items,
+        );
+
+        foreach ($items as $delta => $item) {
+          // Register into file object entity id and type.
+          if (isset($entity_type)) {
+            $entity_info = entity_get_info($entity_type);
+            $element[0]['#items'][$delta]['type'] = $entity_type;
+            $element[0]['#items'][$delta]['id'] = $entity->{$entity_info['entity keys']['id']};
+            if(isset($display['settings']['force_download'])) {
+              $element[0]['#items'][$delta]['force_download'] = $display['settings']['force_download'];
+            }
+          }
+          $access = user_access('view tracked files displays datas');
+          if ($access && (isset($track_da_files_file_field_links_show_enabled) && $track_da_files_file_field_links_show_enabled)) {
+
+            $query = "SELECT t.pid FROM {track_da_files_paths} t " .
+                     "WHERE t.fid = :fid AND t.path = :uri ";
+
+            $result = db_query($query, array(':fid' => $item['fid'], ':uri' => $item['uri']))->fetch();
+            if (!empty($result)) {
+              $pid = $result->pid;
+
+              $query2 = "SELECT COUNT(t.recid) counter FROM {track_da_files} t " .
+                        "WHERE t.pid = :pid GROUP BY t.pid ";
+              $result2 = db_query($query2, array(':pid' => $pid))->fetch();
+
+              if (!empty($result2)) {
+                $element[0]['#items'][$delta]['displays'] = $result2->counter;
+              }
+            }
+          }
+        }
+
+      }
+
+      break;
+
+    case 'track_da_files_image':
+    case 'track_da_files_colorbox_image':
+      $element = array();
+
+      foreach ($items as $delta => $item) {
+        $field_count_show = $item['force_download'] = '';
+        $access = user_access('view tracked files displays datas');
+
+        if ($access && (isset($track_da_files_file_field_links_show_enabled) && $track_da_files_file_field_links_show_enabled)) {
+
+          $query = "SELECT t.pid FROM {track_da_files_paths} t " .
+                   "WHERE t.fid = :fid AND t.path = :uri ";
+
+          $result = db_query($query, array(':fid' => $item['fid'], ':uri' => $item['uri']))->fetch();
+          if (!empty($result)) {
+            $pid = $result->pid;
+
+            $query2 = "SELECT COUNT(t.recid) counter FROM {track_da_files} t " .
+                      "WHERE t.pid = :pid GROUP BY t.pid ";
+            $result2 = db_query($query2, array(':pid' => $pid))->fetch();
+            if (!empty($result2)) {
+              $item['displays'] = $result2->counter;
+            }
+          }
+          if (isset($item['displays']) && $item['displays'] > 0) {
+            $field_count_show = '<span class="file-displayed-counter">' . format_plural($item['displays'], 'displayed 1 time', 'displayed @count times') . '</span>';
+          }
+        }
+
+        // Register into file object entity id and type.
+        if (isset($entity_type)) {
+          $entity_info = entity_get_info($entity_type);
+          $item['type'] = $entity_type;
+          $item['id'] = $entity->{$entity_info['entity keys']['id']};
+          if(isset($display['settings']['force_download'])) {
+             $item['force_download'] = $display['settings']['force_download'];
+          }
+        }
+
+        if ($track_da_files_colorbox_enabled == 1 && $display['type'] == 'track_da_files_colorbox_image') {
+          $uri = array(
+            'path' => track_da_files_create_url($item['uri']),
+            'options' => array(
+              'query' => array(
+                'file' => '1',
+                'type' => $item['type'],
+                'id' => $item['id'],
+              ),
+              'attributes' => array(
+                'class' => array('colorbox'),
+              ),
+            ),
+          );
+        }
+        else {
+          $uri = array(
+            'path' => track_da_files_create_url($item['uri']),
+            'options' => array(
+              'query' => array(
+                'file' => '1',
+                'type' => $item['type'],
+                'id' => $item['id'],
+                'force' => $item['force_download'],
+              ),
+            ),
+          );
+        }
+
+        $element[$delta] = array(
+          '#theme' => 'image_formatter',
+          '#item' => $item,
+          '#image_style' => $display['settings']['image_style'],
+          '#path' => isset($uri) ? $uri : '',
+          '#suffix' => isset($field_count_show) ? $field_count_show : '',
+        );
+      }
+      break;
+  }
+
+  return $element;
+
+}
+
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function track_da_files_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  if ($display['type'] == 'track_da_files_image' || $display['type'] == 'track_da_files_colorbox_image') {
+    $image_styles = image_style_options(FALSE);
+    $element['image_style'] = array(
+      '#title' => t('Image style'),
+      '#type' => 'select',
+      '#default_value' => $settings['image_style'],
+      '#empty_option' => t('None (original image)'),
+      '#options' => $image_styles,
+    );
+  }
+
+
+  if (in_array($display['type'], array('track_da_files_file_table', 'track_da_files_file_default', 'track_da_files_image'))) {
+    $element['force_download'] = array(
+      '#title' => t('Force download'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['force_download'],
+    );
+  }
+
+  return $element;
+
+}
+
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function track_da_files_field_formatter_settings_summary($field, $instance, $view_mode) {
+
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $summary = array();
+
+  if ($display['type'] == 'track_da_files_image' || $display['type'] == 'track_da_files_colorbox_image') {
+
+    $image_styles = image_style_options(FALSE);
+
+    // Unset possible 'No defined styles' option.
+    unset($image_styles['']);
+
+    // Styles could be lost because of enabled/disabled modules that defines
+    // their styles in code.
+    if (isset($image_styles[$settings['image_style']])) {
+      $summary[] = t('Image style: @style', array('@style' => $image_styles[$settings['image_style']]));
+    }
+    else {
+      $summary[] = t('Original image');
+    }
+  }
+
+  if (in_array($display['type'], array('track_da_files_file_table', 'track_da_files_file_default', 'track_da_files_image'))) {
+
+    if (isset($settings['force_download']) && !empty($settings['force_download'])) {
+      $summary[] = t('Force download');
+    }
+    else {
+      $summary[] = t('Default display');
+    }
+  }
+  return implode('<br />', $summary);
+}
+
+
+/**
+ * Track da files version of file_create_url.
+ */
+function track_da_files_create_url($uri, $id = NULL) {
+
+  $scheme = file_uri_scheme($uri);
+  if ($scheme == 'public') {
+    return file_create_url('system/tdf/' . file_uri_target($uri));
+  }
+  return file_create_url($uri);
+
+}
+
+
+/**
+ * Implements hook_file_download_access_alter().
+ *
+ * Calls counting function for private files displays.
+ */
+function track_da_files_file_download_access_alter(&$grants, $file, $entity_type) {
+
+  // Retrieve entity id information in query parameters.
+  if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+  }
+  if (isset($_GET['type'])) {
+    $type = $_GET['type'];
+  }
+
+  global $user;
+  $track = track_da_files_roles($user);
+
+  // If role should be skipped, no counting.
+  if (!$track) {
+    return NULL;
+  }
+
+  // If no access, no counting.
+  elseif (!in_array(TRUE, $grants)) {
+    return NULL;
+  }
+  elseif ($track && (in_array(TRUE, $grants)) && (isset($_GET['file']))) {
+    $uri = $file['uri'];
+    $fid = $file['fid'];
+
+    if (!empty($fid)) {
+      if (!empty($id) && !empty($type)) {
+        track_da_files_register_new_display($uri, $fid, $id, $type);
+      }
+      else {
+        track_da_files_register_new_display($uri, $fid);
+      }
+    }
+  }
+
+}
+
+
+/**
+ * Analyses uri of file, updates counter and redirects user to file url.
+ */
+function track_da_files_tracking($uri) {
+  $roles = variable_get('track_da_files_specific_roles', array());
+  global $user;
+  $track = track_da_files_roles($user);
+
+  if (!isset($_GET['file'])) {
+    // Our menu hook wasn't called, so we should ignore this.
+    return;
+  }
+
+  // Arguments of the function : public and uri components.
+  $args = func_get_args();
+  $scheme = array_shift($args);
+  $target = implode('/', $args);
+  $uri = $scheme . '://' . $target;
+  $file_name = basename($uri);
+
+  // Retrieve entity id information in query parameters.
+  if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+  }
+  if (isset($_GET['type'])) {
+    $type = $_GET['type'];
+  }
+  if (isset($_GET['force'])) {
+    $force = $_GET['force'];
+  }
+
+  $query = "SELECT f.fid, f.filename, f.filemime, f.filesize FROM {file_managed} f WHERE f.uri = :uri";
+  $result = db_query($query, array(':uri' => $uri))->fetch();
+	if (!empty($result)) {
+    $filename = isset($result->filename) ? $result->filename : '';
+    $fid = isset($result->fid) ? $result->fid : '';
+    $filemime = isset($result->filemime) ? $result->filemime : '';
+    $filesize = isset($result->filesize) ? $result->filesize : '';
+  }
+  // If uri exists and valid uri scheme interaction with database begins.
+  if (file_stream_wrapper_valid_scheme($scheme) && file_exists($uri)) {
+    if (!empty($fid) && $track) {
+      if (!empty($id) && !empty($type)) {
+        track_da_files_register_new_display($uri, $fid, $id, $type);
+      }
+      else {
+        track_da_files_register_new_display($uri, $fid);
+      }
+    }
+
+    $headers = array(
+      'Content-Type' => $filemime,
+      'Content-Length' => $filesize,
+    );
+
+    if(isset($force) && $force == 1) {
+      $headers['Content-Disposition'] = 'attachment; filename="' . $filename . '"';
+    }
+    file_transfer($uri, $headers);
+	}
+}
+
+
+/**
+ * Registers new files displays.
+ */
+function track_da_files_register_new_display($uri, $fid, $id = NULL, $type = NULL) {
+
+  // Get variables to use later.
+  $counter = '';
+  if (!empty($fid)) {
+    $file = file_load($fid);
+  }
+  global $user;
+  $uid = $user->uid;
+  $ip = ip_address();
+  $browser = browscap_get_browser();
+  $browser_name = isset($browser['browser']) ? $browser['browser'] : NULL;
+  $browser_version = isset($browser['version']) ? $browser['version'] : NULL;
+  $browser_platform = isset($browser['platform']) ? $browser['platform'] : NULL;
+  $referer = isset($_SERVER['HTTP_REFERER']) ? check_plain(substr($_SERVER['HTTP_REFERER'], 0, 255)) : NULL;
+
+
+  // We check if path id exists.
+  if (!empty($fid)) {
+    $query = "SELECT p.pid FROM {track_da_files_paths} p WHERE p.fid = :fid AND p.path = :uri";
+    $results = db_query($query, array(':fid' => $fid, ':uri' => $uri))->fetch();
+    if (!empty($results)) {
+      $pid = $results->pid;
+    }
+  }
+  else {
+    $query = "SELECT p.pid FROM {track_da_files_paths} p WHERE p.path = :uri";
+    $results = db_query($query, array(':uri' => $uri))->fetch();
+    if (!empty($results)) {
+      $pid = $results->pid;
+    }
+  }
+
+  if (!empty($pid)) {
+    // If path is registered we make verifications to avoid duplicated entries.
+    $query = "SELECT t.ip, t.pid, MAX(time) max_time FROM {track_da_files} t " .
+             "WHERE t.pid = :pid ";
+    $results = db_query($query, array(':pid' => $pid))->fetch();
+
+    $last_display = $results->max_time;
+    $last_display_ip  = $results->ip;
+    $time = REQUEST_TIME;
+
+    if (isset($last_display)) {
+      $last_display_no_flood = $last_display + 10;
+    }
+
+    // No duplicated entry.
+    // If current viewer ip is the same as last displayer ip.
+    // And if time has passed between last display and current time.
+    // We can continue.
+    if (($ip == $last_display_ip) && ($last_display_no_flood > $time)) {
+      return NULL;
+    }
+  }
+  else {
+
+    // If no path id we register new path.
+    $query = db_insert('track_da_files_paths')
+      ->fields(array(
+        'fid' => isset($fid) ? $fid : NULL,
+        'pid' => isset($pid) ? $pid : NULL,
+        'path' => $uri,
+      ))
+      ->execute();
+
+    // Then we select path id for our file.
+    if (!empty($fid)) {
+      $query = "SELECT p.pid FROM {track_da_files_paths} p " .
+             "WHERE p.fid = :fid AND p.path = :uri ";
+      $results = db_query($query, array(':fid' => $fid, ':uri' => $uri))->fetch();
+    }
+    else {
+      $query = "SELECT p.pid FROM {track_da_files_paths} p WHERE p.path = :uri";
+      $results = db_query($query, array(':uri' => $uri))->fetch();
+    }
+    $pid  = $results->pid;
+  }
+
+  // Ensure we pass a numeric value
+  $id = (int) $id;
+
+  $query = db_insert('track_da_files')
+  ->fields(array(
+    'pid' => isset($pid) ? $pid : NULL,
+    'ip' => $ip,
+    'browser' => isset($browser_name) ? $browser_name : NULL,
+    'browser_version' => isset($browser_version) ? $browser_version : NULL,
+    'browser_platform' => isset($browser_platform) ? $browser_platform : NULL,
+    'referer' => $referer,
+    'uid' => $uid,
+    'time' => REQUEST_TIME,
+    'id' => $id,
+    'type' => $type,
+  ))
+  ->execute();
+
+  // Each time a file is displayed an event is declared to Rules module.
+  if (module_exists('rules') && (isset($file))) {
+    rules_invoke_event('track_da_files', (object) $file, $user);
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function track_da_files_views_api() {
+  return array(
+    'api' => '2',
+    'path' => drupal_get_path('module', 'track_da_files') . '/includes/views',
+  );
+}

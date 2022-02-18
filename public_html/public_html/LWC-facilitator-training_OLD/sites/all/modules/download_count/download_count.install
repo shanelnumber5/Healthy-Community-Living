@@ -1,0 +1,301 @@
+<?php
+
+/**
+ * @file
+ * Installation code for the download_count module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function download_count_schema() {
+  $schema['download_count'] = array(
+    'fields' => array(
+      'dcid' => array(
+        'description' => 'Primary Key: Unique download count id.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'fid' => array(
+        'description' => 'The id from the drupal file_managed table of the file downloaded.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The uid of the user that downloaded the file.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The name of the entity type to which the file was attached when downloaded.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'id' => array(
+        'description' => 'The primary key of the entity to which the file was attached when downloaded.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'ip_address' => array(
+        'description' => "The IP address of the downloading user.",
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ),
+      'referrer' => array(
+        'description' => 'Referrer URI.',
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'timestamp' => array(
+        'description' => 'The date-time the file was downloaded.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('dcid'),
+    'indexes' => array(
+      'dc_fid' => array('fid'),
+      'dc_uid' => array('uid'),
+      'dc_type' => array('type'),
+      'dc_id' => array('id'),
+      'dc_ip' => array('ip_address'),
+      'dc_timestamp' => array('timestamp'),
+      'dc_fid_type_id' => array('fid', 'type', 'id'),
+    ),
+  );
+
+  $schema['download_count_cache'] = array(
+    'fields' => array(
+      'dcc_id' => array(
+        'description' => 'Primary Key: Unique download count cache id.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'fid' => array(
+        'description' => t('The id from the drupal files table of the file downloaded.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'type' => array(
+        'description' => 'The name of the entity type to which the file was attached when downloaded.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'id' => array(
+        'description' => 'The primary key of the entity to which the file was attached when downloaded.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'date' => array(
+        'description' => t('The date the file was downloaded.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'count' => array(
+        'description' => t('Number of times a file was downloaded in one day.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('dcc_id'),
+    'indexes' => array(
+      'dcc_fid' => array('fid'),
+      'dcc_type' => array('type'),
+      'dcc_id' => array('id'),
+      'dcc_timestamp' => array('date'),
+      'dcc_fid_type_id' => array('fid', 'type', 'id', 'date'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function download_count_uninstall() {
+  variable_del('download_count_excluded_file_extensions');
+  variable_del('download_count_view_page_limit');
+  variable_del('download_count_view_page_items');
+  variable_del('download_count_view_page_title');
+  variable_del('download_count_view_page_header');
+  variable_del('download_count_view_page_footer');
+  variable_del('download_count_export_range');
+  variable_del('download_count_sparklines');
+  variable_del('download_count_sparkline_min');
+  variable_del('download_count_sparkline_height');
+  variable_del('download_count_sparkline_width');
+  variable_del('download_count_last_cron');
+  variable_del('download_count_details_daily_limit');
+  variable_del('download_count_details_weekly_limit');
+  variable_del('download_count_details_monthly_limit');
+  variable_del('download_count_details_yearly_limit');
+  variable_del('download_count_flood_limit');
+  variable_del('download_count_flood_window');
+  drupal_set_message(t('The download_count module has been uninstalled.'));
+}
+
+
+/**
+ * Alter download count table.
+ */
+function download_count_update_7300() {
+  // We do not want to create type field again after module installation.
+  if (!db_field_exists('download_count', 'type')) {
+    // Create type field.
+    $spec = array(
+      'description' => 'The name of the entity type to which the file was attached when downloaded.',
+      'type' => 'varchar',
+      'length' => 64,
+      'not null' => TRUE,
+      'default' => '',
+    );
+    db_add_field('download_count', 'type', $spec);
+
+    // Enter value to type field.
+    // In 6 version there we were storing node ids from where file has been
+    // downloaded.
+    // Hence, setting type field value to node for all entries.
+    $rows_updated = db_update('download_count')
+      ->fields(array(
+        'type' => 'node',
+      ))
+      ->execute();
+    drupal_set_message(t('Download types set for') . ' ' . $rows_updated . ' ' . t('rows'));
+  }
+
+  // There will be no nid field after module installation.
+  if (!db_field_exists('download_count', 'id') && db_field_exists('download_count', 'nid')) {
+    // Alter nid field of download_count table.
+    db_change_field('download_count', 'nid', 'id',
+      array(
+        'description' => 'The name of the entity type to which the file was attached when downloaded.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      array(
+        'indexes' => array(
+          'dc_fid' => array('fid'),
+          'dc_uid' => array('uid'),
+          'dc_type' => array('type'),
+          'dc_id' => array('id'),
+          'dc_ip' => array('ip_address'),
+          'dc_timestamp' => array('timestamp'),
+          'dc_fid_type_id' => array('fid', 'type', 'id'),
+        ),
+      )
+    );
+  }
+}
+
+/**
+ * Create download count cache table.
+ */
+function download_count_update_7301() {
+  // Do not create download_count_cache table after module installation.
+  if (!db_table_exists('download_count_cache')) {
+    $schema['download_count_cache'] = array(
+      'fields' => array(
+        'dcc_id' => array(
+          'description' => 'Primary Key: Unique download count cache id.',
+          'type' => 'serial',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'fid' => array(
+          'description' => t('The id from the drupal files table of the file downloaded.'),
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'type' => array(
+          'description' => 'The name of the entity type to which the file was attached when downloaded.',
+          'type' => 'varchar',
+          'length' => 64,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'id' => array(
+          'description' => 'The primary key of the entity to which the file was attached when downloaded.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'date' => array(
+          'description' => t('The date the file was downloaded.'),
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'count' => array(
+          'description' => t('Number of times a file was downloaded in one day.'),
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+      ),
+      'primary key' => array('dcc_id'),
+      'indexes' => array(
+        'dcc_fid' => array('fid'),
+        'dcc_type' => array('type'),
+        'dcc_id' => array('id'),
+        'dcc_timestamp' => array('date'),
+        'dcc_fid_type_id' => array('fid', 'type', 'id', 'date'),
+      ),
+    );
+
+    db_create_table('download_count_cache', $schema['download_count_cache']);
+  }
+}
+
+/**
+ * Change the referrer field to be text instead of varchar.
+ */
+function download_count_update_7302() {
+  db_change_field('download_count', 'referrer', 'referrer',
+  array(
+    'description' => 'Referrer URI.',
+    'type' => 'text',
+    'not null' => TRUE,
+  ));
+}
+
+/**
+ * Fix the default value of the ip_address field.
+ */
+function download_count_update_7303() {
+  db_change_field('download_count', 'ip_address', 'ip_address',
+  array(
+    'description' => "The IP address of the downloading user.",
+    'type' => 'varchar',
+    'length' => 128,
+    'not null' => TRUE,
+  ));
+}

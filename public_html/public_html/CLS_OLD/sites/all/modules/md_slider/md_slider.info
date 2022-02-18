@@ -1,0 +1,11 @@
+name = MD Slider
+description = Responsive timeline slider with touch-swipe navigation.
+core = 7.x
+package = MegaDrupal
+files[] = md_slider.module
+dependencies[] = media
+
+project status url = http://updates.megadrupal.com/release-history
+version = "7.x-2.19"
+core = "7.x"
+project = "md_slider"
