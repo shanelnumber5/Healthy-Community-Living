@@ -1,0 +1,6 @@
+name = Layer Slider
+core = 7.x
+description = Layer slider, jquery_update must switch to  version 1.7
+dependencies[] = jquery_update
+dependencies[] = imce
+package = Tabvn

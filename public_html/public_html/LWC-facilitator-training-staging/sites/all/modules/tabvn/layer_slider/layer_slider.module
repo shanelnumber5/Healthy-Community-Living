@@ -1,0 +1,387 @@
+<?php
+
+define('LAYERSLIDER_TABLE', 'layerslider');
+if (!defined('NL')) {
+  define("NL", "\r\n");
+}
+
+if (!defined('TAB')) {
+  define("TAB", "\t");
+}
+
+include_once 'layer_slider_functions.php';
+
+include_once 'layer_slider.inc';
+
+function layer_slider_help($path, $arg) {
+
+  $output = '';
+
+  switch ($path) {
+    case 'admin/layerslider':
+    case 'admin/layerslider/edit':
+    case 'admin/layerslider/add':
+
+      if (function_exists('file_get_contents')) {
+        // we do display documentation to customers.
+      }
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_init()
+ */
+function layer_slider_init() {
+
+  // check path if "admin/layerslider/*" will add following css, and js
+  if (arg(0) == 'admin' && arg(1) == 'layerslider') {
+
+    $path = drupal_get_path('module', 'layer_slider');
+
+    drupal_add_library('system', 'ui');
+    drupal_add_library('system', 'farbtastic');
+    //drupal_add_library('system', 'ui.widget');
+    drupal_add_library('system', 'ui.sortable');
+    drupal_add_library('system', 'ui.draggable');
+
+    //$js_data= 'var thickboxL10n = {"next":"Next >","prev":"< Prev","image":"Image","of":"of","close":"Close","noiframes":"This feature requires inline frames. You have iframes disabled or your browser does not support them.","loadingAnimation":"\/sites\/all\/modules/layer_slider\/js\/thickbox\/loadingAnimation.gif","closeImage":"\/sites\/all\/modules/layer_slider\/js\/thickbox\/tb-close.png"};';
+    //drupal_add_js($js_data, 'inline');
+    drupal_add_js($path . '/js/layerslider.jquery.js');
+    drupal_add_js($path . '/js/jquery-easing-1.3.js');
+    drupal_add_js($path . '/js/admin.js');
+    // drupal_add_css($path . '/js/thickbox/thickbox.css');
+    drupal_add_css($path . '/css/global.css');
+    //drupal_add_js($path . '/js/thickbox/thickbox.js');
+    drupal_add_css($path . '/css/admin.css');
+   
+    drupal_add_css($path . '/css/layerslider.css');
+  }
+}
+
+/**
+ * Implements hook_menu()
+ */
+function layer_slider_menu() {
+
+  $items = array();
+
+  $items['admin/layerslider'] = array(
+      'title' => t('LayerSlider'),
+      'page callback' => 'layer_slider_page_list',
+      'access arguments' => array('administer layerslider'),
+  );
+
+  $items['admin/layerslider/edit'] = array(
+      'title' => t('Edit slider'),
+      'page callback' => 'layer_slider_page_edit',
+      'access arguments' => array('administer layerslider'),
+      'type' => MENU_CALLBACK,
+  );
+  $items['admin/layerslider/add'] = array(
+      'title' => t('New slider'),
+      'page callback' => 'layer_slider_page_add',
+      'access arguments' => array('administer layerslider'),
+      'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/layerslider/remove'] = array(
+      'title' => t('Remove Slider'),
+      'page callback' => 'layer_slider_page_remove',
+      'access arguments' => array('administer layerslidern'),
+      'type' => MENU_CALLBACK,
+  );
+  $items['admin/layerslider/duplicate'] = array(
+      'title' => t('Duplicate slider'),
+      'page callback' => 'layer_slider_page_duplicate',
+      'access arguments' => array('administer layerslider'),
+      'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/layerslider/skin-editor'] = array(
+      'title' => t('Skin Editor'),
+      'page callback' => 'layer_slider_page_skin_editor',
+      'access arguments' => array('administer layerslider'),
+      'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/layerslider/import-sample'] = array(
+      'title' => t('Import sample sliders'),
+      'page callback' => 'layer_slider_page_skin_import',
+      'access arguments' => array('administer layerslider'),
+      'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function layer_slider_page_edit() {
+
+
+  $table = LAYERSLIDER_TABLE;
+  if (!empty($_GET['id'])) {
+    $id = (int) $_GET['id'];
+
+    $slider = db_query("SELECT * FROM {layerslider} WHERE id= :ID ORDER BY date_c DESC LIMIT 0,1", array(":ID" => $id))->fetchAssoc();
+
+    $slider = json_decode($slider['data'], true);
+  }
+  if (empty($slider)) {
+    drupal_set_message(t('Slider does not exist!'), 'error');
+    drupal_goto('admin/layerslider');
+    exit();
+  }
+  layerslider_register_settings();
+
+  return theme('layer_slider_edit');
+}
+
+function layer_slider_page_add() {
+
+  layerslider_register_settings();
+
+  return theme('layer_slider_add');
+}
+
+function layer_slider_page_list() {
+
+  layerslider_register_settings();
+  return theme('layer_slider_list');
+}
+
+function layer_slider_page_remove() {
+
+  if (!isset($_GET['id'])) {
+    return;
+  }
+
+  // Get the ID of the slider
+  $id = (int) $_GET['id'];
+
+
+
+  // Table name
+  $table_name = LAYERSLIDER_TABLE;
+
+  // Remove the slider
+  db_query("UPDATE {layerslider} SET flag_deleted = '1' WHERE id = :ID LIMIT 1", array(':ID' => $id));
+
+  // Success
+  drupal_goto('admin/layerslider');
+  die();
+}
+
+function layer_slider_page_duplicate() {
+
+  // Check ID
+  if (!isset($_GET['id'])) {
+    return;
+  }
+
+  // Get the ID of the slider
+  $id = (int) $_GET['id'];
+
+  // Get WPDB Object
+  // Table name
+  $table_name = LAYERSLIDER_TABLE;
+
+  // Get slider
+  $slider = db_query("SELECT * FROM {layerslider} WHERE id = :ID ORDER BY date_c DESC LIMIT 1", array(':ID' => $id))->fetchAssoc();
+  $slider = json_decode($slider['data'], true);
+
+  // Name check
+  if (empty($slider['properties']['title'])) {
+    $slider['properties']['title'] = 'Unnamed';
+  }
+
+  // Rename
+  $slider['properties']['title'] .= ' copy';
+
+  // Insert the duplicate
+  db_query("INSERT INTO {$table_name}
+							(name, data, date_c, date_m)
+						VALUES (:name, :data, :date_c, :date_m)", array(":name" => $slider['properties']['title'], ':data' => json_encode($slider), ":date_c" => time(), ":date_m" => time())
+  );
+
+  // Success
+  drupal_goto('admin/layerslider');
+  die();
+}
+
+function layer_slider_page_skin_editor() {
+
+  layerslider_register_settings();
+  return theme('layer_slider_editor');
+}
+
+function layer_slider_page_skin_import() {
+
+  $lsPluginPath = base_path() . drupal_get_path('module', 'layer_slider') . '/';
+  // Base64 encoded, serialized slider export code
+  $sample_slider = json_decode(base64_decode(file_get_contents(dirname(__FILE__) . '/sample_sliders.txt')), true);
+
+
+  // Iterate over the sliders
+  foreach ($sample_slider as $sliderkey => $slider) {
+
+    // Iterate over the layers
+    foreach ($sample_slider[$sliderkey]['layers'] as $layerkey => $layer) {
+
+      // Change background images if any
+      if (!empty($sample_slider[$sliderkey]['layers'][$layerkey]['properties']['background'])) {
+        $sample_slider[$sliderkey]['layers'][$layerkey]['properties']['background'] = $lsPluginPath . 'sampleslider/' . $layer['properties']['background'];
+      }
+
+      // Change thumbnail images if any
+      if (!empty($sample_slider[$sliderkey]['layers'][$layerkey]['properties']['thumbnail'])) {
+        $sample_slider[$sliderkey]['layers'][$layerkey]['properties']['thumbnail'] = $lsPluginPath . 'sampleslider/' . $layer['properties']['thumbnail'];
+      }
+
+      // Iterate over the sublayers
+      foreach ($layer['sublayers'] as $sublayerkey => $sublayer) {
+
+        // Only IMG sublayers
+        if ($sublayer['type'] == 'img') {
+          $sample_slider[$sliderkey]['layers'][$layerkey]['sublayers'][$sublayerkey]['image'] = $lsPluginPath . 'sampleslider/' . $sublayer['image'];
+        }
+      }
+    }
+  }
+
+
+  // Table name
+  $table_name = LAYERSLIDER_TABLE;
+
+
+
+
+  // Append duplicate
+  foreach ($sample_slider as $key => $val) {
+
+    db_query("INSERT INTO {layerslider}
+								(name, data, date_c, date_m)
+							VALUES (:name, :data, :c, :m)", array(':name' => $val['properties']['title'], ':data' => json_encode($val), ':c' => time(), ':m' => time())
+    );
+  }
+
+  // Success
+  drupal_goto('admin/layerslider');
+  die();
+}
+
+/**
+ * 
+ * Implements hook_theme()
+ */
+function layer_slider_theme($existing, $type, $theme, $path) {
+  return array(
+      'layer_slider_list' => array(
+          'variables' => array(),
+          'template' => 'layer_slider_list',
+      ),
+      'layer_slider_edit' => array(
+          'variables' => array(),
+          'template' => 'layer_slider_edit',
+      ),
+      'layer_slider_add' => array(
+          'variables' => array(),
+          'template' => 'layer_slider_add',
+      ),
+      'layer_slider_editor' => array(
+          'variables' => array(),
+          'template' => 'layer_slider_editor',
+      ),
+      'layer_slider' => array(
+          'variables' => array('sid' => NULL),
+          'template' => 'layer_slider',
+      ),
+  );
+}
+
+function layer_slider_get_all() {
+
+  $table = LAYERSLIDER_TABLE;
+  $sliders = db_query("SELECT * FROM {layerslider}
+										WHERE flag_hidden = '0' AND flag_deleted = '0'
+										ORDER BY date_c ASC LIMIT 100")->fetchAll();
+
+  return !empty($sliders) ? $sliders : array();
+}
+
+function layer_slider_get_by_id($id = NULL) {
+  $table = LAYERSLIDER_TABLE;
+  $slider = db_query("SELECT * FROM {layerslider} WHERE id= :ID ORDER BY date_c DESC LIMIT 0,1", array(":ID" => $id))->fetchAssoc();
+
+  return $slider;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function layer_slider_block_info() {
+  $blocks = array();
+  $sliders = layer_slider_get_all();
+
+  if (!empty($sliders)) {
+    foreach ($sliders as $slider) {
+      $id_block = $slider->id;
+      $blocks[$id_block] = array();
+      $blocks[$id_block]['info'] = !empty($slider->name) ? '[layerSlider] ' . $slider->name : t('[layerSlider] #') . $slider->name;
+      $blocks[$id_block]['cache'] = DRUPAL_CACHE_GLOBAL;
+    }
+  }
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function layer_slider_block_view($delta = '') {
+  $blocks = array();
+  if (is_numeric($delta)) {
+    if ($slider = layer_slider_get_by_id($delta)) {
+      if (!empty($slider['data'])) {
+        $slides = json_decode($slider['data'], true);
+
+        layerslider_render_js($delta, $slides);
+
+
+        $blocks['subject'] = $slider['name'];
+        $blocks['content']['#theme'] = 'layer_slider'; //theme('layer_slider', array('sid' => $delta));
+        $blocks['content']['#sid'] = $delta;
+      }
+    }
+  }
+  if (!empty($blocks)) {
+    $path = drupal_get_path('module', 'layer_slider');
+    drupal_add_js($path . '/js/layerslider.jquery.js');
+    drupal_add_js($path . '/js/jquery-easing-1.3.js');
+    drupal_add_css($path . '/css/layerslider.css');
+  }
+  return $blocks;
+}
+
+function layer_slider_contextual_links_view_alter(&$element, &$items) {
+
+
+  if (isset($element['#element']['#block']) && !empty($element['#element']['#theme']) && ($element['#element']['#theme'] == 'layer_slider') && is_numeric($element['#element']['#block']->delta)) {
+    $id = $element['#element']['#block']->delta;
+    $element['#links']['edit-slider'] = array(
+        'title' => 'Configure slider',
+        'href' => url('admin/layerslider/edit', array('absolute' => TRUE, 'query' => array(array('id' => $id)))),
+    );
+  }
+}
+
+
+/**
+ * 
+ * Implements hook_permission()
+ */
+
+function layer_slider_permission() {
+  return array(
+    'administer layerslider' =>  array(
+      'title' => t('Administer layerSlider'),
+      'description' => t('Create, edit, delete, duplicate, import sample, edit skin, of layerSlider.'),
+    ),
+  );
+}

@@ -1,0 +1,144 @@
+/*****************************************/
+/* Customizer control color style
+/*****************************************/
+/**
+ * Import configuration file with variables.
+ */
+.sinatra-alignment-control,
+.background-position-control {
+  margin-top: 12px;
+}
+
+.sinatra-alignment-control input[type="radio"]:checked ~ .button,
+.background-position-control input[type="radio"]:checked ~ .button {
+  background: #0071a1;
+  border-color: #0071a1;
+  z-index: 1;
+  color: #FFF !important;
+}
+
+.sinatra-alignment-control input[type="radio"]:checked ~ .button .alignment-position-center-icon:before,
+.sinatra-alignment-control input[type="radio"]:checked ~ .button .background-position-center-icon:before,
+.background-position-control input[type="radio"]:checked ~ .button .alignment-position-center-icon:before,
+.background-position-control input[type="radio"]:checked ~ .button .background-position-center-icon:before {
+  background-color: #FFF !important;
+}
+
+.sinatra-alignment-control input[type="radio"]:focus ~ .button,
+.background-position-control input[type="radio"]:focus ~ .button {
+  border-color: #5b9dd9;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  color: #23282d;
+}
+
+.sinatra-alignment-control .alignment-position-center-icon,
+.sinatra-alignment-control .alignment-position-center-icon:before {
+  display: inline-block;
+  line-height: 1;
+  text-align: center;
+  -webkit-transition: background-color .1s ease-in;
+  transition: background-color .1s ease-in;
+}
+
+.sinatra-alignment-control .alignment-position-center-icon {
+  height: 20px;
+  margin-top: 13px;
+  vertical-align: top;
+  width: 20px;
+}
+
+.sinatra-alignment-control .alignment-position-center-icon:before {
+  background-color: #555;
+  border-radius: 50%;
+  content: "";
+  height: 12px;
+  width: 12px;
+}
+
+.sinatra-alignment-control .button:hover .alignment-position-center-icon:before,
+.sinatra-alignment-control input[type="radio"]:focus ~ .button .alignment-position-center-icon:before {
+  background-color: #23282d;
+}
+
+.sinatra-alignment-control .button-group {
+  display: block;
+}
+
+.sinatra-alignment-control .button-group.disabled {
+  opacity: .15;
+  pointer-events: none;
+}
+
+.sinatra-alignment-control .button-group .button {
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  /* Following properties are overridden by buttons responsive styles (see: wp-includes/css/buttons.css). */
+  height: 40px !important;
+  line-height: 2.9 !important;
+  margin: 0 -1px 0 0 !important;
+  padding: 0 10px 1px !important;
+  position: relative;
+}
+
+.sinatra-alignment-control .button-group .button:active, .sinatra-alignment-control .button-group .button:hover, .sinatra-alignment-control .button-group .button:focus {
+  z-index: 1;
+}
+
+.sinatra-alignment-control .button-group .dashicons {
+  margin-top: 9px;
+}
+
+.sinatra-alignment-control .button-group > label {
+  margin: 0 !important;
+}
+
+.sinatra-alignment-control .button-group > label.disabled {
+  opacity: .15;
+  pointer-events: none;
+}
+
+.sinatra-alignment-control .button-group.si-top .si-left .dashicons {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+.sinatra-alignment-control .button-group.si-top .si-right .dashicons {
+  -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+.sinatra-alignment-control .button-group.si-bottom .si-left .dashicons {
+  -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+.sinatra-alignment-control .button-group.si-bottom .si-right .dashicons {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+.sinatra-alignment-control .button-group:first-child > label:first-child .button {
+  border-top-left-radius: 3px;
+}
+
+.sinatra-alignment-control .button-group:first-child > label:last-child .button {
+  border-top-right-radius: 3px;
+}
+
+.sinatra-alignment-control .button-group:last-child > label:first-child .button {
+  border-bottom-left-radius: 3px;
+}
+
+.sinatra-alignment-control .button-group:last-child > label:last-child .button {
+  border-bottom-right-radius: 3px;
+}
+
+.sinatra-alignment-control .button-group + .button-group {
+  margin-top: -1px;
+}

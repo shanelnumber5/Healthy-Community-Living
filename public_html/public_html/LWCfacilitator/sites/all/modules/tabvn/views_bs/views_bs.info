@@ -1,0 +1,8 @@
+name = Views Bootstrap Framework
+core = 7.x
+description = Views bootstrap framework.
+dependencies[] = views
+package = Tabvn
+
+files[] = plugins/isotope/views_bs_isotope_plugin_style.inc
+files[] = plugins/timeline/views_bs_timeline_plugin_style.inc

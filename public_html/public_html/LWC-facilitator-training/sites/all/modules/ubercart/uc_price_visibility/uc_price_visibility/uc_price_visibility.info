@@ -1,0 +1,13 @@
+name = Price Visibility
+description = Provides options to toggle visibility of prices per product.
+core = 7.x
+package = Ubercart - extra
+configure = admin/store/settings/products
+dependencies[] = uc_product
+
+; Information added by drupal.org packaging script on 2011-09-23
+version = "7.x-1.0"
+core = "7.x"
+project = "uc_price_visibility"
+datestamp = "1316808109"
+

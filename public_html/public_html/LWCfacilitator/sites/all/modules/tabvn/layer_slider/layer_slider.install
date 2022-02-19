@@ -1,0 +1,52 @@
+<?php
+
+function layer_slider_schema() {
+  $schema['layerslider'] = array(
+      'description' => 'TODO: please describe this table!',
+      'fields' => array(
+          'id' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'serial',
+              'not null' => TRUE,
+          ),
+          'name' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'varchar',
+              'length' => '100',
+              'not null' => TRUE,
+          ),
+          'data' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'text',
+              'not null' => TRUE,
+          ),
+          'date_c' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'int',
+              'not null' => TRUE,
+          ),
+          'date_m' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'int',
+              'not null' => TRUE,
+          ),
+          'flag_hidden' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'int',
+              'size' => 'tiny',
+              'not null' => TRUE,
+              'default' => 0,
+          ),
+          'flag_deleted' => array(
+              'description' => 'TODO: please describe this field!',
+              'type' => 'int',
+              'size' => 'tiny',
+              'not null' => TRUE,
+              'default' => 0,
+          ),
+      ),
+      'primary key' => array('id'),
+  );
+
+  return $schema;
+}

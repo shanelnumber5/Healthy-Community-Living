@@ -1,0 +1,77 @@
+/*****************************************/
+/* Customizer control sortable style
+/*****************************************/
+/**
+ * Import configuration file with variables.
+ */
+.sinatra-sortable-control {
+  margin-top: 12px;
+  margin-bottom: 24px;
+}
+
+.sinatra-sortable-item.invisible {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.sinatra-sortable-item.invisible .dashicons-visibility:before {
+  content: '\f530';
+}
+
+.sinatra-sortable-item {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #fff;
+  position: relative;
+  line-height: 1.3;
+  font-size: 1em;
+  padding: 0;
+  margin: 0 0 6px;
+  border: 1px solid #dedede;
+}
+
+.sinatra-sortable-item .dashicons {
+  -js-display: inline-flex;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 38px;
+  height: 44px;
+  border-right: 1px solid #dedede;
+  font-size: 16px;
+}
+
+.sinatra-sortable-item .dashicons-menu {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.sinatra-sortable-item .dashicons-menu:active {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+.sinatra-sortable-item .dashicons-visibility {
+  cursor: pointer;
+}
+
+.sinatra-sortable-item span {
+  margin-left: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+  margin-right: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  line-height: 1;
+}

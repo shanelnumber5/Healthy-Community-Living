@@ -1,0 +1,11 @@
+/* WPML Language selector */
+
+.sc_layouts_language .menu-item > a > img,
+.sc_layouts_language .menu-item > a > span {
+	display:inline-block;
+	line-height:inherit;
+	vertical-align:middle;
+}
+.sc_layouts_language .menu-item > a > img + span {
+	margin-left: 0.3em;
+}

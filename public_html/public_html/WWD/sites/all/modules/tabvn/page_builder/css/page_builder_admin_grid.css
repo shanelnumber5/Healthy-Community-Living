@@ -1,0 +1,72 @@
+#page-builder-admin-add-form{
+  padding-right: 240px;
+  position: relative;
+  width: 879px;
+}
+.page-builder-wrapper{
+  width: 722px;
+  float: left;
+}
+.page-builder-elements-items{
+  float: right;
+  margin-left: 0;
+  position: absolute;
+  right: 0;
+  width: 320px;
+}
+.page-builder-row-item{
+  width: 720px;
+}
+fieldset.page-builder-wrapper{
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+}
+fieldset.page-builder-wrapper > .fieldset-wrapper{
+  margin: 0;
+  padding: 0;
+}
+.page-builder-grid-1,
+.page-builder-grid-2,
+.page-builder-grid-3,
+.page-builder-grid-4,
+.page-builder-grid-5,
+.page-builder-grid-6,
+.page-builder-grid-7,
+.page-builder-grid-8,
+.page-builder-grid-9,
+.page-builder-grid-10,
+.page-builder-grid-11,
+.page-builder-grid-12 {
+  display: inline;
+  float: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+.page-builder-grid-1{
+  width: 58px; // 60
+}
+
+.page-builder-grid-2{
+  width: 118px; // 120
+}
+.page-builder-grid-3{
+  width: 178px;
+}
+.page-builder-grid-4{
+  width: 238px;
+}
+.page-builder-grid-5{
+  width: 298px;
+}
+.page-builder-grid-6{
+  width: 358px;
+}
+.page-builder-grid-7{
+  width: 418px;
+}
+.page-builder-grid-8{width: 478px;}
+.page-builder-grid-9{width: 538px;}
+.page-builder-grid-10{width: 598px;}
+.page-builder-grid-11{width: 658px;}
+.page-builder-grid-12{width: 718px;}

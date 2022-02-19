@@ -1,0 +1,93 @@
+<?php
+
+class PaymentUbercartCheckoutWebTestCase extends PaymentWebTestCase {
+
+  static function getInfo() {
+    return array(
+      'description' => '',
+      'name' => 'Checkout',
+      'group' => 'Payment for Ubercart',
+      'dependencies' => array('payment_ubercart'),
+    );
+  }
+
+  function setUp(array $modules = array()) {
+    parent::setUp($modules + array('paymentmethodbasic', 'payment_ubercart', 'uc_cart'));
+  }
+
+  function testCheckout() {
+    // Create payment method.
+    $payment_method = $this->paymentMethodCreate(0, payment_method_controller_load('PaymentMethodBasicController'));
+    entity_save('payment_method', $payment_method);
+
+    // Create a user.
+    $user = $this->drupalCreateUser(array('create product content', 'create orders', 'view own orders'));
+    $this->drupalLogin($user);
+
+    // Set up the store.
+    $this->drupalPost('node/add/product', array(
+      'title' => 'foo',
+      'model' => 'bar',
+      'sell_price' => '12.34',
+    ), t('Save'));
+
+    // Test an authenticated checkout.
+    $this->assertCheckout(1, $payment_method->pmid);
+    // Test an anonymous checkout.
+    $this->drupalLogout();
+    $this->assertCheckout(1, $payment_method->pmid);
+  }
+
+  /**
+   * Loads the order ID of the most recent order.
+   *
+   * @return integer
+   */
+  function getLastOrderID() {
+    return db_select('uc_orders')
+      ->fields('uc_orders', array('order_id'))
+      ->orderBy('order_id', 'DESC')
+      ->range(0, 1)
+      ->execute()
+      ->fetchField();
+  }
+
+  /**
+   * Executes the checkout process.
+   *
+   * @param integer $product_nid
+   * @param integer $pmid
+   */
+  function assertCheckout($product_nid, $pmid) {
+    $previous_order_id = $this->getLastOrderID();
+
+    // Execute the checkout.
+    $this->drupalPost('node/' . $product_nid, array(), t('Add to cart'));
+    $this->drupalPost(NULL, array(), t('Checkout'));
+    $values = array(
+      'panes[customer][primary_email]' => 'b@b.b',
+    );
+    foreach (array('delivery', 'billing') as $type) {
+      $values['panes[' . $type . '][' . $type . '_first_name]'] = 'foo';
+      $values['panes[' . $type . '][' . $type . '_last_name]'] = 'foo';
+      $values['panes[' . $type . '][' . $type . '_street1]'] = 'foo';
+      $values['panes[' . $type . '][' . $type . '_city]'] = 'foo';
+      $values['panes[' . $type . '][' . $type . '_zone]'] = 1;
+      $values['panes[' . $type . '][' . $type . '_postal_code]'] = 'foo';
+    }
+    $this->drupalPost(NULL, $values, t('Review order'));
+    $this->drupalPost(NULL, array(), t('Submit order'));
+
+    // Test if a payment was added for the order.
+    $new_order_id = $this->getLastOrderID();
+    $this->assertNotEqual($previous_order_id, $new_order_id);
+    $pids = payment_ubercart_pids_load($new_order_id);
+    $payment = entity_load_unchanged('payment', end($pids));
+    $this->assertTrue((bool) $payment);
+    if ($payment) {
+      $this->assertEqual($payment->getStatus()->status, PAYMENT_STATUS_SUCCESS);
+    }
+    $order = uc_order_load($new_order_id);
+    $this->assertEqual($payment->uid, $order->uid);
+  }
+}

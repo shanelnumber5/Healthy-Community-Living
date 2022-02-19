@@ -1,0 +1,117 @@
+/*****************************************/
+/* Customizer control spacing style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+.customize-control-sinatra-spacing {
+
+	.sinatra-control-wrap {
+		position: relative;
+
+		& > ul { 
+			padding-top: 6px;
+			display: none;
+			width: 100%;
+			align-items: flex-start;
+
+			&.active {
+				display: flex;
+			}
+		}
+
+		.reset-defaults {
+			position: absolute;
+			top: -18px;
+			right: 0;
+			margin-right: 0;
+		}
+	}
+
+	.spacing-control-wrap { 
+		width: 20%; 
+		margin: 0;
+
+		input,
+		button {
+			display: block; 
+			font-size: 12px; 
+			padding: 4px 0; 
+			width: 100%; 
+			height: 32px; 
+			border: 1px solid; 
+			border-color: #ddd; 
+			border-left-width: 0; 
+			border-radius: 0; 
+			text-align: center;
+			box-shadow: none !important;
+		} 
+
+		input[type=number]::-webkit-inner-spin-button, 
+		input[type=number]::-webkit-outer-spin-button { 
+			-webkit-appearance: none; 
+			margin: 0; 
+		}
+
+		&:first-child input { 
+			border-left-width: 1px; 
+			border-radius: 3px 0 0 3px; 
+		}
+
+		.sinatra-spacing-label { 
+			display: block; 
+			color: #808890; 
+			font-size: 10px; 
+			padding-top: 4px; 
+			font-style: normal;
+			text-transform: uppercase;
+			font-weight: 400;
+			text-align: center; 
+		}
+
+		input:focus + .sinatra-spacing-label { 
+			color: #23282d; 
+		}
+
+		.spacing-link-values {
+			border: 1px solid #ddd;
+			border-left-width: 0; 
+			padding: 0; 
+			outline: none; 
+			border-radius: 0 3px 3px 0; 
+			cursor: pointer; 
+
+			span { 
+				display: block; 
+				width: 100%; 
+				height: 30px; 
+				line-height: 30px; 
+				font-size: 16px; 
+				border-radius: 0 2px 2px 0;
+				color: #808890;
+			}
+
+			&:hover span {
+				color: #23282d;
+			}
+
+			.sinatra-spacing-linked { 
+				display: none; 
+				color: #0073aa !important;
+			}
+
+			&.unlinked {
+				.sinatra-spacing-unlinked { 
+					display: none; 
+				}
+
+				.sinatra-spacing-linked { 
+					display: block; 
+				}
+			}
+		}
+	}
+}

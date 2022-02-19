@@ -1,0 +1,277 @@
+/*****************************************/
+/* Customizer control color style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+$admin_border_color: #ddd;
+$color_picker_width: 247px;
+
+.sinatra-color-wrapper {
+	.wp-picker-container {
+		margin-top: 6px;
+	}
+
+	.sinatra-color-control {
+		border-radius: 3px 0 0 0px !important;
+		margin-top: 0 !important;
+	}
+}
+
+.wp-core-ui .button.wp-color-result {
+	background: transparent;
+}
+
+body.wp-customizer {
+
+	.wp-picker-container {
+		max-width: $color_picker_width;
+
+		.wp-picker-open ~ .wp-picker-holder .alpha-color-picker-container {
+			display: block;
+		}
+
+		.iris-picker {
+			margin: 0 0 0 0; 
+			box-sizing: content-box !important;
+			border-color: $admin_border_color;
+			border-radius: 0;
+			max-width: calc(100% - 2px);
+
+			.iris-square {
+				margin-right: 0;
+			}
+
+			.iris-strip {
+				float: right;
+
+				.ui-slider-handle {
+					box-shadow: none;
+					border-radius: 2px;
+					opacity: 1;
+
+					&:before {
+						border-radius: 2px;
+					}
+				}
+			}
+		}
+
+		.wp-color-result.button { 
+			box-shadow: none; 
+			padding: 0 0 0 45px; 
+			border: solid 1px #ddd;
+			height: 34px; 
+			border-radius: $border_radius; 
+			margin: 0; 
+			max-width: 160px;
+			position: relative;
+
+			&:focus,
+			&:hover {
+				border-color: #bcbcbc !important;
+			}
+
+			&:before {
+				content: '';
+				background-image: url( '../../assets/images/transparency.svg' );
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				width: 45px;
+				z-index: -1;
+				background-repeat: repeat;
+				background-size: 18px;
+			}
+
+			.wp-color-result-text {
+				background-color: #eee; 
+				height: 32px; 
+				line-height: 32px; 
+				border: none; 
+				box-shadow: none; 
+				border-radius: 0 2px 2px 0; 
+				border-left: 1px solid #ddd;
+				padding: 0 16px; 
+				position: relative; 
+				top: 0;
+				right: 0;
+				font-size: 13px; 
+				color: #555d66;
+			}
+		}
+	}
+
+	.alpha-color-picker-container {
+		display: none;
+		width: $color_picker_width; 
+		border: 1px solid $admin_border_color;
+		border-top: none;
+		background-color: $color_5;
+		padding: 0 11px 10px;
+		position: relative;
+		border-radius: 0 0 $border_radius $border_radius;
+		box-sizing: border-box;
+		top: -1px;
+		position: relative;
+		z-index: 2;
+
+		.ui-widget-content,
+		.ui-widget-header {
+			background: transparent;
+			border: none;
+		}
+
+		.ui-slider {
+			position: relative;
+			z-index: 1;
+			height: 24px;
+			text-align: center;
+			margin: 0 auto;
+			width: 88%;
+			width: calc( 100% - 28px );
+		}
+
+		.ui-slider-handle,
+		.ui-widget-content .ui-state-default {
+			color: #000;
+			background-color: $color_5;
+			text-shadow: 0 1px 0 #fff;
+			text-decoration: none;
+			position: absolute;
+			z-index: 2; 
+			border: 1px solid #aaa;
+			border-radius: 2px;
+			margin-top: -2px;
+			top: 0;
+			height: 26px;
+			width: 26px;
+			cursor: ew-resize;
+			font-size: 0;
+			padding: 0;
+			line-height: 27px;
+			margin-left: -14px;
+
+			&:focus {
+				box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30,140,190,.8);
+			}
+		}
+
+		.ui-slider-handle.show-opacity {
+			font-size: 10px;
+			font-weight: 500;
+			user-select: none;
+		}
+
+		.click-zone {
+			display: block;
+			position: absolute;
+			left: 10px;
+			width: 14px;
+			height: 24px;
+		}
+
+		.max-click-zone {
+			right: 10px;
+			left: auto;
+		}
+
+		.transparency {
+			height: 24px;
+			width: 100%;
+			background-color: $color_5;
+			background-image: url( '../../assets/images/transparency-grid.png' );
+			box-shadow: 0 0 5px rgba(0,0,0,0.4) inset;
+			border-radius: 3px;
+			padding: 0;
+			margin-top: -24px;
+		}
+	}
+
+	.alpha-color-picker-wrap {
+		.ui-state-focus {
+			background: transparent;
+			border: none;
+		}
+
+		a.iris-square-value {
+			&:focus {
+				box-shadow: none;
+			}
+		}
+	}
+
+	.wp-picker-holder { 
+		max-width: $color_picker_width;
+	}
+
+	.wp-picker-input-wrap {
+		overflow: hidden;
+	}
+
+	.wp-picker-open + .wp-picker-input-wrap {
+		width: 100%;
+		margin-top: 12px;
+		display: flex !important;
+		max-width: $color_picker_width;
+		border-radius: 0;
+
+		& > label,
+		& > span {
+			flex: 1;
+		}
+
+		label {
+			width: auto;
+			flex-shrink: 0;
+			margin: 0;
+			border-radius: 0;
+
+			input {
+				padding: 0 12px;
+				width: 100% !important;
+				height: 100%;
+				margin-top: 0;
+				border-radius: 0;
+				text-align: center;
+				border: 1px solid $admin_border_color;
+				border-radius: $border_radius 0 0 0;
+				border-bottom: none;
+				background-color: $color_5;
+				color: #000;
+				font-family: inherit;
+				align-self: flex-end;
+			}
+		}
+
+		input[type="button"] {
+			height: auto !important;
+			padding: 8px 12px;
+			border-radius: 0 $border_radius 0 0;
+			line-height: 1.3;
+			color: $color_3;
+			border: none;
+			border-top: 1px solid $admin_border_color;
+			border-right: 1px solid $admin_border_color;
+			margin-left: 0;
+			font-size: 13px;
+		}
+	}
+
+	.wp-picker-clear {
+		width: 28%;
+		box-shadow: none !important;
+		outline: none;
+	}
+}
+
+/* Responsive */
+@media only screen and (max-width: 640px) {
+	.wp-picker-input-wrap input[type="text"].wp-color-picker.sinatra-color-control { 
+		height: 33px;
+	}
+}

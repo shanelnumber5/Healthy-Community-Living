@@ -1,0 +1,1 @@
+(function(a){a(document).ready(function(){var b=new MdSliderPanel();b.init();a("#md-slider-edit-form").submit(function(){a("#edit-slider-data-save").val(a.objectToString(b.getSliderData()))})})})(jQuery);

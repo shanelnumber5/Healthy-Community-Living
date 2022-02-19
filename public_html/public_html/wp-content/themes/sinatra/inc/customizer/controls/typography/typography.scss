@@ -1,0 +1,140 @@
+/*****************************************/
+/* Customizer control typography style
+/*****************************************/
+
+/**
+ * Import configuration file with variables.
+ */
+@import '../../../../assets/sass/config';
+
+.sinatra-typography-wrapper {
+
+	.sinatra-control-wrap {
+		width: 100%;
+	}
+
+	.sinatra-range-wrapper {
+		position: relative;
+
+		label {
+			display: flex;
+			align-items: center;
+			margin-bottom: 6px;
+		}
+
+		.sinatra-control-unit {
+			position: absolute;
+			top: 4px;
+			right: 0;
+			z-index: 1;
+		}
+	}
+
+	.sinatra-typography-heading {
+		flex-grow: 1;
+	}
+
+	.sinatra-typography-advanced {
+		background-color: #fff;
+		padding: 15px 22px;
+		position: absolute;
+		width: 100%;
+		top: 100%;
+		left: 0;
+		margin-top: 15px;
+		box-sizing: border-box;
+		border-radius: $border_radius;
+		box-shadow: 0 0 10px rgba(0,0,0,0.1);
+		z-index: 1;
+	}
+
+	.advanced-settings {
+		display: flex;
+		align-items: center;
+		margin-left: auto;
+		text-decoration: none;
+		color: #555d66;
+
+		&.active,
+		&:focus,
+		&:hover {
+			background-color: #0284ba;
+			color: #fff;
+		}
+
+		&.hidden {
+			display: none;
+		}
+	}
+
+	.sinatra-typography-font-family,
+	.sinatra-typography-font-subsets,
+	.sinatra-typography-font-weight,
+	.sinatra-typography-font-style,
+	.sinatra-typography-text-transform,
+	.sinatra-typography-text-decoration {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		margin-top: 6px;
+		margin-bottom: 6px;
+
+		.select2-container,
+		select {
+			width: 150px !important;
+			margin-left: auto !important;
+		}
+	}
+
+	.sinatra-typography-font-weight,
+	.sinatra-typography-font-style,
+	.sinatra-typography-text-transform,
+	.sinatra-typography-text-decoration {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.sinatra-typography-font-weight,
+	.sinatra-typography-letter-spacing,
+	.sinatra-typography-line-height {
+		margin-top: 12px;
+	}
+
+	.sinatra-typography-line-height,
+	.sinatra-typography-text-decoration {
+		margin-bottom: 24px;
+	}
+
+	.sinatra-typography-font-family {
+		margin-bottom: 12px;
+	}
+
+	.sinatra-responsive-switchers {
+		margin-left: 6px;
+	}
+
+	.advanced-settings {
+		background-color: #FFF;
+		border-radius: 2px;
+		display: inline-flex;
+		margin-left: 0;
+		font-size: 12px;
+		width: 40px;
+		height: 40px;
+		justify-content: center;
+		border: 1px solid #e0e0e0;
+		transition: all .15s ease;
+
+		.dashicons {
+			transition: none;
+		}
+	}
+
+	.reset-defaults {
+		display: none;
+		
+		&.active {
+			display: block;
+		}
+	}
+}

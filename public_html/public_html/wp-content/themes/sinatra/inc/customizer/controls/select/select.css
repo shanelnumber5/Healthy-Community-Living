@@ -1,0 +1,61 @@
+/*****************************************/
+/* Customizer control select style
+/*****************************************/
+/**
+ * Import configuration file with variables.
+ */
+.sinatra-select-wrapper select {
+  margin: 6px 0 0 0;
+}
+
+.sinatra-select-wrapper .select2-container--default .select2-selection--multiple {
+  border-radius: 3px;
+  border-color: #7e8993;
+}
+
+.sinatra-select-wrapper .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  display: block;
+}
+
+.sinatra-select-wrapper .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #eee;
+  border-color: #ddd;
+  border-radius: 20px;
+  padding: 2px 10px;
+  margin-bottom: 0;
+}
+
+.sinatra-select-wrapper .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  position: relative;
+  top: -1.5px;
+  color: #aaa;
+  margin-right: 5px;
+  font-weight: 400;
+}
+
+.sinatra-select-wrapper .select2-container--default .select2-selection--multiple .select2-selection__clear {
+  margin-right: 2px;
+  font-weight: 400;
+  font-size: 17px;
+}
+
+.sinatra-select-wrapper .select2-container--default .select2-search--inline .select2-search__field {
+  position: absolute;
+  padding: 0px 5px;
+  margin: 0;
+}
+
+.sinatra-select-wrapper .select2-container .select2-selection--multiple {
+  min-height: 35px;
+}
+
+.select2-results {
+  padding: 6px;
+}

@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * @file
+ * Test cases for registering with an address.
+ */
+
+/**
+ * Test cases for registering with an address.
+ */
+class UcAddressesUserRegistrationTestCase extends UcAddressesTestCase {
+  /**
+   * Describes this test.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'User registration',
+      'description' => 'Test registration with address information.',
+      'group' => 'Ubercart Addresses',
+      'dependencies' => array('ctools', 'token', 'uc_store'),
+    );
+  }
+
+  /**
+   * Register the user and assign privileges of the customerDelete account.
+   */
+  public function testRegistration() {
+    // Allow registration by site visitors without administrator approval.
+    variable_set('user_register', USER_REGISTER_VISITORS);
+
+    // Don't require e-mail verification.
+    variable_set('user_email_verification', FALSE);
+
+    $this->drupalGet('user/register');
+
+    $address_name = $this->randomName();
+    $values = self::getEditAddressValues(array('address'), array('address_name' => $address_name), 'register');
+    $edit = $values['form_values'];
+    $edit['name'] = $name = $this->randomName();
+    $edit['mail'] = $mail = $edit['name'] . '@example.com';
+    $edit['pass[pass1]'] = $new_pass = $this->randomName();
+    $edit['pass[pass2]'] = $new_pass;
+    $this->drupalPost(NULL, $edit, t('Create new account'));
+
+    // Clear mail history, or else the address entered during registration stays into memory.
+    // This would else cause this test to fail.
+    variable_del('drupal_test_email_collector');
+
+    $uid = db_query("SELECT uid FROM {users} WHERE name = :name AND mail = :mail", array(':name' => $name, ':mail' => $mail))->fetchField();
+    $new_user = user_load($uid);
+    $this->assertTrue($new_user->status, t('New account is active after registration.'));
+
+    // Assign "full customer" privileges to this user.
+    $rid = $this->drupalCreateRole(array('add/edit own addresses', 'delete own addresses'));
+    $edit = array(
+      'roles' => array($rid => $rid),
+    );
+    $new_user = user_save($new_user, $edit);
+    // Add the raw password so that we can log in as this user.
+    $new_user->pass_raw = $new_pass;
+    $this->verbose('$new_user' . serialize($new_user), '$new_user');
+
+    // Login the new user.
+    $this->drupalLogout();
+    $this->drupalLogin($new_user);
+    // Make sure the permissions are set up right.
+    if ($this->checkPermissions(array('add/edit own addresses', 'delete own addresses'))) {
+      $this->pass(t('User has assigned the right permissions.'));
+    }
+    else {
+      $this->fail(t('User has assigned the right permissions.'));
+    }
+
+    $addressBook = UcAddressesAddressBook::get($new_user->uid);
+    $addresses = $addressBook->getAddresses();
+    $address = current($addresses);
+
+    // Test if it has an address.
+    $this->viewAddressBook($new_user, TRUE);
+    $this->assertNoText(t('No addresses have been saved.'), t('An address has been saved.'));
+    $this->doAddressValuesDisplayedTests(array('address_name' => $address_name));
+
+    // Verify the user has only one address.
+    $this->assertEqual(count($addresses), 1, t('The user has only one address.'));
+
+    if ($address instanceof UcAddressesAddress) {
+      // Test if the address may viewed, edited or deleted.
+      // This should be a default address, so it may not be deleted.
+      $this->doCrudTests($new_user, $address->getId(), TRUE, TRUE, FALSE, array('address_name' => $this->randomName()));
+    }
+  }
+}

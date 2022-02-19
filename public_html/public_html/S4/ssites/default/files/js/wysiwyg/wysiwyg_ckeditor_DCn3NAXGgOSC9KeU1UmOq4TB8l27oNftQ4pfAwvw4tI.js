@@ -1,0 +1,1 @@
+window.CKEDITOR_BASEPATH = '/LWC-facilitator-training/sites/all/libraries/ckeditor/';

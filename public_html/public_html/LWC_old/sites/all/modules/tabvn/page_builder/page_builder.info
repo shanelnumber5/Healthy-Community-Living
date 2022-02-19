@@ -1,0 +1,4 @@
+name = Page builder
+description = Drupal Page builder. Developed by <a href="http://tabvn.com">Tabvn.com</a>
+core = 7.x
+package = Tabvn

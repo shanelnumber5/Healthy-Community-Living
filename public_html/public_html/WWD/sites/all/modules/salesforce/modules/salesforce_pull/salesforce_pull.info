@@ -1,0 +1,13 @@
+name = Salesforce Pull
+description = Imports objects from Salesforce based on mappings defined in Salesforce Mapping.
+package = Salesforce
+core = 7.x
+
+dependencies[] = salesforce_mapping
+
+
+; Information added by Drupal.org packaging script on 2020-01-07
+version = "7.x-3.3"
+core = "7.x"
+project = "salesforce"
+datestamp = "1578431288"

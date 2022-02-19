@@ -1,0 +1,27 @@
+/*****************************************/
+/* Customizer control design options style
+/*****************************************/
+
+.sinatra-design-options-wrapper {
+	.background-color-overlay {
+		.wp-color-result.button {
+			top: 1.33em !important;
+		}
+	}
+
+	.sinatra-design-options-heading {
+		flex-grow: 1;
+	}
+
+	.sinatra-range-suffix {
+		margin-left: 6px;
+	}
+
+	.reset-defaults {
+		display: none;
+		
+		&.active {
+			display: block;
+		}
+	}
+}

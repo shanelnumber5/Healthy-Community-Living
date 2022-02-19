@@ -1,0 +1,18 @@
+/**
+ * @file
+ *   CSS for Track da files module.
+ */
+
+.file-displayed-counter {
+  padding: 0 10px;
+}
+
+.page-admin-reports-track-da-files th,
+.page-admin-reports-track-da-files td {
+  padding: 3px 10px;
+}
+
+#track-da-files-table-action-form,
+#track-da-files-user-table-action-form {
+  padding: 10px 0 0 0;
+}

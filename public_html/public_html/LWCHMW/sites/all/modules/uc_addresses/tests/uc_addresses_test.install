@@ -1,0 +1,161 @@
+<?php
+
+/**
+ * @file
+ * Installation file for Ubercart Addresses testing module.
+ *
+ * Two fields are added to the uc_addresses table:
+ * - billing_extra1
+ * - shipping_extra2
+ * Two fields are added to the uc_orders table:
+ * - billing_billing_extra1
+ * - delivery_shipping_extra2
+ */
+
+/**
+ * Implements hook_schema_alter().
+ *
+ * @return void
+ */
+function uc_addresses_test_schema_alter(&$schema) {
+  $tables = _uc_addresses_test_schema_tables();
+  $fields = _uc_addresses_test_schema_fields();
+
+  foreach ($tables as $table) {
+    foreach ($fields as $fieldname => $field) {
+      if (!_uc_addresses_test_in_pane($table['prefix'], $field)) {
+        continue;
+      }
+      $tablename = $table['table'];
+      $tablefieldname = $table['prefix'] . $fieldname;
+      $schema[$tablename]['fields'][$tablefieldname] = $field;
+    }
+  }
+}
+
+/**
+ * Implements hook_install().
+ *
+ * Installs fields defined by _uc_addresses_test_schema_fields()
+ * in tables defined by _uc_addresses_test_schema_tables().
+ *
+ * @return array
+ *   A list of changes in the database.
+ */
+function uc_addresses_test_install() {
+  $ret = array();
+
+  $tables = _uc_addresses_test_schema_tables();
+  $fields = _uc_addresses_test_schema_fields();
+
+  foreach ($tables as $table) {
+    foreach ($fields as $fieldname => $field) {
+      if (!_uc_addresses_test_in_pane($table['prefix'], $field)) {
+        continue;
+      }
+      $tablename = $table['table'];
+      $tablefieldname = $table['prefix'] . $fieldname;
+      $ret[] = db_add_field($tablename, $tablefieldname, $field);
+    }
+  }
+
+  return $ret;
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Removes fields defined by _uc_addresses_test_schema_fields()
+ * in tables defined by _uc_addresses_test_schema_tables().
+ *
+ * @return array
+ *   A list of changes in the database.
+ */
+function uc_addresses_test_uninstall() {
+  $ret = array();
+
+  $tables = _uc_addresses_test_schema_tables();
+  $fields = _uc_addresses_test_schema_fields();
+
+  foreach ($tables as $table) {
+    foreach ($fields as $fieldname => $field) {
+      if (!_uc_addresses_test_in_pane($table['prefix'], $field)) {
+        continue;
+      }
+      $tablename = $table['table'];
+      $tablefieldname = $table['prefix'] . $fieldname;
+      $ret[] = db_drop_field($tablename, $tablefieldname);
+    }
+  }
+
+  return $ret;
+}
+
+/**
+ * Defines which schema tables needs to be altered.
+ *
+ * A prefix is also defined because in case of the
+ * uc_orders table two fields needs to be added:
+ * - one for delivery
+ * - and one for billing.
+ *
+ * @return array
+ *   The schema's that needs to be altered.
+ */
+function _uc_addresses_test_schema_tables() {
+  return array(
+    array(
+      'table' => 'uc_addresses',
+      'prefix' => '',
+    ),
+    array(
+      'table' => 'uc_orders',
+      'prefix' => 'delivery_',
+    ),
+    array(
+      'table' => 'uc_orders',
+      'prefix' => 'billing_',
+    ),
+  );
+}
+
+/**
+ * Defines which schema fields need to be added to the uc_addresses and
+ * uc_orders table.
+ *
+ * @return array
+ *   The schema fields to add.
+ */
+function _uc_addresses_test_schema_fields() {
+  return array(
+    'billing_extra1' => array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+      'address_type' => 'billing',
+    ),
+    'shipping_extra2' => array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+      'address_type' => 'delivery',
+    ),
+  );
+}
+
+/**
+ * If the field should appear in the specified pane.
+ *
+ * @return boolean
+ *   TRUE if the field should appear in the specified pane.
+ *   FALSE otherwise.
+ */
+function _uc_addresses_test_in_pane($pane, $field) {
+  if ($pane && !empty($field['address_type']) && $pane != $field['address_type'] . '_') {
+    // Some fields belong to one address type only.
+    return FALSE;
+  }
+  return TRUE;
+}

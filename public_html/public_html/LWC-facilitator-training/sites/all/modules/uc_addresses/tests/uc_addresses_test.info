@@ -1,0 +1,29 @@
+name = Ubercart Addresses Test
+description = Testing module for Ubercart Addresses functionality.
+package = Testing
+dependencies[] = ctools
+dependencies[] = token
+dependencies[] = entity
+dependencies[] = entity_token
+dependencies[] = rules
+dependencies[] = image
+dependencies[] = views
+dependencies[] = uc_store
+dependencies[] = uc_cart
+dependencies[] = uc_order
+dependencies[] = uc_product
+dependencies[] = uc_payment
+dependencies[] = uc_payment_pack
+dependencies[] = uc_addresses
+core = 7.x
+files[] = uc_addresses_test.module
+hidden = TRUE
+
+; Field handlers
+files[] = handlers/uc_addresses.handlers.inc
+; Information added by Drupal.org packaging script on 2016-12-21
+version = "7.x-1.0-beta1+17-dev"
+core = "7.x"
+project = "uc_addresses"
+datestamp = "1482342186"
+

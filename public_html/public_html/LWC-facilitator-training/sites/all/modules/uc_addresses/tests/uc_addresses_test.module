@@ -1,0 +1,116 @@
+<?php
+
+/**
+ * @file
+ * Testing module for Ubercart Addresses functionality.
+ */
+
+/**
+ * Implements hook_uc_addresses_field_handlers().
+ *
+ * Registers field handlers.
+ *
+ * @return array
+ */
+function uc_addresses_test_uc_addresses_field_handlers() {
+  $path = drupal_get_path('module', 'uc_addresses_test') . '/handlers';
+
+  $info = array();
+  $info['UcAddressesTestTextFieldHandler'] = array(
+    'hidden' => FALSE,
+    'handler' => array(
+      'parent' => 'UcAddressesTextFieldHandler',
+      'class' => 'UcAddressesTestTextFieldHandler',
+      'file' => 'uc_addresses.handlers.inc',
+      'path' => $path,
+    ),
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_uc_addresses_fields().
+ */
+function uc_addresses_test_uc_addresses_fields() {
+  return array(
+    'billing_extra1' => array(
+      'title' => t('Billing Extra Field'),
+      'handler' => 'UcAddressesTestTextFieldHandler',
+      'display_settings' => array(
+        'default' => TRUE,
+      ),
+      'compare' => TRUE,
+      'address_type' => 'billing',
+    ),
+    'shipping_extra2' => array(
+      'title' => t('Delivery Extra Field'),
+      'handler' => 'UcAddressesTestTextFieldHandler',
+      'display_settings' => array(
+        'default' => TRUE,
+      ),
+      'compare' => TRUE,
+      'address_type' => 'shipping',
+    ),
+  );
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function uc_addresses_test_entity_presave($entity, $entity_type) {
+  if ($entity_type == 'uc_addresses') {
+    uc_addresses_test_hook_invoked('entity_presave', $entity);
+  }
+}
+
+/**
+ * Implements hook_entity_load().
+ */
+function uc_addresses_test_entity_load($entities, $entity_type) {
+  if ($entity_type == 'uc_addresses') {
+    uc_addresses_test_hook_invoked('entity_load', reset($entities));
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function uc_addresses_test_entity_insert($entity, $entity_type) {
+  if ($entity_type == 'uc_addresses') {
+    uc_addresses_test_hook_invoked('entity_insert', $entity);
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function uc_addresses_test_entity_update($entity, $entity_type) {
+  if ($entity_type == 'uc_addresses') {
+    uc_addresses_test_hook_invoked('entity_update', $entity);
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function uc_addresses_test_entity_delete($entity, $entity_type) {
+  if ($entity_type == 'uc_addresses') {
+    uc_addresses_test_hook_invoked('entity_delete', $entity);
+  }
+}
+
+/**
+ * Reports if a certain hook is invoked.
+ *
+ * Automated tests can use this to check whether or not
+ * a hook is invoked.
+ *
+ * @param string $hook
+ *   The hook that was invoked.
+ * @param object $entity
+ *   The entity that was passed with the hook.
+ */
+function uc_addresses_test_hook_invoked($hook, $entity) {
+  variable_set('uc_addresses_' . $hook, entity_id('uc_addresses', $entity));
+}

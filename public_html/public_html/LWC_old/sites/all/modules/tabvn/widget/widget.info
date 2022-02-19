@@ -1,0 +1,4 @@
+name = widget
+description = provide custom widget such as flickr...
+core = 7.x
+package = Tabvn

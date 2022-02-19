@@ -1,0 +1,1604 @@
+/* ==========================================================================
+*  Sinatra Customizer related styles.
+*  ========================================================================== */
+/**
+ * Import configuration file with variables.
+ */
+.si-btn.btn-uppercase {
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.si-btn:disabled, .si-btn.disabled,
+body:not(.wp-customizer) input[type=submit]:disabled,
+body:not(.wp-customizer) input.disabled[type=submit],
+.site-main .woocommerce #respond input#submit:disabled,
+.site-main .woocommerce #respond input#submit.disabled,
+.site-main .woocommerce a.button:disabled,
+.site-main .woocommerce a.button.disabled,
+.site-main .woocommerce button.button:disabled,
+.site-main .woocommerce button.button.disabled,
+.site-main .woocommerce input.button:disabled,
+.site-main .woocommerce input.button.disabled,
+.woocommerce ul.products li.product .added_to_cart:disabled,
+.woocommerce ul.products li.product .added_to_cart.disabled,
+.woocommerce ul.products li.product .button:disabled,
+.woocommerce ul.products li.product .button.disabled,
+.woocommerce div.product form.cart .button:disabled,
+.woocommerce div.product form.cart .button.disabled,
+.woocommerce #review_form #respond .form-submit input:disabled,
+.woocommerce #review_form #respond .form-submit input.disabled,
+#infinite-handle span:disabled,
+#infinite-handle span.disabled {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.si-btn,
+body:not(.wp-customizer) input[type=submit],
+.site-main .woocommerce #respond input#submit,
+.site-main .woocommerce a.button,
+.site-main .woocommerce button.button,
+.site-main .woocommerce input.button,
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce ul.products li.product .button,
+.woocommerce div.product form.cart .button,
+.woocommerce #review_form #respond .form-submit input,
+#infinite-handle span {
+  text-decoration: none;
+}
+
+.si-btn,
+body:not(.wp-customizer) input[type=submit],
+.site-main .woocommerce #respond input#submit,
+.site-main .woocommerce a.button,
+.site-main .woocommerce button.button,
+.site-main .woocommerce input.button,
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce ul.products li.product .button,
+.woocommerce div.product form.cart .button,
+.woocommerce #review_form #respond .form-submit input,
+#infinite-handle span {
+  -webkit-transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.si-btn,
+body:not(.wp-customizer) input[type=submit],
+.site-main .woocommerce #respond input#submit,
+.site-main .woocommerce a.button,
+.site-main .woocommerce button.button,
+.site-main .woocommerce input.button,
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce ul.products li.product .button,
+.woocommerce div.product form.cart .button,
+.woocommerce #review_form #respond .form-submit input,
+#infinite-handle span {
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+/**
+ * Import tooltips and info icon.
+ */
+/*****************************************/
+/* Sinatra tooltip and info icon.
+/*****************************************/
+.sinatra-info-icon,
+.sinatra-warning-icon {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-left: 5px;
+  position: relative;
+}
+
+.sinatra-info-icon svg,
+.sinatra-warning-icon svg {
+  fill: #b5c9d6;
+}
+
+.sinatra-info-icon:hover svg, .sinatra-info-icon:focus svg,
+.sinatra-warning-icon:hover svg,
+.sinatra-warning-icon:focus svg {
+  fill: #648da8;
+}
+
+.sinatra-info-icon:hover .sinatra-tooltip, .sinatra-info-icon:focus .sinatra-tooltip,
+.sinatra-warning-icon:hover .sinatra-tooltip,
+.sinatra-warning-icon:focus .sinatra-tooltip {
+  display: block;
+}
+
+.sinatra-tooltip {
+  display: none;
+  position: absolute;
+  background-color: #23282d;
+  color: #d6e1e8;
+  font-size: 13px;
+  font-style: normal;
+  width: 300px;
+  padding: 16px 18px;
+  z-index: 991;
+  border-radius: 3px;
+  line-height: 1.6;
+  bottom: 100%;
+  -webkit-transform: translate(0, -13px);
+      -ms-transform: translate(0, -13px);
+          transform: translate(0, -13px);
+}
+
+.sinatra-tooltip:after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: #23282d;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  position: absolute;
+  top: calc(100% - 5px);
+  left: var(--tooltip-left);
+  margin-left: 14px;
+}
+
+.sinatra-tooltip.right-tooltip {
+  left: 100%;
+  top: 50%;
+  -webkit-transform: translate(13px, -50%);
+      -ms-transform: translate(13px, -50%);
+          transform: translate(13px, -50%);
+}
+
+.sinatra-tooltip.top-right-tooltip {
+  right: 0;
+  bottom: 100%;
+  -webkit-transform: translate(0, 13px);
+      -ms-transform: translate(0, 13px);
+          transform: translate(0, 13px);
+}
+
+.sinatra-tooltip.top-right-tooltip:after {
+  top: calc(100% - 6px);
+  left: calc(100% - 25px);
+  margin-left: 0;
+}
+
+.sinatra-tooltip.small-tooltip {
+  top: 5px;
+  bottom: auto;
+  left: 50%;
+  width: auto;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  padding: 6px 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: nowrap;
+  font-weight: 400;
+}
+
+.sinatra-tooltip.small-tooltip:after {
+  display: none;
+}
+
+/**
+ * Import configuration file with variables.
+ */
+/*****************************************/
+/* Customizer base styles
+/*****************************************/
+#accordion-section-sinatra_info {
+  margin-bottom: 15px;
+}
+
+#accordion-panel-nav_menus,
+#accordion-section-sinatra_section_help .accordion-section-title,
+#accordion-panel-sinatra_panel_blog,
+#accordion-panel-sinatra_panel_header,
+#accordion-section-sinatra_section_transparent_header,
+#accordion-section-sinatra_section_page_header {
+  margin-top: 12px;
+}
+
+#customize-control-sinatra_h1_font:after,
+#customize-control-sinatra_h2_font:after,
+#customize-control-sinatra_h3_font:after,
+#customize-control-sinatra_h4_font:after,
+#customize-control-sinatra_h5_font:after,
+#customize-control-sinatra_top_bar_background:after,
+#customize-control-sinatra_top_bar_text_color:after,
+#customize-control-sinatra_header_background:after,
+#customize-control-sinatra_header_text_color:after,
+#customize-control-sinatra_page_header_background:after,
+#customize-control-sinatra_page_header_text_color:after,
+#customize-control-sinatra_pre_footer_cta_background:after,
+#customize-control-sinatra_pre_footer_cta_text_color:after,
+#customize-control-sinatra_footer_background:after,
+#customize-control-sinatra_footer_text_color:after,
+#customize-control-sinatra_copyright_background:after,
+#customize-control-sinatra_single_post_thumb:after,
+#customize-control-sinatra_single_post_categories:after,
+#customize-control-sinatra_single_post_tags:after,
+#customize-control-sinatra_single_last_updated:after,
+#customize-control-sinatra_single_about_author:after,
+#customize-control-sinatra_single_post_next_prev:after,
+#customize-control-sinatra_primary_button_design_options:after,
+#customize-control-sinatra_single_toggle_comments:after {
+  display: none;
+}
+
+.control-section {
+  min-height: 100%;
+}
+
+.control-section-default.open {
+  -js-display: flex !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.control-section-default.open .customize-control {
+  margin-bottom: 16px;
+}
+
+.control-section-default.open .customize-control:after {
+  content: '';
+  display: block;
+  margin-top: 16px;
+  border-bottom: 1px solid #ddd;
+  margin-left: -12px;
+  margin-right: -12px;
+}
+
+.control-section-default.open .customize-control:last-child:after {
+  display: none;
+}
+
+.control-section-default.open .customize-control input[type=text]:not(.wp-color-picker),
+.control-section-default.open .customize-control textarea,
+.control-section-default.open .customize-control select {
+  margin-top: 6px;
+  border-radius: 3px;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  padding: 2px 8px;
+  font-size: 13px;
+}
+
+.control-section-default.open .customize-control input[type=text]:not(.wp-color-picker):focus::-webkit-input-placeholder, .control-section-default.open .customize-control textarea:focus::-webkit-input-placeholder, .control-section-default.open .customize-control select:focus::-webkit-input-placeholder {
+  opacity: 0.6;
+}
+
+.control-section-default.open .customize-control input[type=text]:not(.wp-color-picker):focus::-moz-placeholder, .control-section-default.open .customize-control textarea:focus::-moz-placeholder, .control-section-default.open .customize-control select:focus::-moz-placeholder {
+  opacity: 0.6;
+}
+
+.control-section-default.open .customize-control input[type=text]:not(.wp-color-picker):focus:-ms-input-placeholder, .control-section-default.open .customize-control textarea:focus:-ms-input-placeholder, .control-section-default.open .customize-control select:focus:-ms-input-placeholder {
+  opacity: 0.6;
+}
+
+.control-section-default.open .customize-control input[type=text]:not(.wp-color-picker):focus::-ms-input-placeholder, .control-section-default.open .customize-control textarea:focus::-ms-input-placeholder, .control-section-default.open .customize-control select:focus::-ms-input-placeholder {
+  opacity: 0.6;
+}
+
+.control-section-default.open .customize-control input[type=text]:not(.wp-color-picker):focus::placeholder,
+.control-section-default.open .customize-control textarea:focus::placeholder,
+.control-section-default.open .customize-control select:focus::placeholder {
+  opacity: 0.6;
+}
+
+.control-section-default.open .customize-control select {
+  cursor: pointer;
+}
+
+.control-section-default.open .customize-control textarea {
+  padding: 10px 8px;
+  width: 100%;
+}
+
+.control-section-default.open .widget-top .widget-action:focus .toggle-indicator:before {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+.control-section-default.open .widget-top .toggle-indicator {
+  border-radius: 50%;
+}
+
+.control-section-default.open .widget-top .toggle-indicator:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+#customize-control-background_repeat:after,
+#customize-control-background_attachment:after,
+#customize-control-background_size:after,
+#customize-control-background_position:after,
+#customize-control-background_preset:after {
+  display: none;
+}
+
+#customize-control-background_repeat {
+  margin-bottom: 0;
+}
+
+#customize-control-sinatra_header_layout.customize-control-sinatra-radio-image label,
+#customize-control-sinatra_footer_layout.customize-control-sinatra-radio-image label,
+#customize-control-sinatra_copyright_layout.customize-control-sinatra-radio-image label {
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
+  max-width: 50%;
+}
+
+#customize-control-sinatra_header_layout.customize-control-sinatra-radio-image label img,
+#customize-control-sinatra_footer_layout.customize-control-sinatra-radio-image label img,
+#customize-control-sinatra_copyright_layout.customize-control-sinatra-radio-image label img {
+  width: 100%;
+  height: auto;
+}
+
+.sinatra-hosting-button {
+  margin: auto 0;
+}
+
+.sinatra-hosting-button > h3 {
+  margin: 30px 0;
+  background: none !important;
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: none !important;
+}
+
+.sinatra-hosting-button > h3 .button-primary {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  font-weight: 400;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3 {
+  padding: 0;
+  border-left-color: #0073aa;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3 a {
+  position: relative;
+  z-index: 2;
+  text-decoration: none;
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  color: #0073aa;
+  padding: 10px 10px 11px 14px;
+  overflow: hidden;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3 a:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3 a .dashicons {
+  font-size: 85px;
+  width: auto;
+  height: auto;
+  color: rgba(5, 10, 15, 0.03) !important;
+  position: absolute;
+  z-index: 1;
+  right: -15px;
+  bottom: -15px;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3:hover, #customize-theme-controls #accordion-section-sinatra_info > h3:focus {
+  border-left-color: #0073aa;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3:hover a, #customize-theme-controls #accordion-section-sinatra_info > h3:focus a {
+  color: #0073aa;
+  background: #f3f3f5;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3:hover a .dashicons, #customize-theme-controls #accordion-section-sinatra_info > h3:focus a .dashicons {
+  color: inherit;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3:hover:after, #customize-theme-controls #accordion-section-sinatra_info > h3:focus:after {
+  color: #0073aa;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info > h3:after {
+  z-index: 2;
+  display: block !important;
+}
+
+#customize-theme-controls #accordion-section-sinatra_info .sinatra-info-tagline {
+  position: relative;
+  z-index: 2;
+  display: block;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  overflow: hidden;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 0;
+  color: #656a6f;
+}
+
+#customize-controls .customize-control-description {
+  font-style: normal;
+}
+
+#customize-controls .customize-control-description > p:first-child {
+  margin-top: 0;
+}
+
+#customize-controls .customize-control-cropped_image .customize-control-description {
+  margin-bottom: 12px;
+}
+
+#customize-controls .customize-control-title {
+  position: relative;
+  color: #23282d;
+}
+
+#customize-controls .sinatra-select-wrapper select {
+  margin: 6px 0 0 0;
+}
+
+.sinatra-control-wrapper .customize-control-title {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.sinatra-control-wrapper .customize-control-description {
+  margin-top: -2px;
+  margin-bottom: 6px;
+}
+
+.sinatra-control-wrapper .buttonset {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-left: 1px solid #d2d2d2;
+}
+
+.sinatra-control-wrapper .buttonset label {
+  display: block;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -ms-flex-preferred-size: 33.33%;
+      flex-basis: 33.33%;
+  max-width: 33.33%;
+  padding: 7px 12px;
+  background-color: #fff;
+  border-top: solid 1px #d2d2d2;
+  border-bottom: solid 1px #d2d2d2;
+  border-right: solid 1px #d2d2d2;
+  text-align: center;
+}
+
+.sinatra-control-wrapper .buttonset label:hover {
+  color: #000;
+}
+
+.sinatra-control-wrapper .buttonset input {
+  display: none;
+}
+
+.sinatra-control-wrapper .buttonset input:checked + label {
+  background-color: #0085ba;
+  color: #FFF;
+}
+
+.sinatra-control-wrapper .widget-inside .buttonset {
+  margin-top: 6px;
+}
+
+.sinatra-control-wrapper .widget-inside .buttonset label {
+  -ms-flex-preferred-size: initial;
+      flex-basis: initial;
+  max-width: initial;
+}
+
+.sinatra-control-wrapper .reset-defaults {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.2);
+  margin-right: 10px;
+}
+
+.sinatra-control-wrapper .reset-defaults:hover {
+  color: #f00;
+}
+
+.sinatra-control-wrapper .reset-defaults > .dashicons {
+  font-size: 14px;
+  line-height: 20px;
+  width: 14px;
+}
+
+#sinatra-available-widgets {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-transform: translate3d(-100%, 0, 0);
+          transform: translate3d(-100%, 0, 0);
+  visibility: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 300px;
+  margin: 0;
+  z-index: 4;
+  background: #eee;
+  -webkit-transition: all .18s;
+  transition: all .18s;
+  border-right: 1px solid #ddd;
+}
+
+.sinatra-info-icon {
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.sinatra-info-icon svg {
+  fill: none;
+  stroke: #c7c7c7;
+}
+
+.sinatra-info-icon:hover svg, .sinatra-info-icon:focus svg {
+  fill: none;
+  stroke: #555d66;
+}
+
+.sinatra-info-icon:hover .sinatra-tooltip, .sinatra-info-icon:focus .sinatra-tooltip {
+  display: block;
+}
+
+.sinatra-tooltip {
+  max-width: 180px;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 8px 14px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.sinatra-tooltip.top-right-tooltip {
+  -webkit-transform: translate(8px, -12px);
+      -ms-transform: translate(8px, -12px);
+          transform: translate(8px, -12px);
+}
+
+.sinatra-control-unit {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  margin-left: auto;
+}
+
+.sinatra-control-unit input {
+  display: none;
+}
+
+.sinatra-control-unit input:checked + label {
+  color: #000;
+  text-decoration: underline;
+}
+
+.sinatra-control-unit label {
+  margin: 0px 3px;
+  color: #999;
+  text-transform: uppercase;
+  font-size: 9px;
+}
+
+.sinatra-control-unit label:hover {
+  color: #000;
+}
+
+.select2-dropdown {
+  z-index: 500000 !important;
+  border-color: #7e8993;
+}
+
+.select2-container--default .select2-selection--single {
+  border-color: #7e8993 !important;
+}
+
+.select2-container--default .select2-selection--single:focus {
+  outline: none !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single {
+  border-color: #0085ba !important;
+}
+
+.select2-container--default .select2-results__group {
+  color: #aaa;
+  font-weight: 400;
+}
+
+.select2-container--default .select2-results__option {
+  padding: 5px 6px;
+  margin: 0;
+}
+
+.select2-container--default .select2-results__option .select2-results__option {
+  padding-left: 1.5em;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #32373c;
+  line-height: 32px;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: #eee;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #0085ba !important;
+}
+
+.select2-container .select2-selection--single {
+  min-height: 32px;
+  border-radius: 2px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 32px;
+}
+
+.select2-search--dropdown {
+  padding: 0;
+}
+
+.select2-search--dropdown .select2-search__field {
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-radius: 0;
+  margin-left: 0 !important;
+  padding: 2px 8px;
+  border-bottom-color: #7e8993;
+}
+
+.select2-search--dropdown .select2-search__field:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.wp-pointer.sinatra-pointer {
+  z-index: 500000 !important;
+}
+
+#wp-pointer-4.sinatra-pointer.wp-pointer-top .wp-pointer-arrow {
+  right: 62px;
+  left: auto;
+}
+
+.spinner {
+  display: none;
+}
+
+.spinner.activated, .spinner.visible {
+  display: inline-block;
+  visibility: visible;
+}
+
+/**
+ * Import customizer responsive buttons.
+ */
+/*****************************************/
+/* Customizer responsive buttons styles
+/*****************************************/
+.sinatra-responsive-switchers {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  margin: 2px 0 0 auto;
+}
+
+.sinatra-responsive-switchers.expanded li {
+  display: initial;
+}
+
+.sinatra-responsive-switchers .sinatra-tooltip.small-tooltip {
+  bottom: 100%;
+  top: auto;
+  margin-bottom: 5px;
+}
+
+.sinatra-responsive-switchers li {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+  display: none;
+}
+
+.sinatra-responsive-switchers li:first-child {
+  display: initial;
+}
+
+.sinatra-responsive-switchers li:hover .small-tooltip {
+  display: block;
+  text-transform: capitalize;
+}
+
+.sinatra-responsive-switchers li .active .dashicons {
+  background-color: #0073aa !important;
+  color: #FFF !important;
+}
+
+.sinatra-responsive-switchers li:hover .dashicons {
+  color: #23282d;
+}
+
+.sinatra-responsive-switchers li .dashicons {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  border-radius: 50%;
+  background-color: #FFF;
+  color: #808890;
+  margin: 0 3px;
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 1px solid #e0e0e0;
+}
+
+.sinatra-responsive-switchers .dashicons-mobile:before {
+  content: "\f470";
+}
+
+.sinatra-control-wrapper .sinatra-control-wrap > div {
+  display: none;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.sinatra-control-wrapper .sinatra-control-wrap > div.active {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+/**
+ * Import customizer popup options.
+ */
+/*****************************************/
+/* Customizer popup options styles
+/*****************************************/
+.si-btn.btn-uppercase {
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.si-btn:disabled, .si-btn.disabled,
+body:not(.wp-customizer) input[type=submit]:disabled,
+body:not(.wp-customizer) input.disabled[type=submit],
+.site-main .woocommerce #respond input#submit:disabled,
+.site-main .woocommerce #respond input#submit.disabled,
+.site-main .woocommerce a.button:disabled,
+.site-main .woocommerce a.button.disabled,
+.site-main .woocommerce button.button:disabled,
+.site-main .woocommerce button.button.disabled,
+.site-main .woocommerce input.button:disabled,
+.site-main .woocommerce input.button.disabled,
+.woocommerce ul.products li.product .added_to_cart:disabled,
+.woocommerce ul.products li.product .added_to_cart.disabled,
+.woocommerce ul.products li.product .button:disabled,
+.woocommerce ul.products li.product .button.disabled,
+.woocommerce div.product form.cart .button:disabled,
+.woocommerce div.product form.cart .button.disabled,
+.woocommerce #review_form #respond .form-submit input:disabled,
+.woocommerce #review_form #respond .form-submit input.disabled,
+#infinite-handle span:disabled,
+#infinite-handle span.disabled {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.si-btn,
+body:not(.wp-customizer) input[type=submit],
+.site-main .woocommerce #respond input#submit,
+.site-main .woocommerce a.button,
+.site-main .woocommerce button.button,
+.site-main .woocommerce input.button,
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce ul.products li.product .button,
+.woocommerce div.product form.cart .button,
+.woocommerce #review_form #respond .form-submit input,
+#infinite-handle span {
+  text-decoration: none;
+}
+
+.si-btn,
+body:not(.wp-customizer) input[type=submit],
+.site-main .woocommerce #respond input#submit,
+.site-main .woocommerce a.button,
+.site-main .woocommerce button.button,
+.site-main .woocommerce input.button,
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce ul.products li.product .button,
+.woocommerce div.product form.cart .button,
+.woocommerce #review_form #respond .form-submit input,
+#infinite-handle span {
+  -webkit-transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.si-btn,
+body:not(.wp-customizer) input[type=submit],
+.site-main .woocommerce #respond input#submit,
+.site-main .woocommerce a.button,
+.site-main .woocommerce button.button,
+.site-main .woocommerce input.button,
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce ul.products li.product .button,
+.woocommerce div.product form.cart .button,
+.woocommerce #review_form #respond .form-submit input,
+#infinite-handle span {
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.sinatra-popup-options, .sinatra-popup-options .popup-link {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sinatra-popup-options {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  position: relative;
+}
+
+.sinatra-popup-options .popup-link {
+  margin-left: auto;
+  background-color: #FFF;
+  border-radius: 3px;
+  margin-left: auto;
+  font-size: 12px;
+  width: 40px;
+  height: 33px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid #e0e0e0;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  text-decoration: none;
+  color: #555d66;
+}
+
+.sinatra-popup-options .popup-link .dashicons {
+  -webkit-transition: none;
+  transition: none;
+  color: inherit;
+}
+
+.sinatra-popup-options .popup-link.active, .sinatra-popup-options .popup-link:focus, .sinatra-popup-options .popup-link:hover {
+  background-color: #0284ba;
+  color: #fff;
+}
+
+.sinatra-popup-options .popup-link.active > .dashicons-edit:before {
+  content: "\f335";
+}
+
+.sinatra-popup-options .popup-link.hidden {
+  display: none;
+}
+
+.sinatra-popup-options .popup-content {
+  background-color: #fff;
+  padding: 14px 20px;
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  margin: 10px 0 30px 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.22);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.22);
+  z-index: 1;
+}
+
+.sinatra-popup-options .popup-content:after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 15px;
+  background-color: #FFF;
+  width: 10px;
+  height: 10px;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+
+.sinatra-popup-options .popup-element {
+  margin: 12px 0;
+  position: relative;
+}
+
+.sinatra-popup-options .popup-element.style-1 > label, .sinatra-popup-options .popup-element.style-2 > label {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  font-size: 12px;
+  line-height: 1;
+  margin-right: 5px;
+}
+
+.sinatra-popup-options .popup-element.style-1 {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sinatra-popup-options .popup-element.style-1 > .popup-input-wrapper {
+  margin-left: auto;
+  width: 55%;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+}
+
+.sinatra-popup-options .popup-element.style-1 select,
+.sinatra-popup-options .popup-element.style-1 input {
+  margin: 0 !important;
+}
+
+.sinatra-popup-options .popup-element.color-element {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.sinatra-popup-options .popup-element.color-element > label {
+  min-height: 22px;
+  line-height: 22px;
+}
+
+.sinatra-popup-options .popup-element.color-element .wp-color-result.button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 23px;
+  min-height: 23px;
+  width: 50px;
+  padding: 0;
+}
+
+.sinatra-popup-options .popup-element.color-element .wp-color-result.button:before {
+  width: 48px;
+}
+
+.sinatra-popup-options .popup-element.color-element .wp-color-result.button .wp-color-result-text {
+  display: none;
+}
+
+.sinatra-popup-options .popup-element.color-element .wp-picker-container.wp-picker-active {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.sinatra-popup-options .popup-element.color-element .wp-picker-open + .wp-picker-input-wrap label input {
+  padding: 8px 12px !important;
+  border-radius: 3px 0 0 0 !important;
+}
+
+/**
+ * Import customizer pointers api.
+ */
+/* ==========================================================================
+*  WordPress Pointers API styles.
+*  ========================================================================== */
+.widget .customize-partial-edit-shortcut button,
+.customize-partial-edit-shortcut button {
+  background: #0085ba !important;
+}
+
+.sinatra-pointer-buttons {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.sinatra-pointer-buttons .button-primary {
+  margin-left: auto;
+}
+
+.sinatra-pointer-buttons a.close {
+  margin-left: 15px;
+}
+
+.sinatra-pointer.arrow-top .wp-pointer-arrow {
+  top: 0;
+  margin-top: 12px;
+  border-right-color: #0173a1;
+}
+
+.sinatra-pointer.arrow-top .wp-pointer-arrow .wp-pointer-arrow-inner {
+  border-right-color: #0185ba;
+}
+
+.sinatra-pointer .wp-pointer-content {
+  padding: 0 0 16px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+}
+
+.sinatra-pointer .wp-pointer-content h3 {
+  background: #0085ba;
+  font-size: 16px;
+  padding: 13px 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: #FAFBFC;
+  margin: 0;
+  border-radius: 3px 3px 0 0;
+  border: 1px solid #0073a1;
+  border-bottom: none;
+  margin: -1px;
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sinatra-pointer .wp-pointer-content h3:before {
+  display: none;
+}
+
+.sinatra-pointer .wp-pointer-content h3 img {
+  margin: 0 auto;
+  height: 23px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.sinatra-pointer .wp-pointer-content p {
+  padding: 0;
+  margin: 16px 16px 32px 16px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #5c5c5c;
+}
+
+.sinatra-pointer .wp-pointer-content a {
+  text-decoration: none;
+  color: #0085ba;
+}
+
+.sinatra-pointer .wp-pointer-content a:hover {
+  color: #00b1f7;
+}
+
+.sinatra-pointer .wp-pointer-content .button {
+  font-weight: 300;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  text-shadow: none;
+  border: none;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 25px;
+  border-radius: 3px;
+  line-height: 32px;
+  font-size: 13px;
+}
+
+.sinatra-pointer .wp-pointer-content .button-primary {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  text-shadow: none;
+  border: none;
+  background-color: #0085ba;
+  color: #FFF !important;
+}
+
+.sinatra-pointer .wp-pointer-content .button-primary:hover {
+  background-color: #0097d4;
+}
+
+.sinatra-pointer .wp-pointer-content a.close {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.sinatra-pointer .wp-pointer-content a.close:before {
+  display: none !important;
+}
+
+.sinatra-pointer .wp-pointer-content .wp-pointer-buttons {
+  padding: 0 16px;
+}
+
+.sinatra-pointer .wp-pointer-content .wp-pointer-buttons a {
+  color: #0085ba;
+}
+
+.sinatra-pointer .wp-pointer-content .wp-pointer-buttons a:hover {
+  color: #00b1f7;
+}
+
+.sinatra-pointer .wp-pointer-content .wp-pointer-buttons a.close {
+  margin-right: auto;
+}
+
+.sinatra-pointer .wp-pointer-content .wp-pointer-buttons a.button-primary {
+  margin-left: 8px;
+}
+
+.sinatra-pointer .wp-pointer-content .wp-pointer-buttons a.button-secondary {
+  border: 1px solid #0085ba;
+  border-radius: 3px;
+  background: none;
+}
+
+.sinatra-pointer.wp-pointer-top .wp-pointer-arrow {
+  border-bottom-color: #00a9ed !important;
+}
+
+.sinatra-pointer.wp-pointer-top .wp-pointer-arrow .wp-pointer-arrow-inner {
+  border-bottom-color: #0085ba !important;
+}
+
+/**
+ * Import buttons.
+ */
+/*****************************************/
+/* Button styles.
+/*****************************************/
+.si-btn,
+body:not(.wp-customizer) input[type=submit],
+.site-main .woocommerce #respond input#submit,
+.site-main .woocommerce a.button,
+.site-main .woocommerce button.button,
+.site-main .woocommerce input.button,
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce ul.products li.product .button,
+.woocommerce div.product form.cart .button,
+.woocommerce #review_form #respond .form-submit input,
+#infinite-handle span {
+  -js-display: inline-flex;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  max-width: 100%;
+  cursor: pointer;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-style: solid;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  font-size: inherit;
+  min-height: 45px;
+  padding: .5em 2em;
+}
+
+.si-btn span,
+body:not(.wp-customizer) input[type=submit] span,
+.site-main .woocommerce #respond input#submit span,
+.site-main .woocommerce a.button span,
+.site-main .woocommerce button.button span,
+.site-main .woocommerce input.button span,
+.woocommerce ul.products li.product .added_to_cart span,
+.woocommerce ul.products li.product .button span,
+.woocommerce div.product form.cart .button span,
+.woocommerce #review_form #respond .form-submit input span,
+#infinite-handle span span {
+  z-index: 2;
+  position: relative;
+}
+
+.si-btn:disabled, .si-btn.disabled,
+body:not(.wp-customizer) input[type=submit]:disabled,
+body:not(.wp-customizer) input[type=submit].disabled,
+.site-main .woocommerce #respond input#submit:disabled,
+.site-main .woocommerce #respond input#submit.disabled,
+.site-main .woocommerce a.button:disabled,
+.site-main .woocommerce a.button.disabled,
+.site-main .woocommerce button.button:disabled,
+.site-main .woocommerce button.button.disabled,
+.site-main .woocommerce input.button:disabled,
+.site-main .woocommerce input.button.disabled,
+.woocommerce ul.products li.product .added_to_cart:disabled,
+.woocommerce ul.products li.product .added_to_cart.disabled,
+.woocommerce ul.products li.product .button:disabled,
+.woocommerce ul.products li.product .button.disabled,
+.woocommerce div.product form.cart .button:disabled,
+.woocommerce div.product form.cart .button.disabled,
+.woocommerce #review_form #respond .form-submit input:disabled,
+.woocommerce #review_form #respond .form-submit input.disabled,
+#infinite-handle span:disabled,
+#infinite-handle span.disabled {
+  cursor: not-allowed !important;
+}
+
+.si-btn:disabled > span,
+.si-btn:disabled > svg, .si-btn.disabled > span,
+.si-btn.disabled > svg,
+body:not(.wp-customizer) input[type=submit]:disabled > span,
+body:not(.wp-customizer) input[type=submit]:disabled > svg,
+body:not(.wp-customizer) input[type=submit].disabled > span,
+body:not(.wp-customizer) input[type=submit].disabled > svg,
+.site-main .woocommerce #respond input#submit:disabled > span,
+.site-main .woocommerce #respond input#submit:disabled > svg,
+.site-main .woocommerce #respond input#submit.disabled > span,
+.site-main .woocommerce #respond input#submit.disabled > svg,
+.site-main .woocommerce a.button:disabled > span,
+.site-main .woocommerce a.button:disabled > svg,
+.site-main .woocommerce a.button.disabled > span,
+.site-main .woocommerce a.button.disabled > svg,
+.site-main .woocommerce button.button:disabled > span,
+.site-main .woocommerce button.button:disabled > svg,
+.site-main .woocommerce button.button.disabled > span,
+.site-main .woocommerce button.button.disabled > svg,
+.site-main .woocommerce input.button:disabled > span,
+.site-main .woocommerce input.button:disabled > svg,
+.site-main .woocommerce input.button.disabled > span,
+.site-main .woocommerce input.button.disabled > svg,
+.woocommerce ul.products li.product .added_to_cart:disabled > span,
+.woocommerce ul.products li.product .added_to_cart:disabled > svg,
+.woocommerce ul.products li.product .added_to_cart.disabled > span,
+.woocommerce ul.products li.product .added_to_cart.disabled > svg,
+.woocommerce ul.products li.product .button:disabled > span,
+.woocommerce ul.products li.product .button:disabled > svg,
+.woocommerce ul.products li.product .button.disabled > span,
+.woocommerce ul.products li.product .button.disabled > svg,
+.woocommerce div.product form.cart .button:disabled > span,
+.woocommerce div.product form.cart .button:disabled > svg,
+.woocommerce div.product form.cart .button.disabled > span,
+.woocommerce div.product form.cart .button.disabled > svg,
+.woocommerce #review_form #respond .form-submit input:disabled > span,
+.woocommerce #review_form #respond .form-submit input:disabled > svg,
+.woocommerce #review_form #respond .form-submit input.disabled > span,
+.woocommerce #review_form #respond .form-submit input.disabled > svg,
+#infinite-handle span:disabled > span,
+#infinite-handle span:disabled > svg,
+#infinite-handle span.disabled > span,
+#infinite-handle span.disabled > svg {
+  opacity: .5;
+}
+
+button.si-btn:disabled {
+  opacity: .5;
+}
+
+.btn-small,
+.site-main .woocommerce #respond input#submit,
+#secondary .woocommerce a.button,
+#secondary .woocommerce button.button,
+#secondary .woocommerce input.button,
+.site-main .woocommerce .woocommerce-table a.button,
+.site-main .woocommerce .woocommerce-orders-table a.button,
+.site-main .woocommerce .woocommerce-Pagination a.button,
+.site-main .woocommerce .shipping-calculator-form .button,
+.woocommerce #secondary .widget_price_filter .price_slider_amount .button,
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce ul.products li.product .button {
+  font-size: 90% !important;
+  min-height: 40px;
+  padding: .5em 1.5em;
+}
+
+.btn-large,
+#place_order {
+  min-height: 57px;
+  font-size: 108% !important;
+}
+
+.btn-xlarge {
+  font-size: 130% !important;
+  min-height: 69px;
+  font-weight: 600;
+}
+
+.btn-fw {
+  width: 100%;
+  text-align: center;
+}
+
+.btn-large-radius {
+  border-radius: 50px;
+}
+
+.btn-left-icon,
+.btn-right-icon {
+  position: relative;
+}
+
+.btn-left-icon > svg,
+.btn-right-icon > svg {
+  height: 1.1em;
+}
+
+.btn-left-icon.btn-reveal > svg,
+.btn-right-icon.btn-reveal > svg {
+  -webkit-transition: opacity 0.1s ease, -webkit-transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: opacity 0.1s ease, -webkit-transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.1s ease;
+  transition: transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.1s ease, -webkit-transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate3d(0, -50%, 0);
+          transform: translate3d(0, -50%, 0);
+}
+
+.btn-left-icon.btn-reveal > span,
+.btn-right-icon.btn-reveal > span {
+  -webkit-transition: padding 0.26s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: padding 0.26s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  will-change: padding, margin;
+}
+
+.btn-left-icon.btn-svg > svg,
+.btn-right-icon.btn-svg > svg {
+  height: 1em !important;
+  width: auto !important;
+  vertical-align: middle;
+  fill: currentColor;
+}
+
+.btn-left-icon > svg {
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+  margin-right: .65em;
+  margin-left: -.65em;
+}
+
+.btn-left-icon > span {
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+}
+
+.btn-left-icon.btn-reveal > svg {
+  left: .8em;
+  -webkit-transform: translate3d(10px, -50%, 0);
+          transform: translate3d(10px, -50%, 0);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.btn-left-icon.btn-reveal:hover > span {
+  padding-left: 1em;
+  margin-right: -1em;
+}
+
+.btn-left-icon.btn-reveal:hover > svg {
+  opacity: 1;
+  -webkit-transform: translate3d(0px, -50%, 0);
+          transform: translate3d(0px, -50%, 0);
+}
+
+.btn-right-icon > svg {
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+  margin-left: .65em;
+  margin-right: -.65em;
+}
+
+.btn-right-icon.btn-reveal > svg {
+  right: .8em;
+  -webkit-transform: translate3d(-10px, -50%, 0);
+          transform: translate3d(-10px, -50%, 0);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.btn-right-icon.btn-reveal:hover > span {
+  padding-right: 1em;
+  margin-left: -1em;
+}
+
+.btn-right-icon.btn-reveal:hover > svg {
+  opacity: 1;
+  -webkit-transform: translate3d(0px, -50%, 0);
+          transform: translate3d(0px, -50%, 0);
+}
+
+.si-btn.btn-outline {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.si-btn.btn-secondary.btn-outline {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.si-btn.btn-with-shadow {
+  -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.si-btn.btn-with-shadow:hover {
+  -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 5px 25px rgba(0, 0, 0, 0.175);
+  -webkit-transform: translateY(-2px);
+      -ms-transform: translateY(-2px);
+          transform: translateY(-2px);
+}
+
+.si-btn.btn-text-1 {
+  padding: 0 !important;
+  min-height: 0;
+  height: auto;
+  background: none !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  border: none !important;
+  font-weight: 500;
+}
+
+.si-btn.btn-text-1 span {
+  padding: 3px 0;
+}
+
+.si-btn.btn-text-1 span:before, .si-btn.btn-text-1 span:after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 6px;
+}
+
+.si-btn.btn-text-1 span:after {
+  background: currentColor;
+  opacity: .2;
+}
+
+.si-btn.btn-text-1 span:before {
+  background: currentColor;
+  -webkit-transform-origin: right center;
+      -ms-transform-origin: right center;
+          transform-origin: right center;
+  -webkit-transform: scale(0, 1);
+      -ms-transform: scale(0, 1);
+          transform: scale(0, 1);
+  -webkit-transition: -webkit-transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: -webkit-transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-backface-visibility: hidden;
+  will-change: scale;
+  z-index: 1;
+}
+
+.si-btn.btn-text-1:hover > span:before {
+  -webkit-transform-origin: left center;
+      -ms-transform-origin: left center;
+          transform-origin: left center;
+  -webkit-transform: scale(1, 1);
+      -ms-transform: scale(1, 1);
+          transform: scale(1, 1);
+}
+
+.si-btn.btn-text-1.btn-left-icon > span, .si-btn.btn-text-1.btn-right-icon > span {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

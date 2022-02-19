@@ -1,0 +1,137 @@
+<?php
+
+/**
+ * @file
+ * Install file for Ubercart Addresses Example module.
+ */
+
+/**
+ * Implements hook_schema_alter().
+ *
+ * @return void
+ */
+function uc_addresses_example_schema_alter(&$schema) {
+  $tables = _uc_addresses_example_schema_tables();
+  $fields = _uc_addresses_example_schema_fields();
+
+  foreach ($tables as $table) {
+    foreach ($fields as $fieldname => $field) {
+      $tablename = $table['table'];
+      $tablefieldname = $table['prefix'] . $fieldname;
+      $schema[$tablename]['fields'][$tablefieldname] = $field;
+    }
+  }
+}
+
+/**
+ * Implements hook_install().
+ *
+ * Installs fields defined by _uc_addresses_example_schema_fields()
+ * in tables defined by _uc_addresses_example_schema_tables().
+ *
+ * @return array
+ *   A list of changes in the database.
+ */
+function uc_addresses_example_install() {
+  $ret = array();
+
+  $tables = _uc_addresses_example_schema_tables();
+  $fields = _uc_addresses_example_schema_fields();
+
+  foreach ($tables as $table) {
+    foreach ($fields as $fieldname => $field) {
+      $tablename = $table['table'];
+      $tablefieldname = $table['prefix'] . $fieldname;
+      $ret[] = db_add_field($tablename, $tablefieldname, $field);
+    }
+  }
+
+  return $ret;
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Removes fields defined by _uc_addresses_example_schema_fields()
+ * in tables defined by _uc_addresses_example_schema_tables().
+ *
+ * @return array
+ *   A list of changes in the database.
+ */
+function uc_addresses_example_uninstall() {
+  $ret = array();
+
+  $tables = _uc_addresses_example_schema_tables();
+  $fields = _uc_addresses_example_schema_fields();
+
+  foreach ($tables as $table) {
+    foreach ($fields as $fieldname => $field) {
+      $tablename = $table['table'];
+      $tablefieldname = $table['prefix'] . $fieldname;
+      $ret[] = db_drop_field($tablename, $tablefieldname);
+    }
+  }
+
+  return $ret;
+}
+
+/**
+ * Defines which schema tables needs to be altered.
+ *
+ * A prefix is also defined because in case of the
+ * uc_orders table two fields needs to be added:
+ * - one for delivery
+ * - and one for billing.
+ *
+ * @return array
+ *   The schema's that needs to be altered.
+ */
+function _uc_addresses_example_schema_tables() {
+  return array(
+    array(
+      'table' => 'uc_addresses',
+      'prefix' => '',
+    ),
+    array(
+      'table' => 'uc_orders',
+      'prefix' => 'delivery_',
+    ),
+    array(
+      'table' => 'uc_orders',
+      'prefix' => 'billing_',
+    ),
+  );
+}
+
+/**
+ * Defines which schema fields need to be added
+ * to the uc_addresses and uc_orders table.
+ *
+ * @return array
+ *   The schema fields to add.
+ */
+function _uc_addresses_example_schema_fields() {
+  return array(
+    'title' => array(
+      'description' => t("Person's stating social rank."),
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'surname_prefix' => array(
+      'description' => t("The addressee's surname prefix."),
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'house_number' => array(
+      'description' => t("The addressee's house number."),
+      'type' => 'varchar',
+      'length' => 10,
+      'not null' => TRUE,
+      'default' => '',
+    ),
+  );
+}

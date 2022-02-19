@@ -1,0 +1,136 @@
+/*****************************************/
+/* Customizer checkbox group control style
+/*****************************************/
+/**
+ * Import configuration file with variables.
+ */
+.si-checkbox {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  font-size: 14px;
+  cursor: default;
+}
+
+.si-checkbox input[type=checkbox] {
+  position: relative;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+  background: none;
+  clear: none;
+  cursor: pointer;
+  display: inline-block !important;
+  line-height: 0;
+  margin: 1px 0 0 0;
+  outline: 0;
+  padding: 0 !important;
+  text-align: center;
+  vertical-align: text-top;
+  height: 20px;
+  width: 20px;
+  min-width: 20px;
+  opacity: .5;
+  -webkit-transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.si-checkbox input[type=checkbox]:before {
+  position: absolute;
+  margin: 0;
+  content: '';
+  opacity: 0;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #FFF;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg) scale(0);
+      -ms-transform: rotate(45deg) scale(0);
+          transform: rotate(45deg) scale(0);
+  z-index: 2;
+  -webkit-transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.26s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.si-checkbox input[type=checkbox]:disabled:not(:checked) {
+  border-color: currentColor !important;
+  opacity: .65 !important;
+  pointer-events: none;
+}
+
+.si-checkbox input[type=checkbox]:disabled:not(:checked) + .si-label {
+  opacity: .65;
+  pointer-events: none;
+}
+
+.si-checkbox input[type=checkbox]:checked {
+  border-color: #0085ba;
+  background-color: #0085ba;
+  opacity: 1;
+}
+
+.si-checkbox input[type=checkbox]:checked:before {
+  opacity: 1;
+  -webkit-transform: rotate(45deg) scale(1);
+      -ms-transform: rotate(45deg) scale(1);
+          transform: rotate(45deg) scale(1);
+}
+
+.si-checkbox input[type=checkbox]:checked:disabled {
+  opacity: .65;
+  pointer-events: none;
+  border-color: #0085ba;
+}
+
+.si-checkbox input[type=checkbox]:checked:disabled + .si-label {
+  pointer-events: none;
+}
+
+.si-checkbox .si-label {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  padding-left: 11px;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.si-checkbox .si-label .sinatra-info-icon {
+  margin-left: auto;
+  position: relative !important;
+}
+
+.si-checkbox .si-label .sinatra-info-icon .sinatra-tooltip {
+  left: auto !important;
+  right: -7px !important;
+}
+
+.si-checkbox .si-label .sinatra-info-icon .sinatra-tooltip:after {
+  left: auto !important;
+  right: 12px !important;
+}
+
+.si-checkbox:hover input[type=checkbox] {
+  border-color: #0085ba;
+  opacity: 1;
+}

@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function uc_price_visibility_schema() {
+  $schema['uc_price_visibility'] = array(
+    'fields' => array(
+      'nid' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
+      'roles' => array('type' => 'text'),
+    ),
+    'primary key' => array('nid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function uc_price_visibility_uninstall() {
+  variable_del('uc_price_visibility_roles');
+  variable_del('uc_price_visibility_message');
+  variable_del('uc_price_visibility_message_field');
+}

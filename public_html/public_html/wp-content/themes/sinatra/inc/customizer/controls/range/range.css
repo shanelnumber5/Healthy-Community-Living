@@ -1,0 +1,172 @@
+/*****************************************/
+/* Customizer control range style
+/*****************************************/
+/**
+ * Import configuration file with variables.
+ */
+.sinatra-range-wrapper .sinatra-control-wrap {
+  -js-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin-top: 12px;
+}
+
+.sinatra-range-wrapper .sinatra-control-wrap input[type=range],
+.sinatra-range-wrapper .sinatra-control-wrap .sinatra-range-input,
+.sinatra-range-wrapper .sinatra-control-wrap .sinatra-reset-range {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.sinatra-range-wrapper input[type=range] {
+  background-color: #ddd;
+  height: 3px;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  -webkit-transition: background .15s ease;
+  transition: background .15s ease;
+  border-radius: 3px;
+  -webkit-appearance: none;
+}
+
+.sinatra-range-wrapper input[type=range]:focus {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  outline: none !important;
+}
+
+.sinatra-range-wrapper input[type=range]:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.sinatra-range-wrapper input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #2e86b9;
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  -webkit-transition: background-color .15s ease, -webkit-box-shadow .15s ease, -webkit-transform .15s ease;
+  transition: background-color .15s ease, -webkit-box-shadow .15s ease, -webkit-transform .15s ease;
+  transition: background-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  transition: background-color .15s ease, box-shadow .15s ease, transform .15s ease, -webkit-box-shadow .15s ease, -webkit-transform .15s ease;
+}
+
+.sinatra-range-wrapper input[type=range]::-webkit-slider-thumb:hover {
+  background-color: #008ec2;
+  -webkit-box-shadow: 0 0 0 10px rgba(46, 134, 185, 0.12);
+          box-shadow: 0 0 0 10px rgba(46, 134, 185, 0.12);
+}
+
+.sinatra-range-wrapper input[type=range]::-webkit-slider-thumb:active {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5);
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+.sinatra-range-wrapper input[type=range]::-moz-range-track {
+  border: inherit;
+  background-color: transparent;
+}
+
+.sinatra-range-wrapper input[type=range]::-ms-track {
+  border: inherit;
+  color: transparent;
+  background-color: transparent;
+}
+
+.sinatra-range-wrapper input[type=range]::-ms-fill-lower, .sinatra-range-wrapper input[type=range]::-ms-fill-upper {
+  background-color: transparent;
+}
+
+.sinatra-range-wrapper input[type=range]::-ms-tooltip {
+  display: none;
+}
+
+.sinatra-range-wrapper input[type=range]::-moz-range-thumb {
+  background-color: #2e86b9;
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 30px;
+  -moz-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.sinatra-range-wrapper input[type=range]::-moz-range-thumb:hover {
+  background-color: #008ec2;
+  transform: scale(1.25);
+}
+
+.sinatra-range-wrapper input[type=range]::-ms-thumb {
+  background-color: #2e86b9;
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 30px;
+  -ms-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.sinatra-range-wrapper input[type=range]::-ms-thumb:hover {
+  background-color: #008ec2;
+  -ms-transform: scale(1.25);
+      transform: scale(1.25);
+}
+
+.sinatra-range-wrapper .sinatra-range-input {
+  max-width: 50px;
+  height: 28px;
+  text-align: center;
+  font-size: 13px;
+  border-radius: 3px;
+  font-weight: 400;
+  color: #23282d;
+  -moz-appearance: textfield;
+  margin-left: 6px !important;
+}
+
+.sinatra-range-wrapper .sinatra-range-input::-webkit-outer-spin-button, .sinatra-range-wrapper .sinatra-range-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.sinatra-range-wrapper .sinatra-reset-range {
+  max-width: 16px;
+  margin-left: 12px;
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  text-align: center;
+}
+
+.sinatra-range-wrapper .sinatra-reset-range:hover {
+  color: #f00;
+}
+
+.sinatra-range-wrapper .sinatra-reset-range span {
+  width: 13px;
+  height: 13px;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.sinatra-range-wrapper .sinatra-range-unit {
+  margin-left: 6px;
+  color: #555d66;
+}

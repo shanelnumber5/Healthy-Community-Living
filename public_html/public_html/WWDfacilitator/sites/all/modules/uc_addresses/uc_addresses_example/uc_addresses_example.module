@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @file
+ * Example module for Ubercart Addresses.
+ *
+ * This module can be used as an example for adding extra address fields.
+ *
+ * See the README.txt for more information.
+ */
+
+// ---------------------------------------------------------------------------
+// UBERCART ADDRESSES HOOKS
+// ---------------------------------------------------------------------------
+
+/**
+ * Implements hook_uc_addresses_field_handlers().
+ *
+ * This tells Ubercart Addresses which field handlers there are.
+ * Every handler must be derived either directly or indirectly
+ * from UcAddressesFieldHandler.
+ *
+ * @return array
+ *   A list of field handler definitions.
+ */
+function uc_addresses_example_uc_addresses_field_handlers() {
+  $path = drupal_get_path('module', 'uc_addresses_example') . '/handlers';
+
+  $info = array();
+  $info['UcAddressesExampleTextFieldHandler'] = array(
+    'hidden' => FALSE,
+    'handler' => array(
+      'parent' => 'UcAddressesFieldHandler',
+      'class' => 'UcAddressesExampleTextFieldHandler',
+      'file' => 'uc_addresses.handlers.inc',
+      'path' => $path,
+    ),
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_uc_addresses_fields().
+ *
+ * Registers extra address fields for Ubercart Addresses.
+ *
+ * Some of the fields are set to not display by default.
+ * These fields should be shown in forms, but it's value
+ * should not be shown separately. The idea is that these
+ * fields are added to the address format, which can be set
+ * at:
+ * admin/store/settings/countries/uc_addresses_formats
+ *
+ * @return array
+ *   A list of field definitions.
+ */
+function uc_addresses_example_uc_addresses_fields() {
+  return array(
+    'title' => array(
+      'title' => t('Title'),
+      'type' => 'text',
+      'description' => t("Person's stating social rank."),
+      'handler' => 'UcAddressesExampleTextFieldHandler',
+      'display_settings' => array(
+        'default' => FALSE,
+        'register' => TRUE,
+        'address_form' => TRUE,
+        'checkout_form' => TRUE,
+        'order_form' => TRUE,
+      ),
+      'compare' => TRUE,
+    ),
+    'surname_prefix' => array(
+      'title' => t('Surname prefix'),
+      'type' => 'text',
+      'description' => t("The addressee's surname prefix."),
+      'handler' => 'UcAddressesExampleTextFieldHandler',
+      'display_settings' => array(
+        'default' => FALSE,
+        'register' => TRUE,
+        'address_form' => TRUE,
+        'checkout_form' => TRUE,
+        'order_form' => TRUE,
+      ),
+      'compare' => TRUE,
+    ),
+    'house_number' => array(
+      'title' => t('House number'),
+      'type' => 'text',
+      'description' => t("The addressee's house number."),
+      'handler' => 'UcAddressesExampleTextFieldHandler',
+      'display_settings' => array(
+        'default' => FALSE,
+        'register' => TRUE,
+        'address_form' => TRUE,
+        'checkout_form' => TRUE,
+        'order_form' => TRUE,
+      ),
+      'compare' => TRUE,
+    ),
+  );
+}

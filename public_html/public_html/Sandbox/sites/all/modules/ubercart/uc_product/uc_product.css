@@ -1,0 +1,61 @@
+/**
+ * @file
+ * Styles for uc_product module.
+ */
+
+.product-image {
+  clear: right; /* LTR */
+  float: right; /* LTR */
+  margin-left: 4px; /* LTR */
+  padding-left: 4px; /* LTR */
+  padding-top: 4px;
+  text-align: center;
+}
+
+.display-price {
+  clear: right; /* LTR */
+  float: right; /* LTR */
+  font-size: 1.3em;
+  font-weight: bold;
+  padding-bottom: 4px;
+  padding-left: 4px; /* LTR */
+  text-align: center;
+}
+
+.model {
+  display: inline;
+  font-weight: bold;
+  margin-right: 2em; /* LTR */
+}
+
+.uc-product-features td {
+  vertical-align: top;
+}
+
+.add-feature div {
+  padding-right: 1em; /* LTR */
+}
+
+.add-feature div,
+.add-feature label {
+  display: inline;
+}
+
+/**
+ * Styles for uc_attribute.
+ */
+.combinations .form-item {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Styles for uc_roles.
+ */
+.expiration {
+  display: inline;
+}
+
+.expiration .form-item {
+  display: inline;
+}
